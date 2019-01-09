@@ -1,5 +1,5 @@
-import { RoomId } from '../interfaces/game'
 import { PlayerId } from '../interfaces/player'
+import { RoomId } from '../interfaces/room'
 
 function localItem<Type>(key: string) {
   return {

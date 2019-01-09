@@ -8,10 +8,6 @@ export const Layout: React.SFC<Props> = ({ children }) => (
 
     <style jsx>{`
       .layout {
-        display: flex;
-        flex-flow: column;
-        justify-content: center;
-        height: 100%;
         padding: 1em;
       }
 

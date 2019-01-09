@@ -10,6 +10,7 @@ interface Props {
   value?: any
   checked?: any
   placeholder?: string
+  autoFocus?: boolean
 }
 
 export const Input: React.SFC<Props> = ({
@@ -22,6 +23,7 @@ export const Input: React.SFC<Props> = ({
   checked,
   placeholder,
   id,
+  autoFocus,
 }) => (
   <div className="input-container">
     <label htmlFor={id}>{label}</label>
@@ -37,6 +39,7 @@ export const Input: React.SFC<Props> = ({
       checked={checked}
       onChange={e => onChange && onChange(e)}
       onKeyPress={e => e.key === 'Enter' && onSubmit && onSubmit(e)}
+      autoFocus={autoFocus}
     />
 
     <style jsx>{`
@@ -54,7 +57,7 @@ export const Input: React.SFC<Props> = ({
       input {
         border: 1px solid black;
         border-radius: 3px;
-        padding: 0.5em;
+        padding: 1em;
       }
     `}</style>
   </div>

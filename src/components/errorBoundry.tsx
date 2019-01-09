@@ -1,8 +1,5 @@
 import * as React from 'react'
-import { Layout } from './layout'
-import { ActionRow } from './actionRow'
-import { Button } from './button'
-import * as local from '../helpers/localstorage'
+import { Error } from './error'
 
 interface Props {}
 
@@ -15,21 +12,7 @@ export class ErrorBoundary extends React.Component<Props> {
 
   render() {
     if (this.state.hasError) {
-      return (
-        <Layout>
-          <h1>Something went wrong...</h1>
-          <ActionRow>
-            <Button
-              onClick={() => {
-                local.localUserId.set(null)
-                local.roomId.set(null)
-                location.reload()
-              }}>
-              help me!
-            </Button>
-          </ActionRow>
-        </Layout>
-      )
+      return <Error />
     }
 
     return this.props.children

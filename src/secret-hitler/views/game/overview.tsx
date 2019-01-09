@@ -1,16 +1,16 @@
 import * as React from 'react'
-import { Button } from '../../components/button'
-import { Board } from './board'
-import { GameContext } from '../../helpers/contexts'
-import { Layout } from '../../components/layout'
-import { ActionRow } from '../../components/actionRow'
+import { Layout } from '../../../components/layout'
+import { Board } from '../../components/board'
+import { ActionRow } from '../../../components/actionRow'
+import { Button } from '../../../components/button'
+import { SecretHitlerGameContext } from '../../../helpers/contexts'
 
 interface Props {
   myTurn: () => void
 }
 
 export const Overview: React.SFC<Props> = ({ myTurn }) => {
-  const { player, game, endGame } = React.useContext(GameContext)
+  const { player, game, endGame } = React.useContext(SecretHitlerGameContext)
 
   return (
     <Layout>
@@ -18,12 +18,13 @@ export const Overview: React.SFC<Props> = ({ myTurn }) => {
       <Board game={game} />
 
       <ActionRow>
-        <Button confirm onClick={endGame}>
+        <Button padded confirm onClick={() => endGame()}>
           end game
         </Button>
 
         {player.living && (
           <Button
+            padded
             disabled={
               !player.living || !!game.government || !!game.performPower
             }

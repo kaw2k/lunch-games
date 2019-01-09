@@ -2,7 +2,8 @@ import * as React from 'react'
 
 interface Props extends React.ButtonHTMLAttributes<any> {
   confirm?: boolean | string
-  theme?: 'action' | 'inline'
+  padded?: boolean
+  color?: 'red' | 'black'
 }
 interface State {
   confirmTimer?: any
@@ -34,15 +35,13 @@ export class Button extends React.Component<Props, State> {
     const {
       confirm,
       children,
-      theme = 'action',
+      padded = false,
       className = '',
+      color = 'black',
       ...props
     } = this.props
     return (
-      <button
-        {...props}
-        className={`${className} ${theme}`}
-        onClick={this.onClick}>
+      <button {...props} className={className} onClick={this.onClick}>
         {this.state.confirmTimer ? (
           <React.Fragment>
             {typeof confirm === 'string' ? confirm : `confirm: ${children}`}
@@ -57,17 +56,9 @@ export class Button extends React.Component<Props, State> {
             background: transparent;
             flex: 0 0;
             cursor: pointer;
-          }
-
-          .action {
             border: 0;
-            padding: 1em;
-          }
-
-          .inline {
-            padding: 0.3em 0.5em;
-            border: 1px solid black;
-            border-radius: 3px;
+            padding: ${padded ? '1em' : '0'};
+            color: ${color};
           }
 
           button:disabled {

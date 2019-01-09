@@ -28,19 +28,15 @@ export const Login: React.SFC<Props> = ({ login }) => {
         label="Player Name"
         value={name}
         onChange={e => setName(e.target.value)}
+        autoFocus
         onSubmit={preLogin}
       />
 
       <ActionRow>
-        <Button onClick={preLogin}>login</Button>
+        <Button padded onClick={preLogin}>
+          login
+        </Button>
       </ActionRow>
-
-      <style jsx>{`
-        .title {
-          text-align: center;
-          margin-top: auto;
-        }
-      `}</style>
     </Layout>
   )
 }

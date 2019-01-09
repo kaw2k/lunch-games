@@ -6,11 +6,11 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "start": "run-p dev:*",
-    "start:google": "NODE_ENV=google npm install && run-p dev:*",
+    "start": "npm install && run-p dev:*",
     "deploy": "npm run build && firebase deploy",
-    "build": "tsc && parcel build ./src/index.html --no-cache --no-minify --public-url=./",
-    "dev:server": "parcel ./src/index.html --no-autoinstall --port 3333 --log-level 0 --open",
+    "build": "tsc && parcel build ./src/secret-hitler/index.html --no-cache --no-minify --public-url=./",
+    "dev:secret-hitler": "NODE_ENV=secret-hitler parcel ./src/secret-hitler/index.html --no-autoinstall --port 3333 --log-level 0",
+    "dev:avalon": "NODE_ENV=avalon parcel ./src/secret-hitler/index.html --no-autoinstall --port 4444 --log-level 0",
     "dev:lint": "tsc -w",
     "precommit": "precise-commits"
   },

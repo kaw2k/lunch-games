@@ -2,19 +2,24 @@ import * as React from 'react'
 import { MyTurn } from './myTurn'
 import { Overview } from './overview'
 import { SelectCards } from './selectCards'
-import { sanitizeCards, getBoardEffect, isGameOver } from '../../helpers/game'
 import { PerformPower } from './performPower'
-import { GameContext } from '../../helpers/contexts'
+import { getBoardEffect } from '../../helpers/getBoardEffect'
+import { sanitizeCards } from '../../helpers/sanitizeCards'
+import { isGameOver } from '../../helpers/isGameOver'
+import { SecretHitlerGame } from '../../interfaces/game'
+import { SecretHitlerGameContext } from '../../../helpers/contexts'
 
 interface Props {}
 
 export const GameView: React.SFC<Props> = () => {
-  const { game, player, updateGame, endGame } = React.useContext(GameContext)
+  const { game, player, updateGame, endGame } = React.useContext(
+    SecretHitlerGameContext
+  )
   const [isMyTurn, setIsMyTurn] = React.useState(false)
 
   // Check if a president needs to perform some action
   const fascists = game.playedCards.filter(c => c === 'fascist')
-  const power = getBoardEffect(game.players.length, fascists.length)
+  const power = getBoardEffect(game.players, fascists.length)
   if (power && game.performPower && game.performPower.id === player.id) {
     return <PerformPower power={power} />
   }
@@ -28,20 +33,20 @@ export const GameView: React.SFC<Props> = () => {
     return (
       <SelectCards
         government={game.government}
-        discard={(discard, remaining, veto = null) => {
+        discard={(cards, discarded, veto = null) => {
           if (!game.government) return
-          if (remaining.length === 2) {
+          if (cards.length === 2) {
             updateGame({
-              discardedCards: game.discardedCards.concat(discard),
+              discardedCards: game.discardedCards.concat(discarded),
               government: {
                 ...game.government,
-                cards: remaining,
+                cards,
                 veto,
               },
             })
-          } else if (remaining.length === 1) {
-            const discardedCards = game.discardedCards.concat(discard)
-            const playedCards = game.playedCards.concat(remaining[0])
+          } else if (cards.length === 1) {
+            const discardedCards = game.discardedCards.concat(discarded)
+            const playedCards = game.playedCards.concat(cards[0])
             const hasEffect = !!getBoardEffect(game.players, playedCards)
 
             if (game.government.veto && veto) {
@@ -52,8 +57,8 @@ export const GameView: React.SFC<Props> = () => {
                   government: null,
                   performPower: null,
                   discardedCards: game.discardedCards
-                    .concat(discard)
-                    .concat(playedCards),
+                    .concat(discarded)
+                    .concat(cards),
                 })
               )
             } else {
@@ -62,7 +67,7 @@ export const GameView: React.SFC<Props> = () => {
                 discardedCards: discardedCards,
                 playedCards: playedCards,
                 performPower:
-                  hasEffect && remaining[0] === 'fascist'
+                  hasEffect && cards[0] === 'fascist'
                     ? game.government.president
                     : null,
                 government: null,
@@ -72,8 +77,9 @@ export const GameView: React.SFC<Props> = () => {
                 },
               })
 
-              if (isGameOver(updatedGame)) {
-                endGame(isGameOver(updatedGame))
+              const gameOver = isGameOver(updatedGame)
+              if (gameOver) {
+                endGame(gameOver, `A ${cards[0]} was played, ${gameOver}s win!`)
               } else {
                 updateGame(updatedGame)
               }
@@ -84,7 +90,7 @@ export const GameView: React.SFC<Props> = () => {
     )
   }
 
-  if (isMyTurn) {
+  if (!game.government && isMyTurn) {
     return (
       <MyTurn
         cancel={() => setIsMyTurn(false)}
@@ -93,12 +99,22 @@ export const GameView: React.SFC<Props> = () => {
             setIsMyTurn(false)
 
             if (game.chaos + 1 === 3) {
-              updateGame({
+              const nextGame: SecretHitlerGame = {
                 ...game,
                 playedCards: game.playedCards.concat(game.remainingCards[0]),
                 remainingCards: game.remainingCards.slice(1),
                 chaos: 0,
-              })
+              }
+              const gameOver = isGameOver(nextGame)
+
+              if (gameOver) {
+                endGame(
+                  gameOver,
+                  `The random card ended the game, ${gameOver}s win!`
+                )
+              } else {
+                updateGame(nextGame)
+              }
             } else {
               updateGame({
                 ...game,
@@ -109,7 +125,12 @@ export const GameView: React.SFC<Props> = () => {
             government.chancellor.role.isHitler &&
             fascists.length >= 3
           ) {
-            endGame('fascist')
+            endGame(
+              'fascist',
+              `${
+                government.chancellor.name
+              } is hitler and was elected chancellor, fascists win!`
+            )
           } else {
             updateGame({
               ...game,

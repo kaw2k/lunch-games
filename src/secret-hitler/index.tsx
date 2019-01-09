@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { render } from 'react-dom'
-import { App } from './views'
+import { App } from '../views'
 import 'babel-polyfill'
-import { ErrorBoundary } from './components/errorBoundry'
+import { ErrorBoundary } from '../components/errorBoundry'
 
 render(
   <ErrorBoundary>
@@ -11,13 +11,17 @@ render(
     <style jsx global>{`
       body {
         font-family: 'Roboto', sans-serif;
-        font-size: 20px;
       }
 
       * {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      }
+
+      *:not(input) {
+        user-select: none;
       }
 
       h1 {

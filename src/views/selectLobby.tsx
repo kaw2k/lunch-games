@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { Player } from '../interfaces/player'
 import { Input } from '../components/input'
-import { RoomId } from '../interfaces/game'
+import { RoomId } from '../interfaces/room'
 import { Button } from '../components/button'
 import { ActionRow } from '../components/actionRow'
 import { Layout } from '../components/layout'
-import { PlayerProfile } from '../components/playerProfile'
+import { Profile } from '../components/profile'
 
 interface Props {
   player: Player
@@ -38,14 +38,21 @@ export const SelectLobby: React.SFC<Props> = ({
         id="lobby-id"
         onChange={e => setRid(e.target.value)}
         onSubmit={join}
+        autoFocus
       />
 
       <ActionRow>
-        <Button onClick={join}>join lobby</Button>
+        <Button padded onClick={join}>
+          join lobby
+        </Button>
       </ActionRow>
 
       <h1>profile setup:</h1>
-      <PlayerProfile className="player" player={player} />
+      <Profile
+        className="player"
+        text={player.name}
+        image={player.profileImg}
+      />
 
       <Input
         id="nickname"
@@ -68,7 +75,9 @@ export const SelectLobby: React.SFC<Props> = ({
       />
 
       <ActionRow>
-        <Button onClick={logOut}>log out</Button>
+        <Button padded onClick={logOut}>
+          log out
+        </Button>
       </ActionRow>
 
       <style jsx>{`

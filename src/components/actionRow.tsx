@@ -11,13 +11,12 @@ export const ActionRow: React.SFC<Props> = ({ children }) => (
         display: flex;
         justify-content: space-around;
         align-items: center;
-        margin-top: auto !important;
         border: 1px solid black;
         border-radius: 3px;
       }
 
       .action-row > :global(*) {
-        flex: 1 1;
+        flex: 1 1 auto;
       }
 
       .action-row > :global(*) + :global(*) {
