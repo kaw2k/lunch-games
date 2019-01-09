@@ -13,6 +13,7 @@ interface Props {
 }
 
 export const PerformPower: React.SFC<Props> = ({ power }) => {
+  const [viewCards, setViewCards] = React.useState<boolean>(false)
   const { updatePlayer } = React.useContext(RoomContext)
   const { game, updateGame, endGame } = React.useContext(
     SecretHitlerGameContext
@@ -66,21 +67,39 @@ export const PerformPower: React.SFC<Props> = ({ power }) => {
   }
 
   if (power === 'inspect cards') {
-    return (
-      <Layout>
-        <h1>Here are the next three cards from top to bottom:</h1>
+    if (!viewCards) {
+      return (
+        <Layout>
+          <h1>Ready to view the top three cards of the deck?</h1>
 
-        {game.remainingCards.slice(0, 3).map((c, i) => (
-          <Profile key={i} text={c} />
-        ))}
+          <ActionRow>
+            <Button padded onClick={() => setViewCards(true)}>
+              ready
+            </Button>
+          </ActionRow>
+        </Layout>
+      )
+    } else {
+      return (
+        <Layout>
+          <h1>Here are the next three cards from top to bottom:</h1>
 
-        <ActionRow>
-          <Button padded onClick={done}>
-            done
-          </Button>
-        </ActionRow>
-      </Layout>
-    )
+          {game.remainingCards.slice(0, 3).map((c, i) => (
+            <Profile
+              key={i}
+              text={c}
+              color={c === 'fascist' ? 'red' : 'blue'}
+            />
+          ))}
+
+          <ActionRow>
+            <Button padded onClick={done}>
+              done
+            </Button>
+          </ActionRow>
+        </Layout>
+      )
+    }
   }
 
   return null

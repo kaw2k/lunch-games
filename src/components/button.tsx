@@ -1,9 +1,10 @@
 import * as React from 'react'
+import { getColor, Colors } from '../secret-hitler/helpers/colors'
 
 interface Props extends React.ButtonHTMLAttributes<any> {
   confirm?: boolean | string
   padded?: boolean
-  color?: 'red' | 'black'
+  color?: Colors
 }
 interface State {
   confirmTimer?: any
@@ -58,7 +59,7 @@ export class Button extends React.Component<Props, State> {
             cursor: pointer;
             border: 0;
             padding: ${padded ? '1em' : '0'};
-            color: ${color};
+            color: ${getColor(color)};
           }
 
           button:disabled {

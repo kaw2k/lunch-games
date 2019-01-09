@@ -5,14 +5,47 @@ import { getBoardEffect } from '../helpers/getBoardEffect'
 import { Button } from '../../components/button'
 import { ActionRow } from '../../components/actionRow'
 import { Layout } from '../../components/layout'
-import { Flex } from '../../components/flex'
-import values from 'ramda/es/values'
+import { count } from '../../helpers/count'
+
+const Row: React.SFC<{}> = ({ children }) => (
+  <div className="root">
+    {children}
+
+    <style jsx>{`
+      .root {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
+
+      .info > :global(*) {
+        margin-right: 1em;
+      }
+    `}</style>
+  </div>
+)
+
+const Info: React.SFC<{ title: string }> = ({ title, children }) => (
+  <div className="root">
+    <h3>{title}</h3>
+    {children}
+
+    <style jsx>{`
+      .root {
+        text-align: center;
+      }
+    `}</style>
+  </div>
+)
 
 export const Board: React.SFC<{ game: SecretHitlerGame }> = ({ game }) => {
   const [selectedEffect, showEffect] = React.useState<number | null>(null)
 
-  const fascists = game.playedCards.filter(c => c === 'fascist').length
-  const liberals = game.playedCards.filter(c => c === 'liberal').length
+  const numFascistCards = count(game.playedCards, x => x === 'fascist')
+  const numLiberalCards = count(game.playedCards, x => x === 'liberal')
+
+  const numFascists = count(game.players, x => x.role.party === 'fascist') - 1
+  const numLiberals = count(game.players, x => x.role.party === 'liberal')
 
   return (
     <Layout>
@@ -22,11 +55,15 @@ export const Board: React.SFC<{ game: SecretHitlerGame }> = ({ game }) => {
           {[1, 2, 3, 4, 5, 6].map(i => (
             <Button
               style={{ flex: '1 1' }}
-              key={`fascist-${i <= fascists ? 'card' : 'placeholder'}-${i}`}
+              key={`fascist-${
+                i <= numFascistCards ? 'card' : 'placeholder'
+              }-${i}`}
               onClick={() => showEffect(i)}>
               <Card
-                background={i === 6 ? 'grey' : i <= fascists ? 'red' : null}
-                type={i > fascists ? getBoardEffect(game.players, i) : null}
+                background={i <= numFascistCards ? 'red' : null}
+                type={
+                  i > numFascistCards ? getBoardEffect(game.players, i) : null
+                }
               />
             </Button>
           ))}
@@ -96,38 +133,25 @@ export const Board: React.SFC<{ game: SecretHitlerGame }> = ({ game }) => {
         <ActionRow>
           {[1, 2, 3, 4, 5].map(i => (
             <Card
-              key={`liberal-${i <= liberals ? 'card' : 'placeholder'}-${i}`}
-              background={i === 5 ? 'grey' : i <= liberals ? 'blue' : null}
+              key={`liberal-${
+                i <= numLiberalCards ? 'card' : 'placeholder'
+              }-${i}`}
+              background={i <= numLiberalCards ? 'blue' : null}
             />
           ))}
         </ActionRow>
       </div>
 
-      <Flex flow="row" justify="space-around">
-        <div>
-          <h3>Chaos:</h3>
-          {game.chaos} of 3
-        </div>
+      <Row>
+        <Info title="Liberals">{numLiberals}</Info>
+        <Info title="Fascists">{numFascists}</Info>
+        <Info title="Hitler">1</Info>
+      </Row>
 
-        <div>
-          <h3>Cards:</h3>
-          {game.remainingCards.length}
-        </div>
-        <div>
-          <h3>Liberals:</h3>
-          {values(game.players).filter(p => p.role.party === 'liberal').length}
-        </div>
-
-        <div>
-          <h3>Fascists:</h3>
-          {values(game.players).filter(p => p.role.party === 'fascist').length -
-            1}
-        </div>
-
-        <div>
-          <h3>Hitler:</h3>1
-        </div>
-      </Flex>
+      <Row>
+        <Info title="Chaos">{game.chaos} of 3</Info>
+        <Info title="Cards">{game.remainingCards.length}</Info>
+      </Row>
     </Layout>
   )
 }

@@ -56,6 +56,7 @@ export const GameView: React.SFC<Props> = () => {
                   previousGovernment: null,
                   government: null,
                   performPower: null,
+                  message: 'both players decided to veto',
                   discardedCards: game.discardedCards
                     .concat(discarded)
                     .concat(cards),
@@ -71,6 +72,9 @@ export const GameView: React.SFC<Props> = () => {
                     ? game.government.president
                     : null,
                 government: null,
+                message: `${game.government.chancellor.name} played a ${
+                  cards[0]
+                }`,
                 previousGovernment: {
                   president: game.government.president,
                   chancellor: game.government.chancellor,

@@ -1,6 +1,7 @@
 import { PlayerSecretHitler } from '../../secret-hitler/interfaces/player'
 import { Player } from '../../interfaces/player'
 import { RoomId, Lobby } from '../../interfaces/room'
+import { Omit } from 'ramda'
 
 export type Party = 'fascist' | 'liberal'
 export function isParty(thing: any): thing is Party {
@@ -42,9 +43,10 @@ export interface SecretHitlerGame {
   remainingCards: Party[]
   playedCards: Party[]
   chaos: number
+  message: string | null
 }
 
-export interface SecretHitlerLobby extends Lobby {
+export interface SecretHitlerLobby extends Omit<Lobby, 'type'> {
   type: 'secret-hitler-lobby'
 }
 

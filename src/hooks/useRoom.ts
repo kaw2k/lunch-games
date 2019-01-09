@@ -3,14 +3,13 @@ import { Player } from '../interfaces/player'
 import { Loading } from '../interfaces/loading'
 import { useDocument } from 'react-firebase-hooks/firestore'
 import { Room, RoomId } from '../interfaces/room'
-import { SecretHitlerLobby } from '../secret-hitler/interfaces/game'
 import * as RoomAPI from '../apis/room'
 import * as local from '../helpers/localstorage'
 import { database } from '../helpers/firebase'
 import * as firebase from 'firebase'
 
 export function useRoom<T extends Player>(
-  player: Player | null
+  player: T | null
 ): Loading<{
   data: Room | null
   setRoom: (room: Room) => void
@@ -27,23 +26,14 @@ export function useRoom<T extends Player>(
 
   React.useEffect(
     () => {
-      // The game doesn't exist, nor does the lobby. Create it.
-      if (!room && !loading && !error && roomId && player) {
-        const lobby: SecretHitlerLobby = {
-          type: 'secret-hitler-lobby',
-          id: roomId,
-          lobbyPlayers: [player],
-        }
-        database.rooms.doc(roomId).set(lobby)
-      }
-
       // If we are not part of the lobby, kick us out
       if (
         room &&
         player &&
         !room.lobbyPlayers.find(p => p.id === (player as Player).id)
       ) {
-        leaveRoom()
+        local.roomId.set(null)
+        setRoomId(null)
       }
     },
     [loading, room && room.lobbyPlayers.length]
@@ -54,7 +44,7 @@ export function useRoom<T extends Player>(
 
     const room = await RoomAPI.get(id)
     if (!room) {
-      await RoomAPI.set({
+      await RoomAPI.update({
         type: 'secret-hitler-lobby',
         id: id,
       } as Room)
@@ -68,23 +58,6 @@ export function useRoom<T extends Player>(
     setRoomId(id)
   }
 
-  async function leaveRoom() {
-    if (roomId && player) {
-      const room = await RoomAPI.get(roomId)
-      if (room) {
-        setRoom({
-          ...room,
-          lobbyPlayers: room.lobbyPlayers.filter(
-            p => p.id !== (player as Player).id
-          ),
-        })
-      }
-    }
-
-    local.roomId.set(null)
-    setRoomId(null)
-  }
-
   function setRoom(props: Room) {
     doc.set(props)
   }
@@ -93,13 +66,16 @@ export function useRoom<T extends Player>(
     doc.update(props)
   }
 
-  async function updatePlayer(player: T) {
-    console.log('...')
-    if (room && room.type === 'secret-hitler-game') {
-      doc.update({
-        [`players.${player.id}`]: player,
-      })
-    }
+  function updatePlayer(player: T) {
+    doc.update({
+      [`players.${player.id}`]: player,
+    })
+  }
+
+  function kickPlayer(player: T) {
+    doc.update({
+      lobbyPlayers: firebase.firestore.FieldValue.arrayRemove(player),
+    })
   }
 
   if (loading) return { loading: true }
@@ -109,8 +85,8 @@ export function useRoom<T extends Player>(
     loading: false,
     error: false,
     data: room,
+    leaveRoom: () => player && kickPlayer(player),
     joinRoom,
-    leaveRoom,
     updateRoom,
     setRoom,
     updatePlayer,

@@ -1,13 +1,14 @@
 import * as React from 'react'
 import { Button } from './button'
+import { Colors, getColor } from '../secret-hitler/helpers/colors'
 
 interface Props {
   text: string
   subtext?: string
   image?: string | null
   className?: string
-  justify?: 'center' | 'flex-start' | 'flex-end'
   selected?: boolean
+  color?: Colors
   onClick?: () => void
   disabled?: boolean
 }
@@ -17,7 +18,7 @@ export const Profile: React.SFC<Props> = ({
   subtext,
   image,
   className = '',
-  justify,
+  color = 'black',
   selected,
   onClick,
   disabled,
@@ -47,7 +48,7 @@ export const Profile: React.SFC<Props> = ({
         .profile {
           display: flex;
           align-items: center;
-          justify-content: ${justify};
+          color: ${getColor(color)};
         }
 
         img,
@@ -59,8 +60,8 @@ export const Profile: React.SFC<Props> = ({
           line-height: 3rem;
           font-size: 1.25em;
           text-align: center;
-          color: ${selected ? 'red' : 'black'};
-          border: 1px solid ${selected ? 'red' : 'black'};
+          color: ${getColor(color)};
+          border: 1px solid ${getColor(color)};
         }
 
         em {

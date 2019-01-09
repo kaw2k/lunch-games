@@ -22,6 +22,10 @@ export const MyTurn: React.SFC<Props> = ({ cancel, proceed }) => {
   return (
     <Layout>
       <h1>Choose your chancellor</h1>
+      <p>
+        It is your turn, choose who you want to be your chancellor. Call for a
+        vote, if it passes, select "goes" otherwise select "rejected".
+      </p>
 
       {values(game.players)
         .filter(p => p.living && p.id !== player.id)

@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { LobbyView } from './lobby'
 import { shuffle } from '../../helpers/shuffle'
 import { Cards } from '../helpers/cards'
 import { assignRoles } from '../helpers/assignRoles'
@@ -12,6 +11,7 @@ import { addLeaderBoard } from '../../apis/leaderBoard'
 import { GameView } from './game'
 import { RoomContext, SecretHitlerGameContext } from '../../helpers/contexts'
 import values from 'ramda/es/values'
+import { LobbyView } from './lobby'
 
 interface Props {}
 
@@ -50,6 +50,7 @@ export const SecretHitlerView: React.SFC<Props> = ({}) => {
             previousGovernment: null,
             government: null,
             performPower: null,
+            message: `${shuffle(players)[0].name} goes first`,
           })
         }}
       />

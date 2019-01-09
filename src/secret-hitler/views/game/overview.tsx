@@ -14,7 +14,8 @@ export const Overview: React.SFC<Props> = ({ myTurn }) => {
 
   return (
     <Layout>
-      {!player.living && <h1>you are dead</h1>}
+      {!player.living && <h1 className="red">you are dead</h1>}
+      {game.message && <h1>{game.message}</h1>}
       <Board game={game} />
 
       <ActionRow>
@@ -36,6 +37,9 @@ export const Overview: React.SFC<Props> = ({ myTurn }) => {
       <style jsx>{`
         h1 {
           text-align: center;
+        }
+
+        .red {
           color: red;
         }
       `}</style>

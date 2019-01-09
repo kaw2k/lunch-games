@@ -18,3 +18,7 @@ export function get(rid: RoomId) {
 export function set(room: Room) {
   return database.rooms.doc(room.id).set(room)
 }
+
+export function update(room: Partial<Room>) {
+  return database.rooms.doc(room.id).update(room)
+}

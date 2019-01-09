@@ -78,9 +78,6 @@ export const ViewRole: React.SFC<Props> = ({
         <Button padded confirm onClick={endGame}>
           end game
         </Button>
-        <Button padded onClick={() => setShowRole(false)}>
-          hide role
-        </Button>
         {!player.ready && (
           <Button padded onClick={ready}>
             ready
