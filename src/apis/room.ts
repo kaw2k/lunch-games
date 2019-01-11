@@ -1,9 +1,15 @@
 import { RoomId, Room } from '../interfaces/room'
-import { database } from '../helpers/firebase'
+import { database, firebaseArrayRemove } from '../helpers/firebase'
+import { Player } from '../interfaces/player'
 
-export function get(rid: RoomId) {
+// ================================================
+// NONE OF THESE APIS SHOULD BE USED DIRECTLY
+// Instead they should be wrapped with proper types
+// in some form of context
+// ================================================
+export function get(id: RoomId) {
   return database.rooms
-    .doc(rid)
+    .doc(id)
     .get()
     .then(roomSnapshot => {
       const room = roomSnapshot.data()
@@ -15,10 +21,22 @@ export function get(rid: RoomId) {
     })
 }
 
-export function set(room: Room) {
+export function set(id: RoomId, room: Room) {
   return database.rooms.doc(room.id).set(room)
 }
 
-export function update(room: Partial<Room>) {
-  return database.rooms.doc(room.id).update(room)
+export function update(id: RoomId, room: Partial<Room>) {
+  return database.rooms.doc(id).update(room)
+}
+
+export function updatePlayer<P extends Player>(id: RoomId, player: P) {
+  return database.rooms.doc(id).update({
+    [`players.${player.id}`]: player,
+  })
+}
+
+export function kickPlayer(id: RoomId, player: Player) {
+  return database.rooms.doc(id).update({
+    lobbyPlayers: firebaseArrayRemove(player),
+  })
 }

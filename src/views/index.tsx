@@ -7,6 +7,7 @@ import { useAuthState } from '../hooks/useAuthState'
 import { useRoom } from '../hooks/useRoom'
 import { isSecretHitler, SecretHitlerView } from '../secret-hitler/views'
 import { RoomContext } from '../helpers/contexts'
+import { LobbyGeneral } from './lobby'
 
 export const App: React.SFC<{}> = () => {
   const playerResult = useAuthState()
@@ -39,27 +40,29 @@ export const App: React.SFC<{}> = () => {
     )
   }
 
+  const roomContextValues: RoomContext = {
+    room,
+    player,
+    joinRoom: roomResult.joinRoom,
+    leaveRoom: roomResult.leaveRoom,
+    setRoom: props => roomResult.setRoom(room.id, props),
+    updateRoom: props => roomResult.updateRoom(room.id, props),
+    updatePlayer: player => roomResult.updatePlayer(room.id, player),
+    kickPlayer: player => roomResult.kickPlayer(room.id, player),
+  }
+
+  if (room.type === 'lobby') {
+    return (
+      <RoomContext.Provider value={roomContextValues}>
+        <LobbyGeneral lobby={room} />
+      </RoomContext.Provider>
+    )
+  }
+
   if (isSecretHitler(room)) {
     return (
-      <RoomContext.Provider
-        value={{
-          room,
-          player,
-          joinRoom: roomResult.joinRoom,
-          setRoom: roomResult.setRoom,
-          updateRoom: roomResult.updateRoom,
-          leaveRoom: roomResult.leaveRoom,
-          updatePlayer: roomResult.updatePlayer,
-
-          kickPlayer: id => {
-            roomResult.updateRoom({
-              id: room.id,
-              type: 'secret-hitler-lobby',
-              lobbyPlayers: room.lobbyPlayers.filter(p => p.id !== id),
-            })
-          },
-        }}>
-        <SecretHitlerView />
+      <RoomContext.Provider value={roomContextValues}>
+        <SecretHitlerView room={room} />
       </RoomContext.Provider>
     )
   }

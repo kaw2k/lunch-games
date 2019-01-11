@@ -1,5 +1,6 @@
-import { Player, PlayerId } from '../../interfaces/player'
+import { Player } from '../../interfaces/player'
 import { RoomId } from '../../interfaces/room'
+import { Hash } from '../../interfaces/hash'
 
 export type VoteAvalon = 'success' | 'fail'
 export type PartyAvalon = 'good' | 'bad'
@@ -22,9 +23,9 @@ export interface AvalonLobby {
   type: 'avalon-lobby'
   id: RoomId
   lobbyPlayers: Player[]
-  roles: RoleAvalon[]
   options: {
     ladyOfTheLake: boolean
+    roles: RoleAvalon[]
   }
 }
 
@@ -35,15 +36,13 @@ export interface AvalonGame {
   chaos: number
 
   lobbyPlayers: Player[]
-  players: PlayerAvalon[]
+  players: Hash<PlayerAvalon>
 
-  party: null | {
-    leader: PlayerId
-    players: PlayerAvalon[]
-  }
+  party: null | Hash<PlayerAvalon & { vote: null | VoteAvalon }>
 
   options: {
     ladyOfTheLake: boolean
+    roles: RoleAvalon[]
   }
 }
 

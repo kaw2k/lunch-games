@@ -18,7 +18,7 @@ export const Profile: React.SFC<Props> = ({
   subtext,
   image,
   className = '',
-  color = 'black',
+  color = 'black' as Colors,
   selected,
   onClick,
   disabled,

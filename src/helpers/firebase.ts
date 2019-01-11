@@ -29,3 +29,6 @@ export const database = {
   leaderBoard: db.collection('leaderBoard'),
   profileImg: (pid: PlayerId) => storage.ref(`profile-images/${pid}`),
 }
+
+export const firebaseArrayAdd = firebase.firestore.FieldValue.arrayUnion
+export const firebaseArrayRemove = firebase.firestore.FieldValue.arrayRemove

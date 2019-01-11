@@ -2,12 +2,15 @@ import * as React from 'react'
 import { MyTurn } from './myTurn'
 import { Overview } from './overview'
 import { SelectCards } from './selectCards'
-import { PerformPower } from './performPower'
 import { getBoardEffect } from '../../helpers/getBoardEffect'
 import { sanitizeCards } from '../../helpers/sanitizeCards'
 import { isGameOver } from '../../helpers/isGameOver'
 import { SecretHitlerGame } from '../../interfaces/game'
 import { SecretHitlerGameContext } from '../../../helpers/contexts'
+import { Kill } from './performPower/kill'
+import { ChoosePresident } from './performPower/choosePresident'
+import { InspectCards } from './performPower/inspectCards'
+import { InspectRole } from './performPower/inspectRole'
 
 interface Props {}
 
@@ -21,7 +24,15 @@ export const GameView: React.SFC<Props> = () => {
   const fascists = game.playedCards.filter(c => c === 'fascist')
   const power = getBoardEffect(game.players, fascists.length)
   if (power && game.performPower && game.performPower.id === player.id) {
-    return <PerformPower power={power} />
+    if (power === 'kill') {
+      return <Kill />
+    } else if (power === 'choose president') {
+      return <ChoosePresident />
+    } else if (power === 'inspect cards') {
+      return <InspectCards />
+    } else if (power === 'inspect role') {
+      return <InspectRole />
+    }
   }
 
   // If we are in the current government, show the card screen

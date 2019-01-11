@@ -5,16 +5,16 @@ import { useDocument } from 'react-firebase-hooks/firestore'
 import { Room, RoomId } from '../interfaces/room'
 import * as RoomAPI from '../apis/room'
 import * as local from '../helpers/localstorage'
-import { database } from '../helpers/firebase'
-import * as firebase from 'firebase'
+import { database, firebaseArrayAdd } from '../helpers/firebase'
 
-export function useRoom<T extends Player>(
-  player: T | null
+export function useRoom(
+  player: Player | null
 ): Loading<{
   data: Room | null
-  setRoom: (room: Room) => void
-  updateRoom: (room: Partial<Room>) => void
-  updatePlayer: (player: T) => void
+  setRoom: typeof RoomAPI.set
+  updateRoom: typeof RoomAPI.update
+  updatePlayer: typeof RoomAPI.updatePlayer
+  kickPlayer: typeof RoomAPI.kickPlayer
   joinRoom: (id: RoomId) => void
   leaveRoom: () => void
 }> {
@@ -39,56 +39,44 @@ export function useRoom<T extends Player>(
     [loading, room && room.lobbyPlayers.length]
   )
 
-  async function joinRoom(id: RoomId) {
-    if (!player) return
-
-    const room = await RoomAPI.get(id)
-    if (!room) {
-      await RoomAPI.update({
-        type: 'secret-hitler-lobby',
-        id: id,
-      } as Room)
-    }
-
-    database.rooms.doc(id).update({
-      lobbyPlayers: firebase.firestore.FieldValue.arrayUnion(player),
-    })
-
-    local.roomId.set(id)
-    setRoomId(id)
-  }
-
-  function setRoom(props: Room) {
-    doc.set(props)
-  }
-
-  function updateRoom(props: Partial<Room>) {
-    doc.update(props)
-  }
-
-  function updatePlayer(player: T) {
-    doc.update({
-      [`players.${player.id}`]: player,
-    })
-  }
-
-  function kickPlayer(player: T) {
-    doc.update({
-      lobbyPlayers: firebase.firestore.FieldValue.arrayRemove(player),
-    })
-  }
-
   if (loading) return { loading: true }
   if (error) return { loading: false, error: true }
 
   return {
     loading: false,
     error: false,
+
     data: room,
-    leaveRoom: () => player && kickPlayer(player),
-    joinRoom,
-    updateRoom,
-    setRoom,
-    updatePlayer,
+
+    updateRoom: RoomAPI.update,
+    setRoom: RoomAPI.set,
+    updatePlayer: RoomAPI.updatePlayer,
+    kickPlayer: RoomAPI.kickPlayer,
+
+    leaveRoom() {
+      if (!roomId || !player) return
+
+      RoomAPI.kickPlayer(roomId, player)
+    },
+
+    async joinRoom(id) {
+      if (!player) return
+
+      const room = await RoomAPI.get(id)
+
+      if (!room) {
+        await RoomAPI.set(id, {
+          type: 'lobby',
+          id: id,
+        } as Room)
+      }
+
+      await database.rooms.doc(id).update({
+        lobbyPlayers: firebaseArrayAdd(player),
+      })
+
+      local.roomId.set(id)
+      setRoomId(id)
+    },
   }
 }

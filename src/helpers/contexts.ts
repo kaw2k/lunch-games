@@ -1,18 +1,18 @@
 import { createContext } from 'react'
 import { Room, RoomId } from '../interfaces/room'
-import { Player, PlayerId } from '../interfaces/player'
+import { Player } from '../interfaces/player'
 import { PlayerSecretHitler } from '../secret-hitler/interfaces/player'
 import { SecretHitlerGame, Party } from '../secret-hitler/interfaces/game'
 
-interface RoomContext {
+export interface RoomContext {
   room: Room
   player: Player
-  updatePlayer: (player: PlayerSecretHitler) => void
+  updatePlayer: (player: Player) => void
   setRoom: (room: Room) => void
   updateRoom: (room: Partial<Room>) => void
   joinRoom: (id: RoomId) => void
   leaveRoom: () => void
-  kickPlayer: (pid: PlayerId) => void
+  kickPlayer: (player: Player) => void
 }
 
 export const RoomContext = createContext<RoomContext>({
@@ -26,9 +26,10 @@ export const RoomContext = createContext<RoomContext>({
   kickPlayer() {},
 })
 
-interface SecretHitlerGameContext {
+export interface SecretHitlerGameContext {
   game: SecretHitlerGame
   player: PlayerSecretHitler
+  updateGamePlayer: (player: PlayerSecretHitler) => void
   updateGame: (game: Partial<SecretHitlerGame>) => void
   endGame: (winners?: Party, message?: string) => void
 }
@@ -36,6 +37,7 @@ interface SecretHitlerGameContext {
 export const SecretHitlerGameContext = createContext<SecretHitlerGameContext>({
   game: {} as SecretHitlerGame,
   player: {} as PlayerSecretHitler,
+  updateGamePlayer() {},
   updateGame() {},
   endGame() {},
 })
