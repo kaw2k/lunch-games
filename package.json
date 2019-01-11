@@ -1,5 +1,5 @@
 {
-  "name": "secret-hitler",
+  "name": "lunch-games",
   "version": "1.0.0",
   "description": "",
   "main": "./src/index.html",
@@ -9,8 +9,7 @@
     "start": "npm install && run-p dev:*",
     "deploy": "npm run build && firebase deploy",
     "build": "tsc && parcel build ./src/secret-hitler/index.html --no-cache --no-minify --public-url=./",
-    "dev:secret-hitler": "NODE_ENV=secret-hitler parcel ./src/secret-hitler/index.html --no-autoinstall --port 3333 --log-level 0",
-    "dev:avalon": "NODE_ENV=avalon parcel ./src/secret-hitler/index.html --no-autoinstall --port 4444 --log-level 0",
+    "dev:server": "parcel ./src/index.html --no-autoinstall --port 3333 --log-level 0",
     "dev:lint": "tsc -w",
     "precommit": "precise-commits"
   },

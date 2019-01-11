@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { render } from 'react-dom'
-import { App } from '../views'
+import { App } from './views'
 import 'babel-polyfill'
-import { ErrorBoundary } from '../components/errorBoundry'
+import { ErrorBoundary } from './components/errorBoundry'
 
 render(
   <ErrorBoundary>

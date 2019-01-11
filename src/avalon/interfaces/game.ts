@@ -1,6 +1,7 @@
 import { Player } from '../../interfaces/player'
 import { RoomId } from '../../interfaces/room'
 import { Hash } from '../../interfaces/hash'
+import { PlayerAvalon } from './player'
 
 export type VoteAvalon = 'success' | 'fail'
 export type PartyAvalon = 'good' | 'bad'
@@ -12,12 +13,6 @@ export type RoleAvalon =
   | 'mordrid'
   | 'good'
   | 'bad'
-
-export interface PlayerAvalon extends Player {
-  ready: boolean
-  role: RoleAvalon
-  ladyOfTheLake: boolean
-}
 
 export interface AvalonLobby {
   type: 'avalon-lobby'

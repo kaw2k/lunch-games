@@ -1,4 +1,5 @@
 import * as React from 'react'
+import values from 'ramda/es/values'
 import { shuffle } from '../../helpers/shuffle'
 import { Cards } from '../helpers/cards'
 import { assignRoles } from '../helpers/assignRoles'
@@ -9,7 +10,6 @@ import { Room } from '../../interfaces/room'
 import { addLeaderBoard } from '../../apis/leaderBoard'
 import { GameView } from './game'
 import { RoomContext, SecretHitlerGameContext } from '../../helpers/contexts'
-import values from 'ramda/es/values'
 import { LobbySecretHitler } from './lobby'
 import { Spectate } from './game/spectate'
 
