@@ -10,7 +10,7 @@ export const Spectate: React.SFC<{
   endGame: () => void
 }> = ({ game, endGame }) => {
   return (
-    <Layout>
+    <Layout padded>
       {game.message && <h1>{game.message}</h1>}
       <Board game={game} />
 

@@ -31,7 +31,7 @@ export const SelectLobby: React.SFC<Props> = ({
   }
 
   return (
-    <Layout>
+    <Layout padded>
       <h1>join lobby:</h1>
       <Input
         label="lobby:"

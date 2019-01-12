@@ -48,7 +48,7 @@ export const Board: React.SFC<{ game: SecretHitlerGame }> = ({ game }) => {
   const numLiberals = count(game.players, x => x.role.party === 'liberal')
 
   return (
-    <Layout>
+    <Layout padded>
       <div>
         <h3>Fascists:</h3>
         <ActionRow>
@@ -71,7 +71,7 @@ export const Board: React.SFC<{ game: SecretHitlerGame }> = ({ game }) => {
       </div>
 
       {selectedEffect !== null && (
-        <Layout>
+        <Layout padded>
           {selectedEffect !== 6 &&
             !getBoardEffect(game.players, selectedEffect) && (
               <div>

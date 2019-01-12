@@ -20,7 +20,6 @@ export const SecretHitlerView: React.SFC<{ room: SecretHitler }> = ({
   room,
 }) => {
   const { player, setRoom, updateRoom } = React.useContext(RoomContext)
-
   const { updatePlayer } = React.useContext(RoomContext)
 
   // Game screens
@@ -111,7 +110,7 @@ export const SecretHitlerView: React.SFC<{ room: SecretHitler }> = ({
           if (party) {
             addLeaderBoard({
               date: Date.now(),
-              gameType: 'secret hitler',
+              gameType: 'secret-hitler-game',
               winners: values(room.players)
                 .filter(p => p.role.party === message)
                 .map(p => ({

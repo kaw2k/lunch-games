@@ -11,7 +11,7 @@ export const InspectCards: React.SFC<{}> = () => {
 
   if (!viewCards) {
     return (
-      <Layout>
+      <Layout padded>
         <h1>Ready to view the top three cards of the deck?</h1>
 
         <ActionRow>
@@ -23,7 +23,7 @@ export const InspectCards: React.SFC<{}> = () => {
     )
   } else {
     return (
-      <Layout>
+      <Layout padded>
         <h1>Here are the next three cards from top to bottom:</h1>
 
         {game.remainingCards.slice(0, 3).map((c, i) => (

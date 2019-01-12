@@ -5,7 +5,7 @@ import { Button } from './button'
 import * as local from '../helpers/localstorage'
 
 export const Error = () => (
-  <Layout>
+  <Layout padded>
     <h1>Something went wrong...</h1>
     <ActionRow>
       <Button

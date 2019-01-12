@@ -1,10 +1,11 @@
 import * as React from 'react'
 import { Button } from './button'
-import { Colors, getColor } from '../secret-hitler/helpers/colors'
+import { Colors, getColor } from '../helpers/colors'
 
 interface Props {
   text: string
   subtext?: string
+  profileText?: string | number
   image?: string | null
   className?: string
   selected?: boolean
@@ -19,13 +20,21 @@ export const Profile: React.SFC<Props> = ({
   image,
   className = '',
   color = 'black' as Colors,
+  profileText,
   selected,
   onClick,
   disabled,
 }) => {
   const inner = (
     <div className={`profile ${className}`}>
-      {selected ? (
+      {profileText !== undefined ? (
+        <div className="profile-placeholder">
+          {profileText
+            .toString()
+            .trim()
+            .slice(0, 2)}
+        </div>
+      ) : selected ? (
         <div className="profile-placeholder">&#10003;</div>
       ) : image ? (
         <img className="profile-img" src={image} />
@@ -39,7 +48,7 @@ export const Profile: React.SFC<Props> = ({
             .slice(0, 2)}
         </div>
       )}
-      <div>
+      <div className="body">
         <h3>{text}</h3>
         {subtext && <em>{subtext}</em>}
       </div>
@@ -62,6 +71,7 @@ export const Profile: React.SFC<Props> = ({
           text-align: center;
           color: ${getColor(color)};
           border: 1px solid ${getColor(color)};
+          flex: 0 0 auto;
         }
 
         em {
@@ -71,6 +81,10 @@ export const Profile: React.SFC<Props> = ({
 
         .profile > * + * {
           margin-left: 0.5em;
+        }
+
+        .body {
+          text-align: left;
         }
       `}</style>
     </div>

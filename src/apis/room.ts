@@ -1,6 +1,7 @@
 import { RoomId, Room } from '../interfaces/room'
 import { database, firebaseArrayRemove } from '../helpers/firebase'
 import { Player } from '../interfaces/player'
+import { PartialFirebase } from '../interfaces/partialFirebase'
 
 // ================================================
 // NONE OF THESE APIS SHOULD BE USED DIRECTLY
@@ -25,7 +26,7 @@ export function set(id: RoomId, room: Room) {
   return database.rooms.doc(room.id).set(room)
 }
 
-export function update(id: RoomId, room: Partial<Room>) {
+export function update(id: RoomId, room: PartialFirebase<Room>) {
   return database.rooms.doc(id).update(room)
 }
 
@@ -36,7 +37,7 @@ export function updatePlayer<P extends Player>(id: RoomId, player: P) {
 }
 
 export function kickPlayer(id: RoomId, player: Player) {
-  return database.rooms.doc(id).update({
+  return update(id, {
     lobbyPlayers: firebaseArrayRemove(player),
   })
 }

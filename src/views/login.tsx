@@ -20,7 +20,7 @@ export const Login: React.SFC<Props> = ({ login }) => {
   }
 
   return (
-    <Layout>
+    <Layout padded>
       <h1 className="title">Secret Hitler</h1>
 
       <Input

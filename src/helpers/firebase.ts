@@ -1,6 +1,7 @@
 import * as firebase from 'firebase'
 import 'firebase/firestore'
 import { PlayerId } from '../interfaces/player'
+import { Opaque } from '../interfaces/opaque'
 
 // ==============
 // FIREBASE SETUP
@@ -30,5 +31,10 @@ export const database = {
   profileImg: (pid: PlayerId) => storage.ref(`profile-images/${pid}`),
 }
 
-export const firebaseArrayAdd = firebase.firestore.FieldValue.arrayUnion
-export const firebaseArrayRemove = firebase.firestore.FieldValue.arrayRemove
+export type FieldValue<T> = Opaque<'field value', T>
+
+export const firebaseArrayAdd = <T>(item: T) =>
+  (firebase.firestore.FieldValue.arrayUnion(item) as any) as FieldValue<T>
+
+export const firebaseArrayRemove = <T>(item: T) =>
+  (firebase.firestore.FieldValue.arrayRemove(item) as any) as FieldValue<T>

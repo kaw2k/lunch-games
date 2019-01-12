@@ -13,7 +13,7 @@ export const Overview: React.SFC<Props> = ({ myTurn }) => {
   const { player, game, endGame } = React.useContext(SecretHitlerGameContext)
 
   return (
-    <Layout>
+    <Layout padded>
       {!player.living && <h1 className="red">you are dead</h1>}
       {game.message && <h1>{game.message}</h1>}
       <Board game={game} />

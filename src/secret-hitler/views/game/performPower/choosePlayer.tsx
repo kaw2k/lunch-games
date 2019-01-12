@@ -16,7 +16,7 @@ export const ChoosePlayer: React.SFC<{
   const [target, setTarget] = React.useState<PlayerSecretHitler | null>(null)
 
   return (
-    <Layout>
+    <Layout padded>
       <h1>{title}</h1>
 
       {values(game.players)

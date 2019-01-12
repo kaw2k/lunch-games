@@ -1,12 +1,10 @@
 import { Opaque } from './opaque'
-import {
-  SecretHitlerGame,
-  SecretHitlerLobby,
-} from '../secret-hitler/interfaces/game'
+import { SecretHitler } from '../secret-hitler/interfaces/game'
 import { Player } from './player'
+import { Avalon } from '../avalon/interfaces/game'
 
 export type RoomId = Opaque<'Room ID', string>
-export type Room = Lobby | SecretHitlerGame | SecretHitlerLobby
+export type Room = Lobby | SecretHitler | Avalon
 
 export interface Lobby {
   type: 'lobby'

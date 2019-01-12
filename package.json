@@ -8,7 +8,7 @@
   "scripts": {
     "start": "npm install && run-p dev:*",
     "deploy": "npm run build && firebase deploy",
-    "build": "tsc && parcel build ./src/secret-hitler/index.html --no-cache --no-minify --public-url=./",
+    "build": "tsc && parcel build ./src/index.html --no-cache --no-minify --public-url=./",
     "dev:server": "parcel ./src/index.html --no-autoinstall --port 3333 --log-level 0",
     "dev:lint": "tsc -w",
     "precommit": "precise-commits"

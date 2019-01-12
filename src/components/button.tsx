@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { getColor, Colors } from '../secret-hitler/helpers/colors'
+import { getColor, Colors } from '../helpers/colors'
 
 interface Props extends React.ButtonHTMLAttributes<any> {
   confirm?: boolean | string

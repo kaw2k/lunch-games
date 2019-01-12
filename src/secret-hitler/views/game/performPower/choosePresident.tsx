@@ -8,7 +8,7 @@ export const ChoosePresident: React.SFC<{}> = () => {
   const { updateGame } = React.useContext(SecretHitlerGameContext)
 
   return (
-    <Layout>
+    <Layout padded>
       <h1>Choose who you would like to be president</h1>
       <ActionRow>
         <Button padded onClick={() => updateGame({ performPower: null })}>

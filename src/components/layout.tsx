@@ -1,14 +1,16 @@
 import * as React from 'react'
 
-interface Props {}
+interface Props {
+  padded?: boolean
+}
 
-export const Layout: React.SFC<Props> = ({ children }) => (
+export const Layout: React.SFC<Props> = ({ children, padded }) => (
   <div className="layout">
     {children}
 
     <style jsx>{`
       .layout {
-        padding: 1em;
+        padding: ${padded ? '1em' : '0'};
       }
 
       .layout > :global(*) {

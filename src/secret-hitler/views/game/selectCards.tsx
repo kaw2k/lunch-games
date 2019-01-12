@@ -46,7 +46,7 @@ export const SelectCards: React.SFC<Props> = ({ government, discard }) => {
 
   if (player.id === government.president.id && government.cards.length !== 3) {
     return (
-      <Layout>
+      <Layout padded>
         <h1>Waiting for {government.chancellor.name} to play</h1>
         <p>
           Your done with your part, you are not allowed to speak until the cards
@@ -58,7 +58,7 @@ export const SelectCards: React.SFC<Props> = ({ government, discard }) => {
 
   if (player.id === government.chancellor.id && government.cards.length !== 2) {
     return (
-      <Layout>
+      <Layout padded>
         <h1>Waiting for {government.president.name} to play</h1>
         <p>
           When the president is done selecting which cards they want to play you
@@ -70,7 +70,7 @@ export const SelectCards: React.SFC<Props> = ({ government, discard }) => {
 
   if (player.id === government.chancellor.id && !chancellorViewCards) {
     return (
-      <Layout>
+      <Layout padded>
         <h1>
           {government.president.name} has passed you cards, are you ready?
         </h1>
@@ -84,7 +84,7 @@ export const SelectCards: React.SFC<Props> = ({ government, discard }) => {
   }
 
   return (
-    <Layout>
+    <Layout padded>
       {government.cards.length === 3 && (
         <React.Fragment>
           <h1>Which two cards do you want to pass to the chancellor?</h1>

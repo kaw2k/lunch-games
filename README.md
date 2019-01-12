@@ -8,4 +8,3 @@ npm start
 ```
 
 Add view your role to the game
-Add the game switcher mechanism

@@ -17,7 +17,7 @@ export const LobbySecretHitler: React.SFC<Props> = ({ startGame, lobby }) => {
   const { kickPlayer, leaveRoom } = React.useContext(RoomContext)
 
   return (
-    <Layout>
+    <Layout padded>
       {lobby.victoryMessage && <h1>{lobby.victoryMessage}</h1>}
 
       <div>

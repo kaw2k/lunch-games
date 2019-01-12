@@ -24,7 +24,7 @@ export const ViewRole: React.SFC<Props> = ({
 
   if (player.ready) {
     return (
-      <Layout>
+      <Layout padded>
         <h1>Waiting for game to start...</h1>
         <ActionRow>
           <Button padded confirm onClick={endGame}>
@@ -37,7 +37,7 @@ export const ViewRole: React.SFC<Props> = ({
 
   if (!showRole) {
     return (
-      <Layout>
+      <Layout padded>
         <h1 className="title">Ready to see your role?</h1>
         <ActionRow>
           <Button padded confirm onClick={endGame}>
@@ -56,7 +56,7 @@ export const ViewRole: React.SFC<Props> = ({
   )
 
   return (
-    <Layout>
+    <Layout padded>
       {player.role.party === 'liberal' && <h1>You are a liberal</h1>}
 
       {player.role.party === 'fascist' && (

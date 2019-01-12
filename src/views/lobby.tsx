@@ -15,7 +15,7 @@ export const LobbyGeneral: React.SFC<Props> = ({ lobby }) => {
   const { kickPlayer, leaveRoom } = React.useContext(RoomContext)
 
   return (
-    <Layout>
+    <Layout padded>
       <div>
         <h2>Lobby: {lobby.id}</h2>
         <em>Please select a game type to get started</em>

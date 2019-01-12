@@ -46,7 +46,7 @@ export const Input: React.SFC<Props> = ({
       input,
       label {
         display: block;
-        width: 100%;
+        width: ${type === 'checkbox' ? 'auto' : '100%'};
         font-size: 1em;
       }
 

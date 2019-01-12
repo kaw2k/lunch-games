@@ -4,13 +4,14 @@ export const BLUE = '#69D2E7'
 export const RED = '#ec4d3b'
 export const GREY = '#d4d4d4'
 
-export type Colors = 'black' | 'grey' | 'red' | 'blue'
+export type Colors = 'black' | 'grey' | 'red' | 'blue' | 'white'
 
 export function getColor(color: Colors | null | undefined): string {
   if (color === 'black') return BLACK
   if (color === 'blue') return BLUE
   if (color === 'grey') return GREY
   if (color === 'red') return RED
+  if (color === 'white') return WHITE
 
   return WHITE
 }

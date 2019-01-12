@@ -51,13 +51,3 @@ export interface SecretHitlerLobby extends Omit<Lobby, 'type'> {
 }
 
 export type SecretHitler = SecretHitlerGame | SecretHitlerLobby
-
-export const makeSecretHitlerLobby = (
-  id: RoomId,
-  player?: Player
-): SecretHitlerLobby => ({
-  id,
-  lobbyPlayers: player ? [player] : [],
-  type: 'secret-hitler-lobby',
-  victoryMessage: null,
-})

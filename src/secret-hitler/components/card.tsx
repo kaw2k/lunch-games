@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { BoardEffects } from '../interfaces/game'
-import { getColor, Colors } from '../helpers/colors'
+import { getColor, Colors } from '../../helpers/colors'
 
 export const Card: React.SFC<{
   type?: BoardEffects | null

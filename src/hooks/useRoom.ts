@@ -36,7 +36,7 @@ export function useRoom(
         setRoomId(null)
       }
     },
-    [loading, room && room.lobbyPlayers.length]
+    [loading, room && (room.lobbyPlayers || []).length]
   )
 
   if (loading) return { loading: true }

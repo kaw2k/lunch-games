@@ -11,7 +11,7 @@ export const InspectRole: React.SFC<{}> = () => {
       doneText="inspect"
       done={p => {
         alert(p.role.party)
-        updateGame({})
+        updateGame({ performPower: null })
       }}
     />
   )
