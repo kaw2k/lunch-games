@@ -51,6 +51,8 @@ export const SecretHitlerGameContext = createContext<SecretHitlerGameContext>({
 export interface AvalonGameContext {
   game: AvalonGame
   player: PlayerAvalon
+  playersNeeded: number
+  failsNeeded: number
   updateGamePlayer: (player: PlayerAvalon) => void
   updateGame: (game: PartialFirebase<AvalonGame>) => void
   endGame: (winners?: AvalonParty, message?: string) => void
@@ -62,4 +64,6 @@ export const AvalonGameContext = createContext<AvalonGameContext>({
   updateGamePlayer() {},
   updateGame() {},
   endGame() {},
+  playersNeeded: 0,
+  failsNeeded: 0,
 })

@@ -10,6 +10,7 @@ import { addLeaderBoard } from '../../apis/leaderBoard'
 import { assignRoles } from '../helpers/assignRoles'
 import { GameView } from './game'
 import { shuffle } from '../../helpers/shuffle'
+import { getBoardEffect } from '../helpers/getBoardEffect'
 
 export const isAvalon = (room: Room): room is Avalon =>
   room.type === 'avalon-game' || room.type === 'avalon-lobby'
@@ -82,12 +83,15 @@ export const AvalonView: React.SFC<{ room: Avalon }> = ({ room }) => {
     )
   }
 
+  const { fail, people } = getBoardEffect(room.players, room.missionResults)
   return (
     <AvalonGameContext.Provider
       value={{
         updateGame: updateRoom,
         game: room,
         player: currentPlayer,
+        failsNeeded: fail,
+        playersNeeded: people,
         updateGamePlayer: updatePlayer,
         endGame: (party, message) => {
           setRoom({

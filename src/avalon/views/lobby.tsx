@@ -127,8 +127,8 @@ export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
             You have an imbalanced team, make sure you have:
             <ul>
               <li>5-6 players: 2 bad</li>
-              <li>7-8 players: 3 bad</li>
-              <li>9-10 players: 4 bad</li>
+              <li>7-9 players: 3 bad</li>
+              <li>10 players: 4 bad</li>
             </ul>
           </em>
         </div>

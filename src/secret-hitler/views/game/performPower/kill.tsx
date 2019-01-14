@@ -1,17 +1,24 @@
 import * as React from 'react'
-import { ChoosePlayer } from './choosePlayer'
 import { SecretHitlerGameContext } from '../../../../helpers/contexts'
+import { ChoosePlayers } from '../../../../components/choosePlayers'
 
 export const Kill: React.SFC<{}> = () => {
-  const { endGame, updateGame, updateGamePlayer } = React.useContext(
-    SecretHitlerGameContext
-  )
+  const {
+    endGame,
+    updateGame,
+    updateGamePlayer,
+    game,
+    player,
+  } = React.useContext(SecretHitlerGameContext)
 
   return (
-    <ChoosePlayer
+    <ChoosePlayers
       title="Who do you want to kill?"
-      doneText="kill"
-      done={async p => {
+      doneButton="kill"
+      players={game.players}
+      removePlayer={player}
+      done={async ([pid]) => {
+        const p = game.players[pid]
         if (p.role.isHitler) {
           endGame(
             'liberal',

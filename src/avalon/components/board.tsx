@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { AvalonGame } from '../interfaces/game'
 import { Card } from './card'
-import { getBoardEffect } from '../helpers/getBoardEffect'
 import { ActionRow } from '../../components/actionRow'
 import { Layout } from '../../components/layout'
 import { count } from '../../helpers/count'
+import { getBoardEffect } from '../helpers/getBoardEffect'
 
 const Row: React.SFC<{}> = ({ children }) => (
   <div className="root">

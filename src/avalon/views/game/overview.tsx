@@ -5,6 +5,7 @@ import { ActionRow } from '../../../components/actionRow'
 import { Button } from '../../../components/button'
 import { AvalonGameContext } from '../../../helpers/contexts'
 import values from 'ramda/es/values'
+import { isGameOver } from '../../helpers/isGameOver'
 
 interface Props {
   myTurn: () => void
@@ -16,6 +17,7 @@ export const Overview: React.SFC<Props> = ({ myTurn }) => {
   )
   const isLadyOfLaking = !!values(game.players).find(p => p.ladyOfTheLake)
   const hasActiveMission = !!game.currentMission
+  const gameOver = isGameOver(game)
 
   return (
     <Layout padded>
@@ -44,7 +46,7 @@ export const Overview: React.SFC<Props> = ({ myTurn }) => {
 
         <Button
           padded
-          disabled={isLadyOfLaking || hasActiveMission}
+          disabled={isLadyOfLaking || hasActiveMission || !!gameOver}
           onClick={myTurn}>
           my turn
         </Button>
