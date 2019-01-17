@@ -17,7 +17,7 @@ interface Props {
   endGame: () => void
 }
 
-export const ViewRole: React.SFC<Props> = ({
+export const GameSetup: React.SFC<Props> = ({
   player,
   game,
   ready,
@@ -93,7 +93,7 @@ export const ViewRole: React.SFC<Props> = ({
         {otherBaddies
           .filter(p => p.role !== 'mordred')
           .map(p => (
-            <Profile text={p.name} key={p.id} image={p.profileImg} />
+            <Profile text={p.name || p.id} key={p.id} image={p.profileImg} />
           ))}
         {actions}
       </Layout>
@@ -113,7 +113,7 @@ export const ViewRole: React.SFC<Props> = ({
           Merlin
         </h1>
         {people.map(p => (
-          <Profile text={p.name} key={p.id} image={p.profileImg} />
+          <Profile text={p.name || p.id} key={p.id} image={p.profileImg} />
         ))}
         {actions}
       </Layout>
@@ -126,7 +126,7 @@ export const ViewRole: React.SFC<Props> = ({
       {otherBaddies.map(p => (
         <Profile
           key={p.id}
-          text={p.name}
+          text={p.name || p.id}
           subtext={p.role}
           image={p.profileImg}
         />

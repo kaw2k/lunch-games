@@ -8,6 +8,7 @@ import { Profile } from '../../../components/profile'
 import { AvalonGameContext } from '../../../helpers/contexts'
 import { count } from '../../../helpers/count'
 import { isGameOver } from '../../helpers/isGameOver'
+import { RED } from '../../../helpers/colors'
 
 export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
   // ======================
@@ -76,7 +77,7 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
           !gameOver &&
           game.ladyOfTheLake &&
           game.nextLadyOfTheLake === p.id &&
-          game.missionResults.length >= 2,
+          game.missionResults.length >= 1,
       })
     })
   }
@@ -115,11 +116,10 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
 
   return (
     <Layout padded>
-      {player.party === 'good' ? (
-        <h1>Good players may only pass missions</h1>
-      ) : (
-        <h1>Bad players may choose to fail or pass a mission</h1>
-      )}
+      <h1>
+        Good players may only pass missions. Bad players may choose to fail or
+        pass a mission
+      </h1>
       <h1>
         This mission has {playersNeeded} people on it and requires {failsNeeded}{' '}
         to fail the mission. Select the card you wish to play.
@@ -138,7 +138,7 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
         selected={card === 'good'}
       />
 
-      {error && <em>{error}</em>}
+      {error && <em className="error">{error}</em>}
 
       <ActionRow>
         <Button
@@ -156,6 +156,12 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
           play card
         </Button>
       </ActionRow>
+
+      <style jsx>{`
+        .error {
+          color: ${RED};
+        }
+      `}</style>
     </Layout>
   )
 }

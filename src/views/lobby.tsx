@@ -26,7 +26,7 @@ export const LobbyGeneral: React.SFC<Props> = ({ lobby }) => {
       {lobby.lobbyPlayers.map(p => (
         <Profile
           key={p.id}
-          text={p.name}
+          text={p.name || p.id}
           image={p.profileImg}
           onClick={() => kickPlayer(p)}
         />

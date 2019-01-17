@@ -66,7 +66,7 @@ export const ViewRole: React.SFC<Props> = ({
             otherFascists.map(p => (
               <Profile
                 key={p.id}
-                text={p.name}
+                text={p.name || p.id}
                 subtext={p.role.isHitler ? 'hitler' : 'fascist'}
                 image={p.profileImg}
               />

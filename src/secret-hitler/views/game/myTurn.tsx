@@ -32,7 +32,7 @@ export const MyTurn: React.SFC<Props> = ({ cancel, proceed }) => {
         .map(p => (
           <Profile
             key={p.id}
-            text={p.name}
+            text={p.name || p.id}
             image={p.profileImg}
             onClick={() => setChancellor(p)}
             selected={!!(chancellor && p.id === chancellor.id)}

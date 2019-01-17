@@ -81,7 +81,7 @@ export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
           {lobby.lobbyPlayers.map(p => (
             <Profile
               key={p.id}
-              text={p.name}
+              text={p.name || p.id}
               image={p.profileImg}
               onClick={() => kickPlayer(p)}
             />

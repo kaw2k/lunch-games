@@ -50,7 +50,7 @@ export const SelectLobby: React.SFC<Props> = ({
       <h1>profile setup:</h1>
       <Profile
         className="player"
-        text={player.name}
+        text={player.name || player.id}
         image={player.profileImg}
       />
 

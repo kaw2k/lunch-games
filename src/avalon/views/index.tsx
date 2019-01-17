@@ -4,7 +4,7 @@ import { Room } from '../../interfaces/room'
 import { Avalon } from '../interfaces/game'
 import { LobbyAvalon } from './lobby'
 import { RoomContext, AvalonGameContext } from '../../helpers/contexts'
-import { ViewRole } from '../views/viewRole'
+import { GameSetup } from './gameSetup'
 import { PlayerAvalon } from '../interfaces/player'
 import { addLeaderBoard } from '../../apis/leaderBoard'
 import { assignRoles } from '../helpers/assignRoles'
@@ -62,7 +62,7 @@ export const AvalonView: React.SFC<{ room: Avalon }> = ({ room }) => {
 
   if (!allReady) {
     return (
-      <ViewRole
+      <GameSetup
         player={currentPlayer}
         game={room}
         endGame={() => {

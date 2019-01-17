@@ -6,14 +6,26 @@ import { LadyOfTheLake } from './ladyOfTheLake'
 import { ChooseMission } from './chooseMission'
 import { isGameOver } from '../../helpers/isGameOver'
 import { KillMerlin } from './killMerlin'
+import { ViewRole } from './viewRole'
+import { EndGame } from './endGame'
 
 export const GameView: React.SFC<{}> = () => {
   const { game, player } = React.useContext(AvalonGameContext)
+  const [viewRole, setViewRole] = React.useState(false)
   const [isMyTurn, setIsMyTurn] = React.useState(false)
+  const [viewEndGame, setViewEndGame] = React.useState(false)
   const gameOver = isGameOver(game)
 
-  if (gameOver && player.role === 'assassin') {
+  if (gameOver && player.party === 'bad') {
     return <KillMerlin />
+  }
+
+  if (viewEndGame) {
+    return <EndGame cancel={() => setViewEndGame(false)} />
+  }
+
+  if (viewRole) {
+    return <ViewRole cancel={() => setViewRole(false)} />
   }
 
   // Check if lady of the lake needs to happen TODO
@@ -36,5 +48,11 @@ export const GameView: React.SFC<{}> = () => {
   }
 
   // Nothing special, show the overview screen
-  return <Overview myTurn={() => setIsMyTurn(true)} />
+  return (
+    <Overview
+      myTurn={() => setIsMyTurn(true)}
+      viewRole={() => setViewRole(true)}
+      viewEndGame={() => setViewEndGame(true)}
+    />
+  )
 }

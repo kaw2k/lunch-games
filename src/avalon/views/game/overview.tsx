@@ -9,12 +9,16 @@ import { isGameOver } from '../../helpers/isGameOver'
 
 interface Props {
   myTurn: () => void
+  viewRole: () => void
+  viewEndGame: () => void
 }
 
-export const Overview: React.SFC<Props> = ({ myTurn }) => {
-  const { player, game, endGame, updateGame } = React.useContext(
-    AvalonGameContext
-  )
+export const Overview: React.SFC<Props> = ({
+  myTurn,
+  viewRole,
+  viewEndGame,
+}) => {
+  const { player, game, updateGame } = React.useContext(AvalonGameContext)
   const isLadyOfLaking = !!values(game.players).find(p => p.ladyOfTheLake)
   const hasActiveMission = !!game.currentMission
   const gameOver = isGameOver(game)
@@ -40,8 +44,12 @@ export const Overview: React.SFC<Props> = ({ myTurn }) => {
       )}
 
       <ActionRow>
-        <Button padded confirm onClick={() => endGame()}>
+        <Button padded onClick={viewEndGame}>
           end game
+        </Button>
+
+        <Button padded onClick={() => viewRole()}>
+          role
         </Button>
 
         <Button

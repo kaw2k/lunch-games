@@ -48,7 +48,7 @@ export const ChoosePlayers: React.SFC<{
         .map(p => (
           <Profile
             key={p.id}
-            text={p.name}
+            text={p.name || p.id}
             image={p.profileImg}
             selected={!!selected.find(id => id === p.id)}
             onClick={() => updateSelected(p.id)}
