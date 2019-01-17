@@ -14,7 +14,7 @@ interface Props {
   endGame: () => void
 }
 
-export const ViewRole: React.SFC<Props> = ({
+export const GameSetup: React.SFC<Props> = ({
   player,
   game,
   ready,

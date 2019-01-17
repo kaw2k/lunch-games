@@ -4,7 +4,7 @@ import { shuffle } from '../../helpers/shuffle'
 import { Cards } from '../helpers/cards'
 import { assignRoles } from '../helpers/assignRoles'
 import { PlayerSecretHitler } from '../interfaces/player'
-import { ViewRole } from './viewRole'
+import { GameSetup } from './gameSetup'
 import { SecretHitler } from '../interfaces/game'
 import { Room } from '../../interfaces/room'
 import { addLeaderBoard } from '../../apis/leaderBoard'
@@ -28,6 +28,8 @@ export const SecretHitlerView: React.SFC<{ room: SecretHitler }> = ({
       <LobbySecretHitler
         lobby={room}
         startGame={players => {
+          const first = shuffle(players)[0]
+          const firstPlayer = first.name || first.id
           setRoom({
             type: 'secret-hitler-game',
             id: room.id,
@@ -40,7 +42,7 @@ export const SecretHitlerView: React.SFC<{ room: SecretHitler }> = ({
             previousGovernment: null,
             government: null,
             performPower: null,
-            message: `${shuffle(players)[0].name} goes first`,
+            message: `${firstPlayer} goes first`,
           })
         }}
       />
@@ -71,7 +73,7 @@ export const SecretHitlerView: React.SFC<{ room: SecretHitler }> = ({
 
   if (!allReady) {
     return (
-      <ViewRole
+      <GameSetup
         player={currentPlayer}
         game={room}
         endGame={() => {

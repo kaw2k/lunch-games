@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { SecretHitlerGameContext } from '../../../../helpers/contexts'
 import { ChoosePlayers } from '../../../../components/choosePlayers'
+import { values } from 'ramda'
 
 export const Kill: React.SFC<{}> = () => {
   const {
@@ -15,14 +16,14 @@ export const Kill: React.SFC<{}> = () => {
     <ChoosePlayers
       title="Who do you want to kill?"
       doneButton="kill"
-      players={game.players}
+      players={values(game.players).filter(p => p.living)}
       removePlayer={player}
       done={async ([pid]) => {
         const p = game.players[pid]
         if (p.role.isHitler) {
           endGame(
             'liberal',
-            `${p.name} was killed and is hitler, liberals win!`
+            `${p.name || p.name} was killed and is hitler, liberals win!`
           )
         } else {
           updateGamePlayer({ ...p, living: false })

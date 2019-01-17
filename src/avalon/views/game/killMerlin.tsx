@@ -21,7 +21,7 @@ export const KillMerlin: React.SFC<{}> = ({}) => {
           endGame(
             'good',
             `The good team won and Merlin ${
-              merlin ? `(${merlin.name})` : ''
+              merlin ? `(${merlin.name || merlin.id})` : ''
             } lived!`
           )
         }

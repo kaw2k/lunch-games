@@ -19,7 +19,11 @@ export const LadyOfTheLake: React.SFC<Props> = ({}) => {
         const selectedPlayer = game.players[selectedPlayerId]
         updateGamePlayer({ ...player, ladyOfTheLake: false })
         updateGame({ nextLadyOfTheLake: selectedPlayer.id })
-        alert(`${selectedPlayer.name} is ${selectedPlayer.party}`)
+        alert(
+          `${selectedPlayer.name || selectedPlayer.id} is ${
+            selectedPlayer.party
+          }`
+        )
       }}
     />
   )

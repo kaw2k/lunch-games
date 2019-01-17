@@ -48,7 +48,7 @@ export const Overview: React.SFC<Props> = ({
           end game
         </Button>
 
-        <Button padded onClick={() => viewRole()}>
+        <Button padded confirm onClick={() => viewRole()}>
           role
         </Button>
 

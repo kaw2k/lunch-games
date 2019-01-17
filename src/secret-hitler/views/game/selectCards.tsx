@@ -9,14 +9,18 @@ import indexOf from 'ramda/es/indexOf'
 import contains from 'ramda/es/contains'
 import { Profile } from '../../../components/profile'
 import { SecretHitlerGameContext } from '../../../helpers/contexts'
+import { isGameOver } from '../../helpers/isGameOver'
+import { sanitizeCards } from '../../helpers/sanitizeCards'
+import { getBoardEffect } from '../../helpers/getBoardEffect'
 
 interface Props {
-  discard: (cards: Party[], discard: Party[], veto?: boolean | null) => void
   government: Government
 }
 
-export const SelectCards: React.SFC<Props> = ({ government, discard }) => {
-  const { player, game } = React.useContext(SecretHitlerGameContext)
+export const SelectCards: React.SFC<Props> = ({ government }) => {
+  const { player, game, updateGame, endGame } = React.useContext(
+    SecretHitlerGameContext
+  )
   const [cardIndices, setCardIndices] = React.useState<number[]>([])
   const [chancellorViewCards, setViewCards] = React.useState<boolean>(false)
   const fascists = game.playedCards.filter(c => c === 'fascist').length
@@ -31,6 +35,65 @@ export const SelectCards: React.SFC<Props> = ({ government, discard }) => {
     },
     [[], []]
   )
+
+  function discard(
+    cards: Party[],
+    discard: Party[],
+    veto: boolean | null = null
+  ) {
+    if (!game.government) return
+    if (cards.length === 2) {
+      updateGame({
+        discardedCards: game.discardedCards.concat(discarded),
+        government: {
+          ...game.government,
+          cards,
+          veto,
+        },
+      })
+    } else if (cards.length === 1) {
+      const discardedCards = game.discardedCards.concat(discarded)
+      const playedCards = game.playedCards.concat(cards[0])
+      const hasEffect = !!getBoardEffect(game.players, playedCards)
+
+      if (game.government.veto && veto) {
+        updateGame(
+          sanitizeCards({
+            ...game,
+            previousGovernment: null,
+            government: null,
+            performPower: null,
+            message: 'both players decided to veto',
+            discardedCards: game.discardedCards.concat(discarded).concat(cards),
+          })
+        )
+      } else {
+        const updatedGame = sanitizeCards({
+          ...game,
+          discardedCards: discardedCards,
+          playedCards: playedCards,
+          performPower:
+            hasEffect && cards[0] === 'fascist'
+              ? game.government.president
+              : null,
+          government: null,
+          message: `${game.government.chancellor.name ||
+            game.government.chancellor.id} played a ${cards[0]}`,
+          previousGovernment: {
+            president: game.government.president,
+            chancellor: game.government.chancellor,
+          },
+        })
+
+        const gameOver = isGameOver(updatedGame)
+        if (gameOver) {
+          endGame(gameOver, `A ${cards[0]} was played, ${gameOver}s win!`)
+        } else {
+          updateGame(updatedGame)
+        }
+      }
+    }
+  }
 
   function updateCards(i: number) {
     if (includes(i, cardIndices)) {
@@ -47,7 +110,10 @@ export const SelectCards: React.SFC<Props> = ({ government, discard }) => {
   if (player.id === government.president.id && government.cards.length !== 3) {
     return (
       <Layout padded>
-        <h1>Waiting for {government.chancellor.name} to play</h1>
+        <h1>
+          Waiting for {government.chancellor.name || government.chancellor.id}{' '}
+          to play
+        </h1>
         <p>
           Your done with your part, you are not allowed to speak until the cards
           are fully played
@@ -59,7 +125,10 @@ export const SelectCards: React.SFC<Props> = ({ government, discard }) => {
   if (player.id === government.chancellor.id && government.cards.length !== 2) {
     return (
       <Layout padded>
-        <h1>Waiting for {government.president.name} to play</h1>
+        <h1>
+          Waiting for {government.president.name || government.president.id} to
+          play
+        </h1>
         <p>
           When the president is done selecting which cards they want to play you
           will get a button to view them, and then play one.
@@ -72,7 +141,8 @@ export const SelectCards: React.SFC<Props> = ({ government, discard }) => {
     return (
       <Layout padded>
         <h1>
-          {government.president.name} has passed you cards, are you ready?
+          {government.president.name || government.president.id} has passed you
+          cards, are you ready?
         </h1>
         <ActionRow>
           <Button padded onClick={() => setViewCards(true)}>

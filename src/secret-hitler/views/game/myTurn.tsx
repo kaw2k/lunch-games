@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { PreviousGovernment } from '../../interfaces/game'
+import { PreviousGovernment, SecretHitlerGame } from '../../interfaces/game'
 import { PlayerSecretHitler } from '../../interfaces/player'
 import { Layout } from '../../../components/layout'
 import { Button } from '../../../components/button'
@@ -7,17 +7,67 @@ import { ActionRow } from '../../../components/actionRow'
 import { Profile } from '../../../components/profile'
 import values from 'ramda/es/values'
 import { SecretHitlerGameContext } from '../../../helpers/contexts'
+import { isGameOver } from '../../helpers/isGameOver'
 
 interface Props {
   cancel: () => void
-  proceed: (government: PreviousGovernment | null) => void
 }
 
-export const MyTurn: React.SFC<Props> = ({ cancel, proceed }) => {
-  const { player, game } = React.useContext(SecretHitlerGameContext)
+export const MyTurn: React.SFC<Props> = ({ cancel }) => {
+  const { player, game, endGame, updateGame } = React.useContext(
+    SecretHitlerGameContext
+  )
   const [chancellor, setChancellor] = React.useState<PlayerSecretHitler | null>(
     null
   )
+
+  function proceed(government: PreviousGovernment | null) {
+    const fascists = game.playedCards.filter(c => c === 'fascist')
+
+    if (!government) {
+      cancel()
+
+      if (game.chaos + 1 === 3) {
+        const nextGame: SecretHitlerGame = {
+          ...game,
+          playedCards: game.playedCards.concat(game.remainingCards[0]),
+          remainingCards: game.remainingCards.slice(1),
+          chaos: 0,
+        }
+        const gameOver = isGameOver(nextGame)
+
+        if (gameOver) {
+          endGame(gameOver, `The random card ended the game, ${gameOver}s win!`)
+        } else {
+          updateGame(nextGame)
+        }
+      } else {
+        updateGame({
+          ...game,
+          chaos: game.chaos + 1,
+        })
+      }
+    } else if (government.chancellor.role.isHitler && fascists.length >= 3) {
+      endGame(
+        'fascist',
+        `${government.chancellor.name ||
+          government.chancellor
+            .id} is hitler and was elected chancellor, fascists win!`
+      )
+    } else {
+      updateGame({
+        ...game,
+        government: {
+          ...government,
+          cards: game.remainingCards.slice(0, 3),
+          veto: null,
+        },
+        remainingCards: game.remainingCards.slice(3),
+        chaos: 0,
+      })
+      cancel()
+    }
+  }
 
   return (
     <Layout padded>
@@ -48,7 +98,7 @@ export const MyTurn: React.SFC<Props> = ({ cancel, proceed }) => {
         <Button padded onClick={cancel}>
           cancel
         </Button>
-        <Button padded disabled={!chancellor} onClick={() => proceed(null)}>
+        <Button padded onClick={() => proceed(null)}>
           rejected
         </Button>
         <Button

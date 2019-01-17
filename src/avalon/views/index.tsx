@@ -26,7 +26,8 @@ export const AvalonView: React.SFC<{ room: Avalon }> = ({ room }) => {
       <LobbyAvalon
         lobby={room}
         startGame={players => {
-          const firstPlayer = shuffle(players)[0].name
+          const first = shuffle(players)[0]
+          const firstPlayer = first.name || first.id
           let message = `${firstPlayer} goes first.`
           if (room.ladyOfTheLake) {
             message += ` The person to ${firstPlayer}'s gets to claim lady of the lake.`

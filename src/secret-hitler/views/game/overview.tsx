@@ -7,10 +7,16 @@ import { SecretHitlerGameContext } from '../../../helpers/contexts'
 
 interface Props {
   myTurn: () => void
+  viewRole: () => void
+  viewEndGame: () => void
 }
 
-export const Overview: React.SFC<Props> = ({ myTurn }) => {
-  const { player, game, endGame } = React.useContext(SecretHitlerGameContext)
+export const Overview: React.SFC<Props> = ({
+  myTurn,
+  viewRole,
+  viewEndGame,
+}) => {
+  const { player, game } = React.useContext(SecretHitlerGameContext)
 
   return (
     <Layout padded>
@@ -19,8 +25,12 @@ export const Overview: React.SFC<Props> = ({ myTurn }) => {
       <Board game={game} />
 
       <ActionRow>
-        <Button padded confirm onClick={() => endGame()}>
+        <Button padded onClick={viewEndGame}>
           end game
+        </Button>
+
+        <Button padded confirm onClick={viewRole}>
+          role
         </Button>
 
         {player.living && (
