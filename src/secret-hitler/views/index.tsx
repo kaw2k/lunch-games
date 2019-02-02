@@ -12,6 +12,7 @@ import { GameView } from './game'
 import { RoomContext, SecretHitlerGameContext } from '../../helpers/contexts'
 import { LobbySecretHitler } from './lobby'
 import { Spectate } from './game/spectate'
+import { GameContainer } from '../components/gameContainer'
 
 export const isSecretHitler = (room: Room): room is SecretHitler =>
   room.type === 'secret-hitler-game' || room.type === 'secret-hitler-lobby'
@@ -71,29 +72,6 @@ export const SecretHitlerView: React.SFC<{ room: SecretHitler }> = ({
     )
   }
 
-  if (!allReady) {
-    return (
-      <GameSetup
-        player={currentPlayer}
-        game={room}
-        endGame={() => {
-          setRoom({
-            id: room.id,
-            type: 'secret-hitler-lobby',
-            lobbyPlayers: room.lobbyPlayers,
-            victoryMessage: null,
-          })
-        }}
-        ready={() =>
-          updatePlayer({
-            ...currentPlayer,
-            ready: true,
-          } as PlayerSecretHitler)
-        }
-      />
-    )
-  }
-
   return (
     <SecretHitlerGameContext.Provider
       value={{
@@ -109,7 +87,7 @@ export const SecretHitlerView: React.SFC<{ room: SecretHitler }> = ({
             victoryMessage: message || null,
           })
 
-          if (party) {
+          if (party && room.type === 'secret-hitler-game') {
             addLeaderBoard({
               date: Date.now(),
               gameType: 'secret-hitler-game',
@@ -129,7 +107,19 @@ export const SecretHitlerView: React.SFC<{ room: SecretHitler }> = ({
           }
         },
       }}>
-      <GameView />
+      <GameContainer>
+        {allReady && <GameView />}
+        {!allReady && (
+          <GameSetup
+            ready={() =>
+              updatePlayer({
+                ...currentPlayer,
+                ready: true,
+              } as PlayerSecretHitler)
+            }
+          />
+        )}
+      </GameContainer>
     </SecretHitlerGameContext.Provider>
   )
 }

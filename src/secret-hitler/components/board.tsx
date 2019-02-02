@@ -6,6 +6,7 @@ import { Button } from '../../components/button'
 import { ActionRow } from '../../components/actionRow'
 import { Layout } from '../../components/layout'
 import { count } from '../../helpers/count'
+import { Icon } from './icon'
 
 const Row: React.SFC<{}> = ({ children }) => (
   <div className="root">
@@ -27,7 +28,7 @@ const Row: React.SFC<{}> = ({ children }) => (
 
 const Info: React.SFC<{ title: string }> = ({ title, children }) => (
   <div className="root">
-    <h3>{title}</h3>
+    <h4>{title}</h4>
     {children}
 
     <style jsx>{`
@@ -50,24 +51,28 @@ export const Board: React.SFC<{ game: SecretHitlerGame }> = ({ game }) => {
   return (
     <Layout padded>
       <div>
-        <h3>Fascists:</h3>
-        <ActionRow>
+        <h4 className="row-title">
+          <Icon icon="fascist" />
+          Fascists:
+        </h4>
+        <div className="row">
           {[1, 2, 3, 4, 5, 6].map(i => (
-            <Button
+            <button
               style={{ flex: '1 1' }}
               key={`fascist-${
                 i <= numFascistCards ? 'card' : 'placeholder'
               }-${i}`}
               onClick={() => showEffect(i)}>
               <Card
-                background={i <= numFascistCards ? 'red' : null}
+                played={i <= numFascistCards}
+                party="fascist"
                 type={
                   i > numFascistCards ? getBoardEffect(game.players, i) : null
                 }
               />
-            </Button>
+            </button>
           ))}
-        </ActionRow>
+        </div>
       </div>
 
       {selectedEffect !== null && (
@@ -129,17 +134,21 @@ export const Board: React.SFC<{ game: SecretHitlerGame }> = ({ game }) => {
       )}
 
       <div>
-        <h3>Liberals:</h3>
-        <ActionRow>
+        <h4 className="row-title">
+          <Icon icon="liberal" />
+          Liberals:
+        </h4>
+        <div className="row">
           {[1, 2, 3, 4, 5].map(i => (
             <Card
               key={`liberal-${
                 i <= numLiberalCards ? 'card' : 'placeholder'
               }-${i}`}
-              background={i <= numLiberalCards ? 'blue' : null}
+              played={i <= numLiberalCards}
+              party="liberal"
             />
           ))}
-        </ActionRow>
+        </div>
       </div>
 
       <Row>
@@ -152,6 +161,26 @@ export const Board: React.SFC<{ game: SecretHitlerGame }> = ({ game }) => {
         <Info title="Chaos">{game.chaos} of 3</Info>
         <Info title="Cards">{game.remainingCards.length}</Info>
       </Row>
+
+      <style jsx>{`
+        .row {
+          display: flex;
+          border-radius: 3px;
+          padding: 0.5em;
+          background: rgba(0, 0, 0, 0.025);
+          border: 1px solid #ccc;
+          margin-top: 1em;
+        }
+
+        .row > :global(*) + :global(*) {
+          margin-left: 0.5em;
+        }
+
+        button {
+          border: 0;
+          background: transparent;
+        }
+      `}</style>
     </Layout>
   )
 }

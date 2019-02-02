@@ -4,9 +4,12 @@ import { ActionRow } from '../../../components/actionRow'
 import { Button } from '../../../components/button'
 import { AvalonGameContext } from '../../../helpers/contexts'
 
-export const EndGame: React.SFC<{ cancel: () => void }> = ({ cancel }) => {
-  const { endGame } = React.useContext(AvalonGameContext)
+interface Props {
+  cancel: () => void
+  endGame: AvalonGameContext['endGame']
+}
 
+export const EndGame: React.SFC<Props> = ({ cancel, endGame }) => {
   return (
     <Layout padded>
       <h1>Are you sure you want to end the game? Who won?</h1>

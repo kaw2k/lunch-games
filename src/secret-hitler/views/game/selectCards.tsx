@@ -1,4 +1,5 @@
 import * as React from 'react'
+import cx from 'classnames'
 import { Party, Government } from '../../interfaces/game'
 import { Layout } from '../../../components/layout'
 import { Button } from '../../../components/button'
@@ -7,11 +8,13 @@ import { remove } from 'ramda'
 import includes from 'ramda/es/includes'
 import indexOf from 'ramda/es/indexOf'
 import contains from 'ramda/es/contains'
-import { Profile } from '../../../components/profile'
 import { SecretHitlerGameContext } from '../../../helpers/contexts'
 import { isGameOver } from '../../helpers/isGameOver'
 import { sanitizeCards } from '../../helpers/sanitizeCards'
 import { getBoardEffect } from '../../helpers/getBoardEffect'
+
+import { RED, TEAL } from '../../../helpers/colors'
+import { Asset } from '../../components/asset'
 
 interface Props {
   government: Government
@@ -180,17 +183,24 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
         </React.Fragment>
       )}
 
-      {government.cards.map((card, i) => (
-        <Profile
-          key={i}
-          text={card}
-          color={card === 'fascist' ? 'red' : 'blue'}
-          onClick={() => updateCards(i)}
-          selected={contains(i, cardIndices)}
-        />
-      ))}
+      <div className="row">
+        {government.cards.map((card, i) => (
+          <button
+            className={cx('card', {
+              blue: card === 'liberal',
+              red: card === 'fascist',
+            })}
+            key={i}
+            onClick={() => updateCards(i)}>
+            <Asset asset={card === 'fascist' ? 'cardFail' : 'cardSuccess'} />
+            {contains(i, cardIndices) && (
+              <div className="checked">&#10003;</div>
+            )}
+          </button>
+        ))}
+      </div>
 
-      <ActionRow>
+      <ActionRow fixed>
         {fascists === 5 && (
           <Button
             padded
@@ -205,6 +215,7 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
         <Button
           disabled={disabled}
           padded
+          color="green"
           onClick={() => {
             if (disabled) return
             discard(selected, discarded)
@@ -212,6 +223,39 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
           {government.cards.length === 3 ? 'pass' : 'play'}
         </Button>
       </ActionRow>
+
+      <style jsx>{`
+        .card {
+          flex: 0 1 20%;
+          border: none;
+          background: transparent;
+          cursor: pointer;
+          text-align: center;
+        }
+
+        .red {
+          color: ${RED};
+        }
+
+        .blue {
+          color: ${TEAL};
+        }
+
+        .row {
+          display: flex;
+          justify-content: space-around;
+          align-items: flex-start;
+        }
+
+        .card img {
+          width: 100%;
+        }
+
+        .checked {
+          font-size: 2em;
+          font-weight: 400;
+        }
+      `}</style>
     </Layout>
   )
 }

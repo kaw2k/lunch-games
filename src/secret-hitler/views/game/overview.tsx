@@ -7,35 +7,22 @@ import { SecretHitlerGameContext } from '../../../helpers/contexts'
 
 interface Props {
   myTurn: () => void
-  viewRole: () => void
-  viewEndGame: () => void
 }
 
-export const Overview: React.SFC<Props> = ({
-  myTurn,
-  viewRole,
-  viewEndGame,
-}) => {
+export const Overview: React.SFC<Props> = ({ myTurn }) => {
   const { player, game } = React.useContext(SecretHitlerGameContext)
 
   return (
     <Layout padded>
-      {!player.living && <h1 className="red">you are dead</h1>}
+      {!player.living && <h2 className="red">you are dead</h2>}
       {game.message && <h1>{game.message}</h1>}
       <Board game={game} />
 
       <ActionRow>
-        <Button padded onClick={viewEndGame}>
-          end game
-        </Button>
-
-        <Button padded confirm onClick={viewRole}>
-          role
-        </Button>
-
         {player.living && (
           <Button
             padded
+            color="green"
             disabled={
               !player.living || !!game.government || !!game.performPower
             }

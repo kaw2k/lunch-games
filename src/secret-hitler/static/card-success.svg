@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="360" fill="none" viewBox="0 0 300 360">
+    <g clip-path="url(#a)">
+        <path fill="#fff" d="M0 0h300v360H0z"/>
+        <rect width="300" height="360" fill="#44939D" stroke="#EFE3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="10" rx="10"/>
+        <rect width="8.2" height="83.039" x="145.9" y="184.067" fill="#EFE3B8" rx="4.1"/>
+        <rect width="8.304" height="57.4" x="121.3" y="282.053" fill="#EFE3B8" rx="4.152" transform="rotate(-90 121.3 282.053)"/>
+        <rect width="8.304" height="32.8" x="133.6" y="297" fill="#EFE3B8" rx="4.152" transform="rotate(-90 133.6 297)"/>
+        <rect width="8.304" height="57.4" x="121.3" y="177.424" fill="#EFE3B8" rx="4.152" transform="rotate(-90 121.3 177.424)"/>
+        <rect width="8.304" height="82" x="109" y="162.477" fill="#EFE3B8" rx="4.152" transform="rotate(-90 109 162.477)"/>
+        <rect width="8.304" height="82" x="109" y="147.53" fill="#EFE3B8" rx="4.152" transform="rotate(-90 109 147.53)"/>
+        <rect width="8.2" height="83.039" x="129.5" y="184.067" fill="#EFE3B8" rx="4.1"/>
+        <rect width="8.2" height="83.039" x="162.3" y="184.067" fill="#EFE3B8" rx="4.1"/>
+        <path stroke="#EFE3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="8" d="M136.235 128.431c-5.082-4.449-12.198-16.623 0-29.727C148.432 85.6 151.663 68.774 151.754 62c10.981 15.774 28.696 51.143 11.707 66.431"/>
+    </g>
+    <defs>
+        <clipPath id="a">
+            <path fill="#fff" d="M0 0h300v360H0z"/>
+        </clipPath>
+    </defs>
+</svg>

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import values from 'ramda/es/values'
 import { Room } from '../../interfaces/room'
-import { Avalon } from '../interfaces/game'
+import { Avalon, Party as AvalonParty } from '../interfaces/game'
 import { LobbyAvalon } from './lobby'
 import { RoomContext, AvalonGameContext } from '../../helpers/contexts'
 import { GameSetup } from './gameSetup'
@@ -11,6 +11,7 @@ import { assignRoles } from '../helpers/assignRoles'
 import { GameView } from './game'
 import { shuffle } from '../../helpers/shuffle'
 import { getBoardEffect } from '../helpers/getBoardEffect'
+import { Spectate } from './game/spectate'
 
 export const isAvalon = (room: Room): room is Avalon =>
   room.type === 'avalon-game' || room.type === 'avalon-lobby'
@@ -30,7 +31,7 @@ export const AvalonView: React.SFC<{ room: Avalon }> = ({ room }) => {
           const firstPlayer = first.name || first.id
           let message = `${firstPlayer} goes first.`
           if (room.ladyOfTheLake) {
-            message += ` The person to ${firstPlayer}'s gets to claim lady of the lake.`
+            message += ` The person to ${firstPlayer}'s right gets to claim lady of the lake.`
           }
 
           setRoom({
@@ -57,8 +58,32 @@ export const AvalonView: React.SFC<{ room: Avalon }> = ({ room }) => {
     true
   )
 
+  function endGame(party?: AvalonParty, message?: string) {
+    setRoom({
+      id: room.id,
+      type: 'avalon-lobby',
+      lobbyPlayers: room.lobbyPlayers || [],
+      victoryMessage: message || null,
+      ladyOfTheLake: room.ladyOfTheLake,
+      roles: room.roles,
+    })
+
+    if (party && room.type === 'avalon-game') {
+      addLeaderBoard({
+        date: Date.now(),
+        gameType: 'avalon-game',
+        winners: values(room.players)
+          .filter(p => p.party === party)
+          .map(p => ({ id: p.id, role: p.role })),
+        losers: values(room.players)
+          .filter(p => p.party !== party)
+          .map(p => ({ id: p.id, role: p.role })),
+      })
+    }
+  }
+
   if (!currentPlayer) {
-    return <div>spectating</div>
+    return <Spectate game={room} endGame={endGame} />
   }
 
   if (!allReady) {
@@ -94,29 +119,7 @@ export const AvalonView: React.SFC<{ room: Avalon }> = ({ room }) => {
         failsNeeded: fail,
         playersNeeded: people,
         updateGamePlayer: updatePlayer,
-        endGame: (party, message) => {
-          setRoom({
-            id: room.id,
-            type: 'avalon-lobby',
-            lobbyPlayers: room.lobbyPlayers || [],
-            victoryMessage: message || null,
-            ladyOfTheLake: room.ladyOfTheLake,
-            roles: room.roles,
-          })
-
-          if (party) {
-            addLeaderBoard({
-              date: Date.now(),
-              gameType: 'avalon-game',
-              winners: values(room.players)
-                .filter(p => p.party === party)
-                .map(p => ({ id: p.id, role: p.role })),
-              losers: values(room.players)
-                .filter(p => p.party !== party)
-                .map(p => ({ id: p.id, role: p.role })),
-            })
-          }
-        },
+        endGame,
       }}>
       <GameView />
     </AvalonGameContext.Provider>

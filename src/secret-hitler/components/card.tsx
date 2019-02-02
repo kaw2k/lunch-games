@@ -1,25 +1,40 @@
 import * as React from 'react'
-import { BoardEffects } from '../interfaces/game'
-import { getColor, Colors } from '../../helpers/colors'
+import { BoardEffects, Party } from '../interfaces/game'
+import { Icon } from './icon'
+import { Asset } from './asset'
 
 export const Card: React.SFC<{
   type?: BoardEffects | null
-  background?: Colors | null
-}> = ({ type, background }) => {
+  party: Party
+  played?: boolean
+}> = ({ type, party, played }) => {
   return (
     <div className="placeholder">
-      {type === 'kill' && '🔪'}
-      {type === 'inspect role' && '👤'}
-      {type === 'inspect cards' && '🃏'}
-      {type === 'choose president' && '👑'}
+      {type === 'choose president' && <Icon icon="check" />}
+      {type === 'kill' && <Icon icon="kill" />}
+      {type === 'inspect role' && <Icon icon="inspect" />}
+      {type === 'inspect cards' && <Icon icon="inspect" />}
+
+      <Asset
+        className="card"
+        asset={party === 'fascist' ? 'cardFail' : 'cardSuccess'}
+      />
 
       <style jsx>{`
         .placeholder {
-          height: 3em;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background: ${getColor(background)};
+          position: relative;
+        }
+        .card {
+          width: 100%;
+          opacity: ${played ? '1' : '.1'};
+        }
+        .icon {
+          width: 50%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translateX(-50%) translateY(-50%);
+          z-index: 1;
         }
       `}</style>
     </div>

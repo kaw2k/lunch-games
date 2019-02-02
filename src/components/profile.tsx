@@ -50,7 +50,7 @@ export const Profile: React.SFC<Props> = ({
       )}
       <div className="body">
         <h3>{text}</h3>
-        {subtext && <em>{subtext}</em>}
+        {subtext && <span>{subtext}</span>}
       </div>
 
       <style jsx>{`
@@ -68,19 +68,32 @@ export const Profile: React.SFC<Props> = ({
           object-fit: cover;
           line-height: 3rem;
           font-size: 1.25em;
+          font-weight: 300;
           text-align: center;
           color: ${getColor(color)};
           border: 1px solid ${getColor(color)};
           flex: 0 0 auto;
         }
 
-        em {
+        span {
+          display: block;
           opacity: 0.5;
           font-size: 0.75em;
+          text-transform: initial;
         }
 
         .profile > * + * {
           margin-left: 0.5em;
+        }
+
+        h3,
+        span {
+          text-transform: lowercase;
+        }
+
+        h3::first-letter,
+        span::first-letter {
+          text-transform: uppercase;
         }
 
         .body {
@@ -91,7 +104,10 @@ export const Profile: React.SFC<Props> = ({
   )
 
   return onClick ? (
-    <Button style={{ display: 'block' }} disabled={disabled} onClick={onClick}>
+    <Button
+      style={{ display: 'block', border: 'none' }}
+      disabled={disabled}
+      onClick={onClick}>
       {inner}
     </Button>
   ) : (

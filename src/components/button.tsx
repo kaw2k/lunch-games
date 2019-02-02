@@ -54,12 +54,15 @@ export class Button extends React.Component<Props, State> {
         <style jsx>{`
           button {
             font-size: 1em;
-            background: transparent;
             flex: 0 0;
             cursor: pointer;
-            border: 0;
             padding: ${padded ? '1em' : '0'};
-            color: ${getColor(color)};
+            text-transform: uppercase;
+            font-weight: 500;
+
+            color: ${color === 'black' ? 'black' : 'white'};
+            border: 1px solid ${getColor(color)};
+            background-color: ${color === 'black' ? 'white' : getColor(color)};
           }
 
           button:disabled {

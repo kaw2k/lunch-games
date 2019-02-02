@@ -8,16 +8,12 @@ import { Kill } from './performPower/kill'
 import { ChoosePresident } from './performPower/choosePresident'
 import { InspectCards } from './performPower/inspectCards'
 import { InspectRole } from './performPower/inspectRole'
-import { ViewRole } from './viewRole'
-import { EndGame } from './endGame'
 
 interface Props {}
 
 export const GameView: React.SFC<Props> = () => {
   const { game, player } = React.useContext(SecretHitlerGameContext)
   const [isMyTurn, setIsMyTurn] = React.useState(false)
-  const [viewRole, setViewRole] = React.useState(false)
-  const [viewEndGame, setViewEndGame] = React.useState(false)
 
   const fascists = game.playedCards.filter(c => c === 'fascist')
   const power = getBoardEffect(game.players, fascists.length)
@@ -35,14 +31,6 @@ export const GameView: React.SFC<Props> = () => {
     }
   }
 
-  if (viewEndGame) {
-    return <EndGame cancel={() => setViewEndGame(false)} />
-  }
-
-  if (viewRole) {
-    return <ViewRole cancel={() => setViewRole(false)} />
-  }
-
   // If we are in the current government, show the card screen
   if (
     game.government &&
@@ -56,11 +44,5 @@ export const GameView: React.SFC<Props> = () => {
     return <MyTurn cancel={() => setIsMyTurn(false)} />
   }
 
-  return (
-    <Overview
-      myTurn={() => setIsMyTurn(true)}
-      viewEndGame={() => setViewEndGame(true)}
-      viewRole={() => setViewRole(true)}
-    />
-  )
+  return <Overview myTurn={() => setIsMyTurn(true)} />
 }

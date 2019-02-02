@@ -2,10 +2,7 @@ import { createContext } from 'react'
 import { Room, RoomId } from '../interfaces/room'
 import { Player } from '../interfaces/player'
 import { PlayerSecretHitler } from '../secret-hitler/interfaces/player'
-import {
-  SecretHitlerGame,
-  Party as SecretHitlerParty,
-} from '../secret-hitler/interfaces/game'
+import * as SH from '../secret-hitler/interfaces/game'
 import { PartialFirebase } from '../interfaces/partialFirebase'
 import { AvalonGame, Party as AvalonParty } from '../avalon/interfaces/game'
 import { PlayerAvalon } from '../avalon/interfaces/player'
@@ -33,15 +30,15 @@ export const RoomContext = createContext<RoomContext>({
 })
 
 export interface SecretHitlerGameContext {
-  game: SecretHitlerGame
+  game: SH.SecretHitlerGame
   player: PlayerSecretHitler
   updateGamePlayer: (player: PlayerSecretHitler) => void
-  updateGame: (game: PartialFirebase<SecretHitlerGame>) => void
-  endGame: (winners?: SecretHitlerParty, message?: string) => void
+  updateGame: (game: PartialFirebase<SH.SecretHitlerGame>) => void
+  endGame: (winners?: SH.Party, message?: string) => void
 }
 
 export const SecretHitlerGameContext = createContext<SecretHitlerGameContext>({
-  game: {} as SecretHitlerGame,
+  game: {} as SH.SecretHitlerGame,
   player: {} as PlayerSecretHitler,
   updateGamePlayer() {},
   updateGame() {},

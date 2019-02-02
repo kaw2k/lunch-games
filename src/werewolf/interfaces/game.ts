@@ -1,38 +1,28 @@
-// import { Player } from '../../interfaces/player'
-// import { Opaque } from '../../interfaces/opaque'
+import { Player } from '../../interfaces/player'
+import { Hash } from '../../interfaces/hash'
+import { RoomId } from '../../interfaces/room'
+import { Roles } from './role'
+import { PlayerWerewolf } from './player'
 
-// type Image = Opaque<'image', string>
-// type Emoji = Opaque<'emoji', string>
+// ==========================
+// Game
+// ==========================
+export interface WerewolfGame {
+  type: 'werewolf-game'
+  id: RoomId
 
-// type Teams =
-//   | 'wolf'
-//   | 'minion'
-//   | 'villager'
-//   | 'tanner'
-//   | 'vampire'
-//   | 'cult leader'
-//   | 'mason'
-//   | 'chewks'
-//   | 'boogyman'
+  initialRoles: Roles[]
 
-// export interface Card<Role extends string = string> {
-//   role: Role
+  lobbyPlayers: Player[]
+  players: Hash<PlayerWerewolf>
 
-//   team: Teams
+  message?: string
 
-//   weight: number
-//   cardCount: number
-//   description: string
-//   hints: string[]
-
-//   emoji: Emoji
-//   image: Image
-//   profile: Image
-
-//   preDeathAction?: (player: Player) => Prompt
-//   nightMessage?: string
-//   deathMessage?: string
-
-//   // Custom actions the role will always have available
-//   actions?: Actions[]
-// }
+  options: {
+    timeLimit: number
+    boogymanOP: boolean
+    noFlip: boolean
+    ghost: boolean
+    killCult: boolean
+  }
+}

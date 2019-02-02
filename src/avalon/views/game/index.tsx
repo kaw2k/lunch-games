@@ -10,18 +10,18 @@ import { ViewRole } from './viewRole'
 import { EndGame } from './endGame'
 
 export const GameView: React.SFC<{}> = () => {
-  const { game, player } = React.useContext(AvalonGameContext)
+  const { game, player, endGame } = React.useContext(AvalonGameContext)
   const [viewRole, setViewRole] = React.useState(false)
   const [isMyTurn, setIsMyTurn] = React.useState(false)
   const [viewEndGame, setViewEndGame] = React.useState(false)
   const gameOver = isGameOver(game)
 
-  if (gameOver && player.party === 'bad') {
+  if (gameOver && player.role === 'assassin') {
     return <KillMerlin />
   }
 
   if (viewEndGame) {
-    return <EndGame cancel={() => setViewEndGame(false)} />
+    return <EndGame cancel={() => setViewEndGame(false)} endGame={endGame} />
   }
 
   if (viewRole) {
