@@ -9,7 +9,7 @@
     "start": "npm install && run-p dev:*",
     "deploy": "npm run build && firebase deploy",
     "build": "tsc && parcel build ./src/index.html --no-cache --no-minify --public-url=./",
-    "dev:server": "parcel ./src/index.html --no-autoinstall --port 3333 --log-level 0",
+    "dev:server": "parcel ./src/index.html --no-autoinstall --port 3333 --log-level 0 --no-cache",
     "dev:lint": "tsc -w",
     "precommit": "precise-commits"
   },
@@ -25,12 +25,19 @@
     "parcel-bundler": "^1.11.0",
     "precise-commits": "^1.0.2",
     "prettier": "^1.15.3",
+    "sass": "^1.16.1",
     "typescript": "^3.2.2"
   },
   "dependencies": {
+    "@material-ui/core": "^3.9.1",
+    "@material-ui/styles": "^3.0.0-alpha.9",
+    "@types/classnames": "^2.2.7",
     "@types/ramda": "^0.25.45",
+    "autoprefixer": "^9.4.7",
     "babel-polyfill": "^6.26.0",
+    "classnames": "^2.2.6",
     "firebase": "^5.7.0",
+    "postcss-modules": "^1.4.1",
     "ramda": "^0.26.1",
     "react": "^16.7.0-alpha.2",
     "react-dom": "^16.7.0-alpha.2",

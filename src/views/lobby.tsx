@@ -6,6 +6,7 @@ import { ActionRow } from '../components/actionRow'
 import { Button } from '../components/button'
 import { RoomContext } from '../helpers/contexts'
 import { ChooseGame } from '../components/chooseGame'
+import { Typography } from '@material-ui/core'
 
 interface Props {
   lobby: Lobby
@@ -17,8 +18,10 @@ export const LobbyGeneral: React.SFC<Props> = ({ lobby }) => {
   return (
     <Layout padded>
       <div>
-        <h2>Lobby: {lobby.id}</h2>
-        <em>Please select a game type to get started</em>
+        <Typography variant="h2">Lobby: {lobby.id}</Typography>
+        <Typography component="em">
+          Please select a game type to get started
+        </Typography>
       </div>
 
       <ChooseGame />
@@ -32,10 +35,8 @@ export const LobbyGeneral: React.SFC<Props> = ({ lobby }) => {
         />
       ))}
 
-      <ActionRow>
-        <Button padded onClick={leaveRoom}>
-          leave
-        </Button>
+      <ActionRow fixed>
+        <Button onClick={leaveRoom}>leave</Button>
       </ActionRow>
     </Layout>
   )

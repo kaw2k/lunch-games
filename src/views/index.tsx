@@ -5,10 +5,10 @@ import { Loading } from '../components/loading'
 import { Error } from '../components/error'
 import { useAuthState } from '../hooks/useAuthState'
 import { useRoom } from '../hooks/useRoom'
-import { isSecretHitler, SecretHitlerView } from '../secret-hitler/views'
+import { isSecretHitler, SecretHitlerView } from '../games/secret-hitler/views'
 import { RoomContext } from '../helpers/contexts'
 import { LobbyGeneral } from './lobby'
-import { isAvalon, AvalonView } from '../avalon/views'
+import { isAvalon, AvalonView } from '../games/avalon/views'
 
 export const App: React.SFC<{}> = () => {
   const playerResult = useAuthState()

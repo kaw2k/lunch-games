@@ -1,3 +1,6 @@
+import { PlayerWerewolf } from './player'
+import { WerewolfGame } from './game'
+
 // ===========================
 // TYPE
 // ===========================
@@ -7,6 +10,7 @@ export interface Artifact<Type extends string = string> {
   description: string
   infinite: boolean
   activated: boolean
+  action: (player: PlayerWerewolf, game: WerewolfGame) => void
 }
 
 const Artifact = <Type extends string>(
@@ -24,6 +28,7 @@ export const AllArtifacts = [
     description:
       'Choose a player to become infected with disease. If the werewolves eliminate that player, they do not get to choose a target the following night.',
     infinite: true,
+    action: (player, game) => {},
   }),
 ]
 

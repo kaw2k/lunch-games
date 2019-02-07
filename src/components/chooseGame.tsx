@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { SecretHitlerLobby } from '../secret-hitler/interfaces/game'
-import { AvalonLobby } from '../avalon/interfaces/game'
+import { SecretHitlerLobby } from '../games/secret-hitler/interfaces/game'
+import { AvalonLobby } from '../games/avalon/interfaces/game'
 import { RoomContext } from '../helpers/contexts'
 import { Lobby, Room } from '../interfaces/room'
 
@@ -48,15 +48,6 @@ export const ChooseGame: React.SFC<{}> = () => {
         <option value={secretHitler}>Secret Hitler</option>
         <option value={avalon}>Avalon</option>
       </select>
-
-      <style jsx>{`
-        select {
-          display: block;
-          width: 100%;
-          padding: 1em;
-          font-size: inherit;
-        }
-      `}</style>
     </div>
   )
 }

@@ -1,9 +1,9 @@
 import * as React from 'react'
-import { Button } from '../components/button'
 import { Layout } from '../components/layout'
-import { ActionRow } from '../components/actionRow'
-import { PlayerId } from '../interfaces/player'
 import { Input } from '../components/input'
+import { Button, Typography } from '@material-ui/core'
+import { PlayerId } from '../interfaces/player'
+import { ActionRow } from '../components/actionRow'
 
 interface Props {
   login: (name: PlayerId) => void
@@ -21,19 +21,24 @@ export const Login: React.SFC<Props> = ({ login }) => {
 
   return (
     <Layout padded>
-      <h1 className="title">Secret Hitler</h1>
+      <Typography variant="h4">Login</Typography>
 
       <Input
         id="player-input-id"
         label="Player Name"
         value={name}
-        onChange={e => setName(e.target.value)}
+        onChange={e => setName(e.target.value as PlayerId)}
         autoFocus
         onSubmit={preLogin}
       />
 
       <ActionRow>
-        <Button padded onClick={preLogin}>
+        <Button
+          size="large"
+          color="primary"
+          variant="contained"
+          fullWidth
+          onClick={preLogin}>
           login
         </Button>
       </ActionRow>

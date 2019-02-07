@@ -1,25 +1,35 @@
 import * as React from 'react'
+import cx from 'classnames'
+import { makeStyles } from '@material-ui/styles'
 
 interface Props {
   padded?: boolean
 }
 
-export const Layout: React.SFC<Props> = ({ children, padded }) => (
-  <div className="layout">
-    {children}
+const useStyles = makeStyles({
+  padded: {
+    padding: '1em',
+  },
 
-    <style jsx>{`
-      .layout {
-        padding: ${padded ? '1em' : '0'};
-      }
+  root: {
+    minHeight: '100vh',
+    display: 'flex',
+    flexFlow: 'column',
 
-      .layout > :global(*) {
-        margin-bottom: 1em;
-      }
+    '& > * ': {
+      marginBottom: '1em',
+    },
+    '& > :last-child': {
+      marginBottom: 0,
+    },
+  },
+})
 
-      .layout > :global(*:last-child) {
-        margin-bottom: 0;
-      }
-    `}</style>
-  </div>
-)
+export const Layout: React.SFC<Props> = ({ children, padded }) => {
+  const classes = useStyles()
+  return (
+    <div className={cx(classes.root, { [classes.padded]: padded })}>
+      {children}
+    </div>
+  )
+}

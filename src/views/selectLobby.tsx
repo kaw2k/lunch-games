@@ -3,9 +3,11 @@ import { Player } from '../interfaces/player'
 import { Input } from '../components/input'
 import { RoomId } from '../interfaces/room'
 import { Button } from '../components/button'
-import { ActionRow } from '../components/actionRow'
 import { Layout } from '../components/layout'
 import { Profile } from '../components/profile'
+import { makeStyles } from '@material-ui/styles'
+import { Tabs, Tab } from '@material-ui/core'
+import { ActionRow } from '../components/actionRow'
 
 interface Props {
   player: Player
@@ -15,6 +17,17 @@ interface Props {
   setPlayer: (player: Player) => void
 }
 
+const useStyles = makeStyles({
+  input: {
+    display: 'none',
+  },
+})
+
+enum View {
+  lobby,
+  player,
+}
+
 export const SelectLobby: React.SFC<Props> = ({
   player,
   joinLobby,
@@ -22,7 +35,9 @@ export const SelectLobby: React.SFC<Props> = ({
   setProfileImg,
   setPlayer,
 }) => {
+  const classes = useStyles()
   const [rid, setRid] = React.useState<RoomId>('' as RoomId)
+  const [view, setView] = React.useState<View>(View.lobby)
 
   function join() {
     if (rid.trim() && rid.trim() !== 'null') {
@@ -32,59 +47,77 @@ export const SelectLobby: React.SFC<Props> = ({
 
   return (
     <Layout padded>
-      <h1>join lobby:</h1>
-      <Input
-        label="lobby:"
-        id="lobby-id"
-        onChange={e => setRid(e.target.value)}
-        onSubmit={join}
-        autoFocus
-      />
+      <Tabs
+        value={view}
+        indicatorColor="primary"
+        textColor="primary"
+        fullWidth
+        onChange={(e, val) => setView(val)}>
+        <Tab label="Join Lobby" value={View.lobby} />
+        <Tab label="Profile Setup" value={View.player} />
+      </Tabs>
 
-      <ActionRow>
-        <Button padded onClick={join}>
-          join lobby
-        </Button>
-      </ActionRow>
+      {view === View.lobby && (
+        <>
+          <Input
+            label="lobby"
+            onChange={e => setRid(e.target.value as RoomId)}
+            onSubmit={join}
+          />
+          <ActionRow fixed>
+            <Button color="green" onClick={join}>
+              join lobby
+            </Button>
+          </ActionRow>
+        </>
+      )}
 
-      <h1>profile setup:</h1>
-      <Profile
-        className="player"
-        text={player.name || player.id}
-        image={player.profileImg}
-      />
+      {view === View.player && (
+        <>
+          <Profile
+            className="player"
+            text={player.name || player.id}
+            image={player.profileImg}
+          />
 
-      <Input
-        id="nickname"
-        label="player name:"
-        type="text"
-        value={player.name}
-        onChange={e => {
-          setPlayer({
-            ...player,
-            name: e.target.value,
-          })
-        }}
-      />
+          <Input
+            label="player name"
+            type="text"
+            value={player.name || ''}
+            onChange={e => {
+              setPlayer({
+                ...player,
+                name: e.target.value,
+              })
+            }}
+          />
 
-      <Input
-        id="profile-img"
-        label="profile image:"
-        type="file"
-        onChange={e => setProfileImg(e.target.files[0])}
-      />
+          {/* Upload a profile picture */}
+          <input
+            accept="image/*"
+            className={classes.input}
+            id="upload"
+            type="file"
+            onChange={e => {
+              if (e && e.target && e.target.files && e.target.files.length) {
+                setProfileImg(e.target.files[0])
+              }
+            }}
+          />
 
-      <ActionRow>
-        <Button padded onClick={logOut}>
-          log out
-        </Button>
-      </ActionRow>
+          <ActionRow fixed>
+            <Button color="red" onClick={logOut}>
+              log out
+            </Button>
 
-      <style jsx>{`
-        .player {
-          margin-bottom: 1em;
-        }
-      `}</style>
+            <label htmlFor="upload" style={{ width: '100%' }}>
+              <Button color="green" component="span">
+                picture
+              </Button>
+            </label>
+          </ActionRow>
+        </>
+      )}
     </Layout>
   )
 }

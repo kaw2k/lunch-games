@@ -13,6 +13,12 @@ npm start
 
 # Werewolf
 
+I want to remake werewolf with a few things in mind
+
+- Certain actions should be doable by the players (inspecting, artifacts happen)
+- Better game experience for players (joining, roles are more stable, spectate modes)
+- I want deaths to happen automatically (as much as possible)
+
 ## Things to note
 
 Make sure artifact doppleganger makes you call out the player by name

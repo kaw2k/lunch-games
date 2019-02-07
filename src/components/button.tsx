@@ -1,75 +1,92 @@
 import * as React from 'react'
-import { getColor, Colors } from '../helpers/colors'
+import cx from 'classnames'
+import MButton, { ButtonProps } from '@material-ui/core/Button'
+import { colors, Color, Omit } from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles'
 
-interface Props extends React.ButtonHTMLAttributes<any> {
-  confirm?: boolean | string
-  padded?: boolean
-  color?: Colors
+interface Props extends Omit<ButtonProps, 'color' | 'variant'> {
+  confirm?: string | boolean
+  color?: 'blue' | 'green' | 'red' | 'teal' | 'black' | null | false
 }
-interface State {
-  confirmTimer?: any
+
+function makeColor(color: Color) {
+  return {
+    color: 'white',
+    background: color[400],
+    border: `1px solid ${color[400]}`,
+    transition: 'all 0.3s linear',
+    '&:hover': {
+      backgroundColor: color[300],
+      border: `1px solid ${color[300]}`,
+    },
+    '&:active': {
+      backgroundColor: color[500],
+      border: `1px solid ${color[500]}`,
+    },
+    '&:disabled': {
+      color: 'white',
+      opacity: 0.25,
+    },
+  }
 }
 
-export class Button extends React.Component<Props, State> {
-  state: State = {
-    confirmTimer: null,
-  }
+const useStyles = makeStyles(theme => ({
+  blue: { ...makeColor(colors.blue) },
+  green: { ...makeColor(colors.green) },
+  red: { ...makeColor(colors.red) },
+  teal: { ...makeColor(colors.teal) },
+  black: {
+    color: 'black',
+    border: '1px solid black',
+  },
+}))
 
-  onClick = (e: any) => {
-    const propsOnClick = this.props.onClick
+export const Button: React.SFC<Props> = ({
+  onClick,
+  confirm,
+  children,
+  className,
+  color,
+  size = 'large' as ButtonProps['size'],
+  fullWidth = true,
+  ...props
+}) => {
+  const [timer, setTimer] = React.useState<any>(null)
+  const classes = useStyles()
 
-    if (propsOnClick && this.props.confirm && !this.state.confirmTimer) {
-      this.setState({
-        confirmTimer: setTimeout(() => {
-          this.setState({ confirmTimer: clearTimeout(this.state.confirmTimer) })
-        }, 3000),
-      })
-    } else if (propsOnClick && this.props.confirm && this.state.confirmTimer) {
-      this.setState({ confirmTimer: clearTimeout(this.state.confirmTimer) })
-      propsOnClick(e)
-    } else if (propsOnClick) {
-      propsOnClick(e)
-    }
-  }
-
-  render() {
-    const {
-      confirm,
-      children,
-      padded = false,
-      className = '',
-      color = 'black',
-      ...props
-    } = this.props
-    return (
-      <button {...props} className={className} onClick={this.onClick}>
-        {this.state.confirmTimer ? (
-          <React.Fragment>
-            {typeof confirm === 'string' ? confirm : `confirm: ${children}`}
-          </React.Fragment>
-        ) : (
-          children
-        )}
-
-        <style jsx>{`
-          button {
-            font-size: 1em;
-            flex: 0 0;
-            cursor: pointer;
-            padding: ${padded ? '1em' : '0'};
-            text-transform: uppercase;
-            font-weight: 500;
-
-            color: ${color === 'black' ? 'black' : 'white'};
-            border: 1px solid ${getColor(color)};
-            background-color: ${color === 'black' ? 'white' : getColor(color)};
-          }
-
-          button:disabled {
-            opacity: 0.25;
-          }
-        `}</style>
-      </button>
-    )
-  }
+  return (
+    <MButton
+      {...props}
+      fullWidth={fullWidth}
+      size={size}
+      className={cx(className, {
+        [classes.blue]: color === 'blue',
+        [classes.red]: color === 'red',
+        [classes.green]: color === 'green',
+        [classes.teal]: color === 'teal',
+        [classes.black]: color === 'black',
+      })}
+      onClick={e => {
+        if (onClick && confirm && !timer) {
+          setTimer(
+            setTimeout(() => {
+              setTimer(clearTimeout(timer))
+            }, 3000)
+          )
+        } else if (onClick && confirm && timer) {
+          setTimer(clearTimeout(timer))
+          onClick(e)
+        } else if (onClick) {
+          onClick(e)
+        }
+      }}>
+      {timer ? (
+        <React.Fragment>
+          {typeof confirm === 'string' ? confirm : `confirm: ${children}`}
+        </React.Fragment>
+      ) : (
+        children
+      )}
+    </MButton>
+  )
 }

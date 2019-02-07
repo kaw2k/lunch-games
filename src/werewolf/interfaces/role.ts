@@ -2,6 +2,7 @@ import { Opaque } from '../../interfaces/opaque'
 import always from 'ramda/es/always'
 import { WerewolfGame } from './game'
 import { PlayerWerewolf } from './player'
+import { PromptModerator } from './prompt'
 
 // ==========================
 // Uniques
@@ -33,7 +34,7 @@ export interface Card<Role extends string = string> {
   // Which faction the player belongs to
   team: Teams
   // If the role appears like a werewolf
-  appearsLikeAWerewolf: (game: WerewolfGame, player: PlayerWerewolf) => boolean
+  appearsBad: (game: WerewolfGame, player: PlayerWerewolf) => boolean
 
   // Prompts the moderator that the role has a night action
   nightMessage: string | null
@@ -49,7 +50,10 @@ export interface Card<Role extends string = string> {
   image: Image
   profile: Image
 
-  //   preDeathAction?: (player: Player) => Prompt
+  // Some roles have actions that need to happen when they die,
+  // let the moderator know and give them some options
+  preDeathAction: (player: PlayerWerewolf) => PromptModerator | null
+
   // Custom actions the role will always have available
   //   actions?: Actions[]
 }
@@ -62,12 +66,13 @@ export const AllCards = [
     hints: [],
     weight: 1,
     cardCount: 10,
-    appearsLikeAWerewolf: always(false),
+    appearsBad: always(false),
     emoji: Emoji('👩‍🌾'),
     image: require('../assets/villager.png'),
     profile: require('../assets/villager-profile.png'),
     deathMessage: null,
     nightMessage: null,
+    preDeathAction: always(null),
   }),
 
   Card({
@@ -81,12 +86,13 @@ export const AllCards = [
     ],
     weight: -6,
     cardCount: 3,
-    appearsLikeAWerewolf: always(true),
+    appearsBad: always(true),
     emoji: Emoji('🐺'),
     image: require('../assets/werewolf.png'),
     profile: require('../assets/werewolf-profile.png'),
     deathMessage: null,
     nightMessage: null,
+    preDeathAction: always(null),
   }),
 ]
 

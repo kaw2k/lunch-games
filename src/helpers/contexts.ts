@@ -1,11 +1,14 @@
 import { createContext } from 'react'
 import { Room, RoomId } from '../interfaces/room'
 import { Player } from '../interfaces/player'
-import { PlayerSecretHitler } from '../secret-hitler/interfaces/player'
-import * as SH from '../secret-hitler/interfaces/game'
+import { PlayerSecretHitler } from '../games/secret-hitler/interfaces/player'
+import * as SH from '../games/secret-hitler/interfaces/game'
 import { PartialFirebase } from '../interfaces/partialFirebase'
-import { AvalonGame, Party as AvalonParty } from '../avalon/interfaces/game'
-import { PlayerAvalon } from '../avalon/interfaces/player'
+import {
+  AvalonGame,
+  Party as AvalonParty,
+} from '../games/avalon/interfaces/game'
+import { PlayerAvalon } from '../games/avalon/interfaces/player'
 
 export interface RoomContext {
   room: Room

@@ -34,7 +34,17 @@
       #root {
         max-width: 600px;
         margin: 0 auto;
-        position: relative;
+      }
+
+      *:not(input) {
+        user-select: none;
+      }
+
+      select {
+        display: block;
+        width: 100%;
+        padding: 1em;
+        font-size: inherit;
       }
     </style>
   </body>

@@ -1,15 +1,22 @@
 import * as React from 'react'
+import { makeStyles } from '@material-ui/styles'
+import { CircularProgress } from '@material-ui/core'
 
-export const Loading = () => (
-  <div className="root">
-    <h1>loading...</h1>
+const useStyles = makeStyles({
+  root: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100vh',
+  },
+})
 
-    <style jsx>{`
-      .root {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-    `}</style>
-  </div>
-)
+export const Loading = () => {
+  const classes = useStyles()
+
+  return (
+    <div className={classes.root}>
+      <CircularProgress />
+    </div>
+  )
+}

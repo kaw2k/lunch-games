@@ -1,57 +1,35 @@
 import * as React from 'react'
+import cx from 'classnames'
+import { makeStyles } from '@material-ui/styles'
 
 interface Props {
   fixed?: boolean
+  className?: string
 }
 
-export const ActionRow: React.SFC<Props> = ({ children, fixed }) => (
-  <div className="action-row">
-    {children}
+const useStyles = makeStyles({
+  root: {
+    display: 'flex',
 
-    <style jsx>{`
-      .action-row {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        border-radius: 3px;
+    '& > *': {
+      flex: '1 1 auto',
+    },
 
-        max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
+    '& > * + * ': {
+      marginLeft: '1em',
+    },
+  },
 
-        position: ${fixed ? 'fixed' : 'static'};
-        bottom: ${fixed && '1em'};
-        left: ${fixed && '1em'};
-        right: ${fixed && '1em'};
-      }
+  fixed: {
+    marginTop: 'auto',
+  },
+})
 
-      .action-row > :global(*) {
-        flex: 1 1 auto;
-        border-left-width: 0;
-        border-right-width: 0;
-      }
-
-      .action-row > :global(*) + :global(*) {
-        border-left: none;
-      }
-
-      .action-row > :global(:first-child) {
-        border-top-left-radius: 3px;
-        border-bottom-left-radius: 3px;
-        border-left-width: 1px;
-      }
-
-      .action-row > :global(:last-child) {
-        border-top-right-radius: 3px;
-        border-bottom-right-radius: 3px;
-        border-right-width: 1px;
-      }
-    `}</style>
-
-    <style jsx global>{`
-      #root {
-        padding-bottom: ${fixed && '4em'};
-      }
-    `}</style>
-  </div>
-)
+export const ActionRow: React.SFC<Props> = ({ children, className, fixed }) => {
+  const classes = useStyles()
+  return (
+    <div className={cx(classes.root, className, { [classes.fixed]: fixed })}>
+      {children}
+    </div>
+  )
+}

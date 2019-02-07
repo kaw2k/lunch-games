@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { PlayerId, Player } from '../interfaces/player'
-import { Layout } from './layout'
 import { Profile } from './profile'
 import { ActionRow } from './actionRow'
 import { Button } from './button'
@@ -8,6 +7,7 @@ import { Hash } from '../interfaces/hash'
 import { isArray } from 'util'
 import values from 'ramda/es/values'
 import { useSelectState } from '../hooks/useSelectState'
+import { Typography } from '@material-ui/core'
 
 export const ChoosePlayers: React.SFC<{
   title: string
@@ -40,8 +40,10 @@ export const ChoosePlayers: React.SFC<{
   const [selected, updateSelected] = useSelectState<PlayerId>([], numToSelect)
 
   return (
-    <Layout padded>
-      <h1>{title}</h1>
+    <>
+      <Typography gutterBottom variant="h2">
+        {title}
+      </Typography>
 
       {(isArray(players) ? players : values(players))
         .filter(p => (removePlayer ? p.id !== removePlayer.id : true))
@@ -55,20 +57,17 @@ export const ChoosePlayers: React.SFC<{
           />
         ))}
 
-      <ActionRow>
-        {cancel && (
-          <Button padded onClick={cancel}>
-            cancel
-          </Button>
-        )}
-
+      <ActionRow fixed>
         {alt && altButton && (
-          <Button padded onClick={alt}>
+          <Button color="red" onClick={alt}>
             {altButton}
           </Button>
         )}
+
+        {cancel && <Button onClick={cancel}>cancel</Button>}
+
         <Button
-          padded
+          color="green"
           disabled={selected.length !== numToSelect}
           onClick={() => {
             if (selected.length === numToSelect) {
@@ -78,6 +77,6 @@ export const ChoosePlayers: React.SFC<{
           {doneButton}
         </Button>
       </ActionRow>
-    </Layout>
+    </>
   )
 }

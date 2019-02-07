@@ -1,64 +1,99 @@
 import { install } from '@material-ui/styles'
 install()
 
+import CssBaseline from '@material-ui/core/CssBaseline'
+
 import * as React from 'react'
 import { render } from 'react-dom'
 import { App } from './views'
 import 'babel-polyfill'
 import { ErrorBoundary } from './components/errorBoundry'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core'
+import { blue, red } from '@material-ui/core/colors'
 
 render(
   <ErrorBoundary>
-    <App />
+    <MuiThemeProvider
+      theme={createMuiTheme({
+        // Colors!
+        palette: {
+          primary: blue,
+          secondary: red,
+        },
 
-    <style jsx global>{`
-      body {
-        font-family: 'Roboto', sans-serif;
-      }
+        // Remove all shadows in the app
+        shadows: [
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+        ],
 
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-      }
+        // Reset our font sizes to be smaller
+        typography: {
+          fontSize: 14,
+          useNextVariants: true,
 
-      *:not(input) {
-        user-select: none;
-      }
+          h1: {
+            fontSize: 20,
+            fontWeight: 'bold',
+          },
+          h2: {
+            fontSize: 18,
+            fontWeight: 'bold',
+          },
+          h3: {
+            fontSize: 16,
+          },
+          h4: {
+            fontSize: 14,
+          },
+          h5: {
+            fontSize: 14,
+          },
+          h6: {
+            fontSize: 14,
+          },
+        },
 
-      h1 {
-        font-size: 1.5rem;
-      }
-      h2 {
-        font-size: 1.25rem;
-      }
-      h3 {
-        font-size: 1.1rem;
-      }
-      h4 {
-        font-size: 1rem;
-      }
-
-      h1,
-      h2,
-      h3,
-      h4 {
-        display: flex;
-        align-items: center;
-      }
-
-      h1 img,
-      h2 img,
-      h4 img,
-      h4 img {
-        padding-right: 0.5em;
-      }
-
-      li {
-        list-style: none;
-      }
-    `}</style>
+        overrides: {
+          MuiTypography: {
+            root: {
+              // display: 'flex',
+              // alignItems: 'center',
+            },
+          },
+          MuiButton: {
+            sizeLarge: {
+              padding: '1em',
+            },
+          },
+        },
+      })}>
+      <App />
+    </MuiThemeProvider>
+    <CssBaseline />
   </ErrorBoundary>,
   document.getElementById('root')
 )

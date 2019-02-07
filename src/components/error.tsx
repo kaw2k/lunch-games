@@ -1,15 +1,17 @@
 import * as React from 'react'
-import { Layout } from './layout'
 import { ActionRow } from './actionRow'
 import { Button } from './button'
 import * as local from '../helpers/localstorage'
+import { Typography } from '@material-ui/core'
 
 export const Error = () => (
-  <Layout padded>
-    <h1>Something went wrong...</h1>
-    <ActionRow>
+  <>
+    <Typography gutterBottom align="center" variant="h1">
+      Something went wrong...
+    </Typography>
+    <ActionRow fixed>
       <Button
-        padded
+        color="red"
         onClick={() => {
           local.localUserId.set(null)
           local.roomId.set(null)
@@ -18,5 +20,5 @@ export const Error = () => (
         help me!
       </Button>
     </ActionRow>
-  </Layout>
+  </>
 )

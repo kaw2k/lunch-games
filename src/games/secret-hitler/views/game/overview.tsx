@@ -1,0 +1,43 @@
+import * as React from 'react'
+import { Board } from '../../components/board'
+import { ActionRow } from '../../../../components/actionRow'
+import { Button } from '../../../../components/button'
+import { SecretHitlerGameContext } from '../../../../helpers/contexts'
+import { Typography } from '@material-ui/core'
+
+interface Props {
+  myTurn: () => void
+}
+
+export const Overview: React.SFC<Props> = ({ myTurn }) => {
+  const { player, game } = React.useContext(SecretHitlerGameContext)
+
+  return (
+    <>
+      {!player.living && (
+        <Typography align="center" gutterBottom variant="h2" color="error">
+          you are dead
+        </Typography>
+      )}
+      {game.message && (
+        <Typography align="center" gutterBottom variant="h1">
+          {game.message}
+        </Typography>
+      )}
+      <Board game={game} />
+
+      <ActionRow fixed>
+        {player.living && (
+          <Button
+            color="green"
+            disabled={
+              !player.living || !!game.government || !!game.performPower
+            }
+            onClick={myTurn}>
+            my turn
+          </Button>
+        )}
+      </ActionRow>
+    </>
+  )
+}
