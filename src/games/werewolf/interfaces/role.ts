@@ -1,8 +1,8 @@
-import { Opaque } from '../../interfaces/opaque'
 import always from 'ramda/es/always'
 import { WerewolfGame } from './game'
 import { PlayerWerewolf } from './player'
-import { PromptModerator } from './prompt'
+import { PromptModerator, PromptPlayer } from './prompt'
+import { Opaque } from '../../../interfaces/opaque'
 
 // ==========================
 // Uniques
@@ -52,7 +52,9 @@ export interface Card<Role extends string = string> {
 
   // Some roles have actions that need to happen when they die,
   // let the moderator know and give them some options
-  preDeathAction: (player: PlayerWerewolf) => PromptModerator | null
+  preDeathAction: (
+    player: PlayerWerewolf
+  ) => null | { moderator: PromptModerator; player: PromptPlayer }
 
   // Custom actions the role will always have available
   //   actions?: Actions[]
@@ -68,8 +70,8 @@ export const AllCards = [
     cardCount: 10,
     appearsBad: always(false),
     emoji: Emoji('👩‍🌾'),
-    image: require('../assets/villager.png'),
-    profile: require('../assets/villager-profile.png'),
+    image: require('../static/villager.png'),
+    profile: require('../static/villager-profile.png'),
     deathMessage: null,
     nightMessage: null,
     preDeathAction: always(null),
@@ -88,8 +90,8 @@ export const AllCards = [
     cardCount: 3,
     appearsBad: always(true),
     emoji: Emoji('🐺'),
-    image: require('../assets/werewolf.png'),
-    profile: require('../assets/werewolf-profile.png'),
+    image: require('../static/werewolf.png'),
+    profile: require('../static/werewolf-profile.png'),
     deathMessage: null,
     nightMessage: null,
     preDeathAction: always(null),

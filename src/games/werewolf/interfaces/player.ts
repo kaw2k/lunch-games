@@ -1,6 +1,6 @@
-import { Player, PlayerId } from '../../interfaces/player'
 import { Artifact } from './artifact'
 import { Roles } from './role'
+import { Player, PlayerId } from '../../../interfaces/player'
 
 export interface PlayerWerewolf extends Player {
   ready: boolean
@@ -12,7 +12,7 @@ export interface PlayerWerewolf extends Player {
   artifact: Artifact | null
 
   // Role specifics
-  inCult: PlayerId | null
+  inCult: PlayerId[]
   isGuarded: boolean
   isBlessed: boolean
 }

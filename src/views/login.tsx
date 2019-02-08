@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Layout } from '../components/layout'
 import { Input } from '../components/input'
-import { Button, Typography } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import { PlayerId } from '../interfaces/player'
 import { ActionRow } from '../components/actionRow'
 
@@ -21,8 +21,6 @@ export const Login: React.SFC<Props> = ({ login }) => {
 
   return (
     <Layout padded>
-      <Typography variant="h4">Login</Typography>
-
       <Input
         id="player-input-id"
         label="Player Name"

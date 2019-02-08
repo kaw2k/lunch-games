@@ -3,12 +3,16 @@ import { Room, RoomId } from '../interfaces/room'
 import { Player } from '../interfaces/player'
 import { PlayerSecretHitler } from '../games/secret-hitler/interfaces/player'
 import * as SH from '../games/secret-hitler/interfaces/game'
+
+import * as WW from '../games/werewolf/interfaces/game'
+
 import { PartialFirebase } from '../interfaces/partialFirebase'
 import {
   AvalonGame,
   Party as AvalonParty,
 } from '../games/avalon/interfaces/game'
 import { PlayerAvalon } from '../games/avalon/interfaces/player'
+import { PlayerWerewolf } from '../games/werewolf/interfaces/player'
 
 export interface RoomContext {
   room: Room
@@ -66,4 +70,20 @@ export const AvalonGameContext = createContext<AvalonGameContext>({
   endGame() {},
   playersNeeded: 0,
   failsNeeded: 0,
+})
+
+export interface WerewolfGameContext {
+  game: WW.WerewolfGame
+  player: PlayerWerewolf
+  updateGamePlayer: (player: PlayerWerewolf) => void
+  updateGame: (game: PartialFirebase<WW.WerewolfGame>) => void
+  endGame: (winners?: any, message?: string) => void
+}
+
+export const WerewolfGameContext = createContext<WerewolfGameContext>({
+  game: {} as WW.WerewolfGame,
+  player: {} as PlayerWerewolf,
+  updateGamePlayer() {},
+  updateGame() {},
+  endGame() {},
 })

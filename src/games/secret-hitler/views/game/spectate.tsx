@@ -6,6 +6,7 @@ import { SecretHitlerGame } from '../../interfaces/game'
 import values from 'ramda/es/values'
 import { Profile } from '../../../../components/profile'
 import { Typography } from '@material-ui/core'
+import { Layout } from '../../../../components/layout'
 
 interface Props {
   game: SecretHitlerGame
@@ -22,7 +23,7 @@ export const Spectate: React.SFC<Props> = ({ game, endGame }) => {
 
   if (view === View.roles) {
     return (
-      <>
+      <Layout padded>
         {values(game.players).map(p => (
           <Profile
             key={p.id}
@@ -34,14 +35,18 @@ export const Spectate: React.SFC<Props> = ({ game, endGame }) => {
         <ActionRow fixed>
           <Button onClick={() => setView(View.board)}>board</Button>
         </ActionRow>
-      </>
+      </Layout>
     )
   }
 
   if (view === View.board) {
     return (
-      <>
-        {game.message && <Typography variant="h2">{game.message}</Typography>}
+      <Layout padded>
+        {game.message && (
+          <Typography align="center" gutterBottom variant="h1">
+            {game.message}
+          </Typography>
+        )}
         <Board game={game} />
 
         <ActionRow fixed>
@@ -49,7 +54,7 @@ export const Spectate: React.SFC<Props> = ({ game, endGame }) => {
             view roles
           </Button>
         </ActionRow>
-      </>
+      </Layout>
     )
   }
 

@@ -9,6 +9,7 @@ import { isSecretHitler, SecretHitlerView } from '../games/secret-hitler/views'
 import { RoomContext } from '../helpers/contexts'
 import { LobbyGeneral } from './lobby'
 import { isAvalon, AvalonView } from '../games/avalon/views'
+import { isWerewolf, WerewolfView } from '../games/werewolf/views'
 
 export const App: React.SFC<{}> = () => {
   const playerResult = useAuthState()
@@ -72,6 +73,14 @@ export const App: React.SFC<{}> = () => {
     return (
       <RoomContext.Provider value={roomContextValues}>
         <AvalonView room={room} />
+      </RoomContext.Provider>
+    )
+  }
+
+  if (isWerewolf(room)) {
+    return (
+      <RoomContext.Provider value={roomContextValues}>
+        <WerewolfView room={room} />
       </RoomContext.Provider>
     )
   }
