@@ -49,9 +49,9 @@ export const SelectLobby: React.SFC<Props> = ({
     <Layout padded>
       <Tabs
         value={view}
+        variant="fullWidth"
         indicatorColor="primary"
         textColor="primary"
-        fullWidth
         onChange={(e, val) => setView(val)}>
         <Tab label="Join Lobby" value={View.lobby} />
         <Tab label="Profile Setup" value={View.player} />

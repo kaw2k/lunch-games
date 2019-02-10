@@ -30,6 +30,14 @@ export const Profile: React.SFC<Props> = ({
   onClick,
   disabled,
 }) => {
+  const icon = <Icon>check</Icon>
+  const initials = ((profileText || '').toString() || text)
+    .trim()
+    .split(' ')
+    .map(word => word[0].toUpperCase())
+    .join('')
+    .slice(0, 2)
+
   return (
     <ListItem
       key={value}
@@ -37,28 +45,8 @@ export const Profile: React.SFC<Props> = ({
       onClick={onClick}
       disabled={disabled}>
       <ListItemAvatar>
-        <Avatar>
-          {profileText !== undefined ? (
-            <div className="profile-placeholder">
-              {profileText
-                .toString()
-                .trim()
-                .slice(0, 2)}
-            </div>
-          ) : selected ? (
-            <Icon>check</Icon>
-          ) : image ? (
-            <img className="profile-img" src={image} />
-          ) : (
-            <div className="profile-placeholder">
-              {text
-                .trim()
-                .split(' ')
-                .map(word => word[0].toUpperCase())
-                .join('')
-                .slice(0, 2)}
-            </div>
-          )}
+        <Avatar src={selected ? '' : image || ''}>
+          {selected ? icon : initials}
         </Avatar>
       </ListItemAvatar>
       <ListItemText primary={text} secondary={subtext} />
