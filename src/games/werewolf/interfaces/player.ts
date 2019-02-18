@@ -1,6 +1,6 @@
-import { Artifact } from './artifact'
-import { Roles } from './role'
 import { Player, PlayerId } from '../../../interfaces/player'
+import { Roles } from '../data/roles'
+import { ArtifactState } from './artifact'
 
 export interface PlayerWerewolf extends Player {
   ready: boolean
@@ -9,10 +9,13 @@ export interface PlayerWerewolf extends Player {
   // Sometimes a player can gain a secondary role.
   // If that is the case they wake up by name
   secondaryRole: Roles | null
-  artifact: Artifact | null
+  artifacts: ArtifactState[]
+
+  // If I die, these people die too
+  linkedTo: PlayerId[]
 
   // Role specifics
   inCult: PlayerId[]
   isGuarded: boolean
-  isBlessed: boolean
+  isBlessed: false | 'blessed' | 'attacked'
 }

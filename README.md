@@ -40,7 +40,9 @@ Game Rules - Time limit - Flip / No-Flip - Ghost
 - Role Mods
   - Priest
     - blessing dies with the priest
-    - blessing protects against all calamities (chewks, vampires, boogyman)
+    - protects against all calamities (chewks, vampires, boogyman)
+  - Diseased
+    - protects against all calamities (chewks, vampires, boogyman)
   - Bodyguard
     - protects against all calamities (chewks, vampires, boogyman)
   - Cult Leader

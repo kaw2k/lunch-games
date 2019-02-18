@@ -1,44 +1,49 @@
 import { PlayerWerewolf } from './player'
 import { WerewolfGame } from './game'
+import { Actions } from './actions'
 
 // ===========================
-// TYPE
+// Types and Constructors
 // ===========================
 export interface Artifact<Type extends string = string> {
+  type: Type
+  state: ArtifactState<Type>
+  actions: ArtifactActions
+}
+
+// The state stored in the user object
+export interface ArtifactState<Type extends string = string> {
   type: Type
   title: string
   description: string
   infinite: boolean
   activated: boolean
-  action: (player: PlayerWerewolf, game: WerewolfGame) => void
+  morningAction: string | null
+  state: any
 }
 
-const Artifact = <Type extends string>(
+// We can't store functions in firebase so separate their
+// helper methods into individual chunks
+export interface ArtifactActions {
+  action: null | UpdateFn
+  setup: null | UpdateFn
+  morningAction: null | UpdateFn
+  postDeathAction: null | UpdateFnWithAction
+}
+
+type UpdateFn = (
+  artifactState: ArtifactState<any>,
+  player: PlayerWerewolf,
+  game: WerewolfGame
+) => WerewolfGame
+
+type UpdateFnWithAction = (
+  artifactState: ArtifactState<any>,
+  killType: Actions,
+  player: PlayerWerewolf,
+  game: WerewolfGame
+) => WerewolfGame
+
+export const Artifact = <Type extends string>(
   artifact: Artifact<Type>
 ): Artifact<Type> => artifact
-
-// ===========================
-// LIST OF ARTIFACTS
-// ===========================
-export const AllArtifacts = [
-  Artifact({
-    type: 'diseased',
-    title: 'Blood of the Diseased',
-    activated: false,
-    description:
-      'Choose a player to become infected with disease. If the werewolves eliminate that player, they do not get to choose a target the following night.',
-    infinite: true,
-    action: (player, game) => {},
-  }),
-]
-
-export type AllArtifacts = (typeof AllArtifacts)[0]['title']
-
-// ===========================
-// Helper Functions
-// ===========================
-export function getArtifact(type: AllArtifacts): Artifact<AllArtifacts> {
-  return AllArtifacts.find(artifact => artifact.type === type) as Artifact<
-    AllArtifacts
-  >
-}

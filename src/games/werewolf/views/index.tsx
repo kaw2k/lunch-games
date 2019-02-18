@@ -55,6 +55,11 @@ export const WerewolfView: React.SFC<{ room: Werewolf }> = ({ room }) => {
               killCult: false,
               noFlip: false,
               timeLimit: 120,
+              artifacts: {
+                cursed: {
+                  alwaysActive: false,
+                },
+              },
             },
           })
         },

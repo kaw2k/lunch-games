@@ -16,7 +16,6 @@ export const GameView: React.SFC<{}> = () => {
     return <KillMerlin />
   }
 
-  // Check if lady of the lake needs to happen TODO
   if (player.ladyOfTheLake) {
     return <LadyOfTheLake />
   }

@@ -22,7 +22,6 @@ if (!firebase.apps.length) {
 // ==============
 const db = firebase.firestore()
 const storage = firebase.storage()
-db.settings({ timestampsInSnapshots: true })
 
 export const database = {
   players: db.collection('players'),

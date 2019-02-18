@@ -9,6 +9,7 @@ import { ChooseGame } from '../../../../components/chooseGame'
 import { Typography } from '@material-ui/core'
 import { WerewolfLobby } from '../../interfaces/game'
 import { Rules } from '../rules'
+import '../../helpers/gameEngine'
 
 interface Props {
   lobby: WerewolfLobby
