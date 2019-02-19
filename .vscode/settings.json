@@ -1,7 +1,4 @@
 {
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "cSpell.words": [
-        "Chewks",
-        "cultleader"
-    ]
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "cSpell.words": ["Chewks", "cultleader"]
 }

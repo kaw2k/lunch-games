@@ -1,6 +1,7 @@
 import { always } from 'ramda'
 import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
+import { GenericViewRole } from '../genericViewRole'
 
 export const Villager = Card({
   role: 'villager',
@@ -16,4 +17,5 @@ export const Villager = Card({
   preDeathAction: always({}),
   isActive: always(false),
   nightModeratorMessage: null,
+  SetupView: GenericViewRole,
 })

@@ -3,6 +3,7 @@ import cx from 'classnames'
 import { makeStyles } from '@material-ui/styles'
 
 interface Props {
+  className?: string
   padded?: boolean
 }
 
@@ -15,6 +16,7 @@ const useStyles = makeStyles({
     minHeight: '100vh',
     display: 'flex',
     flexFlow: 'column',
+    position: 'relative',
 
     '& > * ': {
       marginBottom: '1em',
@@ -25,10 +27,10 @@ const useStyles = makeStyles({
   },
 })
 
-export const Layout: React.SFC<Props> = ({ children, padded }) => {
+export const Layout: React.SFC<Props> = ({ children, padded, className }) => {
   const classes = useStyles()
   return (
-    <div className={cx(classes.root, { [classes.padded]: padded })}>
+    <div className={cx(classes.root, className, { [classes.padded]: padded })}>
       {children}
     </div>
   )

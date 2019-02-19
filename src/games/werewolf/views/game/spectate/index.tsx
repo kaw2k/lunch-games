@@ -5,6 +5,6 @@ interface Props {
   game: WerewolfGame
 }
 
-export const Spectate: React.SFC<Props> = ({}) => {
+export const WerewolfSpectateGame: React.SFC<Props> = ({}) => {
   return <div>spectate</div>
 }

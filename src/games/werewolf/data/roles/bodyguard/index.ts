@@ -2,6 +2,7 @@ import { always } from 'ramda'
 import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
 import { NightMessageOrder } from '../../../interfaces/nightMessage'
+import { GenericViewRole } from '../genericViewRole'
 
 export const Bodyguard = Card({
   role: 'bodyguard',
@@ -17,6 +18,7 @@ export const Bodyguard = Card({
     message: 'bodyguard, protect someone',
     order: NightMessageOrder.protection,
   },
+  SetupView: GenericViewRole,
   image: require('./bodyguard.png'),
   profile: require('./bodyguard-profile.png'),
   preDeathAction: always({}),

@@ -1,6 +1,7 @@
 import { always } from 'ramda'
 import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
+import { GenericViewRole } from '../genericViewRole'
 
 export const Tanner = Card({
   role: 'tanner',
@@ -20,7 +21,5 @@ export const Tanner = Card({
   isActive: always(false),
   nightModeratorMessage: null,
   appearsBad: always(false),
+  SetupView: GenericViewRole,
 })
-
-// TODO
-// deathMessage: 'if the tanner was lynched then they win',

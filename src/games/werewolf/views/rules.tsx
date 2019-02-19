@@ -14,7 +14,7 @@ const useStyles = makeStyles({
   },
 })
 
-export const Rules: React.SFC<Props> = ({ done }) => {
+export const WerewolfRules: React.SFC<Props> = ({ done }) => {
   const classes = useStyles()
 
   return (

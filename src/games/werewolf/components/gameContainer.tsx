@@ -6,6 +6,7 @@ import { WerewolfGameContext } from '../../../helpers/contexts'
 import { IconButton, Icon, Typography } from '@material-ui/core'
 import { useCommonStyles } from '../../../helpers/commonStyles'
 import { ActionRow } from '../../../components/actionRow'
+import { makeStyles } from '@material-ui/styles'
 
 interface Props {}
 
@@ -14,8 +15,14 @@ enum View {
   game,
 }
 
+const useStyles = makeStyles({
+  icon: {
+    zIndex: 10,
+  },
+})
+
 export const GameContainer: React.SFC<Props> = ({ children }) => {
-  const classes = useCommonStyles()
+  const classes = { ...useCommonStyles(), ...useStyles() }
   const { endGame } = React.useContext(WerewolfGameContext)
   const [view, setView] = React.useState(View.game)
 
@@ -61,14 +68,16 @@ export const GameContainer: React.SFC<Props> = ({ children }) => {
     <Layout padded>
       <div className={cx(classes.row)}>
         <div>
-          <Typography variant="h1">Secret Hitler</Typography>
+          <Typography variant="h1">Werewolf</Typography>
           <Typography color="textSecondary" variant="h4">
             A LunchGames App
           </Typography>
         </div>
 
         <div className={classes.pullRight}>
-          <IconButton onClick={() => setView(View.menu)}>
+          <IconButton
+            className={classes.icon}
+            onClick={() => setView(View.menu)}>
             <Icon>more_vert</Icon>
           </IconButton>
         </div>

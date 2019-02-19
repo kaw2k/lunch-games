@@ -92,13 +92,13 @@ export const SecretHitlerView: React.SFC<{ room: SecretHitler }> = ({
               date: Date.now(),
               gameType: 'secret-hitler-game',
               winners: values(room.players)
-                .filter(p => p.role.party === message)
+                .filter(p => p.role.party === party)
                 .map(p => ({
                   id: p.id,
                   role: p.role.isHitler ? 'hitler' : p.role.party,
                 })),
               losers: values(room.players)
-                .filter(p => p.role.party !== message)
+                .filter(p => p.role.party !== party)
                 .map(p => ({
                   id: p.id,
                   role: p.role.isHitler ? 'hitler' : p.role.party,

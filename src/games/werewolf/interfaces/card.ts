@@ -41,7 +41,8 @@ export interface Card<Role extends string = string> {
     player: PlayerWerewolf,
     game: WerewolfGame
   ) => { moderator?: PromptModerator; player?: PromptPlayer }
-
+  // TODO: :sob:
+  SetupView: React.FC<{ ready: (actions: any[]) => void }>
   weight: number
   cardCount: number
   description: string

@@ -124,6 +124,15 @@ function updateGame(action: Actions, game: WerewolfGame): WerewolfGame {
 
   // SETUP ACTIONS
   // -----------------------------------------------------------
+  if (action.type === 'link player') {
+    return updateWerewolfPlayer(
+      action.source,
+      player => ({
+        linkedTo: player.linkedTo.concat(action.target),
+      }),
+      game
+    )
+  }
 
   // ARTIFACT ACTIONS
   // -----------------------------------------------------------
@@ -176,7 +185,7 @@ function isCursed(player: PlayerWerewolf, game: WerewolfGame): boolean {
     player.secondaryRole === 'cursed' ||
     !!(
       cursedArtifact &&
-      (cursedArtifact.activated || game.options.artifacts.cursed.alwaysActive)
+      (cursedArtifact.activated || game.options.cursedArtifactAlwaysActive)
     )
   )
 }
@@ -256,19 +265,19 @@ const killPlayer = curry(
   }
 )
 
-const activateArtifact = curry(
-  (playerId: PlayerId, artifact: string, game: WerewolfGame): WerewolfGame => {
-    return updateWerewolfPlayer(
-      playerId,
-      player => ({
-        artifacts: player.artifacts.map(a =>
-          a.type === artifact ? { ...a, activated: true } : a
-        ),
-      }),
-      game
-    )
-  }
-)
+// const activateArtifact = curry(
+//   (playerId: PlayerId, artifact: string, game: WerewolfGame): WerewolfGame => {
+//     return updateWerewolfPlayer(
+//       playerId,
+//       player => ({
+//         artifacts: player.artifacts.map(a =>
+//           a.type === artifact ? { ...a, activated: true } : a
+//         ),
+//       }),
+//       game
+//     )
+//   }
+// )
 
 const destroyArtifact = curry(
   (target: PlayerId, artifact: string, game: WerewolfGame): WerewolfGame => {
@@ -282,36 +291,36 @@ const destroyArtifact = curry(
   }
 )
 
-const passArtifact = curry(
-  (
-    source: PlayerId,
-    target: PlayerId,
-    artifact: AllArtifacts,
-    game: WerewolfGame
-  ): WerewolfGame => {
-    const state = game.players[source].artifacts.find(a => a.type === artifact)
-    if (!state) return game
+// const passArtifact = curry(
+//   (
+//     source: PlayerId,
+//     target: PlayerId,
+//     artifact: AllArtifacts,
+//     game: WerewolfGame
+//   ): WerewolfGame => {
+//     const state = game.players[source].artifacts.find(a => a.type === artifact)
+//     if (!state) return game
 
-    return pipe(
-      destroyArtifact(source, artifact),
-      giveArtifact(target, state)
-    )(game)
-  }
-)
+//     return pipe(
+//       destroyArtifact(source, artifact),
+//       giveArtifact(target, state)
+//     )(game)
+//   }
+// )
 
-const setGameProps = curry(
-  (
-    props:
-      | Partial<WerewolfGame>
-      | ((game: WerewolfGame) => Partial<WerewolfGame>),
-    game: WerewolfGame
-  ): WerewolfGame => {
-    return {
-      ...game,
-      ...(typeof props === 'function' ? props(game) : props),
-    }
-  }
-)
+// const setGameProps = curry(
+//   (
+//     props:
+//       | Partial<WerewolfGame>
+//       | ((game: WerewolfGame) => Partial<WerewolfGame>),
+//     game: WerewolfGame
+//   ): WerewolfGame => {
+//     return {
+//       ...game,
+//       ...(typeof props === 'function' ? props(game) : props),
+//     }
+//   }
+// )
 
 const setVictory = curry(
   (message: string, game: WerewolfGame): WerewolfGame => {

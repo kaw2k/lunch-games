@@ -32,8 +32,8 @@ export const database = {
 
 export type FieldValue<T> = Opaque<'field value', T>
 
-export const firebaseArrayAdd = <T>(item: T) =>
-  (firebase.firestore.FieldValue.arrayUnion(item) as any) as FieldValue<T>
+export const firebaseArrayAdd = <T>(...item: T[]) =>
+  (firebase.firestore.FieldValue.arrayUnion(...item) as any) as FieldValue<T>
 
 export const firebaseArrayRemove = <T>(item: T) =>
   (firebase.firestore.FieldValue.arrayRemove(item) as any) as FieldValue<T>

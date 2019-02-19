@@ -8,10 +8,11 @@ import {
   Icon,
 } from '@material-ui/core'
 import value from '*.svg'
+import { ListItemProps } from '@material-ui/core/ListItem'
 
-interface Props {
+export interface Props {
   text: string
-  subtext?: string
+  subtext?: React.ReactNode
   profileText?: string | number
   image?: string | null
   className?: string
@@ -19,6 +20,7 @@ interface Props {
   color?: Colors
   onClick?: () => void
   disabled?: boolean
+  alignItems?: ListItemProps['alignItems']
 }
 
 export const Profile: React.SFC<Props> = ({
@@ -29,6 +31,8 @@ export const Profile: React.SFC<Props> = ({
   selected,
   onClick,
   disabled,
+  alignItems,
+  className,
 }) => {
   const icon = <Icon>check</Icon>
   const initials = ((profileText || '').toString() || text)
@@ -41,8 +45,10 @@ export const Profile: React.SFC<Props> = ({
   return (
     <ListItem
       key={value}
+      alignItems={alignItems}
       button={!!onClick}
       onClick={onClick}
+      className={className}
       disabled={disabled}>
       <ListItemAvatar>
         <Avatar src={selected ? '' : image || ''}>

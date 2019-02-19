@@ -2,6 +2,7 @@ import { always } from 'ramda'
 import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
 import { NightMessageOrder } from '../../../interfaces/nightMessage'
+import { GenericViewRole } from '../genericViewRole'
 
 export const CultLeader = Card({
   role: 'cult leader',
@@ -19,6 +20,7 @@ export const CultLeader = Card({
       'cult leader, indoctrinate someone, they are now part of your cult',
     order: NightMessageOrder.misc,
   },
+  SetupView: GenericViewRole,
   image: require('./cult-leader.png'),
   profile: require('./cult-leader-profile.png'),
   preDeathAction: always({}),

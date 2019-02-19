@@ -48,6 +48,7 @@ export const ChooseGame: React.SFC<{}> = () => {
             const newLobby: WerewolfLobby = {
               id: room.id,
               lobbyPlayers: room.lobbyPlayers,
+              moderators: [],
               type: 'werewolf-lobby',
               victoryMessage: null,
               artifacts: [],
@@ -58,11 +59,7 @@ export const ChooseGame: React.SFC<{}> = () => {
                 killCult: false,
                 noFlip: false,
                 timeLimit: 120,
-                artifacts: {
-                  cursed: {
-                    alwaysActive: false,
-                  },
-                },
+                cursedArtifactAlwaysActive: false,
               },
             }
             setRoom(newLobby)

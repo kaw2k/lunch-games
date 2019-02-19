@@ -1,6 +1,7 @@
 import { always } from 'ramda'
 import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
+import { GenericWerewolfViewRole } from '../genericWerewolfViewRole'
 
 export const Werewolf = Card({
   role: 'werewolf',
@@ -20,4 +21,5 @@ export const Werewolf = Card({
   preDeathAction: always({}),
   isActive: always(true),
   nightModeratorMessage: null,
+  SetupView: GenericWerewolfViewRole,
 })

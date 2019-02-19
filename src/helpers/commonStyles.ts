@@ -17,4 +17,12 @@ export const useCommonStyles = makeStyles({
     border: 'none',
     background: 'transparent',
   },
+
+  twoColumns: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    '& > *': {
+      width: '50%',
+    },
+  },
 })

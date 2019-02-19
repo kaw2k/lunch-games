@@ -89,6 +89,9 @@ const AllActionCreatorMap = {
 
   // Role Actions
 
+  // Setup Actions
+  'link player': TargetAndSource('link player', ActionOrder.setup),
+
   // Artifact Actions
   'scepter of rebirth': TargetOnePlayer('scepter of rebirth', ActionOrder.misc),
 } as const

@@ -8,7 +8,10 @@ import { runActions } from '../helpers/gameEngine'
 const game: WerewolfGame = {
   id: 'game id' as RoomId,
   victory: null,
+  ready: true,
+  moderators: [],
   message: null,
+  initialArtifacts: [],
   actions: [
     getActionCreator('werewolf kill')('three' as PlayerId),
     getActionCreator('werewolf kill')('three' as PlayerId),
@@ -23,11 +26,7 @@ const game: WerewolfGame = {
     killCult: true,
     noFlip: true,
     timeLimit: 120,
-    artifacts: {
-      cursed: {
-        alwaysActive: true,
-      },
-    },
+    cursedArtifactAlwaysActive: true,
   },
   timer: Date.now(),
   type: 'werewolf-game',

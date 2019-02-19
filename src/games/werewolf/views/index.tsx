@@ -1,14 +1,17 @@
 import * as React from 'react'
-import values from 'ramda/es/values'
-import { GameSetup } from './gameSetup'
 import { Werewolf } from '../interfaces/game'
 import { Room } from '../../../interfaces/room'
-import { GameView } from './game'
+import { WerewolfPlayerGame } from './game/player'
 import { RoomContext, WerewolfGameContext } from '../../../helpers/contexts'
-import { WerewolfLobbyView } from './lobby'
-import { Spectate } from './game/spectate'
+import { WerewolfPlayerLobby } from './lobby/player'
+import { WerewolfSpectateGame } from './game/spectate'
 import { GameContainer } from '../components/gameContainer'
-import { PlayerWerewolf } from '../interfaces/player'
+import { isModerator } from '../helpers/isModerator'
+import { makeGame } from '../helpers/makeGame'
+import { WerewolfModeratorGame } from './game/moderate'
+import { WerewolfPlayerSetup } from './gameSetup/player'
+import { WerewolfModeratorSetup } from './gameSetup/moderator'
+import { WerewolfModeratorLobby } from './lobby/moderator'
 
 export const isWerewolf = (room: Room): room is Werewolf =>
   room.type === 'werewolf-game' || room.type === 'werewolf-lobby'
@@ -17,21 +20,41 @@ export const WerewolfView: React.SFC<{ room: Werewolf }> = ({ room }) => {
   const { player, setRoom, updateRoom } = React.useContext(RoomContext)
   const { updatePlayer } = React.useContext(RoomContext)
 
+  function toggleModerator() {
+    if (room.moderators.find(pid => pid === player.id)) {
+      setRoom({
+        ...room,
+        moderators: room.moderators.filter(pid => pid !== player.id),
+      })
+    } else {
+      setRoom({
+        ...room,
+        moderators: room.moderators.concat(player.id),
+      })
+    }
+  }
+
   // Game screens
   if (room.type === 'werewolf-lobby') {
-    return (
-      <WerewolfLobbyView lobby={room} startGame={players => alert('lol')} />
-    )
+    if (isModerator(player, room)) {
+      return (
+        <WerewolfModeratorLobby
+          lobby={room}
+          startGame={roles => setRoom(makeGame(roles, room))}
+          toggleModerator={toggleModerator}
+        />
+      )
+    } else {
+      return (
+        <WerewolfPlayerLobby lobby={room} toggleModerator={toggleModerator} />
+      )
+    }
   }
 
   const currentPlayer = room.players[player.id]
-  const allReady = values(room.players).reduce(
-    (memo, p) => memo && p.ready,
-    true
-  )
 
-  if (!currentPlayer) {
-    return <Spectate game={room} />
+  if (!currentPlayer && !isModerator(player, room)) {
+    return <WerewolfSpectateGame game={room} />
   }
 
   return (
@@ -39,7 +62,7 @@ export const WerewolfView: React.SFC<{ room: Werewolf }> = ({ room }) => {
       value={{
         updateGamePlayer: updatePlayer,
         game: room,
-        player: currentPlayer,
+        player: currentPlayer || player,
         updateGame: updateRoom,
         endGame: (party, message) => {
           setRoom({
@@ -47,35 +70,23 @@ export const WerewolfView: React.SFC<{ room: Werewolf }> = ({ room }) => {
             type: 'werewolf-lobby',
             lobbyPlayers: room.lobbyPlayers || [],
             victoryMessage: message || null,
-            artifacts: [],
-            roles: [],
-            options: {
-              boogymanOP: false,
-              ghost: false,
-              killCult: false,
-              noFlip: false,
-              timeLimit: 120,
-              artifacts: {
-                cursed: {
-                  alwaysActive: false,
-                },
-              },
-            },
+            artifacts: room.initialArtifacts,
+            moderators: room.moderators,
+            options: room.options,
+            roles: room.initialRoles,
           })
         },
       }}>
       <GameContainer>
-        {allReady && <GameView />}
-        {!allReady && (
-          <GameSetup
-            ready={() =>
-              updatePlayer({
-                ...currentPlayer,
-                ready: true,
-              } as PlayerWerewolf)
-            }
-          />
-        )}
+        {isModerator(player, room) &&
+          (!room.ready ? (
+            <WerewolfModeratorSetup />
+          ) : (
+            <WerewolfModeratorGame />
+          ))}
+
+        {!isModerator(player, room) &&
+          (!room.ready ? <WerewolfPlayerSetup /> : <WerewolfPlayerGame />)}
       </GameContainer>
     </WerewolfGameContext.Provider>
   )
