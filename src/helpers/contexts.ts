@@ -13,6 +13,7 @@ import {
 } from '../games/avalon/interfaces/game'
 import { PlayerAvalon } from '../games/avalon/interfaces/player'
 import { PlayerWerewolf } from '../games/werewolf/interfaces/player'
+import { Unpack } from './unpack'
 
 export interface RoomContext {
   room: Room
@@ -77,6 +78,14 @@ export interface WerewolfGameContext {
   player: PlayerWerewolf
   updateGamePlayer: (player: PlayerWerewolf) => void
   updateGame: (game: PartialFirebase<WW.WerewolfGame>) => void
+  addAction: (
+    actions: Unpack<WW.WerewolfGame['actions']> | WW.WerewolfGame['actions']
+  ) => void
+  addDelayedAction: (
+    actions:
+      | Unpack<WW.WerewolfGame['delayedActions']>
+      | WW.WerewolfGame['delayedActions']
+  ) => void
   endGame: (winners?: any, message?: string) => void
 }
 
@@ -85,5 +94,7 @@ export const WerewolfGameContext = createContext<WerewolfGameContext>({
   player: {} as PlayerWerewolf,
   updateGamePlayer() {},
   updateGame() {},
+  addAction() {},
+  addDelayedAction() {},
   endGame() {},
 })

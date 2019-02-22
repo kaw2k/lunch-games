@@ -1,4 +1,5 @@
 export enum NightMessageOrder {
+  none = 0,
   inspection = 10,
   protection = 20,
   misc = 40,

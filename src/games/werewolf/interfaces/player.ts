@@ -17,5 +17,5 @@ export interface PlayerWerewolf extends Player {
   // Role specifics
   inCult: PlayerId[]
   isGuarded: boolean
-  isBlessed: false | 'blessed' | 'attacked'
+  isBlessed: false | PlayerId | 'attacked'
 }

@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { ViewRole } from './viewRole'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
 import { PlayerWerewolf } from '../../interfaces/player'
@@ -26,7 +25,7 @@ const useStyles = makeStyles({
   },
 })
 
-export const ViewRoleContainer: React.SFC<Props> = ({ player, children }) => {
+export const SetupRoleContainer: React.SFC<Props> = ({ player, children }) => {
   const [viewRole, setViewRole] = React.useState(false)
   const classes = useStyles()
 
@@ -57,10 +56,5 @@ export const ViewRoleContainer: React.SFC<Props> = ({ player, children }) => {
     )
   }
 
-  return (
-    <>
-      <ViewRole role={player.role} />
-      {children}
-    </>
-  )
+  return <>{children}</>
 }

@@ -3,6 +3,7 @@ import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { getCard } from '../../data/roles'
 import { Actions } from '../../interfaces/actions'
 import { firebaseArrayAdd } from '../../../../helpers/firebase'
+import { SetupRoleContainer } from '../../data/roles/setupRoleContainer'
 
 interface Props {}
 
@@ -24,7 +25,9 @@ export const WerewolfPlayerSetup: React.SFC<Props> = ({}) => {
 
   return (
     <>
-      <SetupView ready={ready} />
+      <SetupRoleContainer player={player}>
+        <SetupView ready={ready} />
+      </SetupRoleContainer>
     </>
   )
 }

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Typography } from '@material-ui/core'
 import { PlayerWerewolf } from '../../interfaces/player'
-import { WerewolfProfile } from '../../components/werewolfProfile'
+import { WerewolfProfile } from '../werewolfProfile'
 
 interface Props {
   allies: PlayerWerewolf[]

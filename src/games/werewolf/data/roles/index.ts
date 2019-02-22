@@ -8,6 +8,7 @@ import { Villager } from './villager'
 import { Werewolf } from './werewolf'
 import { Card } from '../../interfaces/card'
 import { VAWolf } from './vaWolf'
+import { MadBomber } from './madBomber'
 
 export const AllCards = [
   Bodyguard,
@@ -19,6 +20,7 @@ export const AllCards = [
   Villager,
   Werewolf,
   VAWolf,
+  MadBomber,
 ]
 
 export type Roles = (typeof AllCards)[0]['role']

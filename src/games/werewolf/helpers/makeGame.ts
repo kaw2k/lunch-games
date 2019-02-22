@@ -58,5 +58,13 @@ export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
     timer: null,
     victory: null,
     players: gamePlayers,
+    artifactState: {
+      nightTargets: [],
+    },
+    night: {
+      kills: [],
+      prompts: [],
+      story: [],
+    },
   }
 }

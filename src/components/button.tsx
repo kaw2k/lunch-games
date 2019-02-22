@@ -4,7 +4,7 @@ import MButton, { ButtonProps } from '@material-ui/core/Button'
 import { colors, Color, Omit } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
-interface Props extends Omit<ButtonProps, 'color' | 'variant'> {
+export interface Props extends Omit<ButtonProps, 'color' | 'variant'> {
   confirm?: string | boolean
   color?: 'blue' | 'green' | 'red' | 'teal' | 'black' | null | false
 }

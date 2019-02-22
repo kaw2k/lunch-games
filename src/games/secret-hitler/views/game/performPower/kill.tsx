@@ -4,21 +4,17 @@ import { ChoosePlayers } from '../../../../../components/choosePlayers'
 import { values } from 'ramda'
 
 export const Kill: React.SFC<{}> = () => {
-  const {
-    endGame,
-    updateGame,
-    updateGamePlayer,
-    game,
-    player,
-  } = React.useContext(SecretHitlerGameContext)
+  const { endGame, updateGame, updateGamePlayer, game } = React.useContext(
+    SecretHitlerGameContext
+  )
 
   return (
     <ChoosePlayers
       title="Who do you want to kill?"
-      doneButton="kill"
+      doneText="kill"
       players={values(game.players).filter(p => p.living)}
-      removePlayer={player}
-      done={async ([pid]) => {
+      removePlayer
+      onDone={async ([pid]) => {
         const p = game.players[pid]
         if (p.role.isHitler) {
           endGame(

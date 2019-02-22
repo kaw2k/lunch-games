@@ -1,16 +1,15 @@
 import { WerewolfGame } from './game'
 import { PlayerWerewolf } from './player'
-import { PromptModerator, PromptPlayer } from './prompt'
 
 // Roles
-import { NightMessage } from './nightMessage'
+import { NightMessageOrder } from './nightMessage'
 import { Image } from './image'
 import { Emoji } from './emoji'
 
 // ==========================
 // Teams
 // ==========================
-type Teams =
+export type Teams =
   | 'werewolves'
   | 'villagers'
   | 'tanner'
@@ -30,19 +29,10 @@ export interface Card<Role extends string = string> {
   // If the role appears like a werewolf
   appearsBad: (player: PlayerWerewolf, game: WerewolfGame) => boolean
 
-  // Prompts the moderator that the role has a night action
-  nightModeratorMessage: NightMessage | null
   // Some roles only activate at night after something happens
   // like bloody marry or apprentice seer
   isActive: (player: PlayerWerewolf, game: WerewolfGame) => boolean
-  // Some roles have actions that need to happen when they die,
-  // let the moderator know and give them some options
-  preDeathAction: (
-    player: PlayerWerewolf,
-    game: WerewolfGame
-  ) => { moderator?: PromptModerator; player?: PromptPlayer }
-  // TODO: :sob:
-  SetupView: React.FC<{ ready: (actions: any[]) => void }>
+
   weight: number
   cardCount: number
   description: string
@@ -50,6 +40,16 @@ export interface Card<Role extends string = string> {
   emoji: Emoji
   image: Image
   profile: Image
+  nightOrder: NightMessageOrder
+
+  // Views
+  // TODO: :sob:
+  SetupView: React.FC<{ ready: (actions: any[]) => void }>
+  NightModeratorView: React.FC<{
+    player: PlayerWerewolf
+    done: () => void
+  }> | null
+  NightPlayerView: React.FC<{ player: PlayerWerewolf; done: () => void }> | null
 }
 
 export const Card = <Role extends string>(card: Card<Role>): Card<Role> => card

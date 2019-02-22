@@ -16,6 +16,7 @@ import { Asset } from '../../components/asset'
 import { Typography, Icon } from '@material-ui/core'
 import { useCommonStyles } from '../../../../helpers/commonStyles'
 import { makeStyles } from '@material-ui/styles'
+import { shuffle } from '../../../../helpers/shuffle'
 
 interface Props {
   government: Government
@@ -52,6 +53,18 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
     },
     [[], []]
   )
+
+  function cancel() {
+    updateGame({
+      government: null,
+      discardedCards: [],
+      remainingCards: shuffle([
+        ...government.cards,
+        ...game.discardedCards,
+        ...game.remainingCards,
+      ]),
+    })
+  }
 
   function discard(
     cards: Party[],
@@ -224,6 +237,11 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
               discard(selected, discarded, true)
             }}>
             veto
+          </Button>
+        )}
+        {government.cards.length === 3 && (
+          <Button confirm onClick={cancel}>
+            cancel
           </Button>
         )}
         <Button

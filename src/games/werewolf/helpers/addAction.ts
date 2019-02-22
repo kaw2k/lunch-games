@@ -1,7 +1,6 @@
 import { curry } from 'ramda'
 import { WerewolfGame } from '../interfaces/game'
-
-type Unpack<T> = T extends (infer K)[] ? K : never
+import { Unpack } from '../../../helpers/unpack'
 
 export const addAction = curry(
   (

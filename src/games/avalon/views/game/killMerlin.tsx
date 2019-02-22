@@ -10,8 +10,8 @@ export const KillMerlin: React.SFC<{}> = ({}) => {
     <ChoosePlayers
       title="You have one chance for redemption, if you kill merlin you win."
       players={values(game.players).filter(p => p.party === 'good')}
-      doneButton="kill"
-      done={async ([selectedPlayerId]) => {
+      doneText="kill"
+      onDone={async ([selectedPlayerId]) => {
         const killedPlayer = game.players[selectedPlayerId]
         const merlin = values(game.players).find(p => p.role === 'merlin')
 

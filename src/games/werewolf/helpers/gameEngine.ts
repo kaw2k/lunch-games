@@ -1,4 +1,4 @@
-import { WerewolfGame } from '../interfaces/game'
+import { WerewolfGame, Victory } from '../interfaces/game'
 import { Actions, getActionCreator } from '../interfaces/actions'
 import { assertNever } from '../../../helpers/assertNever'
 import sortBy from 'ramda/es/sortBy'
@@ -53,7 +53,12 @@ function updateGame(action: Actions, game: WerewolfGame): WerewolfGame {
   if (action.type === 'vote kill') {
     if (player.role === 'tanner') {
       return setVictory(
-        `${player.name} was the tanner and was lynched. ${player.name} wins!`,
+        {
+          team: 'tanner',
+          message: `${player.name} was the tanner and was lynched. ${
+            player.name
+          } wins!`,
+        },
         game
       )
     }
@@ -107,7 +112,7 @@ function updateGame(action: Actions, game: WerewolfGame): WerewolfGame {
   }
 
   if (action.type === 'bless') {
-    return updateWerewolfPlayer(player.id, { isBlessed: 'blessed' }, game)
+    return updateWerewolfPlayer(player.id, { isBlessed: action.source }, game)
   }
 
   if (action.type === 'guard') {
@@ -323,10 +328,10 @@ const destroyArtifact = curry(
 // )
 
 const setVictory = curry(
-  (message: string, game: WerewolfGame): WerewolfGame => {
+  (victory: Victory, game: WerewolfGame): WerewolfGame => {
     return {
       ...game,
-      victory: game.victory || message,
+      victory: game.victory || victory,
     }
   }
 )

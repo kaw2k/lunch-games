@@ -17,12 +17,13 @@ export const Priest = Card({
   ],
   image: require('./priest.png'),
   profile: require('./priest-profile.png'),
-  preDeathAction: always({}),
   SetupView: GenericViewRole,
   isActive: player => player.alive,
-  nightModeratorMessage: {
-    message: `priest, bless someone. if they are ever killed you will bless another person next night`,
-    order: NightMessageOrder.protection,
-  },
+  // nightModeratorMessage: {
+  //   message: `priest, bless someone. if they are ever killed you will bless another person next night`,
+  // },
   appearsBad: always(false),
+  NightModeratorView: null,
+  NightPlayerView: null,
+  nightOrder: NightMessageOrder.protection,
 })

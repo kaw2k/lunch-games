@@ -16,12 +16,12 @@ export const ChooseMission: React.SFC<{ endTurn: () => void }> = ({
 
   return (
     <ChoosePlayers
-      cancel={endTurn}
+      onCancel={endTurn}
       title={`Choose your mission with ${playersNeeded} people, it needs ${failsNeeded} fail. You may choose to not put yourself on the mission if you wish.`}
       numToSelect={playersNeeded}
       players={game.players}
-      altButton="doesn't go"
-      alt={async () => {
+      altText="doesn't go"
+      onAlt={async () => {
         const nextChaos = game.chaos + 1
 
         if (nextChaos === 5) {
@@ -41,8 +41,8 @@ export const ChooseMission: React.SFC<{ endTurn: () => void }> = ({
         await updateGame({ chaos: nextChaos })
         endTurn()
       }}
-      doneButton="goes"
-      done={async players => {
+      doneText="goes"
+      onDone={async players => {
         await updateGame({
           chaos: 0,
           currentMission: { owner: player.id, players },

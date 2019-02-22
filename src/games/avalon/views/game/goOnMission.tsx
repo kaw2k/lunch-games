@@ -32,6 +32,12 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
     updateGamePlayer({ ...player, missionVote: card })
   }
 
+  function cancel() {
+    updateGame({
+      currentMission: null,
+    })
+  }
+
   async function flipCards() {
     // Collect all the cards
     const cards = mission.players.reduce<Party[]>((memo, pid) => {
@@ -99,6 +105,9 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
           Waiting for the others to play their cards
         </Typography>
         <ActionRow fixed>
+          <Button confirm onClick={cancel}>
+            cancel
+          </Button>
           <Button color="green" disabled={!allCardsPlayed} onClick={flipCards}>
             flip cards
           </Button>
@@ -152,6 +161,9 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
       )}
 
       <ActionRow fixed>
+        <Button confirm onClick={cancel}>
+          cancel
+        </Button>
         <Button
           color="green"
           disabled={!card}

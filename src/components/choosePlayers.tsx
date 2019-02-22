@@ -2,79 +2,129 @@ import * as React from 'react'
 import { PlayerId, Player } from '../interfaces/player'
 import { Profile } from './profile'
 import { ActionRow } from './actionRow'
-import { Button } from './button'
+import { Button, Props as ButtonProps } from './button'
 import { Hash } from '../interfaces/hash'
 import { isArray } from 'util'
 import values from 'ramda/es/values'
 import { useSelectState } from '../hooks/useSelectState'
 import { Typography } from '@material-ui/core'
+import { RoomContext } from '../helpers/contexts'
 
-export const ChoosePlayers: React.SFC<{
-  title: string
+type Render<P> = (props: {
+  selected: boolean
+  onClick: () => void
+  player: P
+}) => React.ReactNode
 
-  doneButton: string
-  done: (id: PlayerId[]) => void
+interface Props<P extends Player> {
+  title?: string
+  description?: string
 
-  altButton?: string
-  alt?: () => void
+  onDone: (id: PlayerId[]) => void
+  doneText: string
+  doneProps?:
+    | Partial<ButtonProps>
+    | ((disabled: boolean) => Partial<ButtonProps>)
 
-  cancel?: () => void
+  onAlt?: () => void
+  altText?: string
+  altProps?: Partial<ButtonProps>
+
+  onCancel?: () => void
+  cancelText?: string
+  cancelProps?: Partial<ButtonProps>
 
   // Number of players to select
   numToSelect?: number
   // Setting this removes the player from the list
-  removePlayer?: Player
+  removePlayer?: boolean | Player
   // The list of players to filter over
-  players: Player[] | Hash<Player>
-}> = ({
-  done,
+  players: P[] | Hash<P>
+
+  children?: Render<P>
+}
+
+export function ChoosePlayers<P extends Player>({
+  onDone,
+  doneText,
+  doneProps = {},
+  onAlt,
+  altText,
+  altProps = {},
+  onCancel,
+  cancelText,
+  cancelProps = {},
   players,
   removePlayer,
-  doneButton,
   title,
+  description,
   numToSelect = 1,
-  alt,
-  altButton,
-  cancel,
-}) => {
+  children,
+}: Props<P>): React.ReactElement {
   const [selected, updateSelected] = useSelectState<PlayerId>([], numToSelect)
+  const { player: localPlayer } = React.useContext(RoomContext)
+  const shouldRemovePlayer = !!removePlayer
+  const removePlayerId =
+    typeof removePlayer === 'object' ? removePlayer.id : localPlayer.id
+
+  const defaultChildren: Render<P> = ({
+    player,
+    selected: isSelected,
+    onClick,
+  }) => (
+    <Profile
+      key={player.id}
+      text={player.name || player.id}
+      image={player.profileImg}
+      selected={isSelected}
+      onClick={onClick}
+    />
+  )
 
   return (
     <>
-      <Typography gutterBottom variant="h2">
-        {title}
-      </Typography>
+      {title && (
+        <Typography gutterBottom variant="h2">
+          {title}
+        </Typography>
+      )}
+      {description && <Typography component="em">{description}</Typography>}
 
       {(isArray(players) ? players : values(players))
-        .filter(p => (removePlayer ? p.id !== removePlayer.id : true))
-        .map(p => (
-          <Profile
-            key={p.id}
-            text={p.name || p.id}
-            image={p.profileImg}
-            selected={!!selected.find(id => id === p.id)}
-            onClick={() => updateSelected(p.id)}
-          />
-        ))}
+        .filter(p => (shouldRemovePlayer ? p.id !== removePlayerId : true))
+        .map(p =>
+          (children || defaultChildren)({
+            selected: !!selected.find(id => id === p.id),
+            player: p,
+            onClick: () => updateSelected(p.id),
+          })
+        )}
 
       <ActionRow fixed>
-        {alt && altButton && (
-          <Button color="red" onClick={alt}>
-            {altButton}
+        {onAlt && altText && (
+          <Button color="red" onClick={onAlt} {...altProps}>
+            {altText}
           </Button>
         )}
 
-        {cancel && <Button onClick={cancel}>cancel</Button>}
+        {onCancel && (
+          <Button onClick={onCancel} {...cancelProps}>
+            {cancelText || 'cancel'}
+          </Button>
+        )}
 
         <Button
           color="green"
+          {...(typeof doneProps === 'function'
+            ? doneProps(selected.length !== numToSelect)
+            : doneProps)}
           disabled={selected.length !== numToSelect}
           onClick={() => {
             if (selected.length === numToSelect) {
-              done(selected)
+              onDone(selected)
             }
           }}>
-          {doneButton}
+          {doneText}
         </Button>
       </ActionRow>
     </>

@@ -2,6 +2,7 @@ import { always } from 'ramda'
 import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
 import { GenericViewRole } from '../genericViewRole'
+import { NightMessageOrder } from '../../../interfaces/nightMessage'
 
 export const Cursed = Card({
   role: 'cursed',
@@ -19,6 +20,7 @@ export const Cursed = Card({
   SetupView: GenericViewRole,
   appearsBad: always(false),
   isActive: always(false),
-  nightModeratorMessage: null,
-  preDeathAction: always({}),
+  NightModeratorView: null,
+  NightPlayerView: null,
+  nightOrder: NightMessageOrder.none,
 })

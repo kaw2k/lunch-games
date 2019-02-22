@@ -18,6 +18,8 @@ export const WerewolfModeratorSetup: React.SFC<Props> = ({}) => {
     true
   )
 
+  console.log(game)
+
   function setupGame() {
     updateGame({
       ...runActions(game),

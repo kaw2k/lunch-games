@@ -7,9 +7,11 @@ enum ActionOrder {
   setup = 0,
   misc = 50,
   kill = 100,
+  postKill = 150,
 }
 
 export interface Action<Type extends string> {
+  id: string
   type: Type
   order: ActionOrder
 }
@@ -19,7 +21,14 @@ interface TargetOnePlayer<Type extends string> extends Action<Type> {
 }
 const TargetOnePlayer = <T extends string>(type: T, order: ActionOrder) => {
   function ac(target: PlayerId): TargetOnePlayer<T> {
-    return { type, target, order }
+    return {
+      type,
+      target,
+      order,
+      id: Math.random()
+        .toString()
+        .slice(4),
+    }
   }
   ac.type = type
 
@@ -31,7 +40,14 @@ interface TargetTwoPlayers<Type extends string> extends Action<Type> {
 }
 const TargetTwoPlayers = <T extends string>(type: T, order: ActionOrder) => {
   function ac(targets: [PlayerId, PlayerId]): TargetTwoPlayers<T> {
-    return { type, targets, order }
+    return {
+      type,
+      targets,
+      order,
+      id: Math.random()
+        .toString()
+        .slice(4),
+    }
   }
   ac.type = type
 
@@ -44,7 +60,15 @@ interface TargetAndSource<Type extends string> extends Action<Type> {
 }
 const TargetAndSource = <T extends string>(type: T, order: ActionOrder) => {
   function ac(target: PlayerId, source: PlayerId): TargetAndSource<T> {
-    return { type, target, source, order }
+    return {
+      type,
+      target,
+      source,
+      order,
+      id: Math.random()
+        .toString()
+        .slice(4),
+    }
   }
   ac.type = type
 
@@ -60,7 +84,15 @@ const TargetUpdate = <T extends string>(type: T, order: ActionOrder) => {
     target: PlayerId,
     updates: Partial<PlayerWerewolf>
   ): TargetUpdate<T> {
-    return { type, target, updates, order }
+    return {
+      type,
+      target,
+      updates,
+      order,
+      id: Math.random()
+        .toString()
+        .slice(4),
+    }
   }
   ac.type = type
 
@@ -78,7 +110,7 @@ const AllActionCreatorMap = {
 
   // Protection
   guard: TargetOnePlayer('guard', ActionOrder.misc),
-  bless: TargetOnePlayer('bless', ActionOrder.misc),
+  bless: TargetAndSource('bless', ActionOrder.misc),
 
   // Misc
   'update player': TargetUpdate('update player', ActionOrder.misc),
@@ -93,7 +125,10 @@ const AllActionCreatorMap = {
   'link player': TargetAndSource('link player', ActionOrder.setup),
 
   // Artifact Actions
-  'scepter of rebirth': TargetOnePlayer('scepter of rebirth', ActionOrder.misc),
+  'scepter of rebirth': TargetOnePlayer(
+    'scepter of rebirth',
+    ActionOrder.postKill
+  ),
 } as const
 
 type Values<T extends object> = T[keyof T]

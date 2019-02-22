@@ -2,6 +2,7 @@ import { always } from 'ramda'
 import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
 import { GenericViewRole } from '../genericViewRole'
+import { NightMessageOrder } from '../../../interfaces/nightMessage'
 
 export const Tanner = Card({
   role: 'tanner',
@@ -17,9 +18,10 @@ export const Tanner = Card({
   ],
   image: require('./tanner.png'),
   profile: require('./tanner-profile.png'),
-  preDeathAction: always({}),
   isActive: always(false),
-  nightModeratorMessage: null,
   appearsBad: always(false),
   SetupView: GenericViewRole,
+  NightModeratorView: null,
+  NightPlayerView: null,
+  nightOrder: NightMessageOrder.none,
 })

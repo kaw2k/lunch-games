@@ -7,14 +7,27 @@ import { Actions } from './actions'
 import { DelayAction } from './delayAction'
 import { Roles } from '../data/roles'
 import { AllArtifacts } from '../data/artifacts'
+import { Teams } from './card'
 
 interface WerewolfOptions {
-  timeLimit: number
+  dayTimeLimit: number
+  nightTimeLimit: number
   boogymanOP: boolean
   noFlip: boolean
   ghost: boolean
   killCult: boolean
   cursedArtifactAlwaysActive: boolean
+  madBomberOnlyKillsAdjacent: boolean
+}
+
+export interface Victory {
+  team: Teams
+  message: string
+}
+
+export interface NightPrompt {
+  players: PlayerId[]
+  role: Roles
 }
 
 export interface WerewolfGame {
@@ -32,7 +45,7 @@ export interface WerewolfGame {
   players: Hash<PlayerWerewolf>
   // Any message to display to all users
   message: string | null
-  victory: string | null
+  victory: Victory | null
   // Options to modify the game
   options: WerewolfOptions
   // An indicator of what day it is
@@ -41,6 +54,18 @@ export interface WerewolfGame {
   timer: number | null
   // An array of actions taken during the night
   actions: Actions[]
+
+  night: {
+    kills: PlayerId[]
+    story: string[]
+    // The roles remaining to go through at night
+    prompts: null | NightPrompt[]
+  }
+  artifactState: {
+    // Prism of power can set 3 people to be targets at night
+    nightTargets: null | PlayerId[]
+  }
+
   // Any actions that need to happen in the future
   delayedActions: DelayAction<Actions>[]
 }
@@ -55,3 +80,5 @@ export interface WerewolfLobby extends Omit<Lobby, 'type'> {
 }
 
 export type Werewolf = WerewolfGame | WerewolfLobby
+
+// make sure two night kills and a staff of rebirth still keep you alive

@@ -2,6 +2,7 @@ import { always } from 'ramda'
 import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
 import { GenericViewRole } from '../genericViewRole'
+import { NightMessageOrder } from '../../../interfaces/nightMessage'
 
 export const Mayor = Card({
   role: 'mayor',
@@ -13,11 +14,12 @@ export const Mayor = Card({
   hints: [
     `Make sure if you ever announce your role that you pronounce it "MARE".`,
   ],
-  nightModeratorMessage: null,
   SetupView: GenericViewRole,
   image: require('./mayor.png'),
   profile: require('./mayor-profile.png'),
-  preDeathAction: always({}),
   isActive: always(false),
   appearsBad: always(false),
+  NightModeratorView: null,
+  NightPlayerView: null,
+  nightOrder: NightMessageOrder.none,
 })

@@ -32,7 +32,6 @@ Breath of old man works as expected
 ## Werewolf Options
 
 - Artifacts
-  - Cursed doesn't need to be played for it to be active
   - Werewolf doesn't need to be played for it to be active
 
 Game Rules - Time limit - Flip / No-Flip - Ghost
@@ -45,7 +44,5 @@ Game Rules - Time limit - Flip / No-Flip - Ghost
     - protects against all calamities (chewks, vampires, boogyman)
   - Bodyguard
     - protects against all calamities (chewks, vampires, boogyman)
-  - Cult Leader
-    - cult dies with the leader
   - Vampire
     - bite kills by any seconding / bite kills when they are seconded (persists thru entire game)

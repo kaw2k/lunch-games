@@ -12,10 +12,10 @@ export const LadyOfTheLake: React.SFC<Props> = ({}) => {
   return (
     <ChoosePlayers
       title="Choose who you want to inspect, they will get lady of the lake after you"
-      removePlayer={player}
+      removePlayer
       players={game.players}
-      doneButton="inspect"
-      done={async ([selectedPlayerId]) => {
+      doneText="inspect"
+      onDone={async ([selectedPlayerId]) => {
         const selectedPlayer = game.players[selectedPlayerId]
         updateGamePlayer({ ...player, ladyOfTheLake: false })
         updateGame({ nextLadyOfTheLake: selectedPlayer.id })
