@@ -1,8 +1,8 @@
 import { always } from 'ramda'
 import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
-import { GenericWerewolfViewRole } from '../genericWerewolfViewRole'
 import { NightMessageOrder } from '../../../interfaces/nightMessage'
+import { GenericWerewolfViewRole } from '../../../data/roles/genericWerewolfViewRole'
 
 export const Werewolf = Card({
   role: 'werewolf',

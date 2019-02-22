@@ -10,8 +10,8 @@ import { WerewolfPlayerLobby } from '../player'
 import { WerewolfModeratorLobbyRoles } from './roles'
 import { WerewolfModeratorLobbyArtifacts } from './artifacts'
 import { WerewolfModeratorLobbyStart } from './start'
-import { Roles } from '../../../data/roles'
 import { WerewolfModeratorLobbyOptions } from './options'
+import { Roles } from '../../../interfaces/card'
 
 interface Props {
   lobby: WerewolfLobby

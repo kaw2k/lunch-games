@@ -1,10 +1,10 @@
 import { WerewolfGame, NightPrompt } from '../interfaces/game'
 import values from 'ramda/es/values'
-import { getCard, Roles } from '../data/roles'
 import uniq from 'ramda/es/uniq'
 import sortBy from 'ramda/es/sortBy'
 import { isWerewolf } from './isWerewolf'
 import { PlayerId } from '../../../interfaces/player'
+import { Roles, getCard } from '../interfaces/card'
 
 export function makeNightPrompts(game: WerewolfGame): NightPrompt[] {
   function getPlayers(role: Roles): PlayerId[] {

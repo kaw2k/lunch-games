@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
-import { getCard } from '../../data/roles'
 import { Actions } from '../../interfaces/actions'
 import { firebaseArrayAdd } from '../../../../helpers/firebase'
 import { SetupRoleContainer } from '../../data/roles/setupRoleContainer'
+import { getCard } from '../../interfaces/card'
 
 interface Props {}
 

@@ -1,6 +1,6 @@
 import { PlayerWerewolf } from '../interfaces/player'
 import { WerewolfGame } from '../interfaces/game'
-import { getCard } from '../data/roles'
+import { getCard } from '../interfaces/card'
 
 export function isWerewolf(
   player: PlayerWerewolf,

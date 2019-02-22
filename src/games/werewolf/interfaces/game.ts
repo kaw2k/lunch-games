@@ -5,9 +5,8 @@ import { Player, PlayerId } from '../../../interfaces/player'
 import { Omit } from '@material-ui/core'
 import { Actions } from './actions'
 import { DelayAction } from './delayAction'
-import { Roles } from '../data/roles'
 import { AllArtifacts } from '../data/artifacts'
-import { Teams } from './card'
+import { Teams, Roles } from './card'
 
 interface WerewolfOptions {
   dayTimeLimit: number

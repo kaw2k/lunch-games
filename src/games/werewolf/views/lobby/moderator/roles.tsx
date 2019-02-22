@@ -2,7 +2,6 @@ import * as React from 'react'
 import { Layout } from '../../../../../components/layout'
 import { Typography } from '@material-ui/core'
 import { WerewolfLobby } from '../../../interfaces/game'
-import { AllCards, Roles, getCard } from '../../../data/roles'
 import { Profile } from '../../../../../components/profile'
 import { makeStyles } from '@material-ui/styles'
 import sortBy from 'ramda/es/sortBy'
@@ -10,6 +9,7 @@ import { count } from '../../../../../helpers/count'
 import { RoomContext } from '../../../../../helpers/contexts'
 import { getWeight } from '../../../helpers/getWeight'
 import { Button } from '../../../../../components/button'
+import { AllCards, Roles, getCard } from '../../../interfaces/card'
 
 interface Props {
   lobby: WerewolfLobby

@@ -2,8 +2,8 @@ import { always } from 'ramda'
 import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
 import { NightMessageOrder } from '../../../interfaces/nightMessage'
-import { GenericViewRole } from '../genericViewRole'
 import { NightModeratorView, NightPlayerView } from './night'
+import { GenericViewRole } from '../../../data/roles/genericViewRole'
 
 export const Bodyguard = Card({
   role: 'bodyguard',

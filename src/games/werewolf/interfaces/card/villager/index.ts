@@ -1,8 +1,8 @@
 import { always } from 'ramda'
 import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
-import { GenericViewRole } from '../genericViewRole'
 import { NightMessageOrder } from '../../../interfaces/nightMessage'
+import { GenericViewRole } from '../../../data/roles/genericViewRole'
 
 export const Villager = Card({
   role: 'villager',

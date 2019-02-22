@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Typography, Grid } from '@material-ui/core'
-import { Roles, getCard } from '../../data/roles'
 import { makeStyles } from '@material-ui/styles'
+import { Roles, getCard } from '../../interfaces/card'
 
 interface Props {
   role: Roles
