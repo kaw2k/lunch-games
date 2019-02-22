@@ -1,6 +1,11 @@
-import { PlayerWerewolf } from './player'
-import { WerewolfGame } from './game'
-import { Actions } from './actions'
+import { PlayerWerewolf } from '../player'
+import { WerewolfGame } from '../game'
+import { Actions } from '../actions'
+import { BloodOfTheDiseased } from './bloodOfTheDiseased'
+import { SkimmerOfTheCursed } from './skimmerOfTheCursed'
+import { ScepterOfRebirth } from './scepterOfRebirth'
+import { OnyxOfDestruction } from './onyxOfDestruction'
+import { OrbOfSpeculation } from './orbOfSpeculation'
 
 // ===========================
 // Types and Constructors
@@ -47,3 +52,18 @@ type UpdateFnWithAction = (
 export const Artifact = <Type extends string>(
   artifact: Artifact<Type>
 ): Artifact<Type> => artifact
+
+export const Artifacts = [
+  BloodOfTheDiseased,
+  ScepterOfRebirth,
+  SkimmerOfTheCursed,
+  OnyxOfDestruction,
+  OrbOfSpeculation,
+]
+export type Artifacts = (typeof Artifacts)[0]['type']
+
+export function getArtifact(type: Artifacts): Artifact<Artifacts> {
+  return Artifacts.find(artifact => artifact.type === type) as Artifact<
+    Artifacts
+  >
+}

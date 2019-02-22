@@ -1,9 +1,9 @@
 import { WerewolfGame, WerewolfLobby } from '../interfaces/game'
 import { isModerator } from './isModerator'
 import { shuffle } from '../../../helpers/shuffle'
-import { AllArtifacts, getArtifact } from '../data/artifacts'
 import { PlayerWerewolf } from '../interfaces/player'
 import { Roles } from '../interfaces/card'
+import { Artifacts, getArtifact } from '../interfaces/artifact'
 
 export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
   const players = lobby.lobbyPlayers.filter(p => !isModerator(p, lobby))
@@ -12,9 +12,7 @@ export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
 
   const shouldHaveArtifact = !!lobby.artifacts.length
   const extraArtifacts = shuffle(
-    AllArtifacts.map(a => a.type).filter(
-      a => !lobby.artifacts.find(b => a !== b)
-    )
+    Artifacts.map(a => a.type).filter(a => !lobby.artifacts.find(b => a !== b))
   )
   const shuffledArtifacts = shuffle(lobby.artifacts)
     .concat(extraArtifacts)

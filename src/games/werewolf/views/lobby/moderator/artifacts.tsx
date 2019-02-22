@@ -7,8 +7,8 @@ import { count } from '../../../../../helpers/count'
 import { RoomContext } from '../../../../../helpers/contexts'
 import { getWeight } from '../../../helpers/getWeight'
 import { Button } from '../../../../../components/button'
-import { AllArtifacts } from '../../../data/artifacts'
 import { makeStyles } from '@material-ui/styles'
+import { Artifacts } from '../../../interfaces/artifact'
 
 interface Props {
   lobby: WerewolfLobby
@@ -26,7 +26,7 @@ export const WerewolfModeratorLobbyArtifacts: React.SFC<Props> = ({
   const classes = useStyles()
   const { updateRoom } = React.useContext(RoomContext)
 
-  function addOrRemoveArtifact(type: AllArtifacts): void {
+  function addOrRemoveArtifact(type: Artifacts): void {
     const numberOfArtifactInDeck = count(lobby.artifacts, r => r === type)
 
     if (numberOfArtifactInDeck) {
@@ -50,7 +50,7 @@ export const WerewolfModeratorLobbyArtifacts: React.SFC<Props> = ({
     <Layout padded>
       <Typography variant="h2">Roles: {getWeight(lobby.roles)}</Typography>
       <Button onClick={reset}>Reset</Button>
-      {AllArtifacts.map(artifact => (
+      {Artifacts.map(artifact => (
         <Profile
           key={artifact.state.type}
           text={artifact.state.title}

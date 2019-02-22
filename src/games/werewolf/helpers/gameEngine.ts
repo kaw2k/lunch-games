@@ -6,8 +6,7 @@ import pipe from 'ramda/es/pipe'
 import { PlayerWerewolf } from '../interfaces/player'
 import { curry, values } from 'ramda'
 import { PlayerId } from '../../../interfaces/player'
-import { getArtifact, AllArtifacts } from '../data/artifacts'
-import { ArtifactState } from '../interfaces/artifact'
+import { ArtifactState, getArtifact, Artifacts } from '../interfaces/artifact'
 import { addAction, addDelayedAction } from './addAction'
 import { DelayAction } from '../interfaces/delayAction'
 import { clone } from '../../../helpers/clone'
@@ -309,7 +308,7 @@ const killPlayer = curry(
       // Activate artifacts they had with post death actions
       _game =>
         player.artifacts.reduce<WerewolfGame>((game, artifactState) => {
-          const artifact = getArtifact(artifactState.type as AllArtifacts)
+          const artifact = getArtifact(artifactState.type as Artifacts)
 
           if (!artifact.actions.postDeathAction) return game
 

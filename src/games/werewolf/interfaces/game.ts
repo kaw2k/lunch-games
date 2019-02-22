@@ -5,8 +5,8 @@ import { Player, PlayerId } from '../../../interfaces/player'
 import { Omit } from '@material-ui/core'
 import { Actions } from './actions'
 import { DelayAction } from './delayAction'
-import { AllArtifacts } from '../data/artifacts'
 import { Teams, Roles } from './card'
+import { Artifacts } from './artifact'
 
 interface WerewolfOptions {
   dayTimeLimit: number
@@ -44,7 +44,7 @@ export interface WerewolfGame {
   // Sometimes new roles are added or removed mid game. Keep
   // track of what you came in with for bookkeeping
   initialRoles: Roles[]
-  initialArtifacts: AllArtifacts[]
+  initialArtifacts: Artifacts[]
   // Used to see who is going to be in the lobby for the next game
   lobbyPlayers: Player[]
   // The players actively playing the game
@@ -80,7 +80,7 @@ export interface WerewolfLobby extends Omit<Lobby, 'type'> {
   type: 'werewolf-lobby'
   id: RoomId
   roles: Roles[]
-  artifacts: AllArtifacts[]
+  artifacts: Artifacts[]
   options: WerewolfOptions
   moderators: PlayerId[]
 }
