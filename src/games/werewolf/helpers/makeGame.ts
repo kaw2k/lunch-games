@@ -63,8 +63,8 @@ export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
     },
     night: {
       kills: [],
-      prompts: [],
       story: [],
+      prompts: null,
     },
   }
 }

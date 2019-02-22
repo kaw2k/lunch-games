@@ -36,14 +36,14 @@ export const GameContainer: React.SFC<Props> = ({ children }) => {
           <Button
             color="red"
             onClick={() => {
-              endGame('fascist', 'The bad team won!')
+              endGame('werewolves', 'The bad team won!')
             }}>
             bad
           </Button>
           <Button
             color="teal"
             onClick={() => {
-              endGame('liberal', 'The good team won!')
+              endGame('villagers', 'The good team won!')
             }}>
             good
           </Button>

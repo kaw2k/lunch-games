@@ -2,11 +2,11 @@ import * as React from 'react'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
-import { Action } from '../../interfaces/actions'
 import { ViewRole } from '../../components/viewRole/role'
+import { Actions } from '../../interfaces/actions'
 
 interface Props {
-  ready: (actions: Action<any>[]) => void
+  ready: (actions: Actions[]) => void
 }
 
 export const GenericViewRole: React.SFC<Props> = ({ ready }) => {

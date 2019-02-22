@@ -3,21 +3,23 @@ import { ChoosePlayers } from '../../../../../components/choosePlayers'
 import { WerewolfProfile } from '../../../components/werewolfProfile'
 import { WerewolfGameContext } from '../../../../../helpers/contexts'
 import { values } from 'ramda'
-import { PlayerWerewolf } from '../../../interfaces/player'
 import { Typography } from '@material-ui/core'
 import { ActionRow } from '../../../../../components/actionRow'
 import { Button } from '../../../../../components/button'
-import { getActionCreator } from '../../../interfaces/actions'
+import {
+  NightViewProps,
+  secondaryNightMessage,
+} from '../../../interfaces/night'
+import { bless } from '../../../interfaces/actions'
 
-const NightView: React.SFC<{ player: PlayerWerewolf; done: () => void }> = ({
-  player,
-  done,
-}) => {
-  const { game, addAction } = React.useContext(WerewolfGameContext)
+const NightView: React.SFC<NightViewProps> = ({ player, done, callByName }) => {
+  const { game } = React.useContext(WerewolfGameContext)
   const canBlessAgain = !values(game.players).find(
     p => p.isBlessed === player.id
   )
-  const title = 'Priest, wake up! Bless someone.'
+  const title = callByName
+    ? secondaryNightMessage(player)
+    : 'Priest, wake up! Bless someone.'
   const description = `They will be protected until they are attacked the first time. You can't bless another person until your first blessing goes away.`
 
   if (!canBlessAgain) {
@@ -31,7 +33,7 @@ const NightView: React.SFC<{ player: PlayerWerewolf; done: () => void }> = ({
           Your previous target is still blessed, nothing to do.
         </Typography>
         <ActionRow fixed>
-          <Button color="green" onClick={done}>
+          <Button color="green" onClick={() => done([])}>
             continue
           </Button>
         </ActionRow>
@@ -46,8 +48,7 @@ const NightView: React.SFC<{ player: PlayerWerewolf; done: () => void }> = ({
         description={description}
         doneText="protect"
         onDone={([target]) => {
-          addAction(getActionCreator('bless')(target, player.id))
-          done()
+          done([bless({ target, source: player.id })])
         }}
         players={values(game.players).filter(p => p.alive)}>
         {props => <WerewolfProfile {...props} />}

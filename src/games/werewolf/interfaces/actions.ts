@@ -1,147 +1,89 @@
 import { PlayerId } from '../../../interfaces/player'
-import values from 'ramda/es/values'
-import keys from 'ramda/es/keys'
 import { PlayerWerewolf } from './player'
+import { Id } from '../../../helpers/id'
 
 enum ActionOrder {
   setup = 0,
   misc = 50,
+  artifact = 75,
   kill = 100,
   postKill = 150,
 }
 
-export interface Action<Type extends string> {
+type Action<Type extends string, Payload extends object> = {
   id: string
   type: Type
   order: ActionOrder
-}
+} & Payload
 
-interface TargetOnePlayer<Type extends string> extends Action<Type> {
+interface Target {
   target: PlayerId
 }
-const TargetOnePlayer = <T extends string>(type: T, order: ActionOrder) => {
-  function ac(target: PlayerId): TargetOnePlayer<T> {
-    return {
-      type,
-      target,
-      order,
-      id: Math.random()
-        .toString()
-        .slice(4),
-    }
-  }
-  ac.type = type
-
-  return ac
-}
-
-interface TargetTwoPlayers<Type extends string> extends Action<Type> {
-  targets: [PlayerId, PlayerId]
-}
-const TargetTwoPlayers = <T extends string>(type: T, order: ActionOrder) => {
-  function ac(targets: [PlayerId, PlayerId]): TargetTwoPlayers<T> {
-    return {
-      type,
-      targets,
-      order,
-      id: Math.random()
-        .toString()
-        .slice(4),
-    }
-  }
-  ac.type = type
-
-  return ac
-}
-
-interface TargetAndSource<Type extends string> extends Action<Type> {
+interface TargetAndSource {
   target: PlayerId
   source: PlayerId
 }
-const TargetAndSource = <T extends string>(type: T, order: ActionOrder) => {
-  function ac(target: PlayerId, source: PlayerId): TargetAndSource<T> {
-    return {
-      type,
-      target,
-      source,
-      order,
-      id: Math.random()
-        .toString()
-        .slice(4),
-    }
-  }
-  ac.type = type
-
-  return ac
-}
-
-interface TargetUpdate<Type extends string> extends Action<Type> {
+interface TargetUpdate {
   target: PlayerId
   updates: Partial<Pick<PlayerWerewolf, 'role'>>
 }
-const TargetUpdate = <T extends string>(type: T, order: ActionOrder) => {
-  function ac(
-    target: PlayerId,
-    updates: Partial<PlayerWerewolf>
-  ): TargetUpdate<T> {
-    return {
-      type,
-      target,
-      updates,
-      order,
-      id: Math.random()
-        .toString()
-        .slice(4),
-    }
+
+function Action<Type extends string, Payload extends object>(
+  type: Type,
+  payload: Payload,
+  order: ActionOrder
+): Action<Type, Payload> {
+  return {
+    type,
+    order,
+    id: Id(),
+    ...payload,
   }
-  ac.type = type
-
-  return ac
 }
 
-const AllActionCreatorMap = {
-  // Kill
-  'sudo kill': TargetOnePlayer('sudo kill', ActionOrder.kill),
-  'vote kill': TargetOnePlayer('vote kill', ActionOrder.kill),
-  'werewolf kill': TargetOnePlayer('werewolf kill', ActionOrder.kill),
-  'link kill': TargetOnePlayer('link kill', ActionOrder.kill),
-  // 'vampire kill': TargetOnePlayer('vampire kill'),
-  // 'chewks kill': TargetOnePlayer('chewks kill'),
-
-  // Protection
-  guard: TargetOnePlayer('guard', ActionOrder.misc),
-  bless: TargetAndSource('bless', ActionOrder.misc),
-
-  // Misc
-  'update player': TargetUpdate('update player', ActionOrder.misc),
-  // 'vampire bite': TargetOnePlayer('vampire bite'),
-  indoctrinate: TargetAndSource('indoctrinate', ActionOrder.misc),
-  // silence: TargetOnePlayer('silence'),
-  // exile: TargetOnePlayer('exile'),
-
-  // Role Actions
-
-  // Setup Actions
-  'link player': TargetAndSource('link player', ActionOrder.setup),
-
-  // Artifact Actions
-  'scepter of rebirth': TargetOnePlayer(
-    'scepter of rebirth',
-    ActionOrder.postKill
-  ),
-} as const
-
-type Values<T extends object> = T[keyof T]
-
-export type Actions = ReturnType<Values<typeof AllActionCreatorMap>>
-type ActionTypes = keyof typeof AllActionCreatorMap
-
-// Used as string references
-export const ActionTypes = keys(AllActionCreatorMap)
-export const ActionCreators = values(AllActionCreatorMap)
-
-export type ActionCreators = typeof ActionCreators
-
-export const getActionCreator = <Type extends ActionTypes>(type: Type) => {
-  return AllActionCreatorMap[type]
+function AC<Type extends string, Payload extends object>(
+  type: Type,
+  order: ActionOrder
+) {
+  return function(payload: Payload): Action<Type, Payload> {
+    return Action(type, payload, order)
+  }
 }
+
+export const sudoKill = AC<'sudo kill', Target>('sudo kill', ActionOrder.kill)
+export const voteKill = AC<'vote kill', Target>('vote kill', ActionOrder.kill)
+export const werewolfKill = AC<'werewolf kill', Target>(
+  'werewolf kill',
+  ActionOrder.kill
+)
+export const linkKill = AC<'link kill', Target>('link kill', ActionOrder.kill)
+export const guard = AC<'guard', Target>('guard', ActionOrder.misc)
+export const bless = AC<'bless', TargetAndSource>('bless', ActionOrder.misc)
+export const updatePlayer = AC<'update player', TargetUpdate>(
+  'update player',
+  ActionOrder.misc
+)
+export const indoctrinate = AC<'indoctrinate', TargetAndSource>(
+  'indoctrinate',
+  ActionOrder.misc
+)
+export const linkPlayer = AC<'link player', TargetAndSource>(
+  'link player',
+  ActionOrder.setup
+)
+export const scepterOfRebirth = AC<'scepter of rebirth', Target>(
+  'scepter of rebirth',
+  ActionOrder.postKill
+)
+
+export type Actions =
+  | ReturnType<typeof sudoKill>
+  | ReturnType<typeof voteKill>
+  | ReturnType<typeof werewolfKill>
+  | ReturnType<typeof linkKill>
+  | ReturnType<typeof guard>
+  | ReturnType<typeof bless>
+  | ReturnType<typeof updatePlayer>
+  | ReturnType<typeof indoctrinate>
+  | ReturnType<typeof linkPlayer>
+  | ReturnType<typeof scepterOfRebirth>

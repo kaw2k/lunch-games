@@ -1,5 +1,5 @@
 import { WerewolfGame, Victory } from '../interfaces/game'
-import { Actions, getActionCreator } from '../interfaces/actions'
+import { Actions, guard, linkKill } from '../interfaces/actions'
 import { assertNever } from '../../../helpers/assertNever'
 import sortBy from 'ramda/es/sortBy'
 import pipe from 'ramda/es/pipe'
@@ -10,6 +10,9 @@ import { getArtifact, AllArtifacts } from '../data/artifacts'
 import { ArtifactState } from '../interfaces/artifact'
 import { addAction, addDelayedAction } from './addAction'
 import { DelayAction } from '../interfaces/delayAction'
+import { clone } from '../../../helpers/clone'
+import { makeNightPrompts } from './makeNightPrompts'
+import map from 'ramda/es/map'
 
 // ===========================================================
 // THE GAME ENGINE
@@ -120,6 +123,7 @@ function updateGame(action: Actions, game: WerewolfGame): WerewolfGame {
   }
 
   if (action.type === 'indoctrinate') {
+    console.log('=================', action)
     return updateWerewolfPlayer(
       player.id,
       { inCult: player.inCult.concat(action.source) },
@@ -163,18 +167,66 @@ function updateGame(action: Actions, game: WerewolfGame): WerewolfGame {
 // MOVE THESE TO THEIR OWN FILES
 // ===========================================================
 // Things that need to happen to the game before night starts
-export function nightCleanup() {
-  // Clear the previously killed players
-  // Add any queued actions for this night into our action array
+export function startNight(initialGame: WerewolfGame): WerewolfGame {
+  let game = clone(initialGame)
+
+  game.night.prompts = makeNightPrompts(game)
+  game.night.kills = []
+  game = processQueuedActions(game)
+
+  return game
 }
 
 // Things that need to happen to the game before day starts
-export function dayCleanup() {
-  // Add any queued actions for this day into our action array
-  // Increment the day counter
-  // Set all players that are:
-  // - blessed='attacked' to blessed=false
-  // - isGuarded=true to isGuarded=false
+export function startDay(initialGame: WerewolfGame): WerewolfGame {
+  let game = clone(initialGame)
+  game.dayCount = game.dayCount + 1
+  game = processQueuedActions(game)
+  game.players = map(
+    player => ({
+      ...player,
+      isBlessed: player.isBlessed === 'attacked' ? false : player.isBlessed,
+      isGuarded: false,
+    }),
+    game.players
+  )
+
+  return game
+}
+
+function processQueuedActions(initialGame: WerewolfGame): WerewolfGame {
+  let game = clone(initialGame)
+
+  type ReduceResult = {
+    moveToActions: WerewolfGame['actions']
+    moveToDelayedActions: WerewolfGame['delayedActions']
+  }
+  const { moveToActions, moveToDelayedActions } = game.delayedActions.reduce<
+    ReduceResult
+  >(
+    ({ moveToActions, moveToDelayedActions }, action) => {
+      if (action.day === game.dayCount && action.time === 'night') {
+        return {
+          moveToActions: moveToActions.concat(action.action),
+          moveToDelayedActions:
+            action.occurrence === 'recurring'
+              ? moveToDelayedActions.concat(action)
+              : moveToDelayedActions,
+        }
+      } else {
+        return {
+          moveToActions,
+          moveToDelayedActions: moveToDelayedActions.concat(action),
+        }
+      }
+    },
+    { moveToActions: [], moveToDelayedActions: [] }
+  )
+
+  game.actions = game.actions.concat(moveToActions)
+  game.delayedActions = moveToDelayedActions
+
+  return game
 }
 
 // ===========================================================
@@ -215,14 +267,16 @@ const killPlayer = curry(
     let actions: Actions[] = []
     let delayedActions: DelayAction<Actions>[] = []
 
-    // If the player is linked to anyone, kill them as well
-    actions = actions.concat(player.linkedTo.map(getActionCreator('link kill')))
+    // If the player is linked, kill them as well
+    actions = actions.concat(
+      player.linkedTo.map(id => linkKill({ target: id }))
+    )
 
     // If they are the cult leader, kill the cult
     if (game.options.killCult && player.role === 'cult leader') {
       values(game.players).forEach(cultMember => {
         if (cultMember.inCult.find(id => id == player.id)) {
-          actions = actions.concat(getActionCreator('link kill')(cultMember.id))
+          actions = actions.concat(linkKill({ target: cultMember.id }))
         }
       })
     }
@@ -235,7 +289,7 @@ const killPlayer = curry(
             time: 'night',
             occurrence: 'once',
             day: game.dayCount + 1,
-            action: getActionCreator('guard')(player.id),
+            action: guard({ target: player.id }),
           }
 
           return memo.concat(action)
@@ -247,12 +301,12 @@ const killPlayer = curry(
     }
 
     return pipe(
-      // Propagate any actions
+      // Propagate actions
       addAction(actions),
       addDelayedAction(delayedActions),
       // Kill them
       updateWerewolfPlayer(playerId, { alive: false }),
-      // Activate any artifacts they had with post death actions
+      // Activate artifacts they had with post death actions
       _game =>
         player.artifacts.reduce<WerewolfGame>((game, artifactState) => {
           const artifact = getArtifact(artifactState.type as AllArtifacts)

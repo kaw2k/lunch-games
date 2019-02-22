@@ -4,27 +4,29 @@ import { WerewolfProfile } from '../../../components/werewolfProfile'
 import { WerewolfGameContext } from '../../../../../helpers/contexts'
 import { values } from 'ramda'
 import contains from 'ramda/es/contains'
-import { PlayerWerewolf } from '../../../interfaces/player'
-import { getActionCreator } from '../../../interfaces/actions'
+import {
+  NightViewProps,
+  secondaryNightMessage,
+} from '../../../interfaces/night'
+import { indoctrinate } from '../../../interfaces/actions'
 
-const NightView: React.SFC<{ player: PlayerWerewolf; done: () => void }> = ({
-  player,
-  done,
-}) => {
-  const { game, addAction } = React.useContext(WerewolfGameContext)
-
+const NightView: React.SFC<NightViewProps> = ({ player, callByName, done }) => {
+  const { game } = React.useContext(WerewolfGameContext)
   return (
     <>
       <ChoosePlayers
-        removePlayer
-        title="Cult leader, wake up! Indoctrinate someone, they are now in your cult."
+        removePlayer={player}
+        title={
+          callByName
+            ? secondaryNightMessage(player)
+            : 'Cult leader, wake up! Indoctrinate someone, they are now in your cult.'
+        }
         doneText="indoctrinate"
         onDone={([target]) => {
-          addAction(getActionCreator('indoctrinate')(target, player.id))
-          done()
+          done([indoctrinate({ target, source: player.id })])
         }}
         players={values(game.players).filter(
-          p => contains(player.id, p.inCult) && p.alive
+          p => !contains(player.id, p.inCult) && p.alive
         )}>
         {props => <WerewolfProfile {...props} />}
       </ChoosePlayers>

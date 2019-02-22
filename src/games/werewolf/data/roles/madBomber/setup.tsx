@@ -1,14 +1,14 @@
 import * as React from 'react'
 import { WerewolfGameContext } from '../../../../../helpers/contexts'
 import { Typography } from '@material-ui/core'
-import { getActionCreator, Action } from '../../../interfaces/actions'
 import { ViewRole } from '../../../components/viewRole/role'
 import { ChoosePlayers } from '../../../../../components/choosePlayers'
 import { ActionRow } from '../../../../../components/actionRow'
 import { Button } from '../../../../../components/button'
+import { Actions, linkPlayer } from '../../../interfaces/actions'
 
 interface Props {
-  ready: (actions: Action<any>[]) => void
+  ready: (actions: Actions[]) => void
 }
 
 export const MadBomberSetup: React.SFC<Props> = ({ ready }) => {
@@ -47,8 +47,8 @@ export const MadBomberSetup: React.SFC<Props> = ({ ready }) => {
         doneText="ready"
         onDone={([left, right]) =>
           ready([
-            getActionCreator('link player')(left, player.id),
-            getActionCreator('link player')(right, player.id),
+            linkPlayer({ target: left, source: player.id }),
+            linkPlayer({ target: right, source: player.id }),
           ])
         }
         doneProps={disabled => ({

@@ -1,12 +1,12 @@
 import * as React from 'react'
 import { WerewolfGameContext } from '../../../../../helpers/contexts'
 import { Typography } from '@material-ui/core'
-import { getActionCreator, Action } from '../../../interfaces/actions'
 import { ViewRole } from '../../../components/viewRole/role'
 import { ChoosePlayers } from '../../../../../components/choosePlayers'
+import { Actions, linkPlayer } from '../../../interfaces/actions'
 
 interface Props {
-  ready: (actions: Action<any>[]) => void
+  ready: (actions: Actions[]) => void
 }
 
 export const VAWolfSetup: React.SFC<Props> = ({ ready }) => {
@@ -24,7 +24,7 @@ export const VAWolfSetup: React.SFC<Props> = ({ ready }) => {
         removePlayer
         doneText="ready"
         onDone={([target]) =>
-          ready([getActionCreator('link player')(target, player.id)])
+          ready([linkPlayer({ target, source: player.id })])
         }
         doneProps={disabled => ({
           color: disabled ? 'red' : 'green',

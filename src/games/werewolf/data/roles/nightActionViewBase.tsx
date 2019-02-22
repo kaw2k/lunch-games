@@ -1,15 +1,21 @@
 import * as React from 'react'
-import { ChoosePlayers } from '../../../../../components/choosePlayers'
-import { WerewolfProfile } from '../../../components/werewolfProfile'
-import { WerewolfGameContext } from '../../../../../helpers/contexts'
+import { ChoosePlayers } from '../../../../components/choosePlayers'
+import { WerewolfProfile } from '../../components/werewolfProfile'
+import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values } from 'ramda'
-import {
-  NightViewProps,
-  secondaryNightMessage,
-} from '../../../interfaces/night'
-import { guard } from '../../../interfaces/actions'
+import { NightViewProps, secondaryNightMessage } from '../../interfaces/night'
+import { guard } from '../../interfaces/actions'
 
-const NightView: React.SFC<NightViewProps> = ({ done, player, callByName }) => {
+// - Normal, call by role and let them do their action
+// - Role is not active
+// - By Name, let them do their action
+// - By Name, role is not active
+
+export const NightViewBase: React.SFC<NightViewProps> = ({
+  done,
+  player,
+  callByName,
+}) => {
   const { game } = React.useContext(WerewolfGameContext)
 
   return (
@@ -30,6 +36,3 @@ const NightView: React.SFC<NightViewProps> = ({ done, player, callByName }) => {
     </>
   )
 }
-
-export const NightPlayerView = NightView
-export const NightModeratorView = NightView

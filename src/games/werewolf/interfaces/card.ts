@@ -5,6 +5,8 @@ import { PlayerWerewolf } from './player'
 import { NightMessageOrder } from './nightMessage'
 import { Image } from './image'
 import { Emoji } from './emoji'
+import { NightViewProps } from './night'
+import { Actions } from './actions'
 
 // ==========================
 // Teams
@@ -44,12 +46,9 @@ export interface Card<Role extends string = string> {
 
   // Views
   // TODO: :sob:
-  SetupView: React.FC<{ ready: (actions: any[]) => void }>
-  NightModeratorView: React.FC<{
-    player: PlayerWerewolf
-    done: () => void
-  }> | null
-  NightPlayerView: React.FC<{ player: PlayerWerewolf; done: () => void }> | null
+  SetupView: React.FC<{ ready: (actions: Actions[]) => void }>
+  NightModeratorView: React.FC<NightViewProps> | null
+  NightPlayerView: React.FC<NightViewProps> | null
 }
 
 export const Card = <Role extends string>(card: Card<Role>): Card<Role> => card

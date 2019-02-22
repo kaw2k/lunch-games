@@ -51,7 +51,9 @@ export const Button: React.SFC<Props> = ({
   fullWidth = true,
   ...props
 }) => {
-  const [timer, setTimer] = React.useState<any>(null)
+  const [timer, setTimer] = React.useState<NodeJS.Timeout | undefined>(
+    undefined
+  )
   const classes = useStyles()
 
   return (
@@ -70,11 +72,13 @@ export const Button: React.SFC<Props> = ({
         if (onClick && confirm && !timer) {
           setTimer(
             setTimeout(() => {
-              setTimer(clearTimeout(timer))
+              clearTimeout(timer)
+              setTimer(undefined)
             }, 3000)
           )
         } else if (onClick && confirm && timer) {
-          setTimer(clearTimeout(timer))
+          clearTimeout(timer)
+          setTimer(undefined)
           onClick(e)
         } else if (onClick) {
           onClick(e)

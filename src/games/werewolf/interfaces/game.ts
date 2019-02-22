@@ -25,10 +25,17 @@ export interface Victory {
   message: string
 }
 
-export interface NightPrompt {
-  players: PlayerId[]
-  role: Roles
-}
+export type NightPrompt =
+  | {
+      type: 'primary'
+      players: PlayerId[]
+      role: Roles
+    }
+  | {
+      type: 'secondary'
+      players: PlayerId[]
+      role: Roles | null
+    }
 
 export interface WerewolfGame {
   type: 'werewolf-game'
@@ -80,5 +87,3 @@ export interface WerewolfLobby extends Omit<Lobby, 'type'> {
 }
 
 export type Werewolf = WerewolfGame | WerewolfLobby
-
-// make sure two night kills and a staff of rebirth still keep you alive

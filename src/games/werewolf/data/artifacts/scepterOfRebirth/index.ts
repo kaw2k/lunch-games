@@ -1,6 +1,6 @@
 import { Artifact } from '../../../interfaces/artifact'
 import { addAction } from '../../../helpers/addAction'
-import { getActionCreator } from '../../../interfaces/actions'
+import { scepterOfRebirth } from '../../../interfaces/actions'
 
 export const ScepterOfRebirth = Artifact({
   type: 'scepter of rebirth',
@@ -19,7 +19,7 @@ export const ScepterOfRebirth = Artifact({
     morningAction: null,
     action: null,
     postDeathAction: (artifact, killType, player, game) => {
-      return addAction(getActionCreator('scepter of rebirth')(player.id), game)
+      return addAction(scepterOfRebirth({ target: player.id }), game)
     },
   },
 })

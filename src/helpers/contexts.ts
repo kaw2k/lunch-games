@@ -14,6 +14,7 @@ import {
 import { PlayerAvalon } from '../games/avalon/interfaces/player'
 import { PlayerWerewolf } from '../games/werewolf/interfaces/player'
 import { Unpack } from './unpack'
+import { Teams } from '../games/werewolf/interfaces/card'
 
 export interface RoomContext {
   room: Room
@@ -86,7 +87,7 @@ export interface WerewolfGameContext {
       | Unpack<WW.WerewolfGame['delayedActions']>
       | WW.WerewolfGame['delayedActions']
   ) => void
-  endGame: (winners?: any, message?: string) => void
+  endGame: (winners?: Teams, message?: string) => void
 }
 
 export const WerewolfGameContext = createContext<WerewolfGameContext>({
