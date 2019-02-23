@@ -2,7 +2,7 @@ import * as React from 'react'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
-import { ViewRole } from '../../components/viewRole/role'
+import { ViewRole } from '../viewRole/role'
 import { Actions } from '../../interfaces/actions'
 
 interface Props {

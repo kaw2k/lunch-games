@@ -9,7 +9,7 @@ import { count } from '../../../../../helpers/count'
 import { RoomContext } from '../../../../../helpers/contexts'
 import { getWeight } from '../../../helpers/getWeight'
 import { Button } from '../../../../../components/button'
-import { AllCards, Roles, getCard } from '../../../interfaces/card'
+import { Cards, Roles, getCard } from '../../../interfaces/card'
 
 interface Props {
   lobby: WerewolfLobby
@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     opacity: 0.25,
   },
 })
-const cards = sortBy(card => -1 * card.weight, AllCards)
+const cards = sortBy(card => -1 * card.weight, Cards)
 
 export const WerewolfModeratorLobbyRoles: React.SFC<Props> = ({ lobby }) => {
   const classes = useStyles()

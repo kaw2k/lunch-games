@@ -18,6 +18,7 @@ import { Villager } from './villager'
 import { Werewolf } from './werewolf'
 import { VAWolf } from './vaWolf'
 import { MadBomber } from './madBomber'
+import { Unpack } from '../../../../helpers/unpack'
 
 // ==========================
 // Teams
@@ -64,7 +65,7 @@ export interface Card<Role extends string = string> {
 
 export const Card = <Role extends string>(card: Card<Role>): Card<Role> => card
 
-export const AllCards = [
+export const Cards = [
   Bodyguard,
   CultLeader,
   Cursed,
@@ -77,8 +78,8 @@ export const AllCards = [
   MadBomber,
 ]
 
-export type Roles = (typeof AllCards)[0]['role']
-export const Roles = AllCards.map(role => role.role)
+export const Roles = Cards.map(role => role.role)
+export type Roles = Unpack<typeof Roles>
 
 export const getCard = <Role extends Roles>(role: Role): Card<Role> =>
-  AllCards.find(r => r.role === role) as Card<Role>
+  Cards.find(r => r.role === role) as Card<Role>

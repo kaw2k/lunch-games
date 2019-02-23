@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { ChoosePlayers } from '../../../../components/choosePlayers'
-import { WerewolfProfile } from '../../components/werewolfProfile'
+import { WerewolfProfile } from '../werewolfProfile'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values } from 'ramda'
 import { NightViewProps, secondaryNightMessage } from '../../interfaces/night'

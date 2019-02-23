@@ -52,13 +52,13 @@ export const WerewolfModeratorLobbyArtifacts: React.SFC<Props> = ({
       <Button onClick={reset}>Reset</Button>
       {Artifacts.map(artifact => (
         <Profile
-          key={artifact.state.type}
-          text={artifact.state.title}
+          key={artifact.type}
+          text={artifact.title}
           alignItems="flex-start"
           className={
             count(lobby.artifacts, a => a === artifact.type) ? '' : classes.dim
           }
-          subtext={artifact.state.description}
+          subtext={artifact.description}
           onClick={() => addOrRemoveArtifact(artifact.type)}
         />
       ))}

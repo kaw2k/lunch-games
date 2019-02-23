@@ -3,7 +3,7 @@ import { isModerator } from './isModerator'
 import { shuffle } from '../../../helpers/shuffle'
 import { PlayerWerewolf } from '../interfaces/player'
 import { Roles } from '../interfaces/card'
-import { Artifacts, getArtifact } from '../interfaces/artifact'
+import { Artifacts, getArtifact, ArtifactState } from '../interfaces/artifact'
 
 export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
   const players = lobby.lobbyPlayers.filter(p => !isModerator(p, lobby))
@@ -24,7 +24,7 @@ export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
         ...player,
         alive: true,
         artifacts: shouldHaveArtifact
-          ? [getArtifact(shuffledArtifacts[i]).state]
+          ? [ArtifactState(getArtifact(shuffledArtifacts[i]).type)]
           : [],
         inCult: [],
         isBlessed: false,

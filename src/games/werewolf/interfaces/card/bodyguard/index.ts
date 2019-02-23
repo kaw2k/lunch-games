@@ -3,7 +3,7 @@ import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
 import { NightMessageOrder } from '../../../interfaces/nightMessage'
 import { NightModeratorView, NightPlayerView } from './night'
-import { GenericViewRole } from '../../../data/roles/genericViewRole'
+import { GenericViewRole } from '../../../components/setupRole/genericViewRole'
 
 export const Bodyguard = Card({
   role: 'bodyguard',

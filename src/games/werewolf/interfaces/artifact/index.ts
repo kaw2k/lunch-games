@@ -10,40 +10,39 @@ import { OrbOfSpeculation } from './orbOfSpeculation'
 // ===========================
 // Types and Constructors
 // ===========================
-export interface Artifact<Type extends string = string> {
+export interface Artifact<Type extends string> {
   type: Type
-  state: ArtifactState<Type>
-  actions: ArtifactActions
-}
-
-// The state stored in the user object
-export interface ArtifactState<Type extends string = string> {
-  type: Type
-  title: string
-  description: string
-  infinite: boolean
-  activated: boolean
-  morningAction: string | null
-  state: any
-}
-
-// We can't store functions in firebase so separate their
-// helper methods into individual chunks
-export interface ArtifactActions {
   action: null | UpdateFn
   setup: null | UpdateFn
   morningAction: null | UpdateFn
   postDeathAction: null | UpdateFnWithAction
+  title: string
+  description: string
+  infinite: boolean
+}
+
+// The state stored in the user object
+export interface ArtifactState {
+  type: Artifacts
+  activated: boolean
+  state: any
+}
+export function ArtifactState(type: Artifacts): ArtifactState {
+  return {
+    type,
+    activated: false,
+    state: null,
+  }
 }
 
 type UpdateFn = (
-  artifactState: ArtifactState<any>,
+  artifactState: ArtifactState,
   player: PlayerWerewolf,
   game: WerewolfGame
 ) => WerewolfGame
 
 type UpdateFnWithAction = (
-  artifactState: ArtifactState<any>,
+  artifactState: ArtifactState,
   killType: Actions,
   player: PlayerWerewolf,
   game: WerewolfGame
