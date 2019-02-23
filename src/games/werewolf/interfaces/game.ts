@@ -5,8 +5,9 @@ import { Player, PlayerId } from '../../../interfaces/player'
 import { Omit } from '@material-ui/core'
 import { Actions } from './actions'
 import { DelayAction } from './delayAction'
-import { Teams, Roles } from './card'
-import { Artifacts } from './artifact'
+import { Teams } from './card'
+import { Artifacts } from './artifact/artifacts'
+import { Roles } from './card/cards'
 
 interface WerewolfOptions {
   dayTimeLimit: number
@@ -61,16 +62,10 @@ export interface WerewolfGame {
   // An array of actions taken during the night
   actions: Actions[]
 
-  night: {
-    kills: PlayerId[]
-    story: string[]
-    // The roles remaining to go through at night
-    prompts: null | NightPrompt[]
-  }
-  artifactState: {
-    // Prism of power can set 3 people to be targets at night
-    nightTargets: null | PlayerId[]
-  }
+  nightKills: PlayerId[]
+  nightPrompts: null | NightPrompt[]
+
+  prismOfPower: null | PlayerId[]
 
   // Any actions that need to happen in the future
   delayedActions: DelayAction<Actions>[]

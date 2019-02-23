@@ -1,24 +1,10 @@
 import { WerewolfGame } from '../game'
 import { PlayerWerewolf } from '../player'
-
 import { NightMessageOrder } from '../nightMessage'
 import { Image } from '../image'
 import { Emoji } from '../emoji'
-import { NightViewProps } from '../night'
-import { Actions } from '../actions'
-
-// Roles
-import { Bodyguard } from './bodyguard'
-import { CultLeader } from './cultleader'
-import { Cursed } from './cursed'
-import { Mayor } from './mayor'
-import { Priest } from './priest'
-import { Tanner } from './tanner'
-import { Villager } from './villager'
-import { Werewolf } from './werewolf'
-import { VAWolf } from './vaWolf'
-import { MadBomber } from './madBomber'
-import { Unpack } from '../../../../helpers/unpack'
+import { NightViewProps } from '../nightViewInterfaces'
+import { SetupViewProps } from '../setupViewInterfaces'
 
 // ==========================
 // Teams
@@ -57,29 +43,9 @@ export interface Card<Role extends string = string> {
   nightOrder: NightMessageOrder
 
   // Views
-  // TODO: :sob:
-  SetupView: React.FC<{ ready: (actions: Actions[]) => void }>
+  SetupRoleView: React.FC<SetupViewProps>
   NightModeratorView: React.FC<NightViewProps> | null
   NightPlayerView: React.FC<NightViewProps> | null
 }
 
 export const Card = <Role extends string>(card: Card<Role>): Card<Role> => card
-
-export const Cards = [
-  Bodyguard,
-  CultLeader,
-  Cursed,
-  Mayor,
-  Priest,
-  Tanner,
-  Villager,
-  Werewolf,
-  VAWolf,
-  MadBomber,
-]
-
-export const Roles = Cards.map(role => role.role)
-export type Roles = Unpack<typeof Roles>
-
-export const getCard = <Role extends Roles>(role: Role): Card<Role> =>
-  Cards.find(r => r.role === role) as Card<Role>

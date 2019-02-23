@@ -10,7 +10,7 @@ import { getWeight } from '../../../helpers/getWeight'
 import { Button } from '../../../../../components/button'
 import { ActionRow } from '../../../../../components/actionRow'
 import { uniq } from 'ramda'
-import { Roles, getCard } from '../../../interfaces/card'
+import { Roles, getCard } from '../../../interfaces/card/cards'
 
 interface Props {
   lobby: WerewolfLobby

@@ -3,7 +3,7 @@ import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
 import { NightMessageOrder } from '../../../interfaces/nightMessage'
 import { NightModeratorView, NightPlayerView } from './night'
-import { GenericViewRole } from '../../../components/setupRole/genericViewRole'
+import { GenericSetupRoleView } from '../../../components/setupRole/genericSetupRole'
 
 export const CultLeader = Card({
   role: 'cult leader',
@@ -16,16 +16,12 @@ export const CultLeader = Card({
     `Indoctrinate people who you think won't die early`,
     `Your cult dies with you, so DON'T come out as the cult leader. You are a high priority role to kill.`,
   ],
-  // nightModeratorMessage: {
-  //   message:
-  //     'cult leader, indoctrinate someone, they are now part of your cult',
-  //   },
   nightOrder: NightMessageOrder.misc,
-  SetupView: GenericViewRole,
+  SetupRoleView: GenericSetupRoleView,
   NightModeratorView,
   NightPlayerView,
   image: require('./cult-leader.png'),
   profile: require('./cult-leader-profile.png'),
-  isActive: always(false),
+  isActive: always(true),
   appearsBad: always(false),
 })

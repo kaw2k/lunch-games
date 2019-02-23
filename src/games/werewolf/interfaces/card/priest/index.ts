@@ -2,7 +2,8 @@ import { always } from 'ramda'
 import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
 import { NightMessageOrder } from '../../../interfaces/nightMessage'
-import { GenericViewRole } from '../../../components/setupRole/genericViewRole'
+import { GenericSetupRoleView } from '../../../components/setupRole/genericSetupRole'
+import { NightModeratorView, NightPlayerView } from './night'
 
 export const Priest = Card({
   role: 'priest',
@@ -17,13 +18,10 @@ export const Priest = Card({
   ],
   image: require('./priest.png'),
   profile: require('./priest-profile.png'),
-  SetupView: GenericViewRole,
-  isActive: player => player.alive,
-  // nightModeratorMessage: {
-  //   message: `priest, bless someone. if they are ever killed you will bless another person next night`,
-  // },
+  SetupRoleView: GenericSetupRoleView,
+  isActive: always(true),
   appearsBad: always(false),
-  NightModeratorView: null,
-  NightPlayerView: null,
+  NightModeratorView,
+  NightPlayerView,
   nightOrder: NightMessageOrder.protection,
 })

@@ -4,12 +4,12 @@ import uniq from 'ramda/es/uniq'
 import sortBy from 'ramda/es/sortBy'
 import { isWerewolf } from './isWerewolf'
 import { PlayerId } from '../../../interfaces/player'
-import { Roles, getCard } from '../interfaces/card'
+import { Roles, getCard } from '../interfaces/card/cards'
 
 export function makeNightPrompts(game: WerewolfGame): NightPrompt[] {
   function getPlayers(role: Roles): PlayerId[] {
     return values(game.players)
-      .filter(p => p.alive && p.role === role)
+      .filter(p => p.role === role)
       .map(p => p.id)
   }
 
@@ -22,7 +22,10 @@ export function makeNightPrompts(game: WerewolfGame): NightPrompt[] {
   const roles = sortBy(
     role => getCard(role).nightOrder,
     uniq([...game.initialRoles, ...currentRoles])
-  ).filter(role => getCard(role).team !== 'werewolves')
+  ).filter(role => {
+    const card = getCard(role)
+    return card.team !== 'werewolves' && card.NightModeratorView
+  })
 
   const werewolves = values(game.players)
     .filter(p => {

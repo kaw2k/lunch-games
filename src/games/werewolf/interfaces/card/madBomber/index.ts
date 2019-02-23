@@ -17,7 +17,7 @@ export const MadBomber = Card({
   ],
   image: require('./unknown.png'),
   profile: require('./unknown-profile.png'),
-  SetupView: MadBomberSetup,
+  SetupRoleView: MadBomberSetup,
   isActive: always(false),
   appearsBad: always(false),
   NightModeratorView: null,

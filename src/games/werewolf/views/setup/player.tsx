@@ -3,7 +3,7 @@ import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { Actions } from '../../interfaces/actions'
 import { firebaseArrayAdd } from '../../../../helpers/firebase'
 import { SetupRoleContainer } from '../../components/setupRole/setupRoleContainer'
-import { getCard } from '../../interfaces/card'
+import { getCard } from '../../interfaces/card/cards'
 
 interface Props {}
 
@@ -11,7 +11,7 @@ export const WerewolfPlayerSetup: React.SFC<Props> = ({}) => {
   const { player, updateGame, updateGamePlayer } = React.useContext(
     WerewolfGameContext
   )
-  const { SetupView } = getCard(player.role)
+  const { SetupRoleView: SetupView } = getCard(player.role)
 
   async function ready(actions: Actions[]) {
     updateGamePlayer({

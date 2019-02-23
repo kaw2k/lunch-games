@@ -5,13 +5,10 @@ import { ViewRole } from '../../../components/viewRole/role'
 import { ChoosePlayers } from '../../../../../components/choosePlayers'
 import { ActionRow } from '../../../../../components/actionRow'
 import { Button } from '../../../../../components/button'
-import { Actions, linkPlayer } from '../../../interfaces/actions'
+import { linkPlayer } from '../../../interfaces/actions'
+import { SetupViewProps } from '../../setupViewInterfaces'
 
-interface Props {
-  ready: (actions: Actions[]) => void
-}
-
-export const MadBomberSetup: React.SFC<Props> = ({ ready }) => {
+export const MadBomberSetup: React.SFC<SetupViewProps> = ({ ready }) => {
   const { player, game } = React.useContext(WerewolfGameContext)
 
   if (!game.options.madBomberOnlyKillsAdjacent) {

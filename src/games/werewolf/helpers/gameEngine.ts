@@ -1,17 +1,22 @@
 import { WerewolfGame, Victory } from '../interfaces/game'
-import { Actions, guard, linkKill } from '../interfaces/actions'
+import {
+  Actions,
+  guard,
+  linkKill,
+  scepterOfRebirth,
+} from '../interfaces/actions'
 import { assertNever } from '../../../helpers/assertNever'
 import sortBy from 'ramda/es/sortBy'
 import pipe from 'ramda/es/pipe'
 import { PlayerWerewolf } from '../interfaces/player'
 import { curry, values } from 'ramda'
 import { PlayerId } from '../../../interfaces/player'
-import { ArtifactState, getArtifact } from '../interfaces/artifact'
 import { addAction, addDelayedAction } from './addAction'
 import { DelayAction } from '../interfaces/delayAction'
 import { clone } from '../../../helpers/clone'
 import { makeNightPrompts } from './makeNightPrompts'
 import map from 'ramda/es/map'
+import { getArtifact, ArtifactState } from '../interfaces/artifact/artifacts'
 
 // ===========================================================
 // THE GAME ENGINE
@@ -122,7 +127,6 @@ function updateGame(action: Actions, game: WerewolfGame): WerewolfGame {
   }
 
   if (action.type === 'indoctrinate') {
-    console.log('=================', action)
     return updateWerewolfPlayer(
       player.id,
       { inCult: player.inCult.concat(action.source) },
@@ -169,8 +173,8 @@ function updateGame(action: Actions, game: WerewolfGame): WerewolfGame {
 export function startNight(initialGame: WerewolfGame): WerewolfGame {
   let game = clone(initialGame)
 
-  game.night.prompts = makeNightPrompts(game)
-  game.night.kills = []
+  game.nightPrompts = makeNightPrompts(game)
+  game.nightKills = []
   game = processQueuedActions(game)
 
   return game
@@ -299,26 +303,38 @@ const killPlayer = curry(
       delayedActions = delayedActions.concat(actions)
     }
 
+    console.log('killing ', playerId)
+
     return pipe(
       // Propagate actions
       addAction(actions),
       addDelayedAction(delayedActions),
       // Kill them
       updateWerewolfPlayer(playerId, { alive: false }),
-      // Activate artifacts they had with post death actions
+      _game => ({
+        ..._game,
+        nightKills: _game.nightKills.concat(playerId),
+      }),
+      g => {
+        console.log(g)
+        return g
+      },
       _game =>
-        player.artifacts.reduce<WerewolfGame>((game, artifactState) => {
+        player.artifacts.reduce<WerewolfGame>((_game, artifactState) => {
           const artifact = getArtifact(artifactState.type)
+          if (
+            !artifactState.activated &&
+            artifact.type === 'scepter of rebirth'
+          ) {
+            return addAction(scepterOfRebirth({ target: player.id }), _game)
+          }
 
-          if (!artifact.postDeathAction) return game
-
-          return artifact.postDeathAction(
-            artifactState,
-            actionType,
-            player,
-            game
-          )
-        }, _game)
+          return _game
+        }, _game),
+      g => {
+        console.log(g)
+        return g
+      }
     )(game)
   }
 )

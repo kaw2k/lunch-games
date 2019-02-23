@@ -1,4 +1,4 @@
-import { getCard, Roles } from '../interfaces/card'
+import { getCard, Roles } from '../interfaces/card/cards'
 
 export function getWeight(roles: Roles[]): number {
   return roles.reduce<number>((memo, role) => {

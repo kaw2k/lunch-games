@@ -2,7 +2,7 @@ import { always } from 'ramda'
 import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
 import { NightMessageOrder } from '../../../interfaces/nightMessage'
-import { GenericViewRole } from '../../../components/setupRole/genericViewRole'
+import { GenericSetupRoleView } from '../../../components/setupRole/genericSetupRole'
 
 export const Tanner = Card({
   role: 'tanner',
@@ -20,7 +20,7 @@ export const Tanner = Card({
   profile: require('./tanner-profile.png'),
   isActive: always(false),
   appearsBad: always(false),
-  SetupView: GenericViewRole,
+  SetupRoleView: GenericSetupRoleView,
   NightModeratorView: null,
   NightPlayerView: null,
   nightOrder: NightMessageOrder.none,

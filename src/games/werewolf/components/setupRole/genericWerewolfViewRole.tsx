@@ -12,7 +12,7 @@ interface Props {
   ready: (actions: Actions[]) => void
 }
 
-export const GenericWerewolfViewRole: React.SFC<Props> = ({ ready }) => {
+export const GenericSetupWerewolfRoleView: React.SFC<Props> = ({ ready }) => {
   const { player, game } = React.useContext(WerewolfGameContext)
 
   return (

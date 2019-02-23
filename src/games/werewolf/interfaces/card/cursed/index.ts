@@ -2,7 +2,7 @@ import { always } from 'ramda'
 import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
 import { NightMessageOrder } from '../../../interfaces/nightMessage'
-import { GenericViewRole } from '../../../components/setupRole/genericViewRole'
+import { GenericSetupRoleView } from '../../../components/setupRole/genericSetupRole'
 
 export const Cursed = Card({
   role: 'cursed',
@@ -17,7 +17,7 @@ export const Cursed = Card({
   ],
   image: require('./cursed.png'),
   profile: require('./cursed-profile.png'),
-  SetupView: GenericViewRole,
+  SetupRoleView: GenericSetupRoleView,
   appearsBad: always(false),
   isActive: always(false),
   NightModeratorView: null,

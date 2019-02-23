@@ -3,22 +3,19 @@ import { WerewolfGameContext } from '../../../../../../helpers/contexts'
 import { Button } from '../../../../../../components/button'
 import { ActionRow } from '../../../../../../components/actionRow'
 import { Typography } from '@material-ui/core'
-// import { getCard } from '../../../../data/roles'
-// import { addAction } from '../../../../helpers/addAction'
-// import { runActions } from '../../../../helpers/gameEngine'
+import { addAction } from '../../../../helpers/addAction'
+import { runActions, startDay } from '../../../../helpers/gameEngine'
+import { getCard } from '../../../../interfaces/card/cards'
 
 interface Props {}
 
 export const NightModerator: React.SFC<Props> = ({}) => {
   const { game, updateGame } = React.useContext(WerewolfGameContext)
 
-  const prompts = game.night.prompts
+  const prompts = game.nightPrompts
 
-  if (prompts === null) {
-    return <>done</>
-  }
+  if (prompts === null) return null
 
-  // TODO: We need to run actions before this
   if (!prompts.length) {
     return (
       <>
@@ -26,18 +23,20 @@ export const NightModerator: React.SFC<Props> = ({}) => {
           Things to say:
         </Typography>
         <Typography>People who died:</Typography>
-        <Typography component="em">{game.night.kills.join(', ')}</Typography>
+        <Typography component="em">
+          {game.nightKills.join(', ') || 'no one'}
+        </Typography>
 
         <ActionRow fixed>
           <Button
             color="green"
             onClick={() =>
-              updateGame({
-                night: {
-                  ...game.night,
-                  prompts: null,
-                },
-              })
+              updateGame(
+                startDay({
+                  ...game,
+                  nightPrompts: null,
+                })
+              )
             }>
             done
           </Button>
@@ -46,28 +45,46 @@ export const NightModerator: React.SFC<Props> = ({}) => {
     )
   }
 
-  return null
+  const firstPrompt = prompts[0]
 
-  // const firstPrompt = prompts[0]
-  // const { NightModeratorView } = getCard(firstPrompt.role)
+  if (firstPrompt.type === 'primary') {
+    const { NightModeratorView } = getCard(firstPrompt.role)
+    if (!NightModeratorView) return null
+    return (
+      <NightModeratorView
+        player={game.players[firstPrompt.players[0]]}
+        done={actions => {
+          updateGame({
+            ...(prompts.length === 1
+              ? runActions(game, actions)
+              : addAction(actions, game)),
+            nightPrompts: prompts.slice(1),
+          })
+        }}
+      />
+    )
+  } else {
+    if (!firstPrompt.role) {
+      return null
+    } else {
+      const { NightModeratorView } = getCard(firstPrompt.role)
+      if (!NightModeratorView) return null
+      return (
+        <NightModeratorView
+          player={game.players[firstPrompt.players[0]]}
+          done={actions => {
+            updateGame({
+              nightPrompts: prompts.slice(1),
+            })
 
-  // if (!NightModeratorView) return null
-
-  // return (
-  //   <NightModeratorView
-  //     player={game.players[firstPrompt.players[0]]}
-  //     callByName={firstPrompt.type === 'secondary'}
-  //     done={actions => {
-  //       updateGame({
-  //         ...(prompts.length === 1
-  //           ? runActions(game, actions)
-  //           : addAction(actions, game)),
-  //         night: {
-  //           ...game.night,
-  //           prompts: prompts.slice(1),
-  //         },
-  //       })
-  //     }}
-  //   />
-  // )
+            updateGame({
+              ...(prompts.length === 1
+                ? runActions(game, actions)
+                : addAction(actions, game)),
+            })
+          }}
+        />
+      )
+    }
+  }
 }

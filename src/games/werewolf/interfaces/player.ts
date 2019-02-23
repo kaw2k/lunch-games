@@ -1,6 +1,6 @@
 import { Player, PlayerId } from '../../../interfaces/player'
-import { ArtifactState } from './artifact'
-import { Roles } from './card'
+import { Roles } from './card/cards'
+import { ArtifactState } from './artifact/artifacts'
 
 export interface PlayerWerewolf extends Player {
   ready: boolean

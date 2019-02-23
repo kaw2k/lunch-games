@@ -19,7 +19,7 @@ export const WerewolfModeratorGame: React.SFC<Props> = () => {
   const { game, updateGame } = React.useContext(WerewolfGameContext)
   const classes = useCommonStyles()
 
-  if (game.night.prompts !== null) {
+  if (game.nightPrompts !== null) {
     return <NightModerator />
   }
 

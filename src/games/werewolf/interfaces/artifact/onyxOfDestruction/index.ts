@@ -6,8 +6,4 @@ export const OnyxOfDestruction = Artifact({
   description:
     'Choose a player with an unrevealed artifact card and remove it from the game.',
   infinite: false,
-  morningAction: null,
-  setup: null,
-  action: null,
-  postDeathAction: null,
 })

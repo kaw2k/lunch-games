@@ -3,13 +3,10 @@ import { WerewolfGameContext } from '../../../../../helpers/contexts'
 import { Typography } from '@material-ui/core'
 import { ViewRole } from '../../../components/viewRole/role'
 import { ChoosePlayers } from '../../../../../components/choosePlayers'
-import { Actions, linkPlayer } from '../../../interfaces/actions'
+import { linkPlayer } from '../../../interfaces/actions'
+import { SetupViewProps } from '../../setupViewInterfaces'
 
-interface Props {
-  ready: (actions: Actions[]) => void
-}
-
-export const VAWolfSetup: React.SFC<Props> = ({ ready }) => {
+export const VAWolfSetup: React.SFC<SetupViewProps> = ({ ready }) => {
   const { player, game } = React.useContext(WerewolfGameContext)
 
   return (

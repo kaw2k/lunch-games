@@ -9,7 +9,7 @@ import { count } from '../../../../../helpers/count'
 import { RoomContext } from '../../../../../helpers/contexts'
 import { getWeight } from '../../../helpers/getWeight'
 import { Button } from '../../../../../components/button'
-import { Cards, Roles, getCard } from '../../../interfaces/card'
+import { Cards, Roles, getCard } from '../../../interfaces/card/cards'
 
 interface Props {
   lobby: WerewolfLobby

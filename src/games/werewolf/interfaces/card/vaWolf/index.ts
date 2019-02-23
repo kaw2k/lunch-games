@@ -16,7 +16,7 @@ export const VAWolf = Card({
   ],
   image: require('./va-wolf.png'),
   profile: require('./va-wolf-profile.png'),
-  SetupView: VAWolfSetup,
+  SetupRoleView: VAWolfSetup,
   isActive: always(false),
   appearsBad: always(false),
   NightModeratorView: null,

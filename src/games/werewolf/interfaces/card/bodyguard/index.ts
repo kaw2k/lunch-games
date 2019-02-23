@@ -3,7 +3,7 @@ import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
 import { NightMessageOrder } from '../../../interfaces/nightMessage'
 import { NightModeratorView, NightPlayerView } from './night'
-import { GenericViewRole } from '../../../components/setupRole/genericViewRole'
+import { GenericSetupRoleView } from '../../../components/setupRole/genericSetupRole'
 
 export const Bodyguard = Card({
   role: 'bodyguard',
@@ -16,7 +16,7 @@ export const Bodyguard = Card({
     `Pick yourself to start, if the Seer reveals themselves, start picking them, unless the werewolves know you're the body guard, then protect yourself.`,
   ],
   nightOrder: NightMessageOrder.protection,
-  SetupView: GenericViewRole,
+  SetupRoleView: GenericSetupRoleView,
   image: require('./bodyguard.png'),
   profile: require('./bodyguard-profile.png'),
   isActive: player => player.alive,

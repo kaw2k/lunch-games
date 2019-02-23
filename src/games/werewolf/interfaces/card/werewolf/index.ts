@@ -2,7 +2,8 @@ import { always } from 'ramda'
 import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
 import { NightMessageOrder } from '../../../interfaces/nightMessage'
-import { GenericWerewolfViewRole } from '../../../components/setupRole/genericWerewolfViewRole'
+import { GenericSetupWerewolfRoleView } from '../../../components/setupRole/genericWerewolfViewRole'
+import { NightPlayerView, NightModeratorView } from './night'
 
 export const Werewolf = Card({
   role: 'werewolf',
@@ -20,8 +21,8 @@ export const Werewolf = Card({
   image: require('./werewolf.png'),
   profile: require('./werewolf-profile.png'),
   isActive: always(true),
-  SetupView: GenericWerewolfViewRole,
-  NightModeratorView: null,
-  NightPlayerView: null,
+  SetupRoleView: GenericSetupWerewolfRoleView,
+  NightModeratorView,
+  NightPlayerView,
   nightOrder: NightMessageOrder.werewolf,
 })

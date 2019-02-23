@@ -8,7 +8,7 @@ import { RoomContext } from '../../../../../helpers/contexts'
 import { getWeight } from '../../../helpers/getWeight'
 import { Button } from '../../../../../components/button'
 import { makeStyles } from '@material-ui/styles'
-import { Artifacts } from '../../../interfaces/artifact'
+import { Artifacts } from '../../../interfaces/artifact/artifacts'
 
 interface Props {
   lobby: WerewolfLobby

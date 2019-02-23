@@ -2,8 +2,12 @@ import { WerewolfGame, WerewolfLobby } from '../interfaces/game'
 import { isModerator } from './isModerator'
 import { shuffle } from '../../../helpers/shuffle'
 import { PlayerWerewolf } from '../interfaces/player'
-import { Roles } from '../interfaces/card'
-import { Artifacts, getArtifact, ArtifactState } from '../interfaces/artifact'
+import { Roles } from '../interfaces/card/cards'
+import {
+  Artifacts,
+  ArtifactState,
+  getArtifact,
+} from '../interfaces/artifact/artifacts'
 
 export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
   const players = lobby.lobbyPlayers.filter(p => !isModerator(p, lobby))
@@ -56,13 +60,8 @@ export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
     timer: null,
     victory: null,
     players: gamePlayers,
-    artifactState: {
-      nightTargets: [],
-    },
-    night: {
-      kills: [],
-      story: [],
-      prompts: null,
-    },
+    prismOfPower: [],
+    nightKills: [],
+    nightPrompts: null,
   }
 }
