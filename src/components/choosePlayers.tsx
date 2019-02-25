@@ -1,4 +1,5 @@
 import * as React from 'react'
+import cx from 'classnames'
 import { PlayerId, Player } from '../interfaces/player'
 import { Profile } from './profile'
 import { ActionRow } from './actionRow'
@@ -9,8 +10,9 @@ import values from 'ramda/es/values'
 import { useSelectState } from '../hooks/useSelectState'
 import { Typography } from '@material-ui/core'
 import { RoomContext } from '../helpers/contexts'
+import { makeStyles } from '@material-ui/styles'
 
-type Render<P> = (props: {
+type Children<P> = (props: {
   selected: boolean
   onClick: () => void
   player: P
@@ -34,15 +36,40 @@ interface Props<P extends Player> {
   cancelText?: string
   cancelProps?: Partial<ButtonProps>
 
+  onChange?: (id: PlayerId[]) => void
+
+  columns?: 1 | 2
+
   // Number of players to select
   numToSelect?: number
+  // Enable fewer or more people to be selected
+  notExact?: boolean
+
   // Setting this removes the player from the list
   removePlayer?: boolean | Player
   // The list of players to filter over
   players: P[] | Hash<P>
 
-  children?: Render<P>
+  // A way to choose what the players look like
+  children?: Children<P>
 }
+
+const useStyles = makeStyles({
+  list: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  oneColumn: {
+    '& > *': {
+      flex: '1 1 100%',
+    },
+  },
+  twoColumn: {
+    '& > *': {
+      flex: '1 1 50%',
+    },
+  },
+})
 
 export function ChoosePlayers<P extends Player>({
   onDone,
@@ -60,14 +87,18 @@ export function ChoosePlayers<P extends Player>({
   description,
   numToSelect = 1,
   children,
+  notExact,
+  onChange,
+  columns = 1,
 }: Props<P>): React.ReactElement {
+  const classes = useStyles()
   const [selected, updateSelected] = useSelectState<PlayerId>([], numToSelect)
   const { player: localPlayer } = React.useContext(RoomContext)
   const shouldRemovePlayer = !!removePlayer
   const removePlayerId =
     typeof removePlayer === 'object' ? removePlayer.id : localPlayer.id
 
-  const defaultChildren: Render<P> = ({
+  const defaultChildren: Children<P> = ({
     player,
     selected: isSelected,
     onClick,
@@ -81,6 +112,10 @@ export function ChoosePlayers<P extends Player>({
     />
   )
 
+  React.useEffect(() => {
+    if (onChange) onChange(selected)
+  }, [selected])
+
   return (
     <>
       {title && (
@@ -90,15 +125,21 @@ export function ChoosePlayers<P extends Player>({
       )}
       {description && <Typography component="em">{description}</Typography>}
 
-      {(isArray(players) ? players : values(players))
-        .filter(p => (shouldRemovePlayer ? p.id !== removePlayerId : true))
-        .map(p =>
-          (children || defaultChildren)({
-            selected: !!selected.find(id => id === p.id),
-            player: p,
-            onClick: () => updateSelected(p.id),
-          })
-        )}
+      <div
+        className={cx(classes.list, {
+          [classes.oneColumn]: columns === 1,
+          [classes.twoColumn]: columns === 2,
+        })}>
+        {(isArray(players) ? players : values(players))
+          .filter(p => (shouldRemovePlayer ? p.id !== removePlayerId : true))
+          .map(p =>
+            (children || defaultChildren)({
+              selected: !!selected.find(id => id === p.id),
+              player: p,
+              onClick: () => updateSelected(p.id),
+            })
+          )}
+      </div>
 
       <ActionRow fixed>
         {onAlt && altText && (
@@ -118,9 +159,12 @@ export function ChoosePlayers<P extends Player>({
           {...(typeof doneProps === 'function'
             ? doneProps(selected.length !== numToSelect)
             : doneProps)}
-          disabled={selected.length !== numToSelect}
+          disabled={!notExact && selected.length !== numToSelect}
+          confirm={
+            notExact && selected.length !== numToSelect && 'Are you sure?'
+          }
           onClick={() => {
-            if (selected.length === numToSelect) {
+            if (!notExact && selected.length === numToSelect) {
               onDone(selected)
             }
           }}>

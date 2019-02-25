@@ -2,7 +2,6 @@ import { always } from 'ramda'
 import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
 import { VAWolfSetup } from './setup'
-import { NightMessageOrder } from '../../../interfaces/nightMessage'
 
 export const VAWolf = Card({
   role: 'va wolf',
@@ -19,7 +18,4 @@ export const VAWolf = Card({
   SetupRoleView: VAWolfSetup,
   isActive: always(false),
   appearsBad: always(false),
-  NightModeratorView: null,
-  NightPlayerView: null,
-  nightOrder: NightMessageOrder.none,
 })

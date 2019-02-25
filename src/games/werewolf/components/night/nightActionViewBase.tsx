@@ -4,91 +4,78 @@ import { NightViewProps } from '../../interfaces/nightViewInterfaces'
 import { Typography } from '@material-ui/core'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
-import { Roles, getCard } from '../../interfaces/card/cards'
+import { getCard } from '../../interfaces/card/cards'
+import { NoNightActionView } from './noNightActionView'
 
-interface Props extends NightViewProps {
+type Props = NightViewProps & {
   title: string
-  role: Roles
 }
 
 export const NightViewBase: React.SFC<Props> = ({
   done,
-  player,
-  callByName,
   title,
   role,
   children,
+  ...props
 }) => {
   const { game } = React.useContext(WerewolfGameContext)
 
   const card = getCard(role)
-  const isActive = card.isActive(player, game)
-  const hasNightAction = !!card.NightModeratorView
+  const hasNightAction = !!card.night
 
-  if (player.alive && callByName && (!isActive || !hasNightAction)) {
-    return (
-      <>
-        <Typography variant="h2">
-          {player.name || player.id}, wake up! Do the thing!
-        </Typography>
-        {!isActive && (
-          <Typography component="em">This role is not active</Typography>
-        )}
-        {!hasNightAction && (
-          <Typography component="em">This role has no night action</Typography>
-        )}
-        <ActionRow fixed>
-          <Button onClick={() => done([])} color="green">
-            next
-          </Button>
-        </ActionRow>
-      </>
-    )
+  if (props.type === 'by name') {
+    const isActive = card.isActive(props.player, game)
+
+    if (!isActive || !hasNightAction) {
+      return <NoNightActionView done={() => done([])} data={props.player} />
+    } else {
+      return (
+        <>
+          <Typography variant="h2">
+            {props.player.name || props.player.id}, wake up! Do the thing!
+          </Typography>
+          {children}
+        </>
+      )
+    }
   }
 
-  if (player.alive && callByName) {
-    return (
-      <>
-        <Typography variant="h2">
-          {player.name || player.id}, wake up! Do the thing!
-        </Typography>
-        {children}
-      </>
-    )
+  if (props.type === 'by role') {
+    if (!props.player || !props.player.alive) {
+      return <NoNightActionView done={() => done([])} data={title} />
+    } else {
+      return (
+        <>
+          <Typography variant="h2">{title}</Typography>
+          {children}
+        </>
+      )
+    }
   }
 
-  if (!player.alive) {
-    return (
-      <>
-        <Typography variant="h2">{title}</Typography>
-        <Typography component="em">This player is dead</Typography>
-        <ActionRow fixed>
-          <Button onClick={() => done([])} color="green">
-            next
-          </Button>
-        </ActionRow>
-      </>
-    )
-  }
-
-  if (!isActive) {
-    return (
-      <>
-        <Typography variant="h2">{title}</Typography>
-        <Typography component="em">This role is not active yet</Typography>
-        <ActionRow fixed>
-          <Button onClick={() => done([])} color="green">
-            next
-          </Button>
-        </ActionRow>
-      </>
-    )
+  if (props.type === 'by team') {
+    if (!props.players.length) {
+      return <NoNightActionView done={() => done([])} data={title} />
+    } else {
+      return (
+        <>
+          <Typography variant="h2">{title}</Typography>
+          {children}
+        </>
+      )
+    }
   }
 
   return (
     <>
-      <Typography variant="h2">{title}</Typography>
-      {children}
+      <Typography variant="h2">
+        Hmmm something went wrong with this role
+      </Typography>
+      <ActionRow fixed>
+        <Button color="red" onClick={() => done([])}>
+          continue
+        </Button>
+      </ActionRow>
     </>
   )
 }

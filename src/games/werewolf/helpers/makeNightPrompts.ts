@@ -1,64 +1,44 @@
-import { WerewolfGame, NightPrompt } from '../interfaces/game'
+import { WerewolfGame } from '../interfaces/game'
 import values from 'ramda/es/values'
-import uniq from 'ramda/es/uniq'
-import sortBy from 'ramda/es/sortBy'
 import { isWerewolf } from './isWerewolf'
-import { PlayerId } from '../../../interfaces/player'
-import { Roles, getCard } from '../interfaces/card/cards'
+import { getCard, Roles } from '../interfaces/card/cards'
+import { getGameRoles } from './getGameRoles'
+import { getPlayerByRole } from './getPlayersByRole'
+import { NightPrompt } from '../interfaces/nightViewInterfaces'
+
+function getWerewolves(game: WerewolfGame) {
+  return values(game.players).filter(p => isWerewolf(p, game))
+}
 
 export function makeNightPrompts(game: WerewolfGame): NightPrompt[] {
-  function getPlayers(role: Roles): PlayerId[] {
-    return values(game.players)
-      .filter(p => p.role === role)
-      .map(p => p.id)
-  }
-
-  const currentRoles = values(game.players).reduce<Roles[]>((memo, p) => {
-    memo = memo.concat(p.role)
-    if (p.secondaryRole) memo = memo.concat(p.secondaryRole)
-    return memo
-  }, [])
-
-  const roles = sortBy(
-    role => getCard(role).nightOrder,
-    uniq([...game.initialRoles, ...currentRoles])
-  ).filter(role => {
-    const card = getCard(role)
-    return card.team !== 'werewolves' && card.NightModeratorView
-  })
-
-  const werewolves = values(game.players)
-    .filter(p => {
-      return p.alive && isWerewolf(p, game)
-    })
-    .map(p => p.id)
-
-  const playersWithSecondaryRoles = values(game.players).filter(p => {
-    return p.alive && p.secondaryRole
-  })
-
   return [
-    ...roles.map<NightPrompt>(role => ({
-      type: 'primary',
-      players: getPlayers(role),
-      role,
-    })),
-    ...playersWithSecondaryRoles.map<NightPrompt>(p => ({
-      type: 'secondary',
-      players: [p.id],
-      role: p.secondaryRole,
-    })),
-    {
-      players: werewolves,
-      role: 'werewolf',
-      type: 'primary',
-    },
-  ]
+    // Players with secondary roles
+    ...values(game.players)
+      .filter(p => p.alive && p.secondaryRole)
+      .map<NightPrompt>(p => ({
+        type: 'by name',
+        player: p,
+        role: p.secondaryRole as Roles,
+      })),
 
-  // ORDERING
-  // --------
-  // Normal roles
-  // Secondary roles
-  // Werewolf
-  // Boogyman
+    // All the night roles that are not team based
+    ...getGameRoles(game)
+      .filter(role => getCard(role).night)
+      .sort((a, b) => getCard(a).night!.order - getCard(b).night!.order)
+      .map<NightPrompt>(role => {
+        if (role === 'werewolf') {
+          return {
+            type: 'by team',
+            players: getWerewolves(game),
+            role: 'werewolf',
+          }
+        }
+
+        return {
+          type: 'by role',
+          player: getPlayerByRole(role, game),
+          role: role,
+        }
+      }),
+  ]
 }

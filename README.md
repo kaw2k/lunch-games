@@ -38,3 +38,5 @@ npm start
     - bite kills by any seconding / bite kills when they are seconded (persists thru entire game)
 
 Night
+
+Test apprentice seer

@@ -11,6 +11,7 @@ import { SetupViewProps } from '../setupViewInterfaces'
 // ==========================
 export type Teams =
   | 'werewolves'
+  | 'werewolves allies'
   | 'villagers'
   | 'tanner'
   | 'vampires'
@@ -40,12 +41,17 @@ export interface Card<Role extends string = string> {
   emoji: Emoji
   image: Image
   profile: Image
-  nightOrder: NightMessageOrder
 
   // Views
   SetupRoleView: React.FC<SetupViewProps>
-  NightModeratorView: React.FC<NightViewProps> | null
-  NightPlayerView: React.FC<NightViewProps> | null
+
+  night?: {
+    title: string
+    description?: string
+    order: NightMessageOrder
+    ModeratorView: React.FC<NightViewProps>
+    PlayerView: React.FC<NightViewProps> | null
+  }
 }
 
 export const Card = <Role extends string>(card: Card<Role>): Card<Role> => card

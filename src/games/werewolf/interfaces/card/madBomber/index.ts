@@ -2,7 +2,6 @@ import { always } from 'ramda'
 import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
 import { MadBomberSetup } from './setup'
-import { NightMessageOrder } from '../../../interfaces/nightMessage'
 
 export const MadBomber = Card({
   role: 'mad bomber',
@@ -20,7 +19,4 @@ export const MadBomber = Card({
   SetupRoleView: MadBomberSetup,
   isActive: always(false),
   appearsBad: always(false),
-  NightModeratorView: null,
-  NightPlayerView: null,
-  nightOrder: NightMessageOrder.none,
 })

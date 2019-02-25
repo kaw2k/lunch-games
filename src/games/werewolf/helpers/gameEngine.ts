@@ -38,7 +38,7 @@ export function runActions(
     remainingActions = sortBy(action => action.order, remainingActions)
     const action = remainingActions[0]
     remainingActions = remainingActions.slice(1)
-    game = updateGame(action, game)
+    game = performAction(action, game)
     remainingActions = remainingActions.concat(game.actions)
     game.actions = []
     count++
@@ -49,7 +49,7 @@ export function runActions(
   return game
 }
 
-function updateGame(action: Actions, game: WerewolfGame): WerewolfGame {
+function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
   const player = game.players[action.target]
 
   // KILLING ACTIONS
@@ -303,38 +303,26 @@ const killPlayer = curry(
       delayedActions = delayedActions.concat(actions)
     }
 
-    console.log('killing ', playerId)
-
     return pipe(
-      // Propagate actions
       addAction(actions),
       addDelayedAction(delayedActions),
-      // Kill them
       updateWerewolfPlayer(playerId, { alive: false }),
-      _game => ({
-        ..._game,
-        nightKills: _game.nightKills.concat(playerId),
-      }),
-      g => {
-        console.log(g)
-        return g
-      },
-      _game =>
-        player.artifacts.reduce<WerewolfGame>((_game, artifactState) => {
+      updateGame(game => ({
+        nightKills: game.nightKills.concat(playerId),
+      })),
+      initialGame =>
+        player.artifacts.reduce<WerewolfGame>((memo, artifactState) => {
           const artifact = getArtifact(artifactState.type)
+
           if (
             !artifactState.activated &&
             artifact.type === 'scepter of rebirth'
           ) {
-            return addAction(scepterOfRebirth({ target: player.id }), _game)
+            return addAction(scepterOfRebirth({ target: player.id }), memo)
           }
 
-          return _game
-        }, _game),
-      g => {
-        console.log(g)
-        return g
-      }
+          return memo
+        }, initialGame)
     )(game)
   }
 )
@@ -397,12 +385,8 @@ const destroyArtifact = curry(
 // )
 
 const setVictory = curry(
-  (victory: Victory, game: WerewolfGame): WerewolfGame => {
-    return {
-      ...game,
-      victory: game.victory || victory,
-    }
-  }
+  (victory: Victory, game: WerewolfGame): WerewolfGame =>
+    updateGame({ victory: game.victory || victory }, game)
 )
 
 const updateWerewolfPlayer = curry(
@@ -441,5 +425,19 @@ export const giveArtifact = curry(
       }),
       game
     )
+  }
+)
+
+const updateGame = curry(
+  (
+    update:
+      | Partial<WerewolfGame>
+      | ((game: WerewolfGame) => Partial<WerewolfGame>),
+    game: WerewolfGame
+  ): WerewolfGame => {
+    return {
+      ...game,
+      ...(typeof update === 'function' ? update(game) : update),
+    }
   }
 )

@@ -1,7 +1,6 @@
 import { always } from 'ramda'
 import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
-import { NightMessageOrder } from '../../../interfaces/nightMessage'
 import { GenericSetupRoleView } from '../../../components/setupRole/genericSetupRole'
 
 export const Villager = Card({
@@ -17,7 +16,4 @@ export const Villager = Card({
   profile: require('./villager-profile.png'),
   isActive: always(false),
   SetupRoleView: GenericSetupRoleView,
-  NightModeratorView: null,
-  NightPlayerView: null,
-  nightOrder: NightMessageOrder.none,
 })

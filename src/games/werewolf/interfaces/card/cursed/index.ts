@@ -1,7 +1,6 @@
 import { always } from 'ramda'
 import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
-import { NightMessageOrder } from '../../../interfaces/nightMessage'
 import { GenericSetupRoleView } from '../../../components/setupRole/genericSetupRole'
 
 export const Cursed = Card({
@@ -20,7 +19,4 @@ export const Cursed = Card({
   SetupRoleView: GenericSetupRoleView,
   appearsBad: always(false),
   isActive: always(false),
-  NightModeratorView: null,
-  NightPlayerView: null,
-  nightOrder: NightMessageOrder.none,
 })

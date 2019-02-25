@@ -1,7 +1,6 @@
 import { always } from 'ramda'
 import { Card } from '../../../interfaces/card'
 import { Emoji } from '../../../interfaces/emoji'
-import { NightMessageOrder } from '../../../interfaces/nightMessage'
 import { GenericSetupRoleView } from '../../../components/setupRole/genericSetupRole'
 
 export const Mayor = Card({
@@ -19,7 +18,4 @@ export const Mayor = Card({
   profile: require('./mayor-profile.png'),
   isActive: always(false),
   appearsBad: always(false),
-  NightModeratorView: null,
-  NightPlayerView: null,
-  nightOrder: NightMessageOrder.none,
 })

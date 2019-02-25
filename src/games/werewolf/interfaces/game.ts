@@ -8,6 +8,7 @@ import { DelayAction } from './delayAction'
 import { Teams } from './card'
 import { Artifacts } from './artifact/artifacts'
 import { Roles } from './card/cards'
+import { NightPrompt } from './nightViewInterfaces'
 
 interface WerewolfOptions {
   dayTimeLimit: number
@@ -24,18 +25,6 @@ export interface Victory {
   team: Teams
   message: string
 }
-
-export type NightPrompt =
-  | {
-      type: 'primary'
-      players: PlayerId[]
-      role: Roles
-    }
-  | {
-      type: 'secondary'
-      players: PlayerId[]
-      role: Roles | null
-    }
 
 export interface WerewolfGame {
   type: 'werewolf-game'
