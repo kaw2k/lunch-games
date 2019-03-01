@@ -37,6 +37,7 @@ export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
         ready: false,
         secondaryRole: null,
         role: shuffledRoles[i],
+        state: {},
       }
 
       return { ...memo, [player.id]: playerWerewolf }

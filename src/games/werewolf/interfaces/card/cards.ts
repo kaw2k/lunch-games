@@ -10,6 +10,8 @@ import { VAWolf } from './vaWolf'
 import { MadBomber } from './madBomber'
 import { Unpack } from '../../../../helpers/unpack'
 import { Card } from '.'
+import { Chewks } from './chewks'
+import { Seer } from './seer'
 
 export const Cards = [
   Bodyguard,
@@ -22,6 +24,8 @@ export const Cards = [
   Werewolf,
   VAWolf,
   MadBomber,
+  Chewks,
+  Seer,
 ]
 
 export const Roles = Cards.map(role => role.role)

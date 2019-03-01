@@ -26,7 +26,10 @@ function getVotesForPlayer(
 ): number {
   const votes = players
     .map(pid => game.players[pid])
-    .reduce((memo, p) => memo + (contains(target.id, p.state || []) ? 1 : 0), 0)
+    .reduce(
+      (memo, p) => memo + (contains(target.id, p.state.werewolf || []) ? 1 : 0),
+      0
+    )
 
   return votes
 }
@@ -67,7 +70,13 @@ const NightPlayer: React.SFC<NightViewProps> = ({ done, ...props }) => {
   )
 
   React.useEffect(() => {
-    updateGamePlayer({ ...player, state: [] })
+    updateGamePlayer({
+      ...player,
+      state: {
+        ...player.state,
+        werewolf: [],
+      },
+    })
   }, [])
 
   if (props.type !== 'by team') return null
@@ -76,13 +85,13 @@ const NightPlayer: React.SFC<NightViewProps> = ({ done, ...props }) => {
   const wolves = values(game.players).filter(
     p => p.alive && isWerewolf(p, game)
   )
-  const firstVote = (wolves[0] && wolves[0].state) || []
+  const firstVote = (wolves[0] && wolves[0].state.werewolf) || []
   function compare(ids: PlayerId[]) {
     return JSON.stringify(ids.sort()) === JSON.stringify(firstVote.sort())
   }
   const disabled =
     firstVote.length !== game.numberOfPeopleToKill ||
-    !all(p => compare(p.state || []), wolves)
+    !all(p => compare(p.state.werewolf || []), wolves)
 
   return (
     <NightViewBase done={done} {...props} title={title}>
@@ -93,7 +102,10 @@ const NightPlayer: React.SFC<NightViewProps> = ({ done, ...props }) => {
         onChange={players => {
           updateGamePlayer({
             ...player,
-            state: players,
+            state: {
+              ...player.state,
+              werewolf: players,
+            },
           })
         }}
         onDone={targets => {

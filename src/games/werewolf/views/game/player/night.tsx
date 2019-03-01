@@ -14,7 +14,7 @@ export const WerewolfPlayerNight: React.SFC<Props> = ({ prompts }) => {
   const { player, updateGame, game } = React.useContext(WerewolfGameContext)
 
   if (!game.night) return null
-  if (game.night.type === 'pre-day')
+  if (game.night.type === 'pre-day' || game.night.playerReady)
     return <Typography variant="h2">It Night</Typography>
 
   const night = game.night

@@ -48,5 +48,3 @@ need seating chart
 
 Make it so people can perform their action and then the moderator sees when it is done
 maybe make night a union, (performing actions, wake people up, done)
-
-Win states
