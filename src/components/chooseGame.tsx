@@ -62,6 +62,7 @@ export const ChooseGame: React.SFC<{}> = () => {
                 nightTimeLimit: 0,
                 cursedArtifactAlwaysActive: false,
                 madBomberOnlyKillsAdjacent: false,
+                protectWolves: false,
               },
             }
             setRoom(newLobby)

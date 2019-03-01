@@ -79,6 +79,7 @@ export interface WerewolfGameContext {
   player: PlayerWerewolf
   updateGamePlayer: (player: PlayerWerewolf) => void
   updateGame: (game: PartialFirebase<WW.WerewolfGame>) => void
+  runActions: (actions: WW.WerewolfGame['actions']) => void
   addAction: (
     actions: Unpack<WW.WerewolfGame['actions']> | WW.WerewolfGame['actions']
   ) => void
@@ -93,6 +94,7 @@ export interface WerewolfGameContext {
 export const WerewolfGameContext = createContext<WerewolfGameContext>({
   game: {} as WW.WerewolfGame,
   player: {} as PlayerWerewolf,
+  runActions() {},
   updateGamePlayer() {},
   updateGame() {},
   addAction() {},

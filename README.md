@@ -11,13 +11,8 @@ npm start
 
 - Make sure secondary night roles are called out by name (even if they don't have a night action)
 - Make a isBranded toggle on players to remove their active state
-- Add some indication to the player and the moderator at night to indicate if they are active
 - Make sure flip / no flip works
 - Make sure the revive artifacts don't happen until the end of the night
-- Try to remove artifact state from artifacts, help removes the any type
-- Make sure artifact doppleganger makes you call out the player by name
-- Allow players to play and use their artifacts (for inspection or passing)
-- Have a list of reminders for the narrator with artifacts
 - Add diseased protection type, this will be a better hold for protections and figuring things out. clean this up after night ends
 
 ## Werewolf Options
@@ -40,3 +35,18 @@ npm start
 Night
 
 Test apprentice seer
+
+SECRET HITLER
+Not clear when you are waiting to flip the cards, make the entire screen green
+Same thing for avalon
+
+frakenstine, already gets powers, just check if a wolf team membe is ded. that role just hijacks the "done" callback of all the other roles.
+
+Boogyman also works fine, just set night timers, add in option for after every role
+
+need seating chart
+
+Make it so people can perform their action and then the moderator sees when it is done
+maybe make night a union, (performing actions, wake people up, done)
+
+Win states

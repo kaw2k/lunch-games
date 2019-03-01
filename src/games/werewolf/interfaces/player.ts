@@ -18,4 +18,5 @@ export interface PlayerWerewolf extends Player {
   inCult: PlayerId[]
   isGuarded: boolean
   isBlessed: false | PlayerId | 'attacked'
+  state?: any
 }

@@ -1,22 +1,22 @@
-import { PlayerWerewolf } from './player'
 import { Actions } from './actions'
 import { Roles } from './card/cards'
+import { PlayerId } from '../../../interfaces/player'
 
 interface ByRole {
   type: 'by role'
-  player: PlayerWerewolf | null | undefined
+  player: PlayerId | null | undefined
   role: Roles
 }
 
 interface ByName {
   type: 'by name'
-  player: PlayerWerewolf
+  player: PlayerId
   role: Roles
 }
 
 interface ByTeam {
   type: 'by team'
-  players: PlayerWerewolf[]
+  players: PlayerId[]
   role: Roles
 }
 

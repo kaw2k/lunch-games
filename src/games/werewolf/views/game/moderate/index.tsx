@@ -6,9 +6,9 @@ import { useCommonStyles } from '../../../../../helpers/commonStyles'
 import { ActionRow } from '../../../../../components/actionRow'
 import { Button } from '../../../../../components/button'
 import { PlayerId } from '../../../../../interfaces/player'
-import { DayPlayer } from './day/player'
 import { startNight } from '../../../helpers/gameEngine'
 import { NightModerator } from './night'
+import { DayPlayer } from './day'
 
 interface Props {}
 
@@ -16,10 +16,17 @@ type View = { type: 'day player'; player: PlayerId } | { type: 'day' }
 
 export const WerewolfModeratorGame: React.SFC<Props> = () => {
   const [view, setView] = React.useState<View>({ type: 'day' })
-  const { game, updateGame } = React.useContext(WerewolfGameContext)
+  const { game, updateGame, endGame } = React.useContext(WerewolfGameContext)
   const classes = useCommonStyles()
 
-  if (game.nightPrompts !== null) {
+  React.useEffect(() => {
+    // Only end the game when it is day
+    if (game.victory && !game.night) {
+      endGame(game.victory.team, game.victory.message)
+    }
+  })
+
+  if (game.night) {
     return <NightModerator />
   }
 

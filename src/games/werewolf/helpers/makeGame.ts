@@ -61,7 +61,9 @@ export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
     victory: null,
     players: gamePlayers,
     prismOfPower: [],
-    nightKills: [],
-    nightPrompts: null,
+    peopleKilledAtNight: [],
+    night: null,
+    numberOfPeopleToKill: 1,
+    playerOrder: [],
   }
 }

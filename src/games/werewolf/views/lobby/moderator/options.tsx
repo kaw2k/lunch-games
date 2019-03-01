@@ -77,6 +77,13 @@ export const WerewolfModeratorLobbyOptions: React.SFC<Props> = ({ lobby }) => {
         lobby={lobby}
       />
 
+      <Option
+        title="Protection For All"
+        option="protectWolves"
+        description="Protections and blessings will prevent chewks from killing werewolves"
+        lobby={lobby}
+      />
+
       <Typography className={classes.section} variant="h2">
         Artifact Settings
       </Typography>

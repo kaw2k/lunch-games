@@ -16,7 +16,14 @@ import { DelayAction } from '../interfaces/delayAction'
 import { clone } from '../../../helpers/clone'
 import { makeNightPrompts } from './makeNightPrompts'
 import map from 'ramda/es/map'
-import { getArtifact, ArtifactState } from '../interfaces/artifact/artifacts'
+import {
+  getArtifact,
+  ArtifactState,
+  Artifacts,
+} from '../interfaces/artifact/artifacts'
+import { isGameOver } from './isGameOver'
+import { count } from '../../../helpers/count'
+import { isWerewolf } from './isWerewolf'
 
 // ===========================================================
 // THE GAME ENGINE
@@ -41,6 +48,7 @@ export function runActions(
     game = performAction(action, game)
     remainingActions = remainingActions.concat(game.actions)
     game.actions = []
+    game = isGameOver(game)
     count++
   }
 
@@ -50,6 +58,16 @@ export function runActions(
 }
 
 function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
+  if (action.type === 'end game') {
+    return setVictory(
+      {
+        message: action.message,
+        team: action.team,
+      },
+      game
+    )
+  }
+
   const player = game.players[action.target]
 
   // KILLING ACTIONS
@@ -73,6 +91,24 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
     // TODO: Add message for mayor not dieing
     if (player.role === 'mayor') {
       return game
+    }
+  }
+
+  // TODO: Add options here
+  if (action.type === 'chewks kill') {
+    const wolvesRemain = count(game.players, p => isWerewolf(p, game))
+    const isWolf = isWerewolf(player, game)
+
+    if (wolvesRemain && !isWolf) return game
+
+    if (!wolvesRemain || (isWolf && game.options.protectWolves)) {
+      if (player.isGuarded) {
+        return game
+      }
+
+      if (player.isBlessed) {
+        return updateWerewolfPlayer(player.id, { isBlessed: 'attacked' }, game)
+      }
     }
   }
 
@@ -107,7 +143,9 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
     action.type === 'sudo kill' ||
     action.type === 'link kill' ||
     action.type === 'werewolf kill' ||
-    action.type === 'vote kill'
+    action.type === 'chewks kill' ||
+    action.type === 'vote kill' ||
+    action.type === 'artifact kill'
   ) {
     return killPlayer(action.target, action, game)
   }
@@ -115,7 +153,7 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
   // MISC ACTIONS
   // -----------------------------------------------------------
   if (action.type === 'update player') {
-    return updateWerewolfPlayer(player.id, action.updates, game)
+    return updateWerewolfPlayer(player.id, action.updates as any, game)
   }
 
   if (action.type === 'bless') {
@@ -148,12 +186,43 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
 
   // ARTIFACT ACTIONS
   // -----------------------------------------------------------
+  if (action.type === 'activate artifact') {
+    return updateArtifact(
+      action.target,
+      action.artifact,
+      { activated: true },
+      game
+    )
+  }
+
+  if (action.type === 'perform morning action') {
+    return updateArtifact(
+      action.target,
+      action.artifact,
+      { performedMorningAction: true },
+      game
+    )
+  }
+
+  if (action.type === 'pass artifact') {
+    return passArtifact(action.source, action.target, action.artifact, game)
+  }
+
+  if (action.type === 'destroy artifact') {
+    return destroyArtifact(action.target, action.artifact, game)
+  }
+
+  if (action.type === 'give artifact') {
+    // TODO
+    return game
+  }
+
   if (action.type === 'scepter of rebirth') {
     const artifact = player.artifacts.find(a => a.type === 'scepter of rebirth')
     if (!artifact || artifact.activated) return game
 
     return pipe(
-      destroyArtifact(player.id, artifact.type),
+      updateArtifact(player.id, artifact.type, { activated: true }),
       updateWerewolfPlayer(player.id, { alive: true })
     )(game)
   }
@@ -173,11 +242,26 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
 export function startNight(initialGame: WerewolfGame): WerewolfGame {
   let game = clone(initialGame)
 
-  game.nightPrompts = makeNightPrompts(game)
-  game.nightKills = []
-  game = processQueuedActions(game)
+  game.night = {
+    type: 'actions',
+    prompts: makeNightPrompts(game),
+    playerActions: [],
+    playerReady: false,
+  }
 
-  return game
+  game.peopleKilledAtNight = []
+  game.players = map(
+    player => ({
+      ...player,
+      artifacts: player.artifacts.map(a => ({
+        ...a,
+        performedMorningAction: false,
+      })),
+    }),
+    game.players
+  )
+
+  return processQueuedActions(game)
 }
 
 // Things that need to happen to the game before day starts
@@ -185,14 +269,13 @@ export function startDay(initialGame: WerewolfGame): WerewolfGame {
   let game = clone(initialGame)
   game.dayCount = game.dayCount + 1
   game = processQueuedActions(game)
-  game.players = map(
-    player => ({
-      ...player,
-      isBlessed: player.isBlessed === 'attacked' ? false : player.isBlessed,
-      isGuarded: false,
-    }),
-    game.players
-  )
+  game.numberOfPeopleToKill = 1
+  game.night = null
+  values(game.players).forEach(player => {
+    game.players[player.id].isBlessed =
+      player.isBlessed === 'attacked' ? false : player.isBlessed || false
+    game.players[player.id].isGuarded = false
+  })
 
   return game
 }
@@ -308,7 +391,7 @@ const killPlayer = curry(
       addDelayedAction(delayedActions),
       updateWerewolfPlayer(playerId, { alive: false }),
       updateGame(game => ({
-        nightKills: game.nightKills.concat(playerId),
+        peopleKilledAtNight: game.peopleKilledAtNight.concat(playerId),
       })),
       initialGame =>
         player.artifacts.reduce<WerewolfGame>((memo, artifactState) => {
@@ -327,19 +410,24 @@ const killPlayer = curry(
   }
 )
 
-// const activateArtifact = curry(
-//   (playerId: PlayerId, artifact: string, game: WerewolfGame): WerewolfGame => {
-//     return updateWerewolfPlayer(
-//       playerId,
-//       player => ({
-//         artifacts: player.artifacts.map(a =>
-//           a.type === artifact ? { ...a, activated: true } : a
-//         ),
-//       }),
-//       game
-//     )
-//   }
-// )
+const updateArtifact = curry(
+  (
+    playerId: PlayerId,
+    artifact: Artifacts,
+    state: Partial<ArtifactState>,
+    game: WerewolfGame
+  ): WerewolfGame => {
+    return updateWerewolfPlayer(
+      playerId,
+      player => ({
+        artifacts: player.artifacts.map(a =>
+          a.type === artifact ? { ...a, ...state } : a
+        ),
+      }),
+      game
+    )
+  }
+)
 
 const destroyArtifact = curry(
   (target: PlayerId, artifact: string, game: WerewolfGame): WerewolfGame => {
@@ -353,22 +441,22 @@ const destroyArtifact = curry(
   }
 )
 
-// const passArtifact = curry(
-//   (
-//     source: PlayerId,
-//     target: PlayerId,
-//     artifact: AllArtifacts,
-//     game: WerewolfGame
-//   ): WerewolfGame => {
-//     const state = game.players[source].artifacts.find(a => a.type === artifact)
-//     if (!state) return game
+const passArtifact = curry(
+  (
+    source: PlayerId,
+    target: PlayerId,
+    artifact: Artifacts,
+    game: WerewolfGame
+  ): WerewolfGame => {
+    const state = game.players[source].artifacts.find(a => a.type === artifact)
+    if (!state) return game
 
-//     return pipe(
-//       destroyArtifact(source, artifact),
-//       giveArtifact(target, state)
-//     )(game)
-//   }
-// )
+    return pipe(
+      destroyArtifact(source, artifact),
+      giveArtifact(target, state)
+    )(game)
+  }
+)
 
 // const setGameProps = curry(
 //   (
@@ -384,7 +472,7 @@ const destroyArtifact = curry(
 //   }
 // )
 
-const setVictory = curry(
+export const setVictory = curry(
   (victory: Victory, game: WerewolfGame): WerewolfGame =>
     updateGame({ victory: game.victory || victory }, game)
 )

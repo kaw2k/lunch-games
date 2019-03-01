@@ -52,6 +52,8 @@ interface Props<P extends Player> {
 
   // A way to choose what the players look like
   children?: Children<P>
+
+  disabled?: boolean
 }
 
 const useStyles = makeStyles({
@@ -87,6 +89,7 @@ export function ChoosePlayers<P extends Player>({
   description,
   numToSelect = 1,
   children,
+  disabled,
   notExact,
   onChange,
   columns = 1,
@@ -123,7 +126,11 @@ export function ChoosePlayers<P extends Player>({
           {title}
         </Typography>
       )}
-      {description && <Typography component="em">{description}</Typography>}
+      {description && (
+        <Typography gutterBottom component="em">
+          {description}
+        </Typography>
+      )}
 
       <div
         className={cx(classes.list, {
@@ -159,7 +166,7 @@ export function ChoosePlayers<P extends Player>({
           {...(typeof doneProps === 'function'
             ? doneProps(selected.length !== numToSelect)
             : doneProps)}
-          disabled={!notExact && selected.length !== numToSelect}
+          disabled={disabled || (!notExact && selected.length !== numToSelect)}
           confirm={
             notExact && selected.length !== numToSelect && 'Are you sure?'
           }

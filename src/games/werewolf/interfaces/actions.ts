@@ -1,6 +1,9 @@
 import { PlayerId } from '../../../interfaces/player'
 import { PlayerWerewolf } from './player'
 import { Id } from '../../../helpers/id'
+import { assertNever } from '../../../helpers/assertNever'
+import { Artifacts } from './artifact/artifacts'
+import { Teams } from './card'
 
 enum ActionOrder {
   setup = 0,
@@ -25,7 +28,7 @@ interface TargetAndSource {
 }
 interface TargetUpdate {
   target: PlayerId
-  updates: Partial<Pick<PlayerWerewolf, 'role'>>
+  updates: Partial<Pick<PlayerWerewolf, 'role' | 'secondaryRole'>>
 }
 
 function Action<Type extends string, Payload extends object>(
@@ -52,8 +55,16 @@ function AC<Type extends string, Payload extends object>(
 
 export const sudoKill = AC<'sudo kill', Target>('sudo kill', ActionOrder.kill)
 export const voteKill = AC<'vote kill', Target>('vote kill', ActionOrder.kill)
+export const artifactKill = AC<'artifact kill', Target>(
+  'artifact kill',
+  ActionOrder.kill
+)
 export const werewolfKill = AC<'werewolf kill', Target>(
   'werewolf kill',
+  ActionOrder.kill
+)
+export const chewksKill = AC<'chewks kill', Target>(
+  'chewks kill',
   ActionOrder.kill
 )
 export const linkKill = AC<'link kill', Target>('link kill', ActionOrder.kill)
@@ -76,14 +87,113 @@ export const scepterOfRebirth = AC<'scepter of rebirth', Target>(
   ActionOrder.postKill
 )
 
+export const activateArtifact = AC<
+  'activate artifact',
+  {
+    target: PlayerId
+    artifact: Artifacts
+  }
+>('activate artifact', ActionOrder.artifact)
+
+export const performMorningAction = AC<
+  'perform morning action',
+  {
+    target: PlayerId
+    artifact: Artifacts
+  }
+>('perform morning action', ActionOrder.artifact)
+
+export const destroyArtifact = AC<
+  'destroy artifact',
+  {
+    target: PlayerId
+    artifact: Artifacts
+  }
+>('destroy artifact', ActionOrder.artifact)
+
+export const giveArtifact = AC<
+  'give artifact',
+  {
+    target: PlayerId
+  }
+>('give artifact', ActionOrder.artifact)
+
+export const passArtifact = AC<
+  'pass artifact',
+  {
+    target: PlayerId
+    source: PlayerId
+    artifact: Artifacts
+  }
+>('pass artifact', ActionOrder.artifact)
+
+export const endGame = AC<
+  'end game',
+  {
+    team: Teams
+    message: string
+  }
+>('end game', ActionOrder.artifact)
+
 export type Actions =
   | ReturnType<typeof sudoKill>
   | ReturnType<typeof voteKill>
   | ReturnType<typeof werewolfKill>
+  | ReturnType<typeof chewksKill>
   | ReturnType<typeof linkKill>
+  | ReturnType<typeof artifactKill>
   | ReturnType<typeof guard>
   | ReturnType<typeof bless>
   | ReturnType<typeof updatePlayer>
   | ReturnType<typeof indoctrinate>
   | ReturnType<typeof linkPlayer>
   | ReturnType<typeof scepterOfRebirth>
+  | ReturnType<typeof activateArtifact>
+  | ReturnType<typeof passArtifact>
+  | ReturnType<typeof destroyArtifact>
+  | ReturnType<typeof giveArtifact>
+  | ReturnType<typeof endGame>
+  | ReturnType<typeof performMorningAction>
+
+export function actionToString(action: Actions): string | null {
+  if (action.type === 'bless')
+    return `${action.target} was blessed by ${action.source}`
+
+  // TODO Add a source
+  if (action.type === 'guard')
+    return `${action.target} was protected by the bodyguard`
+
+  if (action.type === 'indoctrinate')
+    return `${action.target} was indoctrinated by ${action.source}`
+
+  if (action.type === 'scepter of rebirth')
+    return `${action.target} came back to life by the scepter of rebirth!`
+
+  if (action.type === 'sudo kill')
+    return `${action.target} was killed by the moderator`
+
+  if (action.type === 'vote kill')
+    return `${action.target} was lynched by the village`
+
+  if (action.type === 'werewolf kill')
+    return `${action.target} was eaten by werewolves`
+
+  if (action.type === 'chewks kill')
+    return `${action.target} was torn apart by chewks`
+
+  if (action.type === 'artifact kill')
+    return `${action.target} was killed by an artifact`
+
+  if (action.type === 'link kill') return `${action.target} was linked and died`
+
+  if (action.type === 'link player') return null
+  if (action.type === 'update player') return null
+  if (action.type === 'activate artifact') return null
+  if (action.type === 'pass artifact') return null
+  if (action.type === 'destroy artifact') return null
+  if (action.type === 'give artifact') return null
+  if (action.type === 'end game') return null
+  if (action.type === 'perform morning action') return null
+
+  return assertNever(action)
+}

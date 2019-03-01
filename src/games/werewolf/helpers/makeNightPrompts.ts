@@ -7,7 +7,9 @@ import { getPlayerByRole } from './getPlayersByRole'
 import { NightPrompt } from '../interfaces/nightViewInterfaces'
 
 function getWerewolves(game: WerewolfGame) {
-  return values(game.players).filter(p => isWerewolf(p, game))
+  return values(game.players)
+    .filter(p => isWerewolf(p, game))
+    .map(p => p.id)
 }
 
 export function makeNightPrompts(game: WerewolfGame): NightPrompt[] {
@@ -17,7 +19,7 @@ export function makeNightPrompts(game: WerewolfGame): NightPrompt[] {
       .filter(p => p.alive && p.secondaryRole)
       .map<NightPrompt>(p => ({
         type: 'by name',
-        player: p,
+        player: p.id,
         role: p.secondaryRole as Roles,
       })),
 
@@ -34,9 +36,10 @@ export function makeNightPrompts(game: WerewolfGame): NightPrompt[] {
           }
         }
 
+        const p = getPlayerByRole(role, game)
         return {
           type: 'by role',
-          player: getPlayerByRole(role, game),
+          player: p && p.id,
           role: role,
         }
       }),

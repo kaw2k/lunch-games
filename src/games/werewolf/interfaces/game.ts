@@ -19,6 +19,7 @@ interface WerewolfOptions {
   killCult: boolean
   cursedArtifactAlwaysActive: boolean
   madBomberOnlyKillsAdjacent: boolean
+  protectWolves: boolean
 }
 
 export interface Victory {
@@ -39,6 +40,8 @@ export interface WerewolfGame {
   lobbyPlayers: Player[]
   // The players actively playing the game
   players: Hash<PlayerWerewolf>
+  // The physical order of players, used by certain roles and artifacts
+  playerOrder: PlayerId[]
   // Any message to display to all users
   message: string | null
   victory: Victory | null
@@ -50,14 +53,25 @@ export interface WerewolfGame {
   timer: number | null
   // An array of actions taken during the night
   actions: Actions[]
+  // Any actions that need to happen in the future
+  delayedActions: DelayAction<Actions>[]
 
-  nightKills: PlayerId[]
-  nightPrompts: null | NightPrompt[]
+  peopleKilledAtNight: PlayerId[]
+  numberOfPeopleToKill: number
 
   prismOfPower: null | PlayerId[]
 
-  // Any actions that need to happen in the future
-  delayedActions: DelayAction<Actions>[]
+  night:
+    | null
+    | { type: 'pre-day' }
+    | {
+        type: 'actions'
+        prompts: NightPrompt[]
+        // A placeholder for players to place actions
+        // for the moderator to see
+        playerActions: Actions[]
+        playerReady: boolean
+      }
 }
 
 export interface WerewolfLobby extends Omit<Lobby, 'type'> {

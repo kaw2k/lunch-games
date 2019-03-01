@@ -13,6 +13,7 @@ import { WerewolfPlayerSetup } from './setup/player'
 import { WerewolfModeratorSetup } from './setup/moderator'
 import { WerewolfModeratorLobby } from './lobby/moderator'
 import { addAction, addDelayedAction } from '../helpers/addAction'
+import { runActions } from '../helpers/gameEngine'
 
 export const isWerewolf = (room: Room): room is Werewolf =>
   room.type === 'werewolf-game' || room.type === 'werewolf-lobby'
@@ -65,6 +66,7 @@ export const WerewolfView: React.SFC<{ room: Werewolf }> = ({ room }) => {
         game: room,
         player: currentPlayer || player,
         updateGame: updateRoom,
+        runActions: actions => updateRoom(runActions(room, actions)),
         addAction: action => addAction(action, room),
         addDelayedAction: action => addDelayedAction(action, room),
         endGame: (party, message) => {
