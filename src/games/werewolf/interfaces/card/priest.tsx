@@ -6,7 +6,6 @@ import { values } from 'ramda'
 import { Typography } from '@material-ui/core'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
-import { NightViewProps } from '../nightViewInterfaces'
 import { bless } from '../actions'
 import { NightViewBase } from '../../components/night/nightActionViewBase'
 import { always } from 'ramda'
@@ -15,15 +14,16 @@ import { Emoji } from '../emoji'
 import { NightMessageOrder } from '../nightMessage'
 import { GenericSetupRoleView } from '../../components/setupRole/genericSetupRole'
 import { NoNightActionView } from '../../components/night/noNightActionView'
+import { PromptView } from '../prompt'
 
 const title = 'Priest, wake up! Bless someone.'
 const description = `They will be protected until they are attacked the first time. You can't bless another person until your first blessing goes away.`
 
-const NightView: React.SFC<NightViewProps> = ({ done, ...props }) => {
+const NightView: PromptView = ({ done, prompt }) => {
   const { game } = React.useContext(WerewolfGameContext)
 
   const player =
-    (props.type === 'by role' || props.type === 'by name') && props.player
+    (prompt.type === 'by role' || prompt.type === 'by name') && prompt.player
 
   if (!player) {
     return <NoNightActionView done={() => done([])} data={title} />
@@ -32,7 +32,7 @@ const NightView: React.SFC<NightViewProps> = ({ done, ...props }) => {
   const canBlessAgain = !values(game.players).find(p => p.isBlessed === player)
 
   return (
-    <NightViewBase {...props} title={title} done={done} role="priest">
+    <NightViewBase prompt={prompt} title={title} done={done}>
       {!canBlessAgain && (
         <>
           <Typography gutterBottom component="em">
@@ -81,7 +81,6 @@ export const Priest = Card({
   image: require('../../static/priest.png'),
   profile: require('../../static/priest-profile.png'),
   SetupRoleView: GenericSetupRoleView,
-  isActive: always(true),
   appearsBad: always(false),
   night: {
     title,

@@ -4,7 +4,7 @@ import { isWerewolf } from './isWerewolf'
 import { getCard, Roles } from '../interfaces/card/cards'
 import { getGameRoles } from './getGameRoles'
 import { getPlayerByRole } from './getPlayersByRole'
-import { NightPrompt } from '../interfaces/nightViewInterfaces'
+import { Prompts } from '../interfaces/prompt'
 
 function getWerewolves(game: WerewolfGame) {
   return values(game.players)
@@ -12,12 +12,12 @@ function getWerewolves(game: WerewolfGame) {
     .map(p => p.id)
 }
 
-export function makeNightPrompts(game: WerewolfGame): NightPrompt[] {
+export function makeNightPrompts(game: WerewolfGame): Prompts[] {
   return [
     // Players with secondary roles
     ...values(game.players)
       .filter(p => p.alive && p.secondaryRole)
-      .map<NightPrompt>(p => ({
+      .map<Prompts>(p => ({
         type: 'by name',
         player: p.id,
         role: p.secondaryRole as Roles,
@@ -27,7 +27,7 @@ export function makeNightPrompts(game: WerewolfGame): NightPrompt[] {
     ...getGameRoles(game)
       .filter(role => getCard(role).night)
       .sort((a, b) => getCard(a).night!.order - getCard(b).night!.order)
-      .map<NightPrompt>(role => {
+      .map<Prompts>(role => {
         if (role === 'werewolf') {
           return {
             type: 'by team',

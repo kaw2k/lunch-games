@@ -10,10 +10,12 @@ import { Emoji } from '../emoji'
 import { NightMessageOrder } from '../nightMessage'
 import { GenericSetupRoleView } from '../../components/setupRole/genericSetupRole'
 import { NoNightActionView } from '../../components/night/noNightActionView'
-import { getCard } from './cards'
+import { getCard, isRole } from './cards'
+import { count } from '../../../../helpers/count'
 import { PromptView } from '../prompt'
 
-const title = 'Seer, wake up! Inspect someone!'
+const title = 'Apprentice Seer, wake up!'
+const description = 'If the seer is dead, you get to inspect someone.'
 
 const NightView: PromptView = ({ done, prompt }) => {
   const { game } = React.useContext(WerewolfGameContext)
@@ -21,7 +23,9 @@ const NightView: PromptView = ({ done, prompt }) => {
   const playerId =
     (prompt.type === 'by role' || prompt.type === 'by name') && prompt.player
 
-  if (!playerId) {
+  const seers = count(game.players, p => p.alive && isRole(p, 'seer'))
+
+  if (!playerId || seers) {
     return <NoNightActionView done={() => done([])} data={title} />
   }
 
@@ -30,6 +34,7 @@ const NightView: PromptView = ({ done, prompt }) => {
       <ChoosePlayers
         columns={2}
         doneText="inspect"
+        description={description}
         onDone={([targetId]) => {
           const target = game.players[targetId]
           const isPrimaryBad = getCard(target.role).appearsBad(target, game)
@@ -48,23 +53,16 @@ const NightView: PromptView = ({ done, prompt }) => {
   )
 }
 
-export const Seer = Card({
-  role: 'seer',
-  weight: 7,
+export const ApprenticeSeer = Card({
+  role: 'apprentice seer',
+  weight: 4,
   team: 'villagers',
-  emoji: Emoji('🔮'),
+  emoji: Emoji('🧖‍'),
   cardCount: 1,
-  description: `Each night, you can inspect a player and find out if they're on the Werewolf team or not.`,
-  hints: [
-    `If the tanner is in the game, you want to make sure the villagers don't vote to eliminate the tanner`,
-    `If the bodyguard is in the game, it is typically safe to come out earlier and ask to be protected.`,
-    `If there is no way for you to be protected, you may want to wait until you find more than one werewolf.`,
-    `Chewkacabra shows up as a villager until all the werewolves are dead.`,
-    `Cursed shows up as a villager until they are attacked by werewolves.`,
-    `Lycan always shows up as a werewolf even though they are a villager.`,
-  ],
-  image: require('../../static/seer.png'),
-  profile: require('../../static/seer-profile.png'),
+  description: `You become the Seer if they're eliminated. Each night, you get to wake up and inspect if someone is on the werewolf team or not.`,
+  hints: [],
+  image: require('../../static/apprentice-seer.png'),
+  profile: require('../../static/apprentice-seer-profile.png'),
   SetupRoleView: GenericSetupRoleView,
   appearsBad: always(false),
   night: {

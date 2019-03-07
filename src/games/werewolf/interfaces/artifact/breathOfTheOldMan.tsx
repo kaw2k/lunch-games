@@ -2,16 +2,17 @@ import * as React from 'react'
 import { Artifact, ArtifactViewComponent } from '.'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { getArtifact } from './artifacts'
-import { updatePlayer, updateArtifact } from '../actions'
+import { updateArtifact, artifactKill } from '../actions'
 import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { values } from 'ramda'
+import { addDelayedAction } from '../../helpers/addAction'
 
 const ActivateView: ArtifactViewComponent = ({
   artifactState,
   back,
   player,
 }) => {
-  const { runActions, game } = React.useContext(WerewolfGameContext)
+  const { runActions, game, updateGame } = React.useContext(WerewolfGameContext)
   const artifact = getArtifact(artifactState.type)
 
   return (
@@ -22,15 +23,23 @@ const ActivateView: ArtifactViewComponent = ({
       columns={2}
       cancelText="cancel"
       onCancel={back}
-      doneText="copy player"
+      doneText="kill eventually"
       onDone={([target]) => {
-        runActions([
-          updatePlayer({
-            target: player.id,
-            updates: {
-              secondaryRole: game.players[target].role,
+        updateGame(
+          addDelayedAction(
+            {
+              action: artifactKill({
+                target,
+              }),
+              day: game.dayCount + 1,
+              time: 'night',
+              occurrence: 'once',
             },
-          }),
+            game
+          )
+        )
+
+        runActions([
           updateArtifact({
             target: player.id,
             artifact: artifact.type,
@@ -45,11 +54,10 @@ const ActivateView: ArtifactViewComponent = ({
   )
 }
 
-export const MirrorOfTheDoppleganger = Artifact({
-  type: 'mirror of the doppleganger',
-  title: 'Mirror of the Doppleganger',
-  description:
-    'Choose a player and secretly view their role. You now have that players special power in addition to yours.',
-  infinite: true,
+export const BreathOfTheOldMan = Artifact({
+  type: 'breath of the old man',
+  title: 'Breath of the Old Man',
+  description: 'Choose a player to be eliminated the night after the next day.',
+  infinite: false,
   ActivateView,
 })

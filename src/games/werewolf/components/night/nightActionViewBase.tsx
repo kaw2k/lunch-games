@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
-import { NightViewProps } from '../../interfaces/nightViewInterfaces'
 import { Typography } from '@material-ui/core'
 import { getCard } from '../../interfaces/card/cards'
 import { NoNightActionView } from './noNightActionView'
@@ -8,55 +7,63 @@ import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
 import { isModerator } from '../../helpers/isModerator'
 import { actionToString } from '../../interfaces/actions'
+import { PromptViewProps } from '../../interfaces/prompt'
 
-type Props = NightViewProps & {
+interface Props extends PromptViewProps {
   title: string
 }
 
 export const NightViewBase: React.SFC<Props> = ({
   done,
   title,
-  role,
+  prompt,
   children,
   ...props
 }) => {
   const { game, player } = React.useContext(WerewolfGameContext)
 
-  const card = getCard(role)
-  const hasNightAction = !!card.night
-  if (!game.night || game.night.type === 'pre-day') return null
-  const night = game.night
-
-  if (
-    (props.type === 'by name' &&
-      (!card.isActive(game.players[props.player], game) || !hasNightAction)) ||
-    (props.type === 'by role' &&
-      (!props.player || !game.players[props.player].alive)) ||
-    (props.type === 'by team' && !props.players.length)
-  ) {
+  if (prompt.type === 'by artifact' || prompt.type === 'by message') {
     return (
       <NoNightActionView
         done={() => done([])}
-        data={props.type === 'by name' ? props.player : title}
+        data="artifacts and messages are not supported at night"
       />
     )
   }
 
-  if (!!night.playerReady && isModerator(player, game)) {
+  const card = getCard(prompt.role)
+  const hasNightAction = !!card.night
+  if (game.time !== 'night') return null
+
+  if (
+    (prompt.type === 'by name' && !hasNightAction) ||
+    (prompt.type === 'by role' &&
+      (!prompt.player || !game.players[prompt.player].alive)) ||
+    (prompt.type === 'by team' && !prompt.players.length)
+  ) {
+    return (
+      <NoNightActionView
+        done={() => done([])}
+        data={prompt.type === 'by name' ? prompt.player : title}
+      />
+    )
+  }
+
+  if (!!game.playerReady && isModerator(player, game)) {
     return (
       <>
         <Typography gutterBottom variant="h2">
           The player(s) have made a decision
         </Typography>
 
-        {night.playerActions
+        {game.playerActions
           .filter(x => x)
           .map((action, i) => (
             <Typography key={i}>{actionToString(action)}</Typography>
           ))}
 
         <ActionRow fixed>
-          <Button onClick={() => done(night.playerActions)} color="green">
+          <Button onClick={() => done(game.playerActions)} color="green">
             accept
           </Button>
         </ActionRow>
@@ -67,11 +74,11 @@ export const NightViewBase: React.SFC<Props> = ({
   return (
     <>
       <Typography gutterBottom variant="h2">
-        {props.type === 'by name' &&
-          `${game.players[props.player] ||
-            props.player}, wake up! Do the thing!`}
+        {prompt.type === 'by name' &&
+          `${game.players[prompt.player] ||
+            prompt.player}, wake up! Do the thing!`}
 
-        {(props.type === 'by role' || props.type === 'by team') && title}
+        {(prompt.type === 'by role' || prompt.type === 'by team') && title}
       </Typography>
 
       {children}

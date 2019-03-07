@@ -56,5 +56,4 @@ export const OrbOfSpeculation = Artifact({
     'Choose two players. If both of them are werewolves the village team wins and the game is over. If they are not, you are instantly eliminated.',
   infinite: false,
   ActivateView,
-  MorningView: null,
 })

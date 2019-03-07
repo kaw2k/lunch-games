@@ -2,16 +2,45 @@ import { WerewolfGame } from '../interfaces/game'
 import { isWerewolf } from './isWerewolf'
 import { count } from '../../../helpers/count'
 import { setVictory } from './gameEngine'
-import { isRole } from './isRole'
 import values from 'ramda/es/values'
 import contains from 'ramda/es/contains'
 import pipe from 'ramda/es/pipe'
+import { isRole } from '../interfaces/card/cards'
 
 export function isGameOver(game: WerewolfGame): WerewolfGame {
   return pipe(
+    isChewksWin,
+    isWerewolfWin,
     isCultWin,
     isVillagerWin
   )(game)
+}
+
+function isChewksWin(game: WerewolfGame): WerewolfGame {
+  const living = values(game.players).filter(p => p.alive)
+  const chewks = count(living, p => isRole(p, 'chewks'))
+
+  if (chewks === 1 && living.length === 2) {
+    return setVictory({ team: 'chewks', message: 'Chewks has won!' }, game)
+  }
+
+  return game
+}
+
+function isWerewolfWin(game: WerewolfGame): WerewolfGame {
+  const living = values(game.players).filter(p => p.alive)
+  const numWolves = count(living, p => isWerewolf(p, game))
+  const nonWolves = living.length - numWolves
+  const chewks = count(living, p => isRole(p, 'chewks'))
+
+  if (!chewks && numWolves >= nonWolves) {
+    return setVictory(
+      { team: 'werewolves', message: 'The werewolves have won!' },
+      game
+    )
+  }
+
+  return game
 }
 
 function isVillagerWin(game: WerewolfGame): WerewolfGame {

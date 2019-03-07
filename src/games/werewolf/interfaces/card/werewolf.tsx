@@ -3,7 +3,6 @@ import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { WerewolfProfile } from '../../components/werewolfProfile'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values, all } from 'ramda'
-import { NightViewProps } from '../nightViewInterfaces'
 import { werewolfKill } from '../actions'
 import { always } from 'ramda'
 import { Card } from '.'
@@ -16,6 +15,7 @@ import { isWerewolf } from '../../helpers/isWerewolf'
 import { PlayerId } from '../../../../interfaces/player'
 import { NightViewBase } from '../../components/night/nightActionViewBase'
 import { WerewolfGame } from '../game'
+import { PromptView } from '../prompt'
 
 const title = 'Werewolves, wake up and kill people'
 
@@ -34,13 +34,13 @@ function getVotesForPlayer(
   return votes
 }
 
-const NightModerator: React.SFC<NightViewProps> = ({ done, ...props }) => {
+const NightModerator: PromptView = ({ done, prompt }) => {
   const { game } = React.useContext(WerewolfGameContext)
 
-  if (props.type !== 'by team') return null
+  if (prompt.type !== 'by team') return null
 
   return (
-    <NightViewBase done={done} {...props} title={title}>
+    <NightViewBase done={done} prompt={prompt} title={title}>
       <ChoosePlayers
         doneText="kill"
         columns={2}
@@ -54,7 +54,7 @@ const NightModerator: React.SFC<NightViewProps> = ({ done, ...props }) => {
             key={profileProps.player.id}
             profileText={getVotesForPlayer(
               profileProps.player,
-              props.players,
+              prompt.players,
               game
             )}
           />
@@ -64,7 +64,7 @@ const NightModerator: React.SFC<NightViewProps> = ({ done, ...props }) => {
   )
 }
 
-const NightPlayer: React.SFC<NightViewProps> = ({ done, ...props }) => {
+const NightPlayer: PromptView = ({ done, prompt }) => {
   const { game, updateGamePlayer, player } = React.useContext(
     WerewolfGameContext
   )
@@ -79,7 +79,7 @@ const NightPlayer: React.SFC<NightViewProps> = ({ done, ...props }) => {
     })
   }, [])
 
-  if (props.type !== 'by team') return null
+  if (prompt.type !== 'by team') return null
 
   // Figure out of all the wolves are ready
   const wolves = values(game.players).filter(
@@ -94,7 +94,7 @@ const NightPlayer: React.SFC<NightViewProps> = ({ done, ...props }) => {
     !all(p => compare(p.state.werewolf || []), wolves)
 
   return (
-    <NightViewBase done={done} {...props} title={title}>
+    <NightViewBase done={done} prompt={prompt} title={title}>
       <ChoosePlayers
         doneText="kill"
         columns={2}
@@ -118,7 +118,7 @@ const NightPlayer: React.SFC<NightViewProps> = ({ done, ...props }) => {
             key={profileProps.player.id}
             profileText={getVotesForPlayer(
               profileProps.player,
-              props.players,
+              prompt.players,
               game
             )}
           />
@@ -143,7 +143,6 @@ export const Werewolf = Card({
   emoji: Emoji('🐺'),
   image: require('../../static/werewolf.png'),
   profile: require('../../static/werewolf-profile.png'),
-  isActive: always(true),
   SetupRoleView: GenericSetupWerewolfRoleView,
   night: {
     title,

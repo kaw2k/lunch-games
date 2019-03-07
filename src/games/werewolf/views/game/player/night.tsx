@@ -4,28 +4,23 @@ import { contains } from 'ramda'
 import { getCard } from '../../../interfaces/card/cards'
 import { Actions } from '../../../interfaces/actions'
 import { Typography } from '@material-ui/core'
-import { NightPrompt } from '../../../interfaces/nightViewInterfaces'
+import { Prompts } from '../../../interfaces/prompt'
 
 interface Props {
-  prompts: NightPrompt[]
+  prompts: Prompts[]
 }
 
 export const WerewolfPlayerNight: React.SFC<Props> = ({ prompts }) => {
   const { player, updateGame, game } = React.useContext(WerewolfGameContext)
 
-  if (!game.night) return null
-  if (game.night.type === 'pre-day' || game.night.playerReady)
+  if (game.time === 'day') return null
+  if (game.time === 'dawn' || game.playerReady)
     return <Typography variant="h2">It Night</Typography>
-
-  const night = game.night
 
   function done(actions: Actions[]) {
     updateGame({
-      night: {
-        ...night,
-        playerActions: actions,
-        playerReady: true,
-      },
+      playerActions: actions,
+      playerReady: true,
     })
   }
 
@@ -36,7 +31,7 @@ export const WerewolfPlayerNight: React.SFC<Props> = ({ prompts }) => {
   if (firstPrompt.type === 'by name' && firstPrompt.player === player.id) {
     const View = secondary && secondary.night && secondary.night.PlayerView
     if (View) {
-      return <View {...firstPrompt} done={done} />
+      return <View prompt={firstPrompt} done={done} />
     }
   }
 
@@ -47,7 +42,7 @@ export const WerewolfPlayerNight: React.SFC<Props> = ({ prompts }) => {
   ) {
     const View = primary.night && primary.night.PlayerView
     if (View) {
-      return <View {...firstPrompt} done={done} />
+      return <View prompt={firstPrompt} done={done} />
     }
   }
 
@@ -59,7 +54,7 @@ export const WerewolfPlayerNight: React.SFC<Props> = ({ prompts }) => {
       const werewolf = getCard('werewolf')
       const View = werewolf.night && werewolf.night.PlayerView
       if (View) {
-        return <View {...firstPrompt} done={done} />
+        return <View prompt={firstPrompt} done={done} />
       }
     }
   }

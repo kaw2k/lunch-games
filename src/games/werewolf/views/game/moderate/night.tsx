@@ -17,9 +17,9 @@ interface Props {}
 export const NightModerator: React.SFC<Props> = ({}) => {
   const { game, updateGame } = React.useContext(WerewolfGameContext)
 
-  if (!game.night) return null
+  if (game.time === 'day') return null
 
-  if (game.night.type === 'pre-day') {
+  if (game.time === 'dawn') {
     const artifacts: { player: PlayerId; artifact: Artifacts }[] = []
     for (let player of values(game.players)) {
       for (let artifact of player.artifacts) {
@@ -39,7 +39,7 @@ export const NightModerator: React.SFC<Props> = ({}) => {
         </Typography>
         <Typography>People who died:</Typography>
         <Typography component="em">
-          {game.peopleKilledAtNight.join(', ') || 'no one'}
+          {game.playersKilled.join(', ') || 'no one'}
         </Typography>
 
         {!!artifacts.length && (
@@ -66,24 +66,22 @@ export const NightModerator: React.SFC<Props> = ({}) => {
     )
   }
 
-  const firstPrompt = game.night.prompts[0]
-  const remainingPrompts = game.night.prompts.slice(1)
+  const firstPrompt = game.prompts[0]
+  const remainingPrompts = game.prompts.slice(1)
 
   function done(actions: Actions[]) {
     if (remainingPrompts.length) {
       updateGame({
         ...addAction(actions, game),
-        night: {
-          type: 'actions',
-          playerActions: [],
-          playerReady: false,
-          prompts: remainingPrompts,
-        },
+        time: 'night',
+        playerActions: [],
+        playerReady: false,
+        prompts: remainingPrompts,
       })
     } else {
       updateGame({
         ...runActions(game, actions),
-        night: { type: 'pre-day' },
+        time: 'dawn',
       })
     }
   }
@@ -98,7 +96,7 @@ export const NightModerator: React.SFC<Props> = ({}) => {
         />
       )
     } else {
-      return <ModeratorView {...firstPrompt} done={done} />
+      return <ModeratorView prompt={firstPrompt} done={done} />
     }
   }
 
@@ -115,7 +113,7 @@ export const NightModerator: React.SFC<Props> = ({}) => {
         />
       )
     } else {
-      return <ModeratorView {...firstPrompt} done={done} />
+      return <ModeratorView prompt={firstPrompt} done={done} />
     }
   }
 
@@ -129,7 +127,7 @@ export const NightModerator: React.SFC<Props> = ({}) => {
         />
       )
     } else {
-      return <ModeratorView {...firstPrompt} done={done} />
+      return <ModeratorView prompt={firstPrompt} done={done} />
     }
   }
 

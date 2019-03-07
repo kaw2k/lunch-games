@@ -1,35 +1,35 @@
 import * as React from 'react'
-import { always, values } from 'ramda'
+import { values } from 'ramda'
 import { Card } from '.'
 import { Emoji } from '../emoji'
 import { GenericSetupRoleView } from '../../components/setupRole/genericSetupRole'
 import { count } from '../../../../helpers/count'
 import { isWerewolf } from '../../helpers/isWerewolf'
 import { NightMessageOrder } from '../nightMessage'
-import { NightViewProps } from '../nightViewInterfaces'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { NightViewBase } from '../../components/night/nightActionViewBase'
 import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { WerewolfProfile } from '../../components/werewolfProfile'
 import { chewksKill } from '../actions'
 import { NoNightActionView } from '../../components/night/noNightActionView'
+import { PromptView } from '../prompt'
 
 const title = 'Chewks, wake up and kill someone.'
 const description =
   'If they are a werewolf, they die. If no more werewolves are alive, you can kill anyone.'
 
-const NightModerator: React.SFC<NightViewProps> = ({ done, ...props }) => {
+const NightModerator: PromptView = ({ done, prompt }) => {
   const { game } = React.useContext(WerewolfGameContext)
 
   const player =
-    (props.type === 'by role' || props.type === 'by name') && props.player
+    (prompt.type === 'by role' || prompt.type === 'by name') && prompt.player
 
   if (!player) {
     return <NoNightActionView done={() => done([])} data={title} />
   }
 
   return (
-    <NightViewBase done={done} {...props} title={title}>
+    <NightViewBase done={done} prompt={prompt} title={title}>
       <ChoosePlayers
         doneText="kill"
         columns={2}
@@ -59,7 +59,6 @@ export const Chewks = Card({
   SetupRoleView: GenericSetupRoleView,
   image: require('../../static/chewks.png'),
   profile: require('../../static/chewks-profile.png'),
-  isActive: always(true),
   appearsBad: (player, game) => {
     const wolves = count(game.players, p => isWerewolf(p, game))
     return wolves ? false : true

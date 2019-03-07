@@ -18,5 +18,4 @@ export const Cursed = Card({
   profile: require('../../static/cursed-profile.png'),
   SetupRoleView: GenericSetupRoleView,
   appearsBad: always(false),
-  isActive: always(false),
 })

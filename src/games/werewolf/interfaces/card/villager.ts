@@ -14,6 +14,5 @@ export const Villager = Card({
   emoji: Emoji('👩‍🌾'),
   image: require('../../static/villager.png'),
   profile: require('../../static/villager-profile.png'),
-  isActive: always(false),
   SetupRoleView: GenericSetupRoleView,
 })

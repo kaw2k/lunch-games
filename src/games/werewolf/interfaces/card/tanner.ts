@@ -17,7 +17,6 @@ export const Tanner = Card({
   ],
   image: require('../../static/tanner.png'),
   profile: require('../../static/tanner-profile.png'),
-  isActive: always(false),
   appearsBad: always(false),
   SetupRoleView: GenericSetupRoleView,
 })

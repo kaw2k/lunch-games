@@ -17,12 +17,8 @@ export const WerewolfPlayerGame: React.SFC<Props> = () => {
     )
   }
 
-  if (game.night && player) {
-    return (
-      <WerewolfPlayerNight
-        prompts={game.night.type === 'actions' ? game.night.prompts : []}
-      />
-    )
+  if (game.time === 'night' && player) {
+    return <WerewolfPlayerNight prompts={game.prompts} />
   }
 
   return (

@@ -1,6 +1,7 @@
 import { ArtifactState } from './artifacts'
 import { SFC } from 'react'
 import { PlayerWerewolf } from '../player'
+import { PromptView } from '../prompt'
 
 export type ArtifactViewComponent = SFC<{
   artifactState: ArtifactState
@@ -13,8 +14,9 @@ export interface Artifact<Type extends string> {
   title: string
   description: string
   infinite: boolean
-  ActivateView: null | ArtifactViewComponent
-  MorningView: null | ArtifactViewComponent
+  ActivateView?: ArtifactViewComponent
+  MorningView?: ArtifactViewComponent
+  OnDeathView?: PromptView
 }
 
 export const Artifact = <Type extends string>(

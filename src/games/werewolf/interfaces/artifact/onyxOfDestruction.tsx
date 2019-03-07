@@ -7,7 +7,7 @@ import { values } from 'ramda'
 import { PlayerId } from '../../../../interfaces/player'
 import { Typography } from '@material-ui/core'
 import { Button } from '../../../../components/button'
-import { destroyArtifact, activateArtifact } from '../actions'
+import { destroyArtifact, updateArtifact } from '../actions'
 
 const ActivateView: ArtifactViewComponent = ({ back, player }) => {
   const { runActions, game } = React.useContext(WerewolfGameContext)
@@ -29,9 +29,12 @@ const ActivateView: ArtifactViewComponent = ({ back, player }) => {
               color="red"
               onClick={() => {
                 runActions([
-                  activateArtifact({
+                  updateArtifact({
                     target: player.id,
                     artifact: 'onyx of destruction',
+                    updates: {
+                      activated: 'played',
+                    },
                   }),
                   destroyArtifact({ target: target.id, artifact: a.type }),
                 ])
@@ -67,5 +70,4 @@ export const OnyxOfDestruction = Artifact({
     'Choose a player with an unrevealed artifact card and remove it from the game.',
   infinite: false,
   ActivateView,
-  MorningView: null,
 })

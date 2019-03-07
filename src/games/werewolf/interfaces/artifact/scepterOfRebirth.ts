@@ -6,6 +6,4 @@ export const ScepterOfRebirth = Artifact({
   description:
     'If this artifact has not been played when you die, you come back to life.',
   infinite: false,
-  ActivateView: null,
-  MorningView: null,
 })

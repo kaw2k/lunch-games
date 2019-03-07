@@ -3,7 +3,7 @@ import { Artifact, ArtifactViewComponent } from '.'
 import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values } from 'ramda'
-import { activateArtifact, passArtifact } from '../actions'
+import { passArtifact, updateArtifact } from '../actions'
 import { getArtifact } from './artifacts'
 
 const ActivateView: ArtifactViewComponent = ({ back, player }) => {
@@ -21,9 +21,12 @@ const ActivateView: ArtifactViewComponent = ({ back, player }) => {
       doneText="make diseased"
       onDone={([target]) => {
         runActions([
-          activateArtifact({
+          updateArtifact({
             artifact: 'blood of the diseased',
             target: player.id,
+            updates: {
+              activated: 'played',
+            },
           }),
           passArtifact({
             artifact: 'blood of the diseased',
@@ -44,5 +47,4 @@ export const BloodOfTheDiseased = Artifact({
     'Choose a player to become infected with disease. If the werewolves eliminate that player, they do not get to choose a target the following night.',
   infinite: true,
   ActivateView,
-  MorningView: null,
 })

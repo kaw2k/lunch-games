@@ -12,6 +12,11 @@ import { Unpack } from '../../../../helpers/unpack'
 import { Card } from '.'
 import { Chewks } from './chewks'
 import { Seer } from './seer'
+import { ApprenticeSeer } from './apprenticeSeer'
+import { PlayerWerewolf } from '../player'
+import { Doppleganger } from './doppleganger'
+import { Lycan } from './lycan'
+import { Diseased } from './diseased'
 
 export const Cards = [
   Bodyguard,
@@ -26,6 +31,10 @@ export const Cards = [
   MadBomber,
   Chewks,
   Seer,
+  ApprenticeSeer,
+  Doppleganger,
+  Lycan,
+  Diseased,
 ]
 
 export const Roles = Cards.map(role => role.role)
@@ -33,3 +42,7 @@ export type Roles = Unpack<typeof Roles>
 
 export const getCard = <Role extends Roles>(role: Role): Card<Role> =>
   Cards.find(r => r.role === role) as Card<Role>
+
+export function isRole(player: PlayerWerewolf, role: Roles): boolean {
+  return player.role === role || player.secondaryRole === role
+}

@@ -4,7 +4,6 @@ import { WerewolfProfile } from '../../components/werewolfProfile'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values } from 'ramda'
 import contains from 'ramda/es/contains'
-import { NightViewProps } from '../nightViewInterfaces'
 import { indoctrinate } from '../actions'
 import { NightViewBase } from '../../components/night/nightActionViewBase'
 import { always } from 'ramda'
@@ -13,24 +12,21 @@ import { Emoji } from '../emoji'
 import { NightMessageOrder } from '../nightMessage'
 import { GenericSetupRoleView } from '../../components/setupRole/genericSetupRole'
 import { NoNightActionView } from '../../components/night/noNightActionView'
+import { PromptView } from '../prompt'
 
 const nightTitle = `Cult leader, wake up! Indoctrinate someone, they are now in your cult.`
 
-const NightView: React.SFC<NightViewProps> = ({ done, ...props }) => {
+const NightView: PromptView = ({ done, prompt }) => {
   const { game } = React.useContext(WerewolfGameContext)
   const player =
-    (props.type === 'by role' || props.type === 'by name') && props.player
+    (prompt.type === 'by role' || prompt.type === 'by name') && prompt.player
 
   if (!player)
     return <NoNightActionView done={() => done([])} data={nightTitle} />
 
   return (
     <>
-      <NightViewBase
-        done={done}
-        role="cult leader"
-        title={nightTitle}
-        {...props}>
+      <NightViewBase done={done} title={nightTitle} prompt={prompt}>
         <ChoosePlayers
           removePlayer={game.players[player]}
           doneText="indoctrinate"
@@ -61,7 +57,6 @@ export const CultLeader = Card({
   SetupRoleView: GenericSetupRoleView,
   image: require('../../static/cult-leader.png'),
   profile: require('../../static/cult-leader-profile.png'),
-  isActive: always(true),
   appearsBad: always(false),
   night: {
     title: nightTitle,

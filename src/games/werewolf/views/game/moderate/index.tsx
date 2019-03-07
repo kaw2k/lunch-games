@@ -21,12 +21,13 @@ export const WerewolfModeratorGame: React.SFC<Props> = () => {
 
   React.useEffect(() => {
     // Only end the game when it is day
-    if (game.victory && !game.night) {
+    if (game.victory && game.time === 'day') {
       endGame(game.victory.team, game.victory.message)
     }
   })
 
-  if (game.night) {
+  // TODO: Make a dawn view instead of re-using night view
+  if (game.time === 'night' || game.time === 'dawn') {
     return <NightModerator />
   }
 

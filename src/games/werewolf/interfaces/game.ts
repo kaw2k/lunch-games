@@ -8,7 +8,7 @@ import { DelayAction } from './delayAction'
 import { Teams } from './card'
 import { Artifacts } from './artifact/artifacts'
 import { Roles } from './card/cards'
-import { NightPrompt } from './nightViewInterfaces'
+import { Prompts } from './prompt'
 
 interface WerewolfOptions {
   dayTimeLimit: number
@@ -26,6 +26,8 @@ export interface Victory {
   team: Teams
   message: string
 }
+
+export type Story = { message: string; title?: boolean }
 
 export interface WerewolfGame {
   type: 'werewolf-game'
@@ -56,22 +58,17 @@ export interface WerewolfGame {
   // Any actions that need to happen in the future
   delayedActions: DelayAction<Actions>[]
 
-  peopleKilledAtNight: PlayerId[]
   numberOfPeopleToKill: number
 
   prismOfPower: null | PlayerId[]
 
-  night:
-    | null
-    | { type: 'pre-day' }
-    | {
-        type: 'actions'
-        prompts: NightPrompt[]
-        // A placeholder for players to place actions
-        // for the moderator to see
-        playerActions: Actions[]
-        playerReady: boolean
-      }
+  story: Story[]
+
+  prompts: Prompts[]
+  playersKilled: PlayerId[]
+  playerActions: Actions[]
+  playerReady: boolean
+  time: 'day' | 'dawn' | 'night'
 }
 
 export interface WerewolfLobby extends Omit<Lobby, 'type'> {
@@ -84,3 +81,9 @@ export interface WerewolfLobby extends Omit<Lobby, 'type'> {
 }
 
 export type Werewolf = WerewolfGame | WerewolfLobby
+
+// People killed at night
+// People reborn at night
+// Private things to say to the moderator
+// Artifact actions to play at dawn
+// Have rebirth and reincarnation be prompts that pop up instead of automatically happen. This way if they are given to someone and it is activated, they still work

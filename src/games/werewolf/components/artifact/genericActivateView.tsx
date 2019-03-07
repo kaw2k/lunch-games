@@ -4,7 +4,7 @@ import { getArtifact } from '../../interfaces/artifact/artifacts'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
 import { Typography } from '@material-ui/core'
-import { activateArtifact } from '../../interfaces/actions'
+import { updateArtifact } from '../../interfaces/actions'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 
 export const GenericArtifactActivateView: ArtifactViewComponent = ({
@@ -28,9 +28,12 @@ export const GenericArtifactActivateView: ArtifactViewComponent = ({
           color="green"
           onClick={() => {
             runActions([
-              activateArtifact({
+              updateArtifact({
                 target: player.id,
                 artifact: artifactState.type,
+                updates: {
+                  activated: 'played',
+                },
               }),
             ])
             back()

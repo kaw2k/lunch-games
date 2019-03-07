@@ -7,6 +7,5 @@ export const ShroudOfShame = Artifact({
   description:
     'Each day at dawn choose a player who must face away from the rest of the players.',
   infinite: true,
-  ActivateView: null,
   MorningView: GenericArtifactMorningView,
 })

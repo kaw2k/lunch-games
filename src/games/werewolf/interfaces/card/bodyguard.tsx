@@ -3,7 +3,6 @@ import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { WerewolfProfile } from '../../components/werewolfProfile'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values } from 'ramda'
-import { NightViewProps } from '../nightViewInterfaces'
 import { guard } from '../actions'
 import { NightViewBase } from '../../components/night/nightActionViewBase'
 import { always } from 'ramda'
@@ -11,16 +10,17 @@ import { Card } from '.'
 import { Emoji } from '../emoji'
 import { NightMessageOrder } from '../nightMessage'
 import { GenericSetupRoleView } from '../../components/setupRole/genericSetupRole'
+import { PromptView } from '../prompt'
 
 const nightTitle =
   'Bodyguard, wake up! Protect someone, they will not die tonight.'
 
-const NightView: React.SFC<NightViewProps> = ({ done, ...props }) => {
+const NightView: PromptView = ({ done, prompt }) => {
   const { game } = React.useContext(WerewolfGameContext)
 
   return (
     <>
-      <NightViewBase {...props} done={done} title={nightTitle} role="bodyguard">
+      <NightViewBase prompt={prompt} done={done} title={nightTitle}>
         <ChoosePlayers
           doneText="protect"
           onDone={([target]) => {
@@ -47,7 +47,6 @@ export const Bodyguard = Card({
   SetupRoleView: GenericSetupRoleView,
   image: require('../../static/bodyguard.png'),
   profile: require('../../static/bodyguard-profile.png'),
-  isActive: player => player.alive,
   appearsBad: always(false),
   night: {
     title: nightTitle,

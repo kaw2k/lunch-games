@@ -4,7 +4,7 @@ import { getArtifact } from '../../interfaces/artifact/artifacts'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
 import { Typography } from '@material-ui/core'
-import { performMorningAction } from '../../interfaces/actions'
+import { updateArtifact } from '../../interfaces/actions'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 
 export const GenericArtifactMorningView: ArtifactViewComponent = ({
@@ -27,9 +27,12 @@ export const GenericArtifactMorningView: ArtifactViewComponent = ({
           color="green"
           onClick={() => {
             runActions([
-              performMorningAction({
+              updateArtifact({
                 target: player.id,
                 artifact: artifactState.type,
+                updates: {
+                  performedMorningAction: true,
+                },
               }),
             ])
             back()

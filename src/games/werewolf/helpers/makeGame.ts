@@ -38,6 +38,7 @@ export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
         secondaryRole: null,
         role: shuffledRoles[i],
         state: {},
+        copiedBy: null,
       }
 
       return { ...memo, [player.id]: playerWerewolf }
@@ -62,8 +63,12 @@ export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
     victory: null,
     players: gamePlayers,
     prismOfPower: [],
-    peopleKilledAtNight: [],
-    night: null,
+    story: [],
+    time: 'day',
+    prompts: [],
+    playersKilled: [],
+    playerActions: [],
+    playerReady: false,
     numberOfPeopleToKill: 1,
     playerOrder: [],
   }
