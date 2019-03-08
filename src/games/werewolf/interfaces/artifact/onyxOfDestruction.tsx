@@ -1,7 +1,7 @@
-import { Artifact, ArtifactViewComponent } from '.'
+import { Artifact } from '.'
 import React, { useState } from 'react'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
-import { getArtifact } from './artifacts'
+import { getArtifact, ArtifactViewComponent } from './artifacts'
 import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { values } from 'ramda'
 import { PlayerId } from '../../../../interfaces/player'
@@ -9,7 +9,7 @@ import { Typography } from '@material-ui/core'
 import { Button } from '../../../../components/button'
 import { destroyArtifact, updateArtifact } from '../actions'
 
-const ActivateView: ArtifactViewComponent = ({ back, player }) => {
+const ActivateView: ArtifactViewComponent = ({ player }) => {
   const { runActions, game } = React.useContext(WerewolfGameContext)
   const [pid, setPid] = useState<PlayerId | null>(null)
   const artifact = getArtifact('onyx of destruction')
@@ -38,7 +38,6 @@ const ActivateView: ArtifactViewComponent = ({ back, player }) => {
                   }),
                   destroyArtifact({ target: target.id, artifact: a.type }),
                 ])
-                back()
               }}>
               destroy: {a.type}
             </Button>
@@ -55,8 +54,6 @@ const ActivateView: ArtifactViewComponent = ({ back, player }) => {
         p => p.artifacts.filter(a => !a.activated).length
       )}
       columns={2}
-      cancelText="cancel"
-      onCancel={back}
       doneText="select player"
       onDone={([target]) => setPid(target)}
     />

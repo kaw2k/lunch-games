@@ -18,7 +18,6 @@ export const NightViewBase: React.SFC<Props> = ({
   title,
   prompt,
   children,
-  ...props
 }) => {
   const { game, player } = React.useContext(WerewolfGameContext)
 
@@ -49,21 +48,23 @@ export const NightViewBase: React.SFC<Props> = ({
     )
   }
 
-  if (!!game.playerReady && isModerator(player, game)) {
+  if (!!game.playerInteraction.ready && isModerator(player, game)) {
     return (
       <>
         <Typography gutterBottom variant="h2">
           The player(s) have made a decision
         </Typography>
 
-        {game.playerActions
+        {game.playerInteraction.actions
           .filter(x => x)
           .map((action, i) => (
             <Typography key={i}>{actionToString(action)}</Typography>
           ))}
 
         <ActionRow fixed>
-          <Button onClick={() => done(game.playerActions)} color="green">
+          <Button
+            onClick={() => done(game.playerInteraction.actions)}
+            color="green">
             accept
           </Button>
         </ActionRow>

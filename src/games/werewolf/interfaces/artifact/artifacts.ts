@@ -9,6 +9,8 @@ import { MirrorOfTheDoppleganger } from './mirrorOfTheDoppleganger'
 import { BreathOfTheOldMan } from './breathOfTheOldMan'
 import { ShieldOfTheBodyguard } from './shieldOfTheBodyguard'
 import { PlayerId } from '../../../../interfaces/player'
+import { SFC } from 'react'
+import { PlayerWerewolf } from '../player'
 
 export interface ArtifactState {
   type: Artifacts
@@ -25,6 +27,11 @@ export function ArtifactState(type: Artifacts): ArtifactState {
     state: null,
   }
 }
+
+export type ArtifactViewComponent = SFC<{
+  artifactState: ArtifactState
+  player: PlayerWerewolf
+}>
 
 export const Artifacts = [
   BloodOfTheDiseased,

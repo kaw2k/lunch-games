@@ -1,20 +1,24 @@
 import * as React from 'react'
-import { Artifact, ArtifactViewComponent } from '.'
+import { Artifact } from '.'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
-import { getArtifact } from './artifacts'
-import { artifactKill, endGame } from '../actions'
+import { getArtifact, ArtifactViewComponent } from './artifacts'
+import { artifactKill, endGame, updateArtifact } from '../actions'
 import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { values } from 'ramda'
 import { isWerewolf } from '../../helpers/isWerewolf'
 import { getCard } from '../card/cards'
 
-const ActivateView: ArtifactViewComponent = ({
-  artifactState,
-  back,
-  player,
-}) => {
-  const { runActions, game } = React.useContext(WerewolfGameContext)
+const ActivateView: ArtifactViewComponent = ({ artifactState, player }) => {
+  const { game, runActions } = React.useContext(WerewolfGameContext)
   const artifact = getArtifact(artifactState.type)
+
+  const activateArtifact = updateArtifact({
+    target: player.id,
+    artifact: artifact.type,
+    updates: {
+      activated: 'played',
+    },
+  })
 
   return (
     <ChoosePlayers
@@ -22,8 +26,6 @@ const ActivateView: ArtifactViewComponent = ({
       description={artifact.description}
       players={values(game.players).filter(p => p.alive)}
       columns={2}
-      cancelText="cancel"
-      onCancel={back}
       doneText="select player"
       numToSelect={2}
       onDone={([one, two]) => {
@@ -38,12 +40,20 @@ const ActivateView: ArtifactViewComponent = ({
                 player.id} guessed correctly, ${team} wins!`,
               team,
             }),
+            activateArtifact,
           ])
         } else {
-          runActions([artifactKill({ target: player.id })])
+          runActions([
+            artifactKill({ target: player.id }),
+            updateArtifact({
+              target: player.id,
+              artifact: artifact.type,
+              updates: {
+                activated: 'played',
+              },
+            }),
+          ])
         }
-
-        back()
       }}
     />
   )

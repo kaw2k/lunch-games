@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { Artifact, ArtifactViewComponent } from '.'
+import { Artifact } from '.'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { Typography } from '@material-ui/core'
-import { getArtifact } from './artifacts'
+import { getArtifact, ArtifactViewComponent } from './artifacts'
 import { updateArtifact, guard } from '../actions'
 import { PlayerId } from '../../../../interfaces/player'
 import { ChoosePlayers } from '../../../../components/choosePlayers'
@@ -13,7 +13,6 @@ import contains from 'ramda/es/contains'
 
 export const ArtifactMorningView: ArtifactViewComponent = ({
   artifactState,
-  back,
   player,
 }) => {
   const { game, runActions, updateGame } = React.useContext(WerewolfGameContext)
@@ -36,7 +35,7 @@ export const ArtifactMorningView: ArtifactViewComponent = ({
             addDelayedAction(
               {
                 action: guard({ target }),
-                day: game.dayCount + 1,
+                day: game.day + 1,
                 occurrence: 'once',
                 time: 'night',
               },

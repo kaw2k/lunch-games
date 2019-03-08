@@ -4,57 +4,66 @@ import { contains } from 'ramda'
 import { getCard } from '../../../interfaces/card/cards'
 import { Actions } from '../../../interfaces/actions'
 import { Typography } from '@material-ui/core'
-import { Prompts } from '../../../interfaces/prompt'
+import { NoNightActionView } from '../../../components/night/noNightActionView'
 
-interface Props {
-  prompts: Prompts[]
-}
+interface Props {}
 
-export const WerewolfPlayerNight: React.SFC<Props> = ({ prompts }) => {
+export const WerewolfPlayerNight: React.SFC<Props> = ({}) => {
   const { player, updateGame, game } = React.useContext(WerewolfGameContext)
 
   if (game.time === 'day') return null
-  if (game.time === 'dawn' || game.playerReady)
+
+  if (
+    game.time === 'dawn' ||
+    game.playerInteraction.ready ||
+    !game.prompts.active
+  )
     return <Typography variant="h2">It Night</Typography>
 
   function done(actions: Actions[]) {
     updateGame({
-      playerActions: actions,
-      playerReady: true,
+      playerInteraction: {
+        actions,
+        ready: true,
+      },
     })
   }
 
-  const firstPrompt = prompts[0]
   const primary = getCard(player.role)
   const secondary = player.secondaryRole && getCard(player.secondaryRole)
 
-  if (firstPrompt.type === 'by name' && firstPrompt.player === player.id) {
+  if (
+    game.prompts.active.type === 'by name' &&
+    game.prompts.active.player === player.id
+  ) {
     const View = secondary && secondary.night && secondary.night.PlayerView
-    if (View) {
-      return <View prompt={firstPrompt} done={done} />
+    if (View && secondary && secondary.role !== 'werewolf') {
+      return <View prompt={game.prompts.active} done={done} />
+    } else {
+      return <NoNightActionView data={game.players[player.id]} done={done} />
     }
   }
 
   if (
-    firstPrompt.type === 'by role' &&
-    firstPrompt.player &&
-    firstPrompt.player === player.id
+    game.prompts.active.type === 'by role' &&
+    game.prompts.active.player &&
+    game.prompts.active.player === player.id
   ) {
     const View = primary.night && primary.night.PlayerView
     if (View) {
-      return <View prompt={firstPrompt} done={done} />
+      return <View prompt={game.prompts.active} done={done} />
     }
   }
 
   if (
-    firstPrompt.type === 'by team' &&
-    contains(player.id, firstPrompt.players)
+    game.prompts.active.type === 'by team' &&
+    contains(player.id, game.prompts.active.players)
   ) {
-    if (firstPrompt.role === 'werewolf') {
+    if (game.prompts.active.role === 'werewolf') {
       const werewolf = getCard('werewolf')
       const View = werewolf.night && werewolf.night.PlayerView
       if (View) {
-        return <View prompt={firstPrompt} done={done} />
+        return <View prompt={game.prompts.active} done={done} />
       }
     }
   }

@@ -1,23 +1,22 @@
 import * as React from 'react'
 import { WerewolfGameContext } from '../../../../../helpers/contexts'
-import { values } from 'ramda'
-import { WerewolfProfile } from '../../../components/werewolfProfile'
-import { useCommonStyles } from '../../../../../helpers/commonStyles'
-import { ActionRow } from '../../../../../components/actionRow'
-import { Button } from '../../../../../components/button'
-import { PlayerId } from '../../../../../interfaces/player'
-import { startNight } from '../../../helpers/gameEngine'
 import { NightModerator } from './night'
-import { DayPlayer } from './day'
+import { DayModerator } from './day'
+import { Snackbar, IconButton, Icon, colors } from '@material-ui/core'
+import { DawnModerator } from './dawn'
+import { makeStyles } from '@material-ui/styles'
 
 interface Props {}
 
-type View = { type: 'day player'; player: PlayerId } | { type: 'day' }
+const useStyles = makeStyles({
+  killed: {
+    color: colors.orange[500],
+  },
+})
 
 export const WerewolfModeratorGame: React.SFC<Props> = () => {
-  const [view, setView] = React.useState<View>({ type: 'day' })
   const { game, updateGame, endGame } = React.useContext(WerewolfGameContext)
-  const classes = useCommonStyles()
+  const classes = useStyles()
 
   React.useEffect(() => {
     // Only end the game when it is day
@@ -26,43 +25,38 @@ export const WerewolfModeratorGame: React.SFC<Props> = () => {
     }
   })
 
-  // TODO: Make a dawn view instead of re-using night view
-  if (game.time === 'night' || game.time === 'dawn') {
-    return <NightModerator />
-  }
-
-  if (view.type === 'day player') {
-    return (
-      <DayPlayer
-        player={game.players[view.player]}
-        done={() => setView({ type: 'day' })}
-      />
-    )
+  function clearPlayersKilled() {
+    updateGame({
+      playersKilled: [],
+    })
   }
 
   return (
     <>
-      <div className={classes.twoColumns}>
-        {values(game.players).map(player => (
-          <WerewolfProfile
-            alignItems="flex-start"
-            showRole
-            showLiving
-            key={player.id}
-            player={player}
-            onClick={() => setView({ type: 'day player', player: player.id })}
-          />
-        ))}
-      </div>
+      {game.time === 'night' && <NightModerator />}
+      {game.time === 'dawn' && <DawnModerator />}
+      {game.time === 'day' && <DayModerator />}
 
-      <ActionRow fixed>
-        <Button
-          color="green"
-          confirm
-          onClick={() => updateGame(startNight(game))}>
-          start night
-        </Button>
-      </ActionRow>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={!!game.playersKilled.length}
+        autoHideDuration={10 * 1000}
+        onClose={(e, r) => r !== 'clickaway' && clearPlayersKilled()}
+        message={
+          <span>
+            <span className={classes.killed}>Players Killed:</span>{' '}
+            {game.playersKilled.join(', ')}
+          </span>
+        }
+        action={[
+          <IconButton color="inherit" onClick={clearPlayersKilled}>
+            <Icon>close</Icon>
+          </IconButton>,
+        ]}
+      />
     </>
   )
 }

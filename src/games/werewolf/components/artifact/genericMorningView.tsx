@@ -1,6 +1,8 @@
 import * as React from 'react'
-import { ArtifactViewComponent } from '../../interfaces/artifact'
-import { getArtifact } from '../../interfaces/artifact/artifacts'
+import {
+  getArtifact,
+  ArtifactViewComponent,
+} from '../../interfaces/artifact/artifacts'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
 import { Typography } from '@material-ui/core'
@@ -9,7 +11,6 @@ import { WerewolfGameContext } from '../../../../helpers/contexts'
 
 export const GenericArtifactMorningView: ArtifactViewComponent = ({
   artifactState,
-  back,
   player,
 }) => {
   const { runActions } = React.useContext(WerewolfGameContext)
@@ -35,7 +36,6 @@ export const GenericArtifactMorningView: ArtifactViewComponent = ({
                 },
               }),
             ])
-            back()
           }}>
           done
         </Button>

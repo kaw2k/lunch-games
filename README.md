@@ -58,3 +58,4 @@ New approach
 - Revival is still an automatic event, this should help with isGameOver
 - We still need to move the isGameOver check to the end of the function call for running actions
 - We will add a prompts (or similar) array of MiscPrompt type somewhere on the window. Anyone can write to this array. The moderator sees this array as a popup sheet or something and can act on it.
+- Maybe have players killed be a toast at the bottom, we then have a separate screen for prompts. players Killed can be the trigger for the toast dialog

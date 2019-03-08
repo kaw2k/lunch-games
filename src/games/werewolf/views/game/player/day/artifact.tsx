@@ -5,7 +5,7 @@ import {
   Artifacts,
   ArtifactState,
 } from '../../../../interfaces/artifact/artifacts'
-import { Typography, IconButton, Icon } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useCommonStyles } from '../../../../../../helpers/commonStyles'
 import { GenericArtifactActivateView } from '../../../../components/artifact/genericActivateView'
@@ -13,6 +13,7 @@ import { PlayerWerewolf } from '../../../../interfaces/player'
 import { WerewolfGameContext } from '../../../../../../helpers/contexts'
 import { updateArtifact } from '../../../../interfaces/actions'
 import { PlayerId } from '../../../../../../interfaces/player'
+import { Button } from '../../../../../../components/button'
 
 interface Props {
   player: PlayerWerewolf
@@ -46,17 +47,7 @@ export const WerewolfPlayerDayArtifact: React.SFC<Props> = ({ player }) => {
   if (playingArtifact) {
     const artifact = getArtifact(playingArtifact.type)
     const View = artifact.ActivateView || GenericArtifactActivateView
-    return (
-      <View
-        player={player}
-        artifactState={playingArtifact}
-        back={() => {
-          runActions([
-            toggleArtifact(player.id, playingArtifact.type, 'unplayed'),
-          ])
-        }}
-      />
-    )
+    return <View player={player} artifactState={playingArtifact} />
   }
 
   return (
@@ -74,7 +65,7 @@ export const WerewolfPlayerDayArtifact: React.SFC<Props> = ({ player }) => {
 
                 <Typography
                   color={artifactState.activated ? 'error' : 'textPrimary'}>
-                  {artifactState.activated
+                  {artifactState.activated === 'played'
                     ? artifact.infinite
                       ? 'active'
                       : 'used up'
@@ -83,20 +74,21 @@ export const WerewolfPlayerDayArtifact: React.SFC<Props> = ({ player }) => {
                     : 'one time use'}
                 </Typography>
               </div>
-
-              {!artifactState.activated && (
-                <IconButton
-                  className={cx(classes.pullRight)}
-                  onClick={() => {
-                    runActions([
-                      toggleArtifact(player.id, artifactState.type, 'playing'),
-                    ])
-                  }}>
-                  <Icon>play_circle_filled_white</Icon>
-                </IconButton>
-              )}
             </div>
             <Typography>{artifact.description}</Typography>
+            {artifactState.activated !== 'played' && (
+              <Button
+                color="green"
+                confirm="are you sure? once you start, there is no going back."
+                className={cx(classes.pullRight)}
+                onClick={() => {
+                  runActions([
+                    toggleArtifact(player.id, artifactState.type, 'playing'),
+                  ])
+                }}>
+                play artifact
+              </Button>
+            )}
           </div>
         )
       })}

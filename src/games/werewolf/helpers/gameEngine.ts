@@ -28,6 +28,7 @@ import { count } from '../../../helpers/count'
 import { isWerewolf } from './isWerewolf'
 import { isRole } from '../interfaces/card/cards'
 import { Prompts } from '../interfaces/prompt'
+import { Id } from '../../../helpers/id'
 
 // ===========================================================
 // THE GAME ENGINE
@@ -44,6 +45,8 @@ export function runActions(
   // Set a limit, just in case we hit some recursion...
   let count = 0
   const limit = 100
+
+  console.log(remainingActions)
 
   while (remainingActions.length && count < limit) {
     remainingActions = sortBy(action => action.order, remainingActions)
@@ -96,6 +99,7 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
     if (player.role === 'mayor') {
       return addPrompt(
         {
+          id: Id(),
           type: 'by message',
           message: `The mayor can't be lynched`,
         },
@@ -223,7 +227,7 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
 
   if (action.type === 'scepter of rebirth') {
     const artifact = player.artifacts.find(a => a.type === 'scepter of rebirth')
-    if (!artifact || artifact.activated) return game
+    if (!artifact || artifact.activated === 'played') return game
 
     return pipe(
       updateArtifact(player.id, artifact.type, { activated: 'played' }),
@@ -260,9 +264,17 @@ export function startNight(initialGame: WerewolfGame): WerewolfGame {
   let game = clone(initialGame)
 
   game.time = 'night'
-  game.prompts = makeNightPrompts(game)
-  game.playerActions = []
-  game.playerReady = false
+
+  const prompts = makeNightPrompts(game)
+  game.prompts = {
+    items: prompts.slice(1),
+    active: prompts[0],
+  }
+
+  game.playerInteraction = {
+    actions: [],
+    ready: false,
+  }
 
   game.players = map(
     player => ({
@@ -281,13 +293,12 @@ export function startNight(initialGame: WerewolfGame): WerewolfGame {
 // Things that need to happen to the game before day starts
 export function startDay(initialGame: WerewolfGame): WerewolfGame {
   let game = clone(initialGame)
-  game.dayCount = game.dayCount + 1
+  game.day = game.day + 1
   game = processQueuedActions(game)
   game.numberOfPeopleToKill = 1
   game.time = 'day'
-  game.prompts = []
-  game.playerActions = []
-  game.playerReady = false
+  game.prompts = { items: [], active: null }
+  game.playerInteraction = { actions: [], ready: false }
   values(game.players).forEach(player => {
     game.players[player.id].isBlessed =
       player.isBlessed === 'attacked' ? false : player.isBlessed || false
@@ -298,19 +309,43 @@ export function startDay(initialGame: WerewolfGame): WerewolfGame {
 }
 
 export function startDawn(initialGame: WerewolfGame): WerewolfGame {
-  // let nextGame = runActions(initialGame)
+  let game = runActions(initialGame)
 
-  // const prompts = nextGame.time.prompts
+  let prompts: Prompts[] = []
 
-  // nextGame.time = {
-  //   type: 'dawn',
-  //   playerActions: [],
-  //   killedAtNight: [],
-  //   playerReady: false,
-  //   prompts: prompts,
-  // }
+  for (let player of values(game.players)) {
+    for (let artifact of player.artifacts) {
+      if (
+        player.alive &&
+        artifact.activated == 'played' &&
+        !!getArtifact(artifact.type).MorningView
+      ) {
+        prompts.push({
+          id: Id(),
+          type: 'by artifact',
+          artifact: artifact,
+          player: player.id,
+        })
+      }
+    }
+  }
 
-  return initialGame
+  game.time = 'dawn'
+  game.playerInteraction = {
+    ready: false,
+    actions: [],
+  }
+  game.prompts = {
+    items: game.prompts.items.concat(prompts),
+    active: null,
+  }
+
+  game.notifications = game.notifications.concat({
+    id: Id(),
+    message: `Players Killed: ${game.playersKilled.join(', ') || 'no one'}`,
+  })
+
+  return game
 }
 
 function processQueuedActions(initialGame: WerewolfGame): WerewolfGame {
@@ -324,7 +359,7 @@ function processQueuedActions(initialGame: WerewolfGame): WerewolfGame {
     ReduceResult
   >(
     ({ moveToActions, moveToDelayedActions }, action) => {
-      if (action.day === game.dayCount && action.time === 'night') {
+      if (action.day === game.day && action.time === 'night') {
         return {
           moveToActions: moveToActions.concat(action.action),
           moveToDelayedActions:
@@ -357,11 +392,11 @@ function isCursed(player: PlayerWerewolf, game: WerewolfGame): boolean {
   )
 
   return (
-    player.role === 'cursed' ||
-    player.secondaryRole === 'cursed' ||
+    isRole(player, 'cursed') ||
     !!(
       cursedArtifact &&
-      (cursedArtifact.activated || game.options.cursedArtifactAlwaysActive)
+      (cursedArtifact.activated === 'played' ||
+        game.options.cursedArtifactAlwaysActive)
     )
   )
 }
@@ -406,7 +441,7 @@ const killPlayer = curry(
           const action: DelayAction<Actions> = {
             time: 'night',
             occurrence: 'once',
-            day: game.dayCount + 1,
+            day: game.day + 1,
             action: guard({ target: player.id }),
           }
 
@@ -441,10 +476,18 @@ const killPlayer = curry(
           const artifact = getArtifact(artifactState.type)
 
           if (
-            !artifactState.activated &&
+            artifactState.activated === 'unplayed' &&
             artifact.type === 'scepter of rebirth'
           ) {
-            return addAction(scepterOfRebirth({ target: player.id }), memo)
+            return pipe(
+              addPrompt({
+                type: 'by message',
+                id: Id(),
+                message: `${player.name || player.id} came back to life`,
+                player: player.id,
+              }),
+              addAction(scepterOfRebirth({ target: player.id }))
+            )(memo)
           }
 
           return memo
@@ -573,10 +616,15 @@ const updateGame = curry(
   }
 )
 
-const addPrompt = (prompt: Prompts | Prompts[], game: WerewolfGame) =>
-  updateGame(
-    game => ({
-      prompts: game.prompts.concat(prompt),
-    }),
-    game
-  )
+const addPrompt = curry(
+  (prompt: Prompts | Prompts[], game: WerewolfGame): WerewolfGame =>
+    updateGame(
+      game => ({
+        prompts: {
+          ...game.prompts,
+          items: game.prompts.items.concat(prompt),
+        },
+      }),
+      game
+    )
+)

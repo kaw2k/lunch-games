@@ -10,20 +10,12 @@ export const WerewolfPlayerGame: React.SFC<Props> = () => {
   const { player, game } = React.useContext(WerewolfGameContext)
 
   if (!player.alive) {
-    return (
-      <>
-        <Typography variant="h2">Ur ded, lol</Typography>
-      </>
-    )
+    return <Typography variant="h2">Ur ded, lol</Typography>
   }
 
-  if (game.time === 'night' && player) {
-    return <WerewolfPlayerNight prompts={game.prompts} />
+  if (game.time === 'night') {
+    return <WerewolfPlayerNight />
   }
 
-  return (
-    <>
-      <WerewolfPlayerDay />
-    </>
-  )
+  return <WerewolfPlayerDay />
 }

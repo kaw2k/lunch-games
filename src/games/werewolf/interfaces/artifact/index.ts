@@ -1,13 +1,5 @@
-import { ArtifactState } from './artifacts'
-import { SFC } from 'react'
-import { PlayerWerewolf } from '../player'
 import { PromptView } from '../prompt'
-
-export type ArtifactViewComponent = SFC<{
-  artifactState: ArtifactState
-  back: () => void
-  player: PlayerWerewolf
-}>
+import { ArtifactViewComponent } from './artifacts'
 
 export interface Artifact<Type extends string> {
   type: Type

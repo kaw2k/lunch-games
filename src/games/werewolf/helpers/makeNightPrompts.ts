@@ -5,6 +5,7 @@ import { getCard, Roles } from '../interfaces/card/cards'
 import { getGameRoles } from './getGameRoles'
 import { getPlayerByRole } from './getPlayersByRole'
 import { Prompts } from '../interfaces/prompt'
+import { Id } from '../../../helpers/id'
 
 function getWerewolves(game: WerewolfGame) {
   return values(game.players)
@@ -19,6 +20,7 @@ export function makeNightPrompts(game: WerewolfGame): Prompts[] {
       .filter(p => p.alive && p.secondaryRole)
       .map<Prompts>(p => ({
         type: 'by name',
+        id: Id(),
         player: p.id,
         role: p.secondaryRole as Roles,
       })),
@@ -30,6 +32,7 @@ export function makeNightPrompts(game: WerewolfGame): Prompts[] {
       .map<Prompts>(role => {
         if (role === 'werewolf') {
           return {
+            id: Id(),
             type: 'by team',
             players: getWerewolves(game),
             role: 'werewolf',
@@ -39,6 +42,7 @@ export function makeNightPrompts(game: WerewolfGame): Prompts[] {
         const p = getPlayerByRole(role, game)
         return {
           type: 'by role',
+          id: Id(),
           player: p && p.id,
           role: role,
         }

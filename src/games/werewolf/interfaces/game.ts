@@ -9,6 +9,7 @@ import { Teams } from './card'
 import { Artifacts } from './artifact/artifacts'
 import { Roles } from './card/cards'
 import { Prompts } from './prompt'
+import { Id } from '../../../helpers/id'
 
 interface WerewolfOptions {
   dayTimeLimit: number
@@ -24,6 +25,11 @@ interface WerewolfOptions {
 
 export interface Victory {
   team: Teams
+  message: string
+}
+
+export interface ModeratorMessage {
+  id: Id
   message: string
 }
 
@@ -49,8 +55,6 @@ export interface WerewolfGame {
   victory: Victory | null
   // Options to modify the game
   options: WerewolfOptions
-  // An indicator of what day it is
-  dayCount: number
   // Displays a countdown for display during the day
   timer: number | null
   // An array of actions taken during the night
@@ -64,11 +68,32 @@ export interface WerewolfGame {
 
   story: Story[]
 
-  prompts: Prompts[]
+  // These are messages that the moderator sees on all screens
+  // Used for things like "so and so died"
+  notifications: ModeratorMessage[]
+
+  prompts: {
+    // The active prompt changes the screen the moderator and
+    // any affected players see
+    active: Prompts | null
+    // If there are an array of prompts we force the moderator
+    // To deal with them. The moderator then can dismiss or act on those prompts
+    items: Prompts[]
+  }
+
   playersKilled: PlayerId[]
-  playerActions: Actions[]
-  playerReady: boolean
+
+  // An object that the players can modify signalling to the moderator
+  // that they have performed their actions
+  playerInteraction: {
+    actions: Actions[]
+    ready: boolean
+  }
+
+  // Used to change the overall layout of the screen. If you are night or day
+  // prompts behave slightly different
   time: 'day' | 'dawn' | 'night'
+  day: number
 }
 
 export interface WerewolfLobby extends Omit<Lobby, 'type'> {
@@ -81,9 +106,3 @@ export interface WerewolfLobby extends Omit<Lobby, 'type'> {
 }
 
 export type Werewolf = WerewolfGame | WerewolfLobby
-
-// People killed at night
-// People reborn at night
-// Private things to say to the moderator
-// Artifact actions to play at dawn
-// Have rebirth and reincarnation be prompts that pop up instead of automatically happen. This way if they are given to someone and it is activated, they still work

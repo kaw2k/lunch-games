@@ -1,17 +1,13 @@
 import * as React from 'react'
-import { Artifact, ArtifactViewComponent } from '.'
+import { Artifact } from '.'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
-import { getArtifact } from './artifacts'
+import { getArtifact, ArtifactViewComponent } from './artifacts'
 import { updateArtifact, artifactKill } from '../actions'
 import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { values } from 'ramda'
 import { addDelayedAction } from '../../helpers/addAction'
 
-const ActivateView: ArtifactViewComponent = ({
-  artifactState,
-  back,
-  player,
-}) => {
+const ActivateView: ArtifactViewComponent = ({ artifactState, player }) => {
   const { runActions, game, updateGame } = React.useContext(WerewolfGameContext)
   const artifact = getArtifact(artifactState.type)
 
@@ -21,8 +17,6 @@ const ActivateView: ArtifactViewComponent = ({
       description={artifact.description}
       players={values(game.players).filter(p => p.alive)}
       columns={2}
-      cancelText="cancel"
-      onCancel={back}
       doneText="kill eventually"
       onDone={([target]) => {
         updateGame(
@@ -31,7 +25,7 @@ const ActivateView: ArtifactViewComponent = ({
               action: artifactKill({
                 target,
               }),
-              day: game.dayCount + 1,
+              day: game.day + 1,
               time: 'night',
               occurrence: 'once',
             },
@@ -48,7 +42,6 @@ const ActivateView: ArtifactViewComponent = ({
             },
           }),
         ])
-        back()
       }}
     />
   )

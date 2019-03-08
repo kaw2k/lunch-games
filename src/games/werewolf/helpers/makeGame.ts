@@ -50,7 +50,7 @@ export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
     type: 'werewolf-game',
     ready: false,
     actions: [],
-    dayCount: 0,
+    day: 0,
     delayedActions: [],
     initialRoles: lobby.roles,
     id: lobby.id,
@@ -65,10 +65,16 @@ export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
     prismOfPower: [],
     story: [],
     time: 'day',
-    prompts: [],
+    prompts: {
+      items: [],
+      active: null,
+    },
     playersKilled: [],
-    playerActions: [],
-    playerReady: false,
+    playerInteraction: {
+      actions: [],
+      ready: false,
+    },
+    notifications: [],
     numberOfPeopleToKill: 1,
     playerOrder: [],
   }

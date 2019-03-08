@@ -1,17 +1,13 @@
 import * as React from 'react'
-import { Artifact, ArtifactViewComponent } from '.'
+import { Artifact } from '.'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
-import { getArtifact } from './artifacts'
+import { getArtifact, ArtifactViewComponent } from './artifacts'
 import { updatePlayer, updateArtifact } from '../actions'
 import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { values } from 'ramda'
 
-const ActivateView: ArtifactViewComponent = ({
-  artifactState,
-  back,
-  player,
-}) => {
-  const { runActions, game } = React.useContext(WerewolfGameContext)
+const ActivateView: ArtifactViewComponent = ({ artifactState, player }) => {
+  const { game, runActions } = React.useContext(WerewolfGameContext)
   const artifact = getArtifact(artifactState.type)
 
   return (
@@ -20,8 +16,6 @@ const ActivateView: ArtifactViewComponent = ({
       description={artifact.description}
       players={values(game.players).filter(p => p.alive)}
       columns={2}
-      cancelText="cancel"
-      onCancel={back}
       doneText="copy player"
       onDone={([target]) => {
         runActions([
@@ -39,7 +33,6 @@ const ActivateView: ArtifactViewComponent = ({
             },
           }),
         ])
-        back()
       }}
     />
   )

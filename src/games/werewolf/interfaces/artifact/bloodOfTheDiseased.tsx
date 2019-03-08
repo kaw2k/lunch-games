@@ -1,12 +1,12 @@
 import * as React from 'react'
-import { Artifact, ArtifactViewComponent } from '.'
+import { Artifact } from '.'
 import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values } from 'ramda'
 import { passArtifact, updateArtifact } from '../actions'
-import { getArtifact } from './artifacts'
+import { getArtifact, ArtifactViewComponent } from './artifacts'
 
-const ActivateView: ArtifactViewComponent = ({ back, player }) => {
+const ActivateView: ArtifactViewComponent = ({ player }) => {
   const { runActions, game } = React.useContext(WerewolfGameContext)
   const artifact = getArtifact('blood of the diseased')
 
@@ -16,8 +16,6 @@ const ActivateView: ArtifactViewComponent = ({ back, player }) => {
       description={artifact.description}
       players={values(game.players).filter(p => p.alive)}
       columns={2}
-      cancelText="cancel"
-      onCancel={back}
       doneText="make diseased"
       onDone={([target]) => {
         runActions([
@@ -34,7 +32,6 @@ const ActivateView: ArtifactViewComponent = ({ back, player }) => {
             target,
           }),
         ])
-        back()
       }}
     />
   )
