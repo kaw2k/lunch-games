@@ -13,6 +13,10 @@ import { VoidOfNothingness } from './voidOfNothingness'
 import { BowOfHunting } from './bowOfHunting'
 import { ClawOfTheWerewolf } from './clawOfTheWerewolf'
 import { CitrineOfFortune } from './citrineOfFortune'
+import { WreathOfPeace } from './wreathOfPeace'
+import { VoteFromBeyond } from './voteFromBeyond'
+import { StaffOfTheSeer } from './staffOfTheSeer'
+import { AmuletOfProtection } from './amuletOfProtection'
 
 export interface ArtifactState {
   type: Artifacts
@@ -46,6 +50,10 @@ export const Artifacts = [
   BowOfHunting,
   ClawOfTheWerewolf,
   CitrineOfFortune,
+  WreathOfPeace,
+  VoteFromBeyond,
+  StaffOfTheSeer,
+  AmuletOfProtection,
 ]
 export type Artifacts = (typeof Artifacts)[0]['type']
 

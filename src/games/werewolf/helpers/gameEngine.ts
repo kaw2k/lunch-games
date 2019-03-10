@@ -180,7 +180,11 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
     action.type === 'vote kill' ||
     action.type === 'artifact kill'
   ) {
-    return killPlayer(action.target, action, game)
+    const hasAmulet = !!player.artifacts.find(
+      a => a.type === 'amulet of protection' && a.activated === 'played'
+    )
+
+    return hasAmulet ? game : killPlayer(action.target, action, game)
   }
 
   // MISC ACTIONS
