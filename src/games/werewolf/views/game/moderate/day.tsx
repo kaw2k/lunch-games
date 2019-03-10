@@ -3,7 +3,7 @@ import { WerewolfGameContext } from '../../../../../helpers/contexts'
 import { Button } from '../../../../../components/button'
 import { ActionRow } from '../../../../../components/actionRow'
 import { WerewolfProfile } from '../../../components/werewolfProfile'
-import { sudoKill, voteKill } from '../../../interfaces/actions'
+import { voteKill, showPrompts } from '../../../interfaces/actions'
 import { values } from 'ramda'
 import { useCommonStyles } from '../../../../../helpers/commonStyles'
 import { startNight } from '../../../helpers/gameEngine'
@@ -26,18 +26,8 @@ export const DayModerator: React.SFC<Props> = () => {
         <WerewolfProfile player={player} showLiving showRole />
 
         <Button
-          color="red"
-          confirm="Only use this if you need to"
           onClick={() => {
-            runActions([sudoKill({ target: player.id })])
-            setSelectedPlayer(null)
-          }}>
-          Sudo Kill
-        </Button>
-
-        <Button
-          onClick={() => {
-            runActions([voteKill({ target: player.id })])
+            runActions([voteKill({ target: player.id }), showPrompts({})])
             setSelectedPlayer(null)
           }}>
           Vote Kill

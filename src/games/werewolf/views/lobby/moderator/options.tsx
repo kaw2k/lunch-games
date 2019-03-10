@@ -93,6 +93,13 @@ export const WerewolfModeratorLobbyOptions: React.SFC<Props> = ({ lobby }) => {
         description="The cursed artifact does not need to be played, the user is cursed by default."
         lobby={lobby}
       />
+
+      <Option
+        title="Always Wolfish"
+        option="werewolfArtifactAlwaysActive"
+        description="The claw of the werewolf artifact does not need to be played, the user is a werewolf and their normal role by default."
+        lobby={lobby}
+      />
     </Layout>
   )
 }

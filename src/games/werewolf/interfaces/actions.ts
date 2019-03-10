@@ -4,6 +4,7 @@ import { Id } from '../../../helpers/id'
 import { assertNever } from '../../../helpers/assertNever'
 import { Artifacts, ArtifactState } from './artifact/artifacts'
 import { Teams } from './card'
+import { DelayAction } from './delayAction'
 
 enum ActionOrder {
   setup = 0,
@@ -113,10 +114,13 @@ export const destroyArtifact = AC<'destroy artifact', TargetArtifact>(
   ActionOrder.artifact
 )
 
-export const giveArtifact = AC<'give artifact', Target>(
+export const giveArtifact = AC<
   'give artifact',
-  ActionOrder.artifact
-)
+  {
+    target: PlayerId
+    artifact: ArtifactState
+  }
+>('give artifact', ActionOrder.artifact)
 
 export const passArtifact = AC<
   'pass artifact',
@@ -134,6 +138,25 @@ export const endGame = AC<
     message: string
   }
 >('end game', ActionOrder.artifact)
+
+export const addAction = AC<
+  'add action',
+  {
+    action: Action<any, any> | Action<any, any>[]
+  }
+>('add action', ActionOrder.misc)
+
+export const addDelayedAction = AC<
+  'add delayed action',
+  {
+    delayedAction: DelayAction<Action<any, any>> | DelayAction<Action<any, any>>
+  }
+>('add delayed action', ActionOrder.misc)
+
+export const showPrompts = AC<'show prompts', {}>(
+  'show prompts',
+  ActionOrder.misc
+)
 
 export type Actions =
   | ReturnType<typeof revivePlayer>
@@ -155,6 +178,9 @@ export type Actions =
   | ReturnType<typeof updateArtifact>
   | ReturnType<typeof giveArtifact>
   | ReturnType<typeof endGame>
+  | ReturnType<typeof addDelayedAction>
+  | ReturnType<typeof addAction>
+  | ReturnType<typeof showPrompts>
 
 export function actionToString(action: Actions): string | null {
   if (action.type === 'bless')
@@ -198,6 +224,9 @@ export function actionToString(action: Actions): string | null {
   if (action.type === 'destroy artifact') return null
   if (action.type === 'give artifact') return null
   if (action.type === 'end game') return null
+  if (action.type === 'add action') return null
+  if (action.type === 'show prompts') return null
+  if (action.type === 'add delayed action') return null
 
   return assertNever(action)
 }

@@ -4,6 +4,7 @@ import { Button } from '../../../../components/button'
 import { PlayerWerewolf } from '../../interfaces/player'
 import { makeStyles } from '@material-ui/styles'
 import { colors, Typography } from '@material-ui/core'
+import { ClawViewRole } from './clawViewRole'
 
 interface Props {
   player: PlayerWerewolf
@@ -56,5 +57,10 @@ export const SetupRoleContainer: React.SFC<Props> = ({ player, children }) => {
     )
   }
 
-  return <>{children}</>
+  return (
+    <>
+      <ClawViewRole />
+      {children}
+    </>
+  )
 }

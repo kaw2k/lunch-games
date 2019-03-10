@@ -9,6 +9,8 @@ import { getWeight } from '../../../helpers/getWeight'
 import { Button } from '../../../../../components/button'
 import { makeStyles } from '@material-ui/styles'
 import { Artifacts } from '../../../interfaces/artifact/artifacts'
+import groupBy from 'ramda/es/groupBy'
+import { toPairs } from 'ramda'
 
 interface Props {
   lobby: WerewolfLobby
@@ -50,18 +52,29 @@ export const WerewolfModeratorLobbyArtifacts: React.SFC<Props> = ({
     <Layout padded>
       <Typography variant="h2">Roles: {getWeight(lobby.roles)}</Typography>
       <Button onClick={reset}>Reset</Button>
-      {Artifacts.map(artifact => (
-        <Profile
-          key={artifact.type}
-          text={artifact.title}
-          alignItems="flex-start"
-          className={
-            count(lobby.artifacts, a => a === artifact.type) ? '' : classes.dim
-          }
-          subtext={artifact.description}
-          onClick={() => addOrRemoveArtifact(artifact.type)}
-        />
-      ))}
+      {toPairs(groupBy(a => a.category, Artifacts)).map(
+        ([group, artifacts]) => (
+          <div key={group}>
+            <Typography gutterBottom variant="h2">
+              {group}
+            </Typography>
+            {artifacts.map(artifact => (
+              <Profile
+                key={artifact.type}
+                text={artifact.title}
+                alignItems="flex-start"
+                className={
+                  count(lobby.artifacts, a => a === artifact.type)
+                    ? ''
+                    : classes.dim
+                }
+                subtext={artifact.description}
+                onClick={() => addOrRemoveArtifact(artifact.type)}
+              />
+            ))}
+          </div>
+        )
+      )}
     </Layout>
   )
 }

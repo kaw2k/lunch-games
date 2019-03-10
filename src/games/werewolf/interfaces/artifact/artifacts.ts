@@ -9,29 +9,28 @@ import { MirrorOfTheDoppleganger } from './mirrorOfTheDoppleganger'
 import { BreathOfTheOldMan } from './breathOfTheOldMan'
 import { ShieldOfTheBodyguard } from './shieldOfTheBodyguard'
 import { PlayerId } from '../../../../interfaces/player'
-import { SFC } from 'react'
-import { PlayerWerewolf } from '../player'
+import { VoidOfNothingness } from './voidOfNothingness'
+import { BowOfHunting } from './bowOfHunting'
+import { ClawOfTheWerewolf } from './clawOfTheWerewolf'
+import { CitrineOfFortune } from './citrineOfFortune'
 
 export interface ArtifactState {
   type: Artifacts
-  performedMorningAction: boolean
   state: any
   linked?: null | PlayerId // If a player copies your artifact, give them an active artifact when your is played
   activated: 'unplayed' | 'playing' | 'played'
 }
-export function ArtifactState(type: Artifacts): ArtifactState {
+export function ArtifactState(
+  type: Artifacts,
+  state: Partial<ArtifactState> = {}
+): ArtifactState {
   return {
     type,
     activated: 'unplayed',
-    performedMorningAction: false,
     state: null,
+    ...state,
   }
 }
-
-export type ArtifactViewComponent = SFC<{
-  artifactState: ArtifactState
-  player: PlayerWerewolf
-}>
 
 export const Artifacts = [
   BloodOfTheDiseased,
@@ -43,6 +42,10 @@ export const Artifacts = [
   MirrorOfTheDoppleganger,
   BreathOfTheOldMan,
   ShieldOfTheBodyguard,
+  VoidOfNothingness,
+  BowOfHunting,
+  ClawOfTheWerewolf,
+  CitrineOfFortune,
 ]
 export type Artifacts = (typeof Artifacts)[0]['type']
 

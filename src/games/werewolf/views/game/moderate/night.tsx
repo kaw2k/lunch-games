@@ -26,6 +26,7 @@ export const NightModerator: React.SFC<Props> = ({}) => {
         prompts: {
           active: game.prompts.items[0],
           items: game.prompts.items.slice(1),
+          show: true,
         },
       })
     } else {
@@ -48,9 +49,10 @@ export const NightModerator: React.SFC<Props> = ({}) => {
   }
 
   if (game.prompts.active.type === 'by name') {
-    const { ModeratorView } = getCard(game.prompts.active.role).night!
+    const card = getCard(game.prompts.active.role)
     if (
-      !ModeratorView ||
+      !card.night ||
+      !card.night.ModeratorView ||
       (game.prompts.active.role && game.prompts.active.role === 'werewolf')
     ) {
       return (
@@ -60,6 +62,7 @@ export const NightModerator: React.SFC<Props> = ({}) => {
         />
       )
     } else {
+      const ModeratorView = card.night.ModeratorView
       return <ModeratorView prompt={game.prompts.active} done={done} />
     }
   }

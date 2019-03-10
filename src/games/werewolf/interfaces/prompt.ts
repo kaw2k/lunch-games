@@ -5,41 +5,45 @@ import { PlayerId } from '../../../interfaces/player'
 import { ArtifactState } from './artifact/artifacts'
 import { Id } from '../../../helpers/id'
 
-export type Prompts =
-  | {
-      id: Id
-      type: 'by role'
-      player: PlayerId | null | undefined
-      role: Roles
-    }
-  | {
-      id: Id
-      type: 'by name'
-      player: PlayerId
-      role: Roles
-    }
-  | {
-      id: Id
-      type: 'by team'
-      players: PlayerId[]
-      role: Roles
-    }
-  | {
-      id: Id
-      type: 'by artifact'
-      player: PlayerId
-      artifact: ArtifactState
-    }
-  | {
-      id: Id
-      type: 'by message'
-      player?: PlayerId
-      message: string
-    }
-
-export interface PromptViewProps {
-  done: (actions: Actions[]) => void
-  prompt: Prompts
+export interface ByRole {
+  id: Id
+  type: 'by role'
+  player: PlayerId | null | undefined
+  role: Roles
+}
+export interface ByName {
+  id: Id
+  type: 'by name'
+  player: PlayerId
+  role: Roles
 }
 
-export type PromptView = FC<PromptViewProps>
+export interface ByTeam {
+  id: Id
+  type: 'by team'
+  players: PlayerId[]
+  role: Roles
+}
+
+export interface ByArtifact {
+  id: Id
+  type: 'by artifact'
+  player: PlayerId
+  artifact: ArtifactState
+}
+
+export interface ByMessage {
+  id: Id
+  type: 'by message'
+  player?: PlayerId
+  message: string
+}
+
+export type Prompts = ByRole | ByName | ByTeam | ByMessage | ByArtifact
+
+export interface PromptViewProps<P = Prompts> {
+  done: (actions: Actions[]) => void
+  prompt: P
+}
+
+export type PromptView<P = Prompts> = FC<PromptViewProps<P>>

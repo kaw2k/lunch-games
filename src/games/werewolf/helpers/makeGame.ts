@@ -3,24 +3,18 @@ import { isModerator } from './isModerator'
 import { shuffle } from '../../../helpers/shuffle'
 import { PlayerWerewolf } from '../interfaces/player'
 import { Roles } from '../interfaces/card/cards'
-import {
-  Artifacts,
-  ArtifactState,
-  getArtifact,
-} from '../interfaces/artifact/artifacts'
+import { Artifacts, ArtifactState } from '../interfaces/artifact/artifacts'
 
 export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
-  const players = lobby.lobbyPlayers.filter(p => !isModerator(p, lobby))
-
+  const players = shuffle(
+    lobby.lobbyPlayers.filter(p => !isModerator(p, lobby))
+  )
   const shuffledRoles = shuffle(roles)
-
   const shouldHaveArtifact = !!lobby.artifacts.length
   const extraArtifacts = shuffle(
-    Artifacts.map(a => a.type).filter(a => !lobby.artifacts.find(b => a !== b))
+    Artifacts.map(a => a.type).filter(a => !!lobby.artifacts.find(l => a !== l))
   )
-  const shuffledArtifacts = shuffle(lobby.artifacts)
-    .concat(extraArtifacts)
-    .slice(0, players.length)
+  const shuffledArtifacts = shuffle(lobby.artifacts).concat(extraArtifacts)
 
   const gamePlayers = players.reduce<WerewolfGame['players']>(
     (memo, player, i) => {
@@ -28,7 +22,7 @@ export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
         ...player,
         alive: true,
         artifacts: shouldHaveArtifact
-          ? [ArtifactState(getArtifact(shuffledArtifacts[i]).type)]
+          ? [ArtifactState(shuffledArtifacts[i])]
           : [],
         inCult: [],
         isBlessed: false,
@@ -68,6 +62,7 @@ export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
     prompts: {
       items: [],
       active: null,
+      show: false,
     },
     playersKilled: [],
     playerInteraction: {

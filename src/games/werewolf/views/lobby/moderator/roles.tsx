@@ -10,6 +10,7 @@ import { RoomContext } from '../../../../../helpers/contexts'
 import { getWeight } from '../../../helpers/getWeight'
 import { Button } from '../../../../../components/button'
 import { Cards, Roles, getCard } from '../../../interfaces/card/cards'
+import { groupBy, toPairs } from 'ramda'
 
 interface Props {
   lobby: WerewolfLobby
@@ -27,7 +28,8 @@ const useStyles = makeStyles({
     opacity: 0.25,
   },
 })
-const cards = sortBy(card => -1 * card.weight, Cards)
+
+const cards = toPairs(groupBy(card => card.team, Cards))
 
 export const WerewolfModeratorLobbyRoles: React.SFC<Props> = ({ lobby }) => {
   const classes = useStyles()
@@ -58,22 +60,32 @@ export const WerewolfModeratorLobbyRoles: React.SFC<Props> = ({ lobby }) => {
     <Layout padded>
       <Typography variant="h2">Roles: {getWeight(lobby.roles)}</Typography>
       <Button onClick={reset}>Reset</Button>
-      <div className={classes.profiles}>
-        {cards.map(card => (
-          <Profile
-            key={card.role}
-            className={
-              count(lobby.roles, r => r === card.role) ? '' : classes.dim
-            }
-            text={card.role}
-            image={card.profile}
-            alignItems="flex-start"
-            subtext={`Weight: ${card.weight}, Count: ${count(
-              lobby.roles,
-              r => r === card.role
-            )}`}
-            onClick={() => addOrRemoveRole(card.role)}
-          />
+
+      <div>
+        {cards.map(([team, cardsInTeam]) => (
+          <div key={team}>
+            <Typography variant="h2" gutterBottom>
+              {team}
+            </Typography>
+            <div className={classes.profiles}>
+              {sortBy(card => -1 * card.weight, cardsInTeam).map(card => (
+                <Profile
+                  key={card.role}
+                  className={
+                    count(lobby.roles, r => r === card.role) ? '' : classes.dim
+                  }
+                  text={card.role}
+                  image={card.profile}
+                  alignItems="flex-start"
+                  subtext={`Weight: ${card.weight}, Count: ${count(
+                    lobby.roles,
+                    r => r === card.role
+                  )}`}
+                  onClick={() => addOrRemoveRole(card.role)}
+                />
+              ))}
+            </div>
+          </div>
         ))}
       </div>
     </Layout>

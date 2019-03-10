@@ -23,6 +23,7 @@ const NightView: PromptView = ({ done, prompt }) => {
       <NightViewBase prompt={prompt} done={done} title={nightTitle}>
         <ChoosePlayers
           doneText="protect"
+          columns={2}
           onDone={([target]) => {
             done([guard({ target })])
           }}

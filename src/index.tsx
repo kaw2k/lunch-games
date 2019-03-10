@@ -65,15 +65,19 @@ render(
           },
           h3: {
             fontSize: 16,
+            fontWeight: 'bold',
           },
           h4: {
             fontSize: 14,
+            fontWeight: 'bold',
           },
           h5: {
             fontSize: 14,
+            fontWeight: 'bold',
           },
           h6: {
             fontSize: 14,
+            fontWeight: 'bold',
           },
         },
 
@@ -87,6 +91,21 @@ render(
           MuiButton: {
             sizeLarge: {
               padding: '1em',
+            },
+          },
+          MuiDivider: {
+            root: {
+              backgroundColor: '#eee',
+            },
+          },
+          MuiCard: {
+            root: {
+              border: '1px solid #eee',
+            },
+          },
+          MuiCardActions: {
+            root: {
+              justifyContent: 'flex-end',
             },
           },
         },

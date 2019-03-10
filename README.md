@@ -40,22 +40,7 @@ npm start
 - Boogyman also works fine, just set night timers, add in option for after every role
 - need seating chart
 - We need to check for game over after dawn is finished and after artifacts settle. They won't happen in the action loop. This only holds true if we have rebirth as a manual artifact.
-- Things the moderator needs to say or know about
-  - People killed at night
-  - People reborn at night
-  - Private things to say to the moderator
-  - Artifact actions to play at dawn
-  - Have rebirth and reincarnation be prompts that pop up instead of automatically happen. This way if they are given to someone and it is activated, they still work
-- We can make a helper function to figure out who has died. It will take a game state and diff it against the current game state.
-- We can re-use the dawn prompt which unifies who died and what the moderator should say coupled with corresponding artifact actions. This can be it's own component.
-- We need to make sure the game doesn't end prematurely.
-- We need to make sure when an artifact is forced to play (rebirth, linking), that it indicates so to the moderator AND the players
-- We need to display to the moderator things to say, both who died and who was reborn
-- We need to make sure rebirth artifacts are played when they are linked and the source plays their artifact
 
-New approach
+Make dawn more generic, this way we can use it for any prompts
 
-- Revival is still an automatic event, this should help with isGameOver
-- We still need to move the isGameOver check to the end of the function call for running actions
-- We will add a prompts (or similar) array of MiscPrompt type somewhere on the window. Anyone can write to this array. The moderator sees this array as a popup sheet or something and can act on it.
-- Maybe have players killed be a toast at the bottom, we then have a separate screen for prompts. players Killed can be the trigger for the toast dialog
+figure out how to only show who died at a particular time in the prompts menu

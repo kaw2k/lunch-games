@@ -19,6 +19,7 @@ interface WerewolfOptions {
   ghost: boolean
   killCult: boolean
   cursedArtifactAlwaysActive: boolean
+  werewolfArtifactAlwaysActive: boolean
   madBomberOnlyKillsAdjacent: boolean
   protectWolves: boolean
 }
@@ -79,6 +80,7 @@ export interface WerewolfGame {
     // If there are an array of prompts we force the moderator
     // To deal with them. The moderator then can dismiss or act on those prompts
     items: Prompts[]
+    show: boolean
   }
 
   playersKilled: PlayerId[]

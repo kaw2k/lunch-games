@@ -17,6 +17,7 @@ import { PlayerWerewolf } from '../player'
 import { Doppleganger } from './doppleganger'
 import { Lycan } from './lycan'
 import { Diseased } from './diseased'
+import { Hunter } from './hunter'
 
 export const Cards = [
   Bodyguard,
@@ -35,6 +36,7 @@ export const Cards = [
   Doppleganger,
   Lycan,
   Diseased,
+  Hunter,
 ]
 
 export const Roles = Cards.map(role => role.role)

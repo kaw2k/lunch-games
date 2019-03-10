@@ -1,24 +1,21 @@
 import * as React from 'react'
 import { Artifact } from '.'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
-import { getArtifact, ArtifactViewComponent } from './artifacts'
-import { artifactKill, endGame, updateArtifact } from '../actions'
+import { getArtifact } from './artifacts'
+import { artifactKill, endGame } from '../actions'
 import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { values } from 'ramda'
 import { isWerewolf } from '../../helpers/isWerewolf'
 import { getCard } from '../card/cards'
+import { PromptView, ByArtifact } from '../prompt'
 
-const ActivateView: ArtifactViewComponent = ({ artifactState, player }) => {
-  const { game, runActions } = React.useContext(WerewolfGameContext)
+const ActivateView: PromptView<ByArtifact> = ({
+  done,
+  prompt: { artifact: artifactState, player: playerId },
+}) => {
+  const { game } = React.useContext(WerewolfGameContext)
   const artifact = getArtifact(artifactState.type)
-
-  const activateArtifact = updateArtifact({
-    target: player.id,
-    artifact: artifact.type,
-    updates: {
-      activated: 'played',
-    },
-  })
+  const player = game.players[playerId]
 
   return (
     <ChoosePlayers
@@ -34,25 +31,15 @@ const ActivateView: ArtifactViewComponent = ({ artifactState, player }) => {
           isWerewolf(game.players[two], game)
         ) {
           const team = getCard(player.role).team
-          runActions([
+          done([
             endGame({
               message: `${player.name ||
                 player.id} guessed correctly, ${team} wins!`,
               team,
             }),
-            activateArtifact,
           ])
         } else {
-          runActions([
-            artifactKill({ target: player.id }),
-            updateArtifact({
-              target: player.id,
-              artifact: artifact.type,
-              updates: {
-                activated: 'played',
-              },
-            }),
-          ])
+          done([artifactKill({ target: player.id })])
         }
       }}
     />
@@ -62,6 +49,7 @@ const ActivateView: ArtifactViewComponent = ({ artifactState, player }) => {
 export const OrbOfSpeculation = Artifact({
   type: 'orb of speculation',
   title: 'Orb of Speculation',
+  category: 'Chaos',
   description:
     'Choose two players. If both of them are werewolves the village team wins and the game is over. If they are not, you are instantly eliminated.',
   infinite: false,

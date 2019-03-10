@@ -1,19 +1,14 @@
 import * as React from 'react'
-import {
-  getArtifact,
-  ArtifactViewComponent,
-} from '../../interfaces/artifact/artifacts'
+import { getArtifact } from '../../interfaces/artifact/artifacts'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
 import { Typography } from '@material-ui/core'
-import { updateArtifact } from '../../interfaces/actions'
-import { WerewolfGameContext } from '../../../../helpers/contexts'
+import { ByArtifact, PromptView } from '../../interfaces/prompt'
 
-export const GenericArtifactMorningView: ArtifactViewComponent = ({
-  artifactState,
-  player,
+export const GenericArtifactMorningView: PromptView<ByArtifact> = ({
+  done,
+  prompt: { artifact: artifactState, player },
 }) => {
-  const { runActions } = React.useContext(WerewolfGameContext)
   const artifact = getArtifact(artifactState.type)
 
   return (
@@ -24,19 +19,7 @@ export const GenericArtifactMorningView: ArtifactViewComponent = ({
       <Typography gutterBottom>{artifact.description}</Typography>
 
       <ActionRow fixed>
-        <Button
-          color="green"
-          onClick={() => {
-            runActions([
-              updateArtifact({
-                target: player.id,
-                artifact: artifactState.type,
-                updates: {
-                  performedMorningAction: true,
-                },
-              }),
-            ])
-          }}>
+        <Button color="green" onClick={() => done([])}>
           done
         </Button>
       </ActionRow>

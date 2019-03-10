@@ -1,13 +1,20 @@
-import { PromptView } from '../prompt'
-import { ArtifactViewComponent } from './artifacts'
+import { PromptView, ByArtifact } from '../prompt'
 
 export interface Artifact<Type extends string> {
   type: Type
   title: string
   description: string
   infinite: boolean
-  ActivateView?: ArtifactViewComponent
-  MorningView?: ArtifactViewComponent
+  category:
+    | 'Inspection'
+    | 'Killing'
+    | 'Imitate Role'
+    | 'Chaos'
+    | 'Misc'
+    | 'Rebirth'
+    | 'Target Other Artifacts'
+  ActivateView?: PromptView<ByArtifact>
+  MorningView?: PromptView<ByArtifact>
   OnDeathView?: PromptView
 }
 

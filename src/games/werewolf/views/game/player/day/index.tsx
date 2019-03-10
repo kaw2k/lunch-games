@@ -28,6 +28,9 @@ const useStyles = makeStyles({
   },
   root: {
     paddingBottom: '56px',
+    '& > *:not(:last-child)': {
+      marginBottom: '1em',
+    },
   },
 })
 
@@ -45,7 +48,9 @@ export const WerewolfPlayerDay: React.SFC<Props> = ({}) => {
       <BottomNavigation
         className={classes.nav}
         value={view}
-        onChange={(event, newValue) => setView(newValue)}
+        onChange={(event, newValue) =>
+          newValue !== View.role && setView(newValue)
+        }
         showLabels>
         <BottomNavigationAction
           value={View.overview}
@@ -53,6 +58,11 @@ export const WerewolfPlayerDay: React.SFC<Props> = ({}) => {
           icon={<Icon>group</Icon>}
         />
         <BottomNavigationAction
+          onClick={() => {
+            if (confirm('Make sure no one is looking...')) {
+              setView(View.role)
+            }
+          }}
           value={View.role}
           label="role"
           icon={<Icon>face</Icon>}

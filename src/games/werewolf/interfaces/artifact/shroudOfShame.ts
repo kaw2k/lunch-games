@@ -4,6 +4,7 @@ import { GenericArtifactMorningView } from '../../components/artifact/genericMor
 export const ShroudOfShame = Artifact({
   type: 'shroud of shame',
   title: 'Shroud of shame',
+  category: 'Chaos',
   description:
     'Each day at dawn choose a player who must face away from the rest of the players.',
   infinite: true,

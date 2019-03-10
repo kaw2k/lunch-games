@@ -23,12 +23,12 @@ import {
   ArtifactState,
   Artifacts,
 } from '../interfaces/artifact/artifacts'
-import { isGameOver } from './isGameOver'
 import { count } from '../../../helpers/count'
 import { isWerewolf } from './isWerewolf'
-import { isRole } from '../interfaces/card/cards'
+import { isRole, getCard } from '../interfaces/card/cards'
 import { Prompts } from '../interfaces/prompt'
 import { Id } from '../../../helpers/id'
+import { playerName } from '../../../components/playerName'
 
 // ===========================================================
 // THE GAME ENGINE
@@ -46,8 +46,6 @@ export function runActions(
   let count = 0
   const limit = 100
 
-  console.log(remainingActions)
-
   while (remainingActions.length && count < limit) {
     remainingActions = sortBy(action => action.order, remainingActions)
     const action = remainingActions[0]
@@ -59,8 +57,6 @@ export function runActions(
   }
 
   if (count === limit) alert('Something went wrong')
-
-  game = isGameOver(game)
 
   return game
 }
@@ -74,6 +70,18 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
       },
       game
     )
+  }
+
+  if (action.type === 'add action') {
+    return addAction(action.action, game)
+  }
+
+  if (action.type === 'add delayed action') {
+    return addDelayedAction(action.delayedAction, game)
+  }
+
+  if (action.type === 'show prompts') {
+    return updateGame({ prompts: { ...game.prompts, show: true } }, game)
   }
 
   const player = game.players[action.target]
@@ -101,7 +109,9 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
         {
           id: Id(),
           type: 'by message',
-          message: `The mayor can't be lynched`,
+          message: `The villagers tried to lynch ${playerName(
+            player
+          )} but they are the mayor and can't be lynched.`,
         },
         game
       )
@@ -136,7 +146,16 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
     }
 
     if (isCursed(player, game)) {
-      return updateWerewolfPlayer(player.id, { role: 'werewolf' }, game)
+      return pipe(
+        updateWerewolfPlayer(player.id, { role: 'werewolf' }),
+        addPrompt({
+          id: Id(),
+          type: 'by message',
+          message: `SECRET: ${playerName(
+            player
+          )} was attacked by the werewolves and transformed into one.`,
+        })
+      )(game)
     }
   }
 
@@ -221,8 +240,7 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
   }
 
   if (action.type === 'give artifact') {
-    // TODO
-    return game
+    return giveArtifact(action.target, action.artifact, game)
   }
 
   if (action.type === 'scepter of rebirth') {
@@ -264,11 +282,13 @@ export function startNight(initialGame: WerewolfGame): WerewolfGame {
   let game = clone(initialGame)
 
   game.time = 'night'
+  game.playersKilled = []
 
   const prompts = makeNightPrompts(game)
   game.prompts = {
     items: prompts.slice(1),
     active: prompts[0],
+    show: true,
   }
 
   game.playerInteraction = {
@@ -293,17 +313,18 @@ export function startNight(initialGame: WerewolfGame): WerewolfGame {
 // Things that need to happen to the game before day starts
 export function startDay(initialGame: WerewolfGame): WerewolfGame {
   let game = clone(initialGame)
-  game.day = game.day + 1
-  game = processQueuedActions(game)
   game.numberOfPeopleToKill = 1
   game.time = 'day'
-  game.prompts = { items: [], active: null }
+  game.prompts = { items: [], active: null, show: false }
   game.playerInteraction = { actions: [], ready: false }
+  game.playersKilled = []
   values(game.players).forEach(player => {
     game.players[player.id].isBlessed =
       player.isBlessed === 'attacked' ? false : player.isBlessed || false
     game.players[player.id].isGuarded = false
   })
+
+  game = runActions(processQueuedActions(game))
 
   return game
 }
@@ -331,6 +352,7 @@ export function startDawn(initialGame: WerewolfGame): WerewolfGame {
   }
 
   game.time = 'dawn'
+  game.day = game.day + 1
   game.playerInteraction = {
     ready: false,
     actions: [],
@@ -338,12 +360,8 @@ export function startDawn(initialGame: WerewolfGame): WerewolfGame {
   game.prompts = {
     items: game.prompts.items.concat(prompts),
     active: null,
+    show: true,
   }
-
-  game.notifications = game.notifications.concat({
-    id: Id(),
-    message: `Players Killed: ${game.playersKilled.join(', ') || 'no one'}`,
-  })
 
   return game
 }
@@ -359,7 +377,7 @@ function processQueuedActions(initialGame: WerewolfGame): WerewolfGame {
     ReduceResult
   >(
     ({ moveToActions, moveToDelayedActions }, action) => {
-      if (action.day === game.day && action.time === 'night') {
+      if (action.day === game.day && action.time === game.time) {
         return {
           moveToActions: moveToActions.concat(action.action),
           moveToDelayedActions:
@@ -412,24 +430,21 @@ const killPlayer = curry(
   (
     playerId: PlayerId,
     actionType: Actions,
-    game: WerewolfGame
+    initialGame: WerewolfGame
   ): WerewolfGame => {
+    let game = clone(initialGame)
+
     const player = game.players[playerId]
     if (!player || !player.alive) return game
 
-    let actions: Actions[] = []
-    let delayedActions: DelayAction<Actions>[] = []
-
-    // If the player is linked, kill them as well
-    actions = actions.concat(
-      player.linkedTo.map(id => linkKill({ target: id }))
-    )
+    // If they were linked to people, kill them too
+    game = addAction(player.linkedTo.map(id => linkKill({ target: id })), game)
 
     // If they are the cult leader, kill the cult
     if (game.options.killCult && player.role === 'cult leader') {
       values(game.players).forEach(cultMember => {
         if (cultMember.inCult.find(id => id == player.id)) {
-          actions = actions.concat(linkKill({ target: cultMember.id }))
+          game = addAction(linkKill({ target: cultMember.id }), game)
         }
       })
     }
@@ -450,49 +465,77 @@ const killPlayer = curry(
         []
       )
 
-      delayedActions = delayedActions.concat(actions)
+      game = addDelayedAction(actions, game)
     }
 
     if (player.copiedBy) {
-      actions = actions.concat(
+      game = addAction(
         updatePlayer({
           target: player.copiedBy,
           updates: {
             role: player.role,
           },
-        })
+        }),
+        game
       )
     }
 
-    return pipe(
-      addAction(actions),
-      addDelayedAction(delayedActions),
-      updateWerewolfPlayer(playerId, { alive: false }),
-      updateGame(game => ({
-        playersKilled: game.playersKilled.concat(playerId),
-      })),
-      initialGame =>
-        player.artifacts.reduce<WerewolfGame>((memo, artifactState) => {
-          const artifact = getArtifact(artifactState.type)
+    // Kill the player
+    game = updateWerewolfPlayer(playerId, { alive: false }, game)
 
-          if (
-            artifactState.activated === 'unplayed' &&
-            artifact.type === 'scepter of rebirth'
-          ) {
-            return pipe(
-              addPrompt({
-                type: 'by message',
-                id: Id(),
-                message: `${player.name || player.id} came back to life`,
-                player: player.id,
-              }),
-              addAction(scepterOfRebirth({ target: player.id }))
-            )(memo)
-          }
+    // Add it to our kill list
+    game = updateGame(
+      { playersKilled: game.playersKilled.concat(playerId) },
+      game
+    )
 
-          return memo
-        }, initialGame)
-    )(game)
+    // Perform any last minute artifacts
+    player.artifacts.forEach(artifactState => {
+      const artifact = getArtifact(artifactState.type)
+
+      if (
+        artifactState.activated === 'unplayed' &&
+        artifact.type === 'scepter of rebirth'
+      ) {
+        game = pipe(
+          addPrompt({
+            type: 'by message',
+            id: Id(),
+            message: `${player.name || player.id} came back to life`,
+            player: player.id,
+          }),
+          addAction(scepterOfRebirth({ target: player.id }))
+        )(game)
+      }
+    }, game)
+
+    // Add any death prompts
+    const primary = getCard(player.role)
+    if (primary.OnDeathView) {
+      game = addPrompt(
+        {
+          type: 'by role',
+          role: primary.role,
+          id: Id(),
+          player: player.id,
+        },
+        game
+      )
+    }
+    const secondary = player.secondaryRole && getCard(player.secondaryRole)
+    if (secondary && primary.OnDeathView) {
+      game = addPrompt(
+        {
+          type: 'by role',
+          role: secondary.role,
+          id: Id(),
+          player: player.id,
+        },
+        game
+      )
+    }
+
+    return game
   }
 )
 

@@ -3,11 +3,12 @@ import { Artifact } from '.'
 import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values } from 'ramda'
-import { passArtifact, updateArtifact } from '../actions'
-import { getArtifact, ArtifactViewComponent } from './artifacts'
+import { passArtifact } from '../actions'
+import { getArtifact } from './artifacts'
+import { PromptView, ByArtifact } from '../prompt'
 
-const ActivateView: ArtifactViewComponent = ({ player }) => {
-  const { runActions, game } = React.useContext(WerewolfGameContext)
+const ActivateView: PromptView<ByArtifact> = ({ done, prompt: { player } }) => {
+  const { game } = React.useContext(WerewolfGameContext)
   const artifact = getArtifact('blood of the diseased')
 
   return (
@@ -18,17 +19,10 @@ const ActivateView: ArtifactViewComponent = ({ player }) => {
       columns={2}
       doneText="make diseased"
       onDone={([target]) => {
-        runActions([
-          updateArtifact({
-            artifact: 'blood of the diseased',
-            target: player.id,
-            updates: {
-              activated: 'played',
-            },
-          }),
+        done([
           passArtifact({
             artifact: 'blood of the diseased',
-            source: player.id,
+            source: player,
             target,
           }),
         ])
@@ -40,6 +34,7 @@ const ActivateView: ArtifactViewComponent = ({ player }) => {
 export const BloodOfTheDiseased = Artifact({
   type: 'blood of the diseased',
   title: 'Blood of the Diseased',
+  category: 'Imitate Role',
   description:
     'Choose a player to become infected with disease. If the werewolves eliminate that player, they do not get to choose a target the following night.',
   infinite: true,

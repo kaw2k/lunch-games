@@ -56,12 +56,13 @@ export const ChooseGame: React.SFC<{}> = () => {
               options: {
                 boogymanOP: false,
                 ghost: false,
-                killCult: false,
-                noFlip: false,
+                killCult: true,
+                noFlip: true,
                 dayTimeLimit: 120,
                 nightTimeLimit: 0,
                 cursedArtifactAlwaysActive: false,
-                madBomberOnlyKillsAdjacent: false,
+                werewolfArtifactAlwaysActive: false,
+                madBomberOnlyKillsAdjacent: true,
                 protectWolves: false,
               },
             }
