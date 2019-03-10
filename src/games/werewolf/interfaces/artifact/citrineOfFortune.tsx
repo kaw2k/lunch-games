@@ -9,7 +9,7 @@ import { Typography } from '@material-ui/core'
 import { values } from 'ramda'
 import contains from 'ramda/es/contains'
 import { shuffle } from '../../../../helpers/shuffle'
-import { destroyArtifact, giveArtifact, updateArtifact } from '../actions'
+import { giveArtifact, updateArtifact } from '../actions'
 import { Id } from '../../../../helpers/id'
 
 const ActivateView: PromptView<ByArtifact> = ({
@@ -17,7 +17,6 @@ const ActivateView: PromptView<ByArtifact> = ({
   prompt: { player: playerId, artifact: artifactState },
 }) => {
   const { game } = React.useContext(WerewolfGameContext)
-  const artifact = getArtifact(artifactState.type)
 
   const usedArtifacts = values(game.players).reduce<Artifacts[]>((memo, p) => {
     return memo.concat(p.artifacts.map(a => a.type))
