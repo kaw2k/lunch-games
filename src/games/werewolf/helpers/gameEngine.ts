@@ -472,6 +472,22 @@ const killPlayer = curry(
       game = addDelayedAction(actions, game)
     }
 
+    if (
+      isRole(player, 'mad bomber') &&
+      !game.options.madBomberOnlyKillsAdjacent
+    ) {
+      game = addPrompt(
+        {
+          type: 'by message',
+          id: Id(),
+          message: `${playerName(
+            player
+          )} has died and was the mad bomber. Be sure to kill players to each side of them.`,
+        },
+        game
+      )
+    }
+
     if (player.copiedBy) {
       game = addAction(
         updatePlayer({

@@ -39,26 +39,26 @@ export const WerewolfModeratorLobbyOptions: React.SFC<Props> = ({ lobby }) => {
     <Layout padded>
       <Typography variant="h2">General Settings</Typography>
 
-      <Value
+      {/* <Value
         option="dayTimeLimit"
         title="Day Time Limit"
         description="How long the day takes, this will be displayed to the moderator and users. Setting this to 0 means there is no time limit."
         lobby={lobby}
-      />
+      /> */}
 
-      <Value
+      {/* <Value
         option="nightTimeLimit"
         title="Night Time Limit"
         description="How long each turn at night takes. Setting this to 0 means there is no time limit."
         lobby={lobby}
-      />
+      /> */}
 
-      <Option
+      {/* <Option
         title="No Flip"
         option="noFlip"
         description="When a player dies, their role is not revealed."
         lobby={lobby}
-      />
+      /> */}
 
       <Typography className={classes.section} variant="h2">
         Role Settings

@@ -3,7 +3,7 @@ import { WerewolfGameContext } from '../../../../../helpers/contexts'
 import { Button } from '../../../../../components/button'
 import { ActionRow } from '../../../../../components/actionRow'
 import { WerewolfProfile } from '../../../components/werewolfProfile'
-import { voteKill, showPrompts } from '../../../interfaces/actions'
+import { voteKill, showPrompts, sudoKill } from '../../../interfaces/actions'
 import { values } from 'ramda'
 import { useCommonStyles } from '../../../../../helpers/commonStyles'
 import { startNight } from '../../../helpers/gameEngine'
@@ -24,6 +24,16 @@ export const DayModerator: React.SFC<Props> = () => {
     return (
       <>
         <WerewolfProfile player={player} showLiving showRole />
+
+        <Button
+          color="red"
+          confirm="you should only use this as a last resort"
+          onClick={() => {
+            runActions([sudoKill({ target: player.id }), showPrompts({})])
+            setSelectedPlayer(null)
+          }}>
+          Moderator Kill
+        </Button>
 
         <Button
           onClick={() => {
