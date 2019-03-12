@@ -60,6 +60,4 @@ Resume game in case someone ends the game but mistake
 
 What roles are in the game?
 
-- Add views to what roles / artifacts are in the game
-
 Moderator -role count make clearer

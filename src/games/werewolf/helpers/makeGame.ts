@@ -64,7 +64,9 @@ export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
       active: null,
       show: false,
     },
-    playersKilled: [],
+    killedAtDawn: [],
+    killedAtDay: [],
+    killedAtNight: [],
     playerInteraction: {
       actions: [],
       ready: false,

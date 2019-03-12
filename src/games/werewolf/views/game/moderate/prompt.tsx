@@ -66,6 +66,8 @@ export const PromptModerator: React.SFC<Props> = ({}) => {
     }
   }
 
+  const kills = game.time === 'day' ? game.killedAtDay : game.killedAtNight
+
   return (
     <>
       <Card>
@@ -73,11 +75,21 @@ export const PromptModerator: React.SFC<Props> = ({}) => {
           <Typography gutterBottom variant="h2">
             People who died:
           </Typography>
-          <Typography>
-            {game.playersKilled
-              .map(p => game.players[p].name || p)
-              .join(', ') || 'no one'}
+          <Typography gutterBottom>
+            {kills.map(p => game.players[p].name || p).join(', ') || 'no one'}
           </Typography>
+          {game.time === 'dawn' && !!game.killedAtDawn.length && (
+            <>
+              <Typography gutterBottom variant="h2">
+                People who died just now:
+              </Typography>
+              <Typography>
+                {game.killedAtDawn
+                  .map(p => game.players[p].name || p)
+                  .join(', ') || 'no one'}
+              </Typography>
+            </>
+          )}
         </CardContent>
       </Card>
 

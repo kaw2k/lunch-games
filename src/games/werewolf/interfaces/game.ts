@@ -83,7 +83,10 @@ export interface WerewolfGame {
     show: boolean
   }
 
-  playersKilled: PlayerId[]
+  // playersKilled: PlayerId[]
+  killedAtNight: PlayerId[]
+  killedAtDawn: PlayerId[]
+  killedAtDay: PlayerId[]
 
   // An object that the players can modify signalling to the moderator
   // that they have performed their actions

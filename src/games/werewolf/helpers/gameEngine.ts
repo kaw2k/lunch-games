@@ -286,7 +286,7 @@ export function startNight(initialGame: WerewolfGame): WerewolfGame {
   let game = clone(initialGame)
 
   game.time = 'night'
-  game.playersKilled = []
+  game.killedAtDawn = []
 
   const prompts = makeNightPrompts(game)
   game.prompts = {
@@ -321,7 +321,7 @@ export function startDay(initialGame: WerewolfGame): WerewolfGame {
   game.time = 'day'
   game.prompts = { items: [], active: null, show: false }
   game.playerInteraction = { actions: [], ready: false }
-  game.playersKilled = []
+  game.killedAtNight = []
   values(game.players).forEach(player => {
     game.players[player.id].isBlessed =
       player.isBlessed === 'attacked' ? false : player.isBlessed || false
@@ -361,6 +361,7 @@ export function startDawn(initialGame: WerewolfGame): WerewolfGame {
     ready: false,
     actions: [],
   }
+  game.killedAtDay = []
   game.prompts = {
     items: game.prompts.items.concat(prompts),
     active: null,
@@ -505,7 +506,13 @@ const killPlayer = curry(
 
     // Add it to our kill list
     game = updateGame(
-      { playersKilled: game.playersKilled.concat(playerId) },
+      game.time === 'dawn'
+        ? { killedAtDawn: game.killedAtDawn.concat(playerId) }
+        : game.time === 'day'
+        ? { killedAtDay: game.killedAtDay.concat(playerId) }
+        : game.time === 'night'
+        ? { killedAtNight: game.killedAtNight.concat(playerId) }
+        : {},
       game
     )
 
