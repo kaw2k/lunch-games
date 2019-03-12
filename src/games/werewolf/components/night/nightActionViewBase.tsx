@@ -8,6 +8,7 @@ import { Button } from '../../../../components/button'
 import { isModerator } from '../../helpers/isModerator'
 import { actionToString } from '../../interfaces/actions'
 import { PromptViewProps } from '../../interfaces/prompt'
+import { useTimer } from '../../../../hooks/useTimer'
 
 interface Props extends PromptViewProps {
   title: string
@@ -20,6 +21,7 @@ export const NightViewBase: React.SFC<Props> = ({
   children,
 }) => {
   const { game, player } = React.useContext(WerewolfGameContext)
+  const time = useTimer(game.timer || Date.now(), game.options.nightTimeLimit)
 
   if (prompt.type === 'by artifact' || prompt.type === 'by message') {
     return (
@@ -72,6 +74,21 @@ export const NightViewBase: React.SFC<Props> = ({
     )
   }
 
+  if (!!game.options.nightTimeLimit && time.timesUp) {
+    return (
+      <>
+        <Typography gutterBottom variant="h2">
+          {time.message}
+        </Typography>
+        <ActionRow fixed>
+          <Button onClick={() => done([])} color="green">
+            continue
+          </Button>
+        </ActionRow>
+      </>
+    )
+  }
+
   return (
     <>
       <Typography gutterBottom variant="h2">
@@ -81,6 +98,11 @@ export const NightViewBase: React.SFC<Props> = ({
 
         {(prompt.type === 'by role' || prompt.type === 'by team') && title}
       </Typography>
+      {!!game.options.nightTimeLimit && (
+        <Typography gutterBottom variant="h2">
+          {time.message}
+        </Typography>
+      )}
 
       {children}
     </>

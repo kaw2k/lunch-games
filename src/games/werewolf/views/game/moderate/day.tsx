@@ -13,6 +13,8 @@ import { values, sortBy } from 'ramda'
 import { useCommonStyles } from '../../../../../helpers/commonStyles'
 import { startNight } from '../../../helpers/gameEngine'
 import { PlayerId } from '../../../../../interfaces/player'
+import { useTimer } from '../../../../../hooks/useTimer'
+import { Typography } from '@material-ui/core'
 
 interface Props {}
 
@@ -22,6 +24,7 @@ export const DayModerator: React.SFC<Props> = () => {
     null
   )
   const classes = useCommonStyles()
+  const time = useTimer(game.timer || Date.now(), game.options.dayTimeLimit)
 
   if (selectedPlayer) {
     const player = game.players[selectedPlayer]
@@ -67,6 +70,10 @@ export const DayModerator: React.SFC<Props> = () => {
 
   return (
     <>
+      {!!game.options.dayTimeLimit && (
+        <Typography variant="h2">{time.message}</Typography>
+      )}
+
       <div className={classes.twoColumns}>
         {sortBy(p => !p.alive, values(game.players)).map(player => (
           <WerewolfProfile

@@ -15,6 +15,7 @@ import {
 } from '../../../helpers/firebase'
 import { Checkbox, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
+import { playerName } from '../../../components/playerName'
 
 interface Props {
   lobby: AvalonLobby
@@ -100,7 +101,9 @@ export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
               key={p.id}
               text={p.name || p.id}
               image={p.profileImg}
-              onClick={() => kickPlayer(p)}
+              onClick={() =>
+                confirm(`Do you want to kick ${playerName(p)}`) && kickPlayer(p)
+              }
             />
           ))}
         </div>

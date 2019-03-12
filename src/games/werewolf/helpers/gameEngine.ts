@@ -294,6 +294,7 @@ export function startNight(initialGame: WerewolfGame): WerewolfGame {
     active: prompts[0],
     show: true,
   }
+  game.timer = Date.now()
 
   game.playerInteraction = {
     actions: [],
@@ -322,6 +323,7 @@ export function startDay(initialGame: WerewolfGame): WerewolfGame {
   game.prompts = { items: [], active: null, show: false }
   game.playerInteraction = { actions: [], ready: false }
   game.killedAtNight = []
+  game.timer = Date.now()
   values(game.players).forEach(player => {
     game.players[player.id].isBlessed =
       player.isBlessed === 'attacked' ? false : player.isBlessed || false

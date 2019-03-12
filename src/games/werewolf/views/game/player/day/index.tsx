@@ -3,12 +3,14 @@ import {
   BottomNavigation,
   BottomNavigationAction,
   Icon,
+  Typography,
 } from '@material-ui/core'
 import { WerewolfPlayerDayOverview } from './overview'
 import { WerewolfPlayerDayArtifact } from './artifact'
 import { WerewolfPlayerDayRole } from './role'
 import { makeStyles } from '@material-ui/styles'
 import { WerewolfGameContext } from '../../../../../../helpers/contexts'
+import { useTimer } from '../../../../../../hooks/useTimer'
 
 interface Props {}
 
@@ -35,12 +37,17 @@ const useStyles = makeStyles({
 })
 
 export const WerewolfPlayerDay: React.SFC<Props> = ({}) => {
-  const { player } = React.useContext(WerewolfGameContext)
+  const { player, game } = React.useContext(WerewolfGameContext)
   const [view, setView] = React.useState(View.overview)
   const classes = useStyles()
+  const time = useTimer(game.timer || Date.now(), game.options.dayTimeLimit)
 
   return (
     <div className={classes.root}>
+      {!!game.options.dayTimeLimit && (
+        <Typography variant="h2">{time.message}</Typography>
+      )}
+
       {view === View.overview && <WerewolfPlayerDayOverview />}
       {view === View.artifact && <WerewolfPlayerDayArtifact player={player} />}
       {view === View.role && <WerewolfPlayerDayRole />}

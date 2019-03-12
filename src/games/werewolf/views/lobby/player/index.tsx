@@ -10,6 +10,7 @@ import { WerewolfLobby } from '../../../interfaces/game'
 import { WerewolfRules } from '../../rules'
 import '../../../helpers/gameEngine'
 import { isModerator } from '../../../helpers/isModerator'
+import { playerName } from '../../../../../components/playerName'
 
 interface Props {
   lobby: WerewolfLobby
@@ -59,7 +60,9 @@ export const WerewolfPlayerLobby: React.SFC<Props> = ({
           text={p.name || p.id}
           subtext={isModerator(p, lobby) ? 'moderator' : ''}
           image={p.profileImg}
-          onClick={() => kickPlayer(p)}
+          onClick={() =>
+            confirm(`Do you want to kick ${playerName(p)}`) && kickPlayer(p)
+          }
         />
       ))}
 

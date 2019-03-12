@@ -28,6 +28,7 @@ export const NightModerator: React.SFC<Props> = ({}) => {
           items: game.prompts.items.slice(1),
           show: true,
         },
+        timer: Date.now(),
       })
     } else {
       updateGame(startDawn(addAction(actions, game)))

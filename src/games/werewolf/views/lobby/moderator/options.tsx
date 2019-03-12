@@ -3,7 +3,7 @@ import { Layout } from '../../../../../components/layout'
 import { Typography, Checkbox } from '@material-ui/core'
 import { WerewolfLobby } from '../../../interfaces/game'
 import { RoomContext } from '../../../../../helpers/contexts'
-// import { Input } from '../../../../../components/input'
+import { Input } from '../../../../../components/input'
 import { makeStyles } from '@material-ui/styles'
 
 interface Props {
@@ -39,19 +39,19 @@ export const WerewolfModeratorLobbyOptions: React.SFC<Props> = ({ lobby }) => {
     <Layout padded>
       <Typography variant="h2">General Settings</Typography>
 
-      {/* <Value
+      <Value
         option="dayTimeLimit"
         title="Day Time Limit"
         description="How long the day takes, this will be displayed to the moderator and users. Setting this to 0 means there is no time limit."
         lobby={lobby}
-      /> */}
+      />
 
-      {/* <Value
+      <Value
         option="nightTimeLimit"
         title="Night Time Limit"
         description="How long each turn at night takes. Setting this to 0 means there is no time limit."
         lobby={lobby}
-      /> */}
+      />
 
       <Option
         title="No Flip"
@@ -140,39 +140,39 @@ const Option: React.SFC<{
   )
 }
 
-// const Value: React.SFC<{
-//   option: keyof WerewolfLobby['options']
-//   title: string
-//   description: string
-//   lobby: WerewolfLobby
-// }> = ({ option, title, lobby, description }) => {
-//   const { updateRoom } = React.useContext(RoomContext)
-//   const classes = useStyles()
+const Value: React.SFC<{
+  option: keyof WerewolfLobby['options']
+  title: string
+  description: string
+  lobby: WerewolfLobby
+}> = ({ option, title, lobby, description }) => {
+  const { updateRoom } = React.useContext(RoomContext)
+  const classes = useStyles()
 
-//   return (
-//     <label className={classes.label} htmlFor={option}>
-//       <Input
-//         id={option}
-//         value={lobby.options[option]}
-//         type="tel"
-//         className={classes.input}
-//         onChange={e =>
-//           updateRoom({
-//             options: {
-//               ...lobby.options,
-//               [option]: parseInt(e.target.value.replace(/\D/g, '') || '0', 10),
-//             },
-//           })
-//         }
-//       />
-//       <div className={classes.text}>
-//         <Typography gutterBottom className={classes.title} variant="h4">
-//           {title}
-//         </Typography>
-//         <Typography component="span" inline>
-//           {description}
-//         </Typography>
-//       </div>
-//     </label>
-//   )
-// }
+  return (
+    <label className={classes.label} htmlFor={option}>
+      <Input
+        id={option}
+        value={lobby.options[option]}
+        type="tel"
+        className={classes.input}
+        onChange={e =>
+          updateRoom({
+            options: {
+              ...lobby.options,
+              [option]: parseInt(e.target.value.replace(/\D/g, '') || '0', 10),
+            },
+          })
+        }
+      />
+      <div className={classes.text}>
+        <Typography gutterBottom className={classes.title} variant="h4">
+          {title}
+        </Typography>
+        <Typography component="span" inline>
+          {description}
+        </Typography>
+      </div>
+    </label>
+  )
+}

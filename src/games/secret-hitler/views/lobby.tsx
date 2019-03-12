@@ -9,6 +9,7 @@ import { SecretHitlerLobby } from '../interfaces/game'
 import { ChooseGame } from '../../../components/chooseGame'
 import { Typography } from '@material-ui/core'
 import { Rules } from '../components/rules'
+import { playerName } from '../../../components/playerName'
 
 interface Props {
   lobby: SecretHitlerLobby
@@ -55,7 +56,9 @@ export const LobbySecretHitler: React.SFC<Props> = ({ startGame, lobby }) => {
           key={p.id}
           text={p.name || p.id}
           image={p.profileImg}
-          onClick={() => kickPlayer(p)}
+          onClick={() =>
+            confirm(`Do you want to kick ${playerName(p)}`) && kickPlayer(p)
+          }
         />
       ))}
 
