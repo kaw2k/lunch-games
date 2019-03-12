@@ -44,3 +44,22 @@ npm start
 Make dawn more generic, this way we can use it for any prompts
 
 figure out how to only show who died at a particular time in the prompts menu
+
+- For things that alter roles
+
+  - Try to stay within the same faction, for wolves it would be wolves and allies
+  - Find all the living roles in the game and get their combined weight. Try to balance the weight with the new role.
+
+- For the timer, make a hook that updates some internal state
+
+Resume game in case someone ends the game but mistake
+
+- Questionable, I think this was getting kicked by accident
+
+* Somehow when tyler was made diseased from melanie he had to choose someone else
+
+What roles are in the game?
+
+- Add views to what roles / artifacts are in the game
+
+Moderator -role count make clearer

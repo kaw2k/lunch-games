@@ -25,4 +25,8 @@ export const useCommonStyles = makeStyles({
       width: '50%',
     },
   },
+
+  dim: {
+    opacity: 0.25,
+  },
 })

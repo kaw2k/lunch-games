@@ -14,6 +14,7 @@ import { WerewolfModeratorSetup } from './setup/moderator'
 import { WerewolfModeratorLobby } from './lobby/moderator'
 import { addAction, addDelayedAction } from '../helpers/addAction'
 import { runActions } from '../helpers/gameEngine'
+import { PlayerWerewolf } from '../interfaces/player'
 
 export const isWerewolf = (room: Room): room is Werewolf =>
   room.type === 'werewolf-game' || room.type === 'werewolf-lobby'
@@ -56,7 +57,32 @@ export const WerewolfView: React.SFC<{ room: Werewolf }> = ({ room }) => {
   const currentPlayer = room.players[player.id]
 
   if (!currentPlayer && !isModerator(player, room)) {
-    return <WerewolfSpectateGame game={room} />
+    return (
+      <WerewolfGameContext.Provider
+        value={{
+          game: room,
+          player: player as PlayerWerewolf,
+          updateGamePlayer: () => {},
+          updateGame: () => {},
+          runActions: () => {},
+          addAction: () => {},
+          addDelayedAction: () => {},
+          endGame: (party, message) => {
+            setRoom({
+              id: room.id,
+              type: 'werewolf-lobby',
+              lobbyPlayers: room.lobbyPlayers || [],
+              victoryMessage: message || null,
+              artifacts: room.initialArtifacts,
+              moderators: room.moderators,
+              options: room.options,
+              roles: room.initialRoles,
+            })
+          },
+        }}>
+        <WerewolfSpectateGame />
+      </WerewolfGameContext.Provider>
+    )
   }
 
   return (

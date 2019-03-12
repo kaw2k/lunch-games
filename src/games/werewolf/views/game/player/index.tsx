@@ -1,13 +1,13 @@
 import * as React from 'react'
 import { WerewolfGameContext } from '../../../../../helpers/contexts'
 import { WerewolfPlayerNight } from './night'
-import { Typography } from '@material-ui/core'
 import { WerewolfPlayerDay } from './day'
 import { getCard } from '../../../interfaces/card/cards'
 import { getArtifact } from '../../../interfaces/artifact/artifacts'
 import { Actions, updateArtifact } from '../../../interfaces/actions'
 import { runActions } from '../../../helpers/gameEngine'
 import { Id } from '../../../../../helpers/id'
+import { WerewolfDead } from './dead'
 
 interface Props {}
 
@@ -82,7 +82,7 @@ export const WerewolfPlayerGame: React.SFC<Props> = () => {
 
   // TODO: This should be spectate mode
   if (!player.alive) {
-    return <Typography variant="h2">Ur ded, lol</Typography>
+    return <WerewolfDead />
   }
 
   if (game.time === 'night') {

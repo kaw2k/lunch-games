@@ -1,9 +1,9 @@
 import * as React from 'react'
+import cx from 'classnames'
 import { Layout } from '../../../../../components/layout'
 import { Typography } from '@material-ui/core'
 import { WerewolfLobby } from '../../../interfaces/game'
 import { Profile } from '../../../../../components/profile'
-import { makeStyles } from '@material-ui/styles'
 import sortBy from 'ramda/es/sortBy'
 import { count } from '../../../../../helpers/count'
 import { getWeight } from '../../../helpers/getWeight'
@@ -11,27 +11,18 @@ import { Button } from '../../../../../components/button'
 import { ActionRow } from '../../../../../components/actionRow'
 import { uniq } from 'ramda'
 import { Roles, getCard } from '../../../interfaces/card/cards'
+import { useCommonStyles } from '../../../../../helpers/commonStyles'
 
 interface Props {
   lobby: WerewolfLobby
   startGame: (roles: Roles[]) => void
 }
 
-const useStyles = makeStyles({
-  profiles: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    '& > *': {
-      width: '50%',
-    },
-  },
-})
-
 export const WerewolfModeratorLobbyStart: React.SFC<Props> = ({
   lobby,
   startGame,
 }) => {
-  const classes = useStyles()
+  const classes = useCommonStyles()
   const [roles, setRoles] = React.useState(lobby.roles)
 
   function addOrRemoveRole(role: Roles): void {
@@ -59,25 +50,26 @@ export const WerewolfModeratorLobbyStart: React.SFC<Props> = ({
         <Typography component="em">
           {numberOfCardsInGame !== numberOfPlayers
             ? `
-            There are ${numberOfCardsInGame} cards in the game and ${numberOfPlayers} players, they must be equal. `
+            There are ${numberOfCardsInGame} cards in the game and ${numberOfPlayers} players, they must be equal. The extra cards will not be disclosed to the players so werewolves can hide.`
             : `All is balanced, as the universe should be.`}
         </Typography>
       </div>
 
-      <div className={classes.profiles}>
-        {cards.map(card => (
-          <Profile
-            key={card.role}
-            text={card.role}
-            image={card.profile}
-            alignItems="flex-start"
-            subtext={`Weight: ${card.weight}, Count: ${count(
-              roles,
-              r => r === card.role
-            )}`}
-            onClick={() => addOrRemoveRole(card.role)}
-          />
-        ))}
+      <div className={classes.twoColumns}>
+        {cards.map(card => {
+          const numCard = count(roles, r => r === card.role)
+          return (
+            <Profile
+              key={card.role}
+              text={card.role}
+              image={card.profile}
+              className={cx({ [classes.dim]: !numCard })}
+              alignItems="flex-start"
+              subtext={`Weight: ${card.weight}, Count: ${numCard}`}
+              onClick={() => addOrRemoveRole(card.role)}
+            />
+          )
+        })}
       </div>
 
       <ActionRow>

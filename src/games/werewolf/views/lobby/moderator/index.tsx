@@ -4,6 +4,7 @@ import {
   BottomNavigationAction,
   BottomNavigation,
   Icon,
+  Badge,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { WerewolfPlayerLobby } from '../player'
@@ -12,6 +13,8 @@ import { WerewolfModeratorLobbyArtifacts } from './artifacts'
 import { WerewolfModeratorLobbyStart } from './start'
 import { WerewolfModeratorLobbyOptions } from './options'
 import { Roles } from '../../../interfaces/card/cards'
+import { getWeight } from '../../../helpers/getWeight'
+import { isModerator } from '../../../helpers/isModerator'
 
 interface Props {
   lobby: WerewolfLobby
@@ -70,17 +73,35 @@ export const WerewolfModeratorLobby: React.SFC<Props> = ({
         <BottomNavigationAction
           label="Lobby"
           value={View.lobby}
-          icon={<Icon>group</Icon>}
+          icon={
+            <Badge
+              badgeContent={
+                lobby.lobbyPlayers.filter(p => !isModerator(p, lobby)).length
+              }>
+              <Icon>group</Icon>
+            </Badge>
+          }
         />
         <BottomNavigationAction
           label="Roles"
           value={View.roles}
-          icon={<Icon>face</Icon>}
+          icon={
+            <Badge
+              showZero
+              color={getWeight(lobby.roles) < 0 ? 'secondary' : 'primary'}
+              badgeContent={`${lobby.roles.length}/${getWeight(lobby.roles)}`}>
+              <Icon>face</Icon>
+            </Badge>
+          }
         />
         <BottomNavigationAction
           label="Artifacts"
           value={View.artifacts}
-          icon={<Icon>book</Icon>}
+          icon={
+            <Badge badgeContent={lobby.artifacts.length}>
+              <Icon>book</Icon>
+            </Badge>
+          }
         />
         <BottomNavigationAction
           label="Options"

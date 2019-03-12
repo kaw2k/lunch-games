@@ -3,7 +3,7 @@ import { Artifact } from '.'
 import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values } from 'ramda'
-import { passArtifact } from '../actions'
+import { passArtifact, updateArtifact } from '../actions'
 import { getArtifact } from './artifacts'
 import { PromptView, ByArtifact } from '../prompt'
 
@@ -20,6 +20,13 @@ const ActivateView: PromptView<ByArtifact> = ({ done, prompt: { player } }) => {
       doneText="make diseased"
       onDone={([target]) => {
         done([
+          updateArtifact({
+            target: player,
+            artifact: 'blood of the diseased',
+            updates: {
+              activated: 'played',
+            },
+          }),
           passArtifact({
             artifact: 'blood of the diseased',
             source: player,

@@ -3,8 +3,13 @@ import { WerewolfGameContext } from '../../../../../helpers/contexts'
 import { Button } from '../../../../../components/button'
 import { ActionRow } from '../../../../../components/actionRow'
 import { WerewolfProfile } from '../../../components/werewolfProfile'
-import { voteKill, showPrompts, sudoKill } from '../../../interfaces/actions'
-import { values } from 'ramda'
+import {
+  voteKill,
+  showPrompts,
+  sudoKill,
+  revivePlayer,
+} from '../../../interfaces/actions'
+import { values, sortBy } from 'ramda'
 import { useCommonStyles } from '../../../../../helpers/commonStyles'
 import { startNight } from '../../../helpers/gameEngine'
 import { PlayerId } from '../../../../../interfaces/player'
@@ -25,22 +30,32 @@ export const DayModerator: React.SFC<Props> = () => {
       <>
         <WerewolfProfile player={player} showLiving showRole />
 
-        <Button
-          color="red"
-          confirm="you should only use this as a last resort"
-          onClick={() => {
-            runActions([sudoKill({ target: player.id }), showPrompts({})])
-            setSelectedPlayer(null)
-          }}>
-          Moderator Kill
-        </Button>
+        <ActionRow>
+          <Button
+            confirm
+            onClick={() => {
+              runActions([revivePlayer({ target: player.id })])
+              setSelectedPlayer(null)
+            }}>
+            Revive
+          </Button>
+          <Button
+            confirm="you should only use this as a last resort"
+            onClick={() => {
+              runActions([sudoKill({ target: player.id }), showPrompts({})])
+              setSelectedPlayer(null)
+            }}>
+            Moderator Kill
+          </Button>
+        </ActionRow>
 
         <Button
+          color="red"
           onClick={() => {
             runActions([voteKill({ target: player.id }), showPrompts({})])
             setSelectedPlayer(null)
           }}>
-          Vote Kill
+          Kill
         </Button>
 
         <ActionRow fixed>
@@ -53,7 +68,7 @@ export const DayModerator: React.SFC<Props> = () => {
   return (
     <>
       <div className={classes.twoColumns}>
-        {values(game.players).map(player => (
+        {sortBy(p => !p.alive, values(game.players)).map(player => (
           <WerewolfProfile
             alignItems="flex-start"
             showRole

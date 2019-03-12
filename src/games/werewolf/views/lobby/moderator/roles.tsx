@@ -7,7 +7,6 @@ import { makeStyles } from '@material-ui/styles'
 import sortBy from 'ramda/es/sortBy'
 import { count } from '../../../../../helpers/count'
 import { RoomContext } from '../../../../../helpers/contexts'
-import { getWeight } from '../../../helpers/getWeight'
 import { Button } from '../../../../../components/button'
 import { Cards, Roles, getCard } from '../../../interfaces/card/cards'
 import { groupBy, toPairs } from 'ramda'
@@ -58,7 +57,6 @@ export const WerewolfModeratorLobbyRoles: React.SFC<Props> = ({ lobby }) => {
 
   return (
     <Layout padded>
-      <Typography variant="h2">Roles: {getWeight(lobby.roles)}</Typography>
       <Button onClick={reset}>Reset</Button>
 
       <div>

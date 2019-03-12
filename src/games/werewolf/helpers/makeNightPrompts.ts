@@ -25,7 +25,6 @@ export function makeNightPrompts(game: WerewolfGame): Prompts[] {
         role: p.secondaryRole as Roles,
       })),
 
-    // All the night roles that are not team based
     ...getGameRoles(game)
       .filter(role => getCard(role).night)
       .sort((a, b) => getCard(a).night!.order - getCard(b).night!.order)
@@ -47,5 +46,27 @@ export function makeNightPrompts(game: WerewolfGame): Prompts[] {
           role: role,
         }
       }),
-  ]
+  ].filter(prompt => {
+    if (game.options.noFlip) return true
+
+    if (
+      prompt.type === 'by role' &&
+      (!prompt.player || !game.players[prompt.player].alive)
+    ) {
+      return false
+    }
+
+    if (
+      prompt.type === 'by name' &&
+      (!prompt.player || !game.players[prompt.player].alive)
+    ) {
+      return false
+    }
+
+    if (prompt.type === 'by team') {
+      return !!prompt.players.find(player => game.players[player].alive)
+    }
+
+    return true
+  })
 }

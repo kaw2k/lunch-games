@@ -53,12 +53,12 @@ export const WerewolfModeratorLobbyOptions: React.SFC<Props> = ({ lobby }) => {
         lobby={lobby}
       /> */}
 
-      {/* <Option
+      <Option
         title="No Flip"
         option="noFlip"
-        description="When a player dies, their role is not revealed."
+        description="When a player dies, their role is not revealed. This means all roles (regardless of if there is a living player) are woken up at night. "
         lobby={lobby}
-      /> */}
+      />
 
       <Typography className={classes.section} variant="h2">
         Role Settings

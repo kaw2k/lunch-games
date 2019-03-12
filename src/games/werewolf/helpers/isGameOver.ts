@@ -32,7 +32,6 @@ function isWerewolfWin(game: WerewolfGame): WerewolfGame {
   const numWolves = count(living, p => isWerewolf(p, game))
   const nonWolves = living.length - numWolves
   const chewks = count(living, p => isRole(p, 'chewks'))
-  debugger
 
   if (!chewks && numWolves >= nonWolves) {
     return setVictory(
