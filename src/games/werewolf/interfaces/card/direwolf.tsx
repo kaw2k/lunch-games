@@ -18,6 +18,7 @@ const SetupRoleView: React.SFC<{
     <>
       <ViewRole role={player.role} />
       <ViewAllies
+        showRole
         allies={values(game.players).filter(
           p => p.id !== player.id && isWerewolf(p, game)
         )}

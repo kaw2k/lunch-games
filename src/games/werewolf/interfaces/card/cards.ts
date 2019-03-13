@@ -23,6 +23,7 @@ import { FruitBrute } from './fruitBrute'
 import { Huntress } from './huntress'
 import { WolfCub } from './wolfCub'
 import { Witch } from './witch'
+import { Mason } from './mason'
 
 export const Cards = [
   Bodyguard,
@@ -47,6 +48,7 @@ export const Cards = [
   Huntress,
   WolfCub,
   Witch,
+  Mason,
 ]
 
 export const Roles = Cards.map(role => role.role)

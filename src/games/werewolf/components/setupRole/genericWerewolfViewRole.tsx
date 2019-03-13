@@ -19,6 +19,7 @@ export const GenericSetupWerewolfRoleView: React.SFC<Props> = ({ ready }) => {
     <>
       <ViewRole role={player.role} />
       <ViewAllies
+        showRole
         allies={values(game.players).filter(
           p => p.id !== player.id && isWerewolf(p, game)
         )}

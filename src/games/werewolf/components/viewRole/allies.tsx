@@ -5,16 +5,17 @@ import { WerewolfProfile } from '../werewolfProfile'
 
 interface Props {
   allies: PlayerWerewolf[]
+  showRole?: boolean
 }
 
-export const ViewAllies: React.SFC<Props> = ({ allies }) => {
+export const ViewAllies: React.SFC<Props> = ({ allies, showRole }) => {
   if (!allies.length) return null
 
   return (
     <>
       <Typography variant="h1">Allies</Typography>
       {allies.map(player => (
-        <WerewolfProfile showRole player={player} key={player.id} />
+        <WerewolfProfile showRole={showRole} player={player} key={player.id} />
       ))}
     </>
   )
