@@ -105,6 +105,7 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
       )
     }
 
+    // TODO: This should be the prince
     if (player.role === 'mayor') {
       return addPrompt(
         {
@@ -295,12 +296,6 @@ export function startNight(initialGame: WerewolfGame): WerewolfGame {
   game.numberOfPeopleToKill = game.numberOfPeopleToKill + numberOfCubsKilled
   game.killedAtDawn = []
 
-  const prompts = makeNightPrompts(game)
-  game.prompts = {
-    items: prompts.slice(1),
-    active: prompts[0],
-    show: true,
-  }
   game.timer = Date.now()
 
   game.playerInteraction = {
@@ -311,6 +306,10 @@ export function startNight(initialGame: WerewolfGame): WerewolfGame {
   game.players = map(
     player => ({
       ...player,
+      role:
+        isRole(player, 'sasquatch') && !game.killedAtDay.length
+          ? 'werewolf'
+          : player.role,
       artifacts: player.artifacts.map(a => ({
         ...a,
         performedMorningAction: false,
@@ -318,6 +317,13 @@ export function startNight(initialGame: WerewolfGame): WerewolfGame {
     }),
     game.players
   )
+
+  const prompts = makeNightPrompts(game)
+  game.prompts = {
+    items: prompts.slice(1),
+    active: prompts[0],
+    show: true,
+  }
 
   return processQueuedActions(game)
 }

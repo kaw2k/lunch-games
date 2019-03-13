@@ -1,10 +1,10 @@
 import { WerewolfGame } from '../interfaces/game'
 import values from 'ramda/es/values'
 import { isWerewolf } from './isWerewolf'
-import { getCard, Roles } from '../interfaces/card/cards'
+import { getCard, Roles, hasRole } from '../interfaces/card/cards'
 import { getGameRoles } from './getGameRoles'
 import { getPlayerByRole } from './getPlayersByRole'
-import { Prompts, ByTeam } from '../interfaces/prompt'
+import { Prompts, ByTeam, ByMessage } from '../interfaces/prompt'
 import { Id } from '../../../helpers/id'
 
 function getWerewolves(game: WerewolfGame) {
@@ -14,28 +14,36 @@ function getWerewolves(game: WerewolfGame) {
 }
 
 export function makeNightPrompts(game: WerewolfGame): Prompts[] {
-  const teams: ByTeam[] = [
-    {
-      id: Id(),
-      type: 'by team',
-      players: getWerewolves(game),
-      role: 'werewolf',
-    },
-  ]
+  let prompts: Prompts[] = []
 
-  return [
-    // Players with secondary roles
-    ...values(game.players)
+  // Check for sasquatch
+  // ----------------------------
+  if (hasRole('sasquatch', game) && !game.killedAtDay.length) {
+    const sasquatchPrompt: ByMessage = {
+      id: Id(),
+      type: 'by message',
+      message: `No one died today, sasquatch has transformed into a werewolf`,
+    }
+    prompts = prompts.concat(sasquatchPrompt)
+  }
+
+  // Check for secondary roles
+  // ----------------------------
+  prompts = prompts.concat(
+    values(game.players)
       .filter(p => p.alive && p.secondaryRole)
       .map<Prompts>(p => ({
         type: 'by name',
         id: Id(),
         player: p.id,
         role: p.secondaryRole as Roles,
-      })),
+      }))
+  )
 
-    // Players with primary roles
-    ...getGameRoles(game)
+  // Check for primary roles
+  // ----------------------------
+  prompts = prompts.concat(
+    getGameRoles(game)
       .filter(role => getCard(role).night && role !== 'werewolf')
       .sort((a, b) => getCard(a).night!.order - getCard(b).night!.order)
       .map<Prompts>(role => {
@@ -46,11 +54,22 @@ export function makeNightPrompts(game: WerewolfGame): Prompts[] {
           player: p && p.id,
           role: role,
         }
-      }),
+      })
+  )
 
-    // Teams
-    ...teams,
-  ].filter(prompt => {
+  // Add any teams
+  // ----------------------------
+  const teams: ByTeam[] = [
+    {
+      id: Id(),
+      type: 'by team',
+      players: getWerewolves(game),
+      role: 'werewolf',
+    },
+  ]
+  prompts = prompts.concat(teams)
+
+  return prompts.filter(prompt => {
     if (game.options.noFlip) return true
 
     if (

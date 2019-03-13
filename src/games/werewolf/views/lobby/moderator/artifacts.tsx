@@ -10,7 +10,7 @@ import { Button } from '../../../../../components/button'
 import { makeStyles } from '@material-ui/styles'
 import { Artifacts } from '../../../interfaces/artifact/artifacts'
 import groupBy from 'ramda/es/groupBy'
-import { toPairs } from 'ramda'
+import { toPairs, sortBy } from 'ramda'
 
 interface Props {
   lobby: WerewolfLobby
@@ -58,7 +58,7 @@ export const WerewolfModeratorLobbyArtifacts: React.SFC<Props> = ({
             <Typography gutterBottom variant="h2">
               {group}
             </Typography>
-            {artifacts.map(artifact => (
+            {sortBy(a => a.title, artifacts).map(artifact => (
               <Profile
                 key={artifact.type}
                 text={artifact.title}

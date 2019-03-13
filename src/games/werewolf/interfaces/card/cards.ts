@@ -24,6 +24,10 @@ import { Huntress } from './huntress'
 import { WolfCub } from './wolfCub'
 import { Witch } from './witch'
 import { Mason } from './mason'
+import { Sasquatch } from './sasquatch'
+import { WerewolfGame } from '../game'
+import { values } from 'ramda'
+import { PrivateInvestigator } from './privateInvestigator'
 
 export const Cards = [
   Bodyguard,
@@ -49,6 +53,8 @@ export const Cards = [
   WolfCub,
   Witch,
   Mason,
+  Sasquatch,
+  PrivateInvestigator,
 ]
 
 export const Roles = Cards.map(role => role.role)
@@ -59,4 +65,8 @@ export const getCard = <Role extends Roles>(role: Role): Card<Role> =>
 
 export function isRole(player: PlayerWerewolf, role: Roles): boolean {
   return player.role === role || player.secondaryRole === role
+}
+
+export function hasRole(role: Roles, game: WerewolfGame): boolean {
+  return !!values(game.players).find(p => p.alive && isRole(p, role))
 }

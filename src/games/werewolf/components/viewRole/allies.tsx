@@ -15,7 +15,12 @@ export const ViewAllies: React.SFC<Props> = ({ allies, showRole }) => {
     <>
       <Typography variant="h1">Allies</Typography>
       {allies.map(player => (
-        <WerewolfProfile showRole={showRole} player={player} key={player.id} />
+        <WerewolfProfile
+          showLiving
+          showRole={showRole}
+          player={player}
+          key={player.id}
+        />
       ))}
     </>
   )

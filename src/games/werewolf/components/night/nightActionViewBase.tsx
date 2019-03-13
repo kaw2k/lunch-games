@@ -23,13 +23,17 @@ export const NightViewBase: React.SFC<Props> = ({
   const { game, player } = React.useContext(WerewolfGameContext)
   const time = useTimer(game.timer || Date.now(), game.options.nightTimeLimit)
 
-  if (prompt.type === 'by artifact' || prompt.type === 'by message') {
+  if (prompt.type === 'by artifact') {
     return (
       <NoNightActionView
         done={() => done([])}
-        data="artifacts and messages are not supported at night"
+        data="artifacts are not supported at night"
       />
     )
+  }
+
+  if (prompt.type === 'by message') {
+    return <NoNightActionView done={() => done([])} data={prompt.message} />
   }
 
   const card = getCard(prompt.role)

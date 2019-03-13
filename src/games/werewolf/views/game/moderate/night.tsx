@@ -49,6 +49,10 @@ export const NightModerator: React.SFC<Props> = ({}) => {
     }
   }
 
+  if (game.prompts.active.type === 'by message') {
+    return <NoNightActionView data={game.prompts.active.message} done={done} />
+  }
+
   if (game.prompts.active.type === 'by name') {
     const card = getCard(game.prompts.active.role)
     if (
