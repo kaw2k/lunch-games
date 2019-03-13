@@ -1,9 +1,6 @@
 import { PlayerId } from '../../../interfaces/player'
 import { WerewolfGame } from '../interfaces/game'
 import findIndex from 'ramda/es/findIndex'
-import values from 'ramda/es/values'
-import uniq from 'ramda/es/uniq'
-import { equals } from 'ramda'
 
 export function getNeighbor(
   start: PlayerId,
@@ -25,26 +22,4 @@ export function getNeighbor(
     ]
 
   return null
-}
-
-export function makeSeatingChart(game: WerewolfGame): PlayerId[] | null {
-  const players = values(game.players)
-  let seats: PlayerId[] = []
-  let currentPlayer = players[0]
-
-  for (let i = 0; i < players.length; i++) {
-    seats = seats.concat(currentPlayer.id)
-    if (!currentPlayer.leftNeighbor) {
-      break
-    } else {
-      currentPlayer = game.players[currentPlayer.leftNeighbor]
-    }
-  }
-
-  const hasAllPlayers = seats.length === players.length
-  const hasDuplicates = !equals(uniq(seats), seats)
-
-  if (!hasAllPlayers || hasDuplicates) return null
-
-  return seats
 }

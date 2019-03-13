@@ -4,7 +4,6 @@ import { ArtifactState } from './artifact/artifacts'
 
 export interface PlayerWerewolf extends Player {
   ready: boolean
-  leftNeighbor: PlayerId | null
   alive: boolean
   role: Roles
   // Sometimes a player can gain a secondary role.

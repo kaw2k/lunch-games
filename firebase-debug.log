@@ -1,0 +1,234 @@
+[debug] [2019-03-13T02:32:20.114Z] ----------------------------------------------------------------------
+[debug] [2019-03-13T02:32:20.116Z] Command:       /Users/rasa/.nvm/versions/node/v8.2.1/bin/node /Users/rasa/LocalDev/lunch-games/node_modules/.bin/firebase deploy
+[debug] [2019-03-13T02:32:20.116Z] CLI Version:   6.4.0
+[debug] [2019-03-13T02:32:20.116Z] Platform:      darwin
+[debug] [2019-03-13T02:32:20.116Z] Node Version:  v8.2.1
+[debug] [2019-03-13T02:32:20.116Z] Time:          Tue Mar 12 2019 21:32:20 GMT-0500 (CDT)
+[debug] [2019-03-13T02:32:20.116Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-03-13T02:32:20.127Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-03-13T02:32:20.128Z] > authorizing via signed-in user
+[debug] [2019-03-13T02:32:20.128Z] [iam] checking project lunch-games for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2019-03-13T02:32:20.130Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2019-03-13T02:32:20.130Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2019-03-13T02:32:20.282Z] <<< HTTP RESPONSE 200
+[debug] [2019-03-13T02:32:20.295Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/lunch-games:testIamPermissions  
+
+[debug] [2019-03-13T02:32:20.452Z] <<< HTTP RESPONSE 200
+[debug] [2019-03-13T02:32:20.454Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/lunch-games  
+ 
+[debug] [2019-03-13T02:32:20.584Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'lunch-games'...
+[info] 
+[info] i  deploying hosting
+[debug] [2019-03-13T02:32:20.590Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/lunch-games/versions  
+
+[debug] [2019-03-13T02:32:21.243Z] <<< HTTP RESPONSE 200
+[info] i  hosting[lunch-games]: beginning deploy...
+[info] i  hosting[lunch-games]: found 300 files in dist
+[debug] [2019-03-13T02:32:21.286Z] [hosting] hash cache [ZGlzdA] load error: lines is not defined
+[debug] [2019-03-13T02:32:44.336Z] [hosting] hash cache [ZGlzdA] stored for 300 files
+[debug] [2019-03-13T02:32:44.338Z] [hosting][hash queue][FINAL]
+[debug] [2019-03-13T02:32:44.338Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/lunch-games/versions/36d3cc3c0323f21d:populateFiles  
+ <request body omitted>
+[debug] [2019-03-13T02:32:46.643Z] <<< HTTP RESPONSE 200
+[debug] [2019-03-13T02:32:46.650Z] [hosting][populate queue][FINAL]
+[debug] [2019-03-13T02:32:46.650Z] [hosting] uploads queued: 6
+[debug] [2019-03-13T02:33:17.126Z] [uploadQueue] Retrying task 137d27beb2bc062485a4614d5c8aaceed1eab03be1220b610448b4a1b2bbe62b
+[debug] [2019-03-13T02:33:20.431Z] [hosting][upload] src.1a15d45f.js (be1bcbf3804f368c677580aa116a656d86d4c53ab4f5b3617ec39abb8cc5b6a4) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2UrS_8Xm39pbt3uqsaovWf-XCwLUQ7bHfBVePjr_IOcB9LW1jH8F_qXJ2TJmNyGfeRRBe4HugoIFWDiRdtUR9oD7Wl-Org',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:33:22 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:33:20.837Z] [uploadQueue] Retrying task be1bcbf3804f368c677580aa116a656d86d4c53ab4f5b3617ec39abb8cc5b6a4
+[debug] [2019-03-13T02:33:20.840Z] [hosting][upload] src.f69400ca.js (4b294ab6056d54b15af3e3803439e1a25e03ec9cf4eab2de00ae1f2bdfb99f56) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2UoNtXjbZNbPoH_jdtMBk_1FLDyxbsKWlk7mrxT_CsXCdCos5B7kQh0Su2VlVz56fSAo-RIlLXqFAVS86Ht4bL62H0Y7Ew',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:33:23 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:33:21.241Z] [uploadQueue] Retrying task 4b294ab6056d54b15af3e3803439e1a25e03ec9cf4eab2de00ae1f2bdfb99f56
+[debug] [2019-03-13T02:33:22.593Z] [hosting][upload] src.14fa778c.map (1b98e9e24b3e6b9c907444663ec20a3e6f8fd9051c9787a1192d7b4c2510bbf4) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2UrqXG78eCqYiw5DCGfe2ojO9O5q9FEHzfmfdZAKafxITK-Ua95svrbsxcEvsoqh89oglekdPFwiCGJDvnoKkyMh5_w8pw',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:33:24 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:33:22.684Z] [hosting][upload] src.f69400ca.map (6082eb85737ca8555a3758ecef40b0f42699d333d6da02bb8f6aa50f8b8f01ef) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2Ur1hKzNyG7PYpO_ppoAoRHOBMm2kiwkRYqkvzZ_N5Jn3mO_QK85e6LGd305XpiOgXVL60pqrC2_d5v9KfEPEAdA14QWLA',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:33:25 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:33:22.994Z] [uploadQueue] Retrying task 1b98e9e24b3e6b9c907444663ec20a3e6f8fd9051c9787a1192d7b4c2510bbf4
+[debug] [2019-03-13T02:33:23.084Z] [uploadQueue] Retrying task 6082eb85737ca8555a3758ecef40b0f42699d333d6da02bb8f6aa50f8b8f01ef
+[debug] [2019-03-13T02:33:47.978Z] [uploadQueue] Retrying task 137d27beb2bc062485a4614d5c8aaceed1eab03be1220b610448b4a1b2bbe62b
+[debug] [2019-03-13T02:33:52.992Z] [hosting][upload] src.f69400ca.js (4b294ab6056d54b15af3e3803439e1a25e03ec9cf4eab2de00ae1f2bdfb99f56) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2UoVHw-OIovR0KpfbfZXfAPIoRvz4Prw9XNqiDRsadot-N7iEo1mPGTPofyvl6IJ9Vpx8qv4L2pw3i5aYQI5EVdh60sNeQ',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:33:55 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:33:52.994Z] [hosting][upload] src.1a15d45f.js (be1bcbf3804f368c677580aa116a656d86d4c53ab4f5b3617ec39abb8cc5b6a4) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2UoulqKeVVwVMk8Rwqs5rR-BYS8q5LpCOx0NlAqO-xb87Hzca8WLp5ZaXADFTKvPdazyig6TdZQAHIucBxT73Y508Pkhaw',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:33:55 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:33:53.799Z] [uploadQueue] Retrying task 4b294ab6056d54b15af3e3803439e1a25e03ec9cf4eab2de00ae1f2bdfb99f56
+[debug] [2019-03-13T02:33:53.799Z] [uploadQueue] Retrying task be1bcbf3804f368c677580aa116a656d86d4c53ab4f5b3617ec39abb8cc5b6a4
+[debug] [2019-03-13T02:33:57.136Z] [hosting][upload] src.f69400ca.map (6082eb85737ca8555a3758ecef40b0f42699d333d6da02bb8f6aa50f8b8f01ef) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2Uoyt4QpukbyGcGQPqxUe8Nl9VpKryVKo_EtlA7oeyE2PCKSpkhRzvA0GXeVnL79re0DGg9-i2f6qYNmrZNWMQW4nu2s4w',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:33:59 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:33:57.151Z] [hosting][upload] src.14fa778c.map (1b98e9e24b3e6b9c907444663ec20a3e6f8fd9051c9787a1192d7b4c2510bbf4) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2UpGUyoN_t-0qGYs2jreMo9kt0107yc9hz6MShxA85p4MiTCKuZKjGehNsxUI8kmZ2NdpF0C7upJA1k_zVkOPRA06F-Osw',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:33:59 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:33:57.940Z] [uploadQueue] Retrying task 6082eb85737ca8555a3758ecef40b0f42699d333d6da02bb8f6aa50f8b8f01ef
+[debug] [2019-03-13T02:33:57.955Z] [uploadQueue] Retrying task 1b98e9e24b3e6b9c907444663ec20a3e6f8fd9051c9787a1192d7b4c2510bbf4
+[debug] [2019-03-13T02:34:19.610Z] [uploadQueue] Retrying task 137d27beb2bc062485a4614d5c8aaceed1eab03be1220b610448b4a1b2bbe62b
+[debug] [2019-03-13T02:34:25.774Z] [hosting][upload] src.1a15d45f.js (be1bcbf3804f368c677580aa116a656d86d4c53ab4f5b3617ec39abb8cc5b6a4) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2UqI8GMLYzZVFv9JodWNhKd997SN2PZI8Vv_p0p2cmJScQdyWnu0f3Fszm_QmBeMzmldtTxNdRbzyj6DxBzUidbnEC1qwaMDNqpsDWvJdytw1hNlKi4',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:34:28 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:34:25.885Z] [hosting][upload] src.f69400ca.js (4b294ab6056d54b15af3e3803439e1a25e03ec9cf4eab2de00ae1f2bdfb99f56) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2UrNyYWCMBgGlnaTo6hc2MebSa2gV7PHbfDCozDlKTfA0BdJyXkuCzL02rdFPM97XXUMuoUIwt-ogF-7zR7PiLDfq31YHw',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:34:28 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:34:27.380Z] [uploadQueue] Retrying task be1bcbf3804f368c677580aa116a656d86d4c53ab4f5b3617ec39abb8cc5b6a4
+[debug] [2019-03-13T02:34:27.486Z] [uploadQueue] Retrying task 4b294ab6056d54b15af3e3803439e1a25e03ec9cf4eab2de00ae1f2bdfb99f56
+[debug] [2019-03-13T02:34:31.573Z] [hosting][upload] src.14fa778c.map (1b98e9e24b3e6b9c907444663ec20a3e6f8fd9051c9787a1192d7b4c2510bbf4) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2UpaWhxL3-xfhIqxapjJ7F52Bi8JTG2LtcY0dSi65oGtggXX5TCIlC08jqsV2vMKIExeZewdkb1Fc7Thk_zTluclp-ybUQ',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:34:33 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:34:32.118Z] [hosting][upload] src.f69400ca.map (6082eb85737ca8555a3758ecef40b0f42699d333d6da02bb8f6aa50f8b8f01ef) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2UoU4yinzRM5W8TGb1qSYRI9kmmNT5NT4LygiJwyLj-KpooHwqpA-JkWPFK7S9UbM7pOZAIhjyEzU8JU2dozIlFwFIJiOQ',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:34:34 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:34:33.176Z] [uploadQueue] Retrying task 1b98e9e24b3e6b9c907444663ec20a3e6f8fd9051c9787a1192d7b4c2510bbf4
+[debug] [2019-03-13T02:34:33.720Z] [uploadQueue] Retrying task 6082eb85737ca8555a3758ecef40b0f42699d333d6da02bb8f6aa50f8b8f01ef
+[debug] [2019-03-13T02:34:52.837Z] [uploadQueue] Retrying task 137d27beb2bc062485a4614d5c8aaceed1eab03be1220b610448b4a1b2bbe62b
+[debug] [2019-03-13T02:34:59.554Z] [hosting][upload] src.1a15d45f.js (be1bcbf3804f368c677580aa116a656d86d4c53ab4f5b3617ec39abb8cc5b6a4) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2UoN97cgUZefAUF3xy4lVS2aTltB0nBSz0ZkhoHX8FfA57SJp0QcNy04bsbNI_V2coh0PLZWimZPqyGO_BhPq97etMJiqw',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:35:01 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:34:59.558Z] [hosting][upload] src.f69400ca.js (4b294ab6056d54b15af3e3803439e1a25e03ec9cf4eab2de00ae1f2bdfb99f56) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2UqhrFlhkiDU8q0j7fpHEGPi494on6lnvqY4w07GhNVD8MkqP2kdLOofW5eXeVkug_NrrUQb4FTh779yPeoevrI59CR1Lw',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:35:01 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:35:02.756Z] [uploadQueue] Retrying task be1bcbf3804f368c677580aa116a656d86d4c53ab4f5b3617ec39abb8cc5b6a4
+[debug] [2019-03-13T02:35:02.759Z] [uploadQueue] Retrying task 4b294ab6056d54b15af3e3803439e1a25e03ec9cf4eab2de00ae1f2bdfb99f56
+[debug] [2019-03-13T02:35:06.620Z] [hosting][upload] src.14fa778c.map (1b98e9e24b3e6b9c907444663ec20a3e6f8fd9051c9787a1192d7b4c2510bbf4) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2UpmUi1aL-5XzB7wBEAPWbVK6HIR95fJBWK0wvuEOFhtbJy2z-IpP2FWZDwUeTJGrpGvrMmmjXifkqjdQbGV3p9iNTTOTw',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:35:08 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:35:07.378Z] [hosting][upload] src.f69400ca.map (6082eb85737ca8555a3758ecef40b0f42699d333d6da02bb8f6aa50f8b8f01ef) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2UrLvk4v92VdsWckmSa--Y4-im6rq5776leWA7o6S3Py0wyWrReFcJ7xe7A-C71BzgqnZMTTio1IDxJMaNdt_zEBGg1n7g',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:35:09 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:35:09.824Z] [uploadQueue] Retrying task 1b98e9e24b3e6b9c907444663ec20a3e6f8fd9051c9787a1192d7b4c2510bbf4
+[debug] [2019-03-13T02:35:10.580Z] [uploadQueue] Retrying task 6082eb85737ca8555a3758ecef40b0f42699d333d6da02bb8f6aa50f8b8f01ef
+[debug] [2019-03-13T02:35:29.268Z] [uploadQueue] Retrying task 137d27beb2bc062485a4614d5c8aaceed1eab03be1220b610448b4a1b2bbe62b
+[debug] [2019-03-13T02:35:34.790Z] [hosting][upload] src.f69400ca.js (4b294ab6056d54b15af3e3803439e1a25e03ec9cf4eab2de00ae1f2bdfb99f56) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2UqWELDxo5YZFlX1v6sphAr7TPSwaOeJxcj0p9WQnWzmvZdH-pF4C0GWbDcDOLRNP27eX7KQMiuYS_P_BUf4v4qJClmu-g',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:35:37 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:35:34.852Z] [hosting][upload] src.1a15d45f.js (be1bcbf3804f368c677580aa116a656d86d4c53ab4f5b3617ec39abb8cc5b6a4) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2UrUzaf7zOtJR2sh1p5EVRHWj6LKNNSdGXbRoa7LUSlqJ79C6L5zLGnqKvdsn69M4XVLYh0dDfjB4Dm5OL9cm7WtwBbfqw',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:35:37 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:35:41.194Z] [uploadQueue] Retrying task 4b294ab6056d54b15af3e3803439e1a25e03ec9cf4eab2de00ae1f2bdfb99f56
+[debug] [2019-03-13T02:35:41.253Z] [uploadQueue] Retrying task be1bcbf3804f368c677580aa116a656d86d4c53ab4f5b3617ec39abb8cc5b6a4
+[debug] [2019-03-13T02:35:44.302Z] [hosting][upload] src.f69400ca.map (6082eb85737ca8555a3758ecef40b0f42699d333d6da02bb8f6aa50f8b8f01ef) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2UretHv2PahQYYNIud-csLuExq8tgmeUtbrx77Xk5dkLHcW-iLqLlSugECZwtWRLdVon2cyiQsVZlT_jSLnXpAok8vnuHg',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:35:46 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:35:47.390Z] [hosting][upload] src.14fa778c.map (1b98e9e24b3e6b9c907444663ec20a3e6f8fd9051c9787a1192d7b4c2510bbf4) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2Urc62p_8dDJj5QSYuaUo4o4znbVOaiGetPH4WjT7mwwurKHq3an8LZKGD3vRaGeVXzhT4jPJxNcFAvfPYEzG1te8XbNgg',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:35:49 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:35:50.705Z] [uploadQueue] Retrying task 6082eb85737ca8555a3758ecef40b0f42699d333d6da02bb8f6aa50f8b8f01ef
+[debug] [2019-03-13T02:35:53.793Z] [uploadQueue] Retrying task 1b98e9e24b3e6b9c907444663ec20a3e6f8fd9051c9787a1192d7b4c2510bbf4
+[debug] [2019-03-13T02:36:13.191Z] [hosting][upload] src.1a15d45f.js (be1bcbf3804f368c677580aa116a656d86d4c53ab4f5b3617ec39abb8cc5b6a4) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2Upel1kNGL7l0KuB45EIdsD_LvDN4ibyR4ULbwd81n5cQsOgv2BUlIAPpKJn3StfkrBpm39rusMmEqy83FI4P26P07xg7g',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:36:15 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:36:13.192Z] [uploadQueue] Retries exhausted for task be1bcbf3804f368c677580aa116a656d86d4c53ab4f5b3617ec39abb8cc5b6a4:
+[debug] [2019-03-13T02:36:13.193Z] [hosting][upload queue][FINAL]
+[debug] [2019-03-13T02:36:13.202Z] Error: Unexpected error while uploading file.
+    at Request._callback (/Users/rasa/LocalDev/lunch-games/node_modules/firebase-tools/lib/deploy/hosting/uploader.js:197:39)
+    at Request.self.callback (/Users/rasa/LocalDev/lunch-games/node_modules/firebase-tools/node_modules/request/request.js:185:22)
+    at emitTwo (events.js:125:13)
+    at Request.emit (events.js:213:7)
+    at Request.<anonymous> (/Users/rasa/LocalDev/lunch-games/node_modules/firebase-tools/node_modules/request/request.js:1161:10)
+    at emitOne (events.js:115:13)
+    at Request.emit (events.js:210:7)
+    at IncomingMessage.<anonymous> (/Users/rasa/LocalDev/lunch-games/node_modules/firebase-tools/node_modules/request/request.js:1083:12)
+    at Object.onceWrapper (events.js:314:30)
+    at emitNone (events.js:110:20)
+    at IncomingMessage.emit (events.js:207:7)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2019-03-13T02:36:13.282Z] [hosting][upload] src.f69400ca.js (4b294ab6056d54b15af3e3803439e1a25e03ec9cf4eab2de00ae1f2bdfb99f56) HTTP ERROR 503 : { 'x-guploader-uploadid': 'AEnB2UrT1OWRDXQxYPFqR6P04Yz3MVQJR5X895BdM6yEIX4wzpxkmjXibfSkatmG6mFteJj3sSBy-CrdAKt-MBKW6dXYXx-XVQ',
+  'content-length': '0',
+  date: 'Wed, 13 Mar 2019 02:36:15 GMT',
+  server: 'UploadServer',
+  'content-type': 'text/html; charset=UTF-8',
+  'alt-svc': 'quic=":443"; ma=2592000; v="46,44,43,39"',
+  connection: 'close' } 
+[debug] [2019-03-13T02:36:13.283Z] [uploadQueue] Retries exhausted for task 4b294ab6056d54b15af3e3803439e1a25e03ec9cf4eab2de00ae1f2bdfb99f56:

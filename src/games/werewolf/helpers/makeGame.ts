@@ -21,7 +21,6 @@ export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
       const playerWerewolf: PlayerWerewolf = {
         ...player,
         alive: true,
-        leftNeighbor: null,
         artifacts: shouldHaveArtifact
           ? [ArtifactState(shuffledArtifacts[i])]
           : [],
