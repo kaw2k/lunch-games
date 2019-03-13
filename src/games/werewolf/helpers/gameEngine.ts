@@ -29,6 +29,7 @@ import { isRole, getCard } from '../interfaces/card/cards'
 import { Prompts } from '../interfaces/prompt'
 import { Id } from '../../../helpers/id'
 import { playerName } from '../../../components/playerName'
+import { getNeighbor } from './neighbors'
 
 // ===========================================================
 // THE GAME ENGINE
@@ -485,16 +486,11 @@ const killPlayer = curry(
       isRole(player, 'mad bomber') &&
       !game.options.madBomberOnlyKillsAdjacent
     ) {
-      game = addPrompt(
-        {
-          type: 'by message',
-          id: Id(),
-          message: `${playerName(
-            player
-          )} has died and was the mad bomber. Be sure to kill players to each side of them.`,
-        },
-        game
-      )
+      const onLeft = getNeighbor(player.id, 'left', game)
+      if (onLeft) game = addAction(linkKill({ target: onLeft }), game)
+
+      const onRight = getNeighbor(player.id, 'right', game)
+      if (onRight) game = addAction(linkKill({ target: onRight }), game)
     }
 
     if (player.copiedBy) {

@@ -73,7 +73,7 @@ export const WerewolfModeratorLobbyOptions: React.SFC<Props> = ({ lobby }) => {
       <Option
         title="Small Explosions"
         option="madBomberOnlyKillsAdjacent"
-        description="When the mad bomber dies, only the people physically to their left and right die (without gaps). The game automatically handles this for the moderator."
+        description="When the mad bomber dies, only the people physically to their left and right die (without gaps)."
         lobby={lobby}
       />
 
