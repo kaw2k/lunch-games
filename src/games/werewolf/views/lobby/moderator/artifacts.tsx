@@ -44,7 +44,7 @@ export const WerewolfModeratorLobbyArtifacts: React.SFC<Props> = ({
 
   function reset() {
     updateRoom({
-      roles: [],
+      artifacts: [],
     })
   }
 

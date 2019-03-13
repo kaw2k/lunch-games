@@ -22,6 +22,7 @@ export const WerewolfModeratorSetup: React.SFC<Props> = ({}) => {
     updateGame({
       ...runActions(game),
       ready: true,
+      timer: Date.now(),
     })
   }
 

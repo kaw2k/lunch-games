@@ -34,7 +34,6 @@ npm start
 ### TODO / NB
 
 - Make a isBranded toggle on players to remove their active state
-- Make sure flip / no flip works
 - Add diseased protection type, this will be a better hold for protections and figuring things out. clean this up after night ends
 - Frakenstine, already gets powers, just check if a wolf team member is ded. that role just hijacks the "done" callback of all the other roles.
 - Boogyman also works fine, just set night timers, add in option for after every role

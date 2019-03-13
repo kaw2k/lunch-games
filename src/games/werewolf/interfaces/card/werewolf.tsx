@@ -16,6 +16,10 @@ import { PlayerId } from '../../../../interfaces/player'
 import { NightViewBase } from '../../components/night/nightActionViewBase'
 import { WerewolfGame } from '../game'
 import { PromptView } from '../prompt'
+import { isRole } from './cards'
+import { ActionRow } from '../../../../components/actionRow'
+import { Button } from '../../../../components/button'
+import { Typography } from '@material-ui/core'
 
 const title = 'Werewolves, wake up and kill people'
 
@@ -39,11 +43,33 @@ const NightModerator: PromptView = ({ done, prompt }) => {
 
   if (prompt.type !== 'by team') return null
 
+  const wolves = values(game.players).filter(
+    p => p.alive && isWerewolf(p, game)
+  )
+  if (wolves.length === 1 && !!wolves.find(p => isRole(p, 'fruit brute'))) {
+    return (
+      <NightViewBase done={done} prompt={prompt} title={title}>
+        <Typography component="em">
+          Only the fruit brute is alive, the werewolves don't get to kill.
+        </Typography>
+
+        <ActionRow fixed>
+          <Button color="green" onClick={() => done([])}>
+            continue
+          </Button>
+        </ActionRow>
+      </NightViewBase>
+    )
+  }
+
   return (
     <NightViewBase done={done} prompt={prompt} title={title}>
       <ChoosePlayers
         doneText="kill"
+        description={`You get to kill ${game.numberOfPeopleToKill} people`}
         columns={2}
+        notExact
+        numToSelect={game.numberOfPeopleToKill}
         onDone={targets => {
           done(targets.map(target => werewolfKill({ target })))
         }}
@@ -85,6 +111,23 @@ const NightPlayer: PromptView = ({ done, prompt }) => {
   const wolves = values(game.players).filter(
     p => p.alive && isWerewolf(p, game)
   )
+
+  if (wolves.length === 1 && !!wolves.find(p => isRole(p, 'fruit brute'))) {
+    return (
+      <NightViewBase done={done} prompt={prompt} title={title}>
+        <Typography component="em">
+          Only the fruit brute is alive, the werewolves don't get to kill.
+        </Typography>
+
+        <ActionRow fixed>
+          <Button color="green" onClick={() => done([])}>
+            continue
+          </Button>
+        </ActionRow>
+      </NightViewBase>
+    )
+  }
+
   const firstVote = (wolves[0] && wolves[0].state.werewolf) || []
   function compare(ids: PlayerId[]) {
     return JSON.stringify(ids.sort()) === JSON.stringify(firstVote.sort())
@@ -99,6 +142,9 @@ const NightPlayer: PromptView = ({ done, prompt }) => {
         doneText="kill"
         columns={2}
         disabled={disabled}
+        notExact
+        numToSelect={game.numberOfPeopleToKill}
+        description={`You get to kill ${game.numberOfPeopleToKill} people`}
         onChange={players => {
           updateGamePlayer({
             ...player,

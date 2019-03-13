@@ -286,6 +286,12 @@ export function startNight(initialGame: WerewolfGame): WerewolfGame {
   let game = clone(initialGame)
 
   game.time = 'night'
+
+  const numberOfCubsKilled = [...game.killedAtDay, ...game.killedAtDawn].filter(
+    pid => isRole(game.players[pid], 'wolf cub')
+  ).length
+
+  game.numberOfPeopleToKill = game.numberOfPeopleToKill + numberOfCubsKilled
   game.killedAtDawn = []
 
   const prompts = makeNightPrompts(game)

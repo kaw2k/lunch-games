@@ -166,12 +166,21 @@ export function ChoosePlayers<P extends Player>({
           {...(typeof doneProps === 'function'
             ? doneProps(selected.length !== numToSelect)
             : doneProps)}
-          disabled={disabled || (!notExact && selected.length !== numToSelect)}
+          disabled={
+            disabled ||
+            (!notExact && selected.length !== numToSelect) ||
+            (notExact && selected.length > numToSelect)
+          }
           confirm={
-            notExact && selected.length !== numToSelect && 'Are you sure?'
+            notExact &&
+            selected.length !== numToSelect &&
+            `Are you sure? You can select ${numToSelect}`
           }
           onClick={() => {
-            if (!notExact && selected.length === numToSelect) {
+            if (
+              (!notExact && selected.length === numToSelect) ||
+              (notExact && selected.length <= numToSelect)
+            ) {
               onDone(selected)
             }
           }}>

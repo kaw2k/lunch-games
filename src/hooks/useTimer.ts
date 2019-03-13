@@ -17,10 +17,10 @@ export function useTimer(start: number, limit: number) {
   })
 
   const timeLeft = Math.floor((Date.now() - start) / 1000)
-  const timesUp = timeLeft - limit <= 0
+  const timesUp = limit - timeLeft <= 0
 
   return {
     timesUp,
-    message: timesUp ? 'Go to sleep!' : `Time Left: ${timeLeft}`,
+    message: timesUp ? 'Go to sleep!' : `Time Left: ${limit - timeLeft}`,
   }
 }
