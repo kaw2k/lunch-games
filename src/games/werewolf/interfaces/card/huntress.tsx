@@ -90,6 +90,7 @@ export const Huntress = Card({
   profile: require('../../static/unknown-profile.png'),
   SetupRoleView: GenericSetupRoleView,
   appearsBad: always(false),
+  randomlySelectable: true,
   night: {
     title,
     ModeratorView: NightView,

@@ -190,6 +190,7 @@ export const Werewolf = Card({
   image: require('../../static/werewolf.png'),
   profile: require('../../static/werewolf-profile.png'),
   SetupRoleView: GenericSetupWerewolfRoleView,
+  randomlySelectable: true,
   night: {
     title,
     ModeratorView: NightModerator,

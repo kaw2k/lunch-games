@@ -14,5 +14,6 @@ export const Pacifist = Card({
   image: require('../../static/pacifist.png'),
   profile: require('../../static/pacifist-profile.png'),
   SetupRoleView: GenericSetupRoleView,
+  randomlySelectable: true,
   appearsBad: always(false),
 })

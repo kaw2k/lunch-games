@@ -120,6 +120,7 @@ export const PrivateInvestigator = Card({
   profile: require('../../static/pi-profile.png'),
   SetupRoleView: GenericSetupRoleView,
   appearsBad: always(false),
+  randomlySelectable: true,
   night: {
     title,
     ModeratorView: NightView,

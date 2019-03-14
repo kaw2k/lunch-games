@@ -54,6 +54,7 @@ export const Insomniac = Card({
   ],
   image: require('../../static/unknown.png'),
   profile: require('../../static/unknown-profile.png'),
+  randomlySelectable: true,
   SetupRoleView: GenericSetupRoleView,
   appearsBad: always(false),
   night: {

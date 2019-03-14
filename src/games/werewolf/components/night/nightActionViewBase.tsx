@@ -9,6 +9,7 @@ import { isModerator } from '../../helpers/isModerator'
 import { actionToString } from '../../interfaces/actions'
 import { PromptViewProps } from '../../interfaces/prompt'
 import { useTimer } from '../../../../hooks/useTimer'
+import { playerName } from '../../../../components/playerName'
 
 interface Props extends PromptViewProps {
   title: string
@@ -97,8 +98,7 @@ export const NightViewBase: React.SFC<Props> = ({
     <>
       <Typography gutterBottom variant="h2">
         {prompt.type === 'by name' &&
-          `${game.players[prompt.player] ||
-            prompt.player}, wake up! Do the thing!`}
+          `${playerName(game.players[prompt.player])}, wake up! Do the thing!`}
 
         {(prompt.type === 'by role' || prompt.type === 'by team') && title}
       </Typography>

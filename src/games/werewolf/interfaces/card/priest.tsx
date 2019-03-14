@@ -82,6 +82,7 @@ export const Priest = Card({
   profile: require('../../static/priest-profile.png'),
   SetupRoleView: GenericSetupRoleView,
   appearsBad: always(false),
+  randomlySelectable: true,
   night: {
     title,
     ModeratorView: NightView,

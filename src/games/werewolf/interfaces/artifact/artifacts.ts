@@ -18,6 +18,8 @@ import { VoteFromBeyond } from './voteFromBeyond'
 import { StaffOfTheSeer } from './staffOfTheSeer'
 import { AmuletOfProtection } from './amuletOfProtection'
 import { DiaryOfTheInsomniac } from './diaryOfTheInsomniac'
+import { StoneOfAlteration } from './stoneOfAlteration'
+import { RodOfReincarnation } from './rodOfReincarnation'
 
 export interface ArtifactState {
   type: Artifacts
@@ -56,6 +58,8 @@ export const Artifacts = [
   StaffOfTheSeer,
   AmuletOfProtection,
   DiaryOfTheInsomniac,
+  StoneOfAlteration,
+  RodOfReincarnation,
 ]
 export type Artifacts = (typeof Artifacts)[0]['type']
 

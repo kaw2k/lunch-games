@@ -15,6 +15,7 @@ export const Diseased = Card({
   ],
   image: require('../../static/diseased.png'),
   profile: require('../../static/diseased-profile.png'),
+  randomlySelectable: true,
   appearsBad: always(false),
   SetupRoleView: GenericSetupRoleView,
 })

@@ -57,6 +57,7 @@ export const Chewks = Card({
     `Later in the game you can claim Seer as you should be figuring out who is good and bad.`,
   ],
   SetupRoleView: GenericSetupRoleView,
+  randomlySelectable: true,
   image: require('../../static/chewks.png'),
   profile: require('../../static/chewks-profile.png'),
   appearsBad: (player, game) => {

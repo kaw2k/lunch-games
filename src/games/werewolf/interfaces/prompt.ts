@@ -37,6 +37,7 @@ export interface ByMessage {
   type: 'by message'
   player?: PlayerId
   message: string
+  secret?: boolean
 }
 
 export type Prompts = ByRole | ByName | ByTeam | ByMessage | ByArtifact

@@ -72,6 +72,7 @@ export const MadBomber = Card({
   ],
   image: require('../../static/unknown.png'),
   profile: require('../../static/unknown-profile.png'),
+  randomlySelectable: true,
   SetupRoleView: MadBomberSetup,
   appearsBad: always(false),
 })

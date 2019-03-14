@@ -67,6 +67,7 @@ export const Seer = Card({
   profile: require('../../static/seer-profile.png'),
   SetupRoleView: GenericSetupRoleView,
   appearsBad: always(false),
+  randomlySelectable: true,
   night: {
     title,
     ModeratorView: NightView,

@@ -66,6 +66,7 @@ export const Sorceress = Card({
   profile: require('../../static/sorceress-profile.png'),
   SetupRoleView: GenericSetupRoleView,
   appearsBad: always(false),
+  randomlySelectable: true,
   night: {
     title,
     ModeratorView: NightView,

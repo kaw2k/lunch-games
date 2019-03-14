@@ -5,6 +5,7 @@ import { assertNever } from '../../../helpers/assertNever'
 import { Artifacts, ArtifactState } from './artifact/artifacts'
 import { Teams } from './card'
 import { DelayAction } from './delayAction'
+import { Prompts } from './prompt'
 
 enum ActionOrder {
   setup = 0,
@@ -99,6 +100,10 @@ export const scepterOfRebirth = AC<'scepter of rebirth', Target>(
   'scepter of rebirth',
   ActionOrder.postKill
 )
+export const rodOfReincarnation = AC<'rod of reincarnation', Target>(
+  'rod of reincarnation',
+  ActionOrder.postKill
+)
 
 export const updateArtifact = AC<
   'update artifact',
@@ -153,7 +158,7 @@ export const addDelayedAction = AC<
   }
 >('add delayed action', ActionOrder.misc)
 
-export const showPrompts = AC<'show prompts', {}>(
+export const showPrompts = AC<'show prompts', { prompts?: Prompts[] }>(
   'show prompts',
   ActionOrder.misc
 )
@@ -181,6 +186,7 @@ export type Actions =
   | ReturnType<typeof addDelayedAction>
   | ReturnType<typeof addAction>
   | ReturnType<typeof showPrompts>
+  | ReturnType<typeof rodOfReincarnation>
 
 export function actionToString(action: Actions): string | null {
   if (action.type === 'bless')
@@ -194,6 +200,9 @@ export function actionToString(action: Actions): string | null {
 
   if (action.type === 'scepter of rebirth')
     return `${action.target} came back to life by the scepter of rebirth!`
+
+  if (action.type === 'rod of reincarnation')
+    return `${action.target} came back to life with a new role!`
 
   if (action.type === 'sudo kill')
     return `${action.target} was killed by the moderator`

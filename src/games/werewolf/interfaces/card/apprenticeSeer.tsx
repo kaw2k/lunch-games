@@ -64,6 +64,7 @@ export const ApprenticeSeer = Card({
   image: require('../../static/apprentice-seer.png'),
   profile: require('../../static/apprentice-seer-profile.png'),
   SetupRoleView: GenericSetupRoleView,
+  randomlySelectable: true,
   appearsBad: always(false),
   night: {
     title,

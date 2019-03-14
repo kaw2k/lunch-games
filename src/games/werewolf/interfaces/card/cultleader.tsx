@@ -57,6 +57,7 @@ export const CultLeader = Card({
   SetupRoleView: GenericSetupRoleView,
   image: require('../../static/cult-leader.png'),
   profile: require('../../static/cult-leader-profile.png'),
+  randomlySelectable: true,
   appearsBad: always(false),
   night: {
     title: nightTitle,

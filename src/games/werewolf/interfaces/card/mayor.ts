@@ -16,5 +16,6 @@ export const Mayor = Card({
   SetupRoleView: GenericSetupRoleView,
   image: require('../../static/mayor.png'),
   profile: require('../../static/mayor-profile.png'),
+  randomlySelectable: true,
   appearsBad: always(false),
 })

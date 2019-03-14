@@ -51,6 +51,7 @@ export const Hunter = Card({
   image: require('../../static/hunter.png'),
   profile: require('../../static/hunter-profile.png'),
   appearsBad: always(false),
+  randomlySelectable: true,
   SetupRoleView: GenericSetupRoleView,
   OnDeathView,
 })

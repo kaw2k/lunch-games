@@ -18,5 +18,6 @@ export const Tanner = Card({
   image: require('../../static/tanner.png'),
   profile: require('../../static/tanner-profile.png'),
   appearsBad: always(false),
+  randomlySelectable: true,
   SetupRoleView: GenericSetupRoleView,
 })

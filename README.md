@@ -37,18 +37,13 @@ npm start
 - Add diseased protection type, this will be a better hold for protections and figuring things out. clean this up after night ends
 - Frakenstine, already gets powers, just check if a wolf team member is ded. that role just hijacks the "done" callback of all the other roles.
 - Boogyman also works fine, just set night timers, add in option for after every role
-- need seating chart
-- We need to check for game over after dawn is finished and after artifacts settle. They won't happen in the action loop. This only holds true if we have rebirth as a manual artifact.
-
-Make dawn more generic, this way we can use it for any prompts
-
-figure out how to only show who died at a particular time in the prompts menu
+- Try to add isGameOver before dawn, that way you don't need to read artifacts if the game is over
+- Remove the need for mad bomber to specify neighbors
+- Add more visible profile counts / selected states
+- Test insomniac
+- Test Fang Face
 
 - For things that alter roles
 
   - Try to stay within the same faction, for wolves it would be wolves and allies
   - Find all the living roles in the game and get their combined weight. Try to balance the weight with the new role.
-
-Moderator -role count make clearer
-
-FINISH INSOMNIAC, TEST FANG FACE WITH INSOMNIAC

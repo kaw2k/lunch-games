@@ -150,6 +150,7 @@ export const Witch = Card({
     `Your save becomes more valuable as the game keeps going, don't die without using it!`,
   ],
   SetupRoleView: GenericSetupRoleView,
+  randomlySelectable: true,
   appearsBad: always(false),
   night: {
     title,

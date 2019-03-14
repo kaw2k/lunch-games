@@ -10,7 +10,6 @@ import { Emoji } from '../emoji'
 import { NightMessageOrder } from '../nightMessage'
 import { GenericSetupRoleView } from '../../components/setupRole/genericSetupRole'
 import { NoNightActionView } from '../../components/night/noNightActionView'
-import { getCard } from './cards'
 import { PromptView } from '../prompt'
 import { isWerewolf } from '../../helpers/isWerewolf'
 import { linkKill } from '../actions'
@@ -62,6 +61,7 @@ export const Revealer = Card({
   image: require('../../static/unknown.png'),
   profile: require('../../static/unknown-profile.png'),
   SetupRoleView: GenericSetupRoleView,
+  randomlySelectable: true,
   appearsBad: always(false),
   night: {
     title,

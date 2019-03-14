@@ -49,6 +49,7 @@ export const Bodyguard = Card({
   image: require('../../static/bodyguard.png'),
   profile: require('../../static/bodyguard-profile.png'),
   appearsBad: always(false),
+  randomlySelectable: true,
   night: {
     title: nightTitle,
     ModeratorView: NightView,

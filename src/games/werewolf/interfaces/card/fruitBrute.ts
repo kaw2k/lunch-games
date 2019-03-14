@@ -15,4 +15,5 @@ export const FruitBrute = Card({
   profile: require('../../static/fruit-brute-profile.png'),
   appearsBad: always(true),
   SetupRoleView: GenericSetupWerewolfRoleView,
+  randomlySelectable: true,
 })

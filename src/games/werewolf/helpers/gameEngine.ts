@@ -6,6 +6,7 @@ import {
   scepterOfRebirth,
   updatePlayer,
   revivePlayer,
+  rodOfReincarnation,
 } from '../interfaces/actions'
 import { assertNever } from '../../../helpers/assertNever'
 import sortBy from 'ramda/es/sortBy'
@@ -30,6 +31,7 @@ import { Prompts } from '../interfaces/prompt'
 import { Id } from '../../../helpers/id'
 import { playerName } from '../../../components/playerName'
 import { getNeighbor } from './neighbors'
+import { getNewRole } from './getNewRole'
 
 // ===========================================================
 // THE GAME ENGINE
@@ -82,7 +84,16 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
   }
 
   if (action.type === 'show prompts') {
-    return updateGame({ prompts: { ...game.prompts, show: true } }, game)
+    return updateGame(
+      {
+        prompts: {
+          ...game.prompts,
+          items: game.prompts.items.concat(action.prompts || []),
+          show: true,
+        },
+      },
+      game
+    )
   }
 
   const player = game.players[action.target]
@@ -252,8 +263,42 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
     if (!artifact || artifact.activated === 'played') return game
 
     return pipe(
+      addPrompt({
+        type: 'by message',
+        id: Id(),
+        message: `${player.name || player.id} came back to life`,
+        player: player.id,
+      }),
       updateArtifact(player.id, artifact.type, { activated: 'played' }),
       addAction([revivePlayer({ target: player.id })])
+    )(game)
+  }
+
+  if (action.type === 'rod of reincarnation') {
+    const artifact = player.artifacts.find(
+      a => a.type === 'rod of reincarnation'
+    )
+    if (!artifact || artifact.activated === 'played') return game
+
+    return pipe(
+      addPrompt({
+        type: 'by message',
+        id: Id(),
+        message: `${player.name ||
+          player.id} came back to life with a new role!`,
+        player: player.id,
+      }),
+      updateArtifact(player.id, artifact.type, { activated: 'played' }),
+      addAction([
+        revivePlayer({ target: player.id }),
+        updatePlayer({
+          target: action.target,
+          updates: {
+            role: 'villager',
+            secondaryRole: getNewRole(player, game),
+          },
+        }),
+      ])
     )(game)
   }
 
@@ -532,15 +577,14 @@ const killPlayer = curry(
         artifactState.activated === 'unplayed' &&
         artifact.type === 'scepter of rebirth'
       ) {
-        game = pipe(
-          addPrompt({
-            type: 'by message',
-            id: Id(),
-            message: `${player.name || player.id} came back to life`,
-            player: player.id,
-          }),
-          addAction(scepterOfRebirth({ target: player.id }))
-        )(game)
+        game = addAction(scepterOfRebirth({ target: player.id }), game)
+      }
+
+      if (
+        artifactState.activated === 'unplayed' &&
+        artifact.type === 'rod of reincarnation'
+      ) {
+        game = addAction(rodOfReincarnation({ target: player.id }), game)
       }
     }, game)
 

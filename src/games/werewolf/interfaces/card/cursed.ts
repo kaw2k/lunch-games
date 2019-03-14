@@ -16,6 +16,7 @@ export const Cursed = Card({
   ],
   image: require('../../static/cursed.png'),
   profile: require('../../static/cursed-profile.png'),
+  randomlySelectable: true,
   SetupRoleView: GenericSetupRoleView,
   appearsBad: always(false),
 })

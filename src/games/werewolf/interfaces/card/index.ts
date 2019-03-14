@@ -37,6 +37,9 @@ export interface Card<Role extends string = string> {
   emoji: Emoji
   image: Image
   profile: Image
+  // We automate assigning new roles, this boolean dictates if the role can be given
+  randomlySelectable?: boolean
+  canFrankensteinAbsorbIt?: true
 
   OnDeathView?: PromptView
 

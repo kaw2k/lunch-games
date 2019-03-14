@@ -19,5 +19,6 @@ export const WolfCub = Card({
   image: require('../../static/wolf-cub.png'),
   profile: require('../../static/wolf-cub-profile.png'),
   appearsBad: always(true),
+  randomlySelectable: true,
   SetupRoleView: GenericSetupWerewolfRoleView,
 })

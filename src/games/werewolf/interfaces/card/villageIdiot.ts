@@ -14,5 +14,6 @@ export const VillageIdiot = Card({
   image: require('../../static/village-idiot.png'),
   profile: require('../../static/village-idiot-profile.png'),
   SetupRoleView: GenericSetupRoleView,
+  randomlySelectable: true,
   appearsBad: always(false),
 })

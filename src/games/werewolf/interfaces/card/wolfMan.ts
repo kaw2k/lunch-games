@@ -17,5 +17,6 @@ export const WolfMan = Card({
   image: require('../../static/werewolf.png'),
   profile: require('../../static/werewolf-profile.png'),
   appearsBad: always(true),
+  randomlySelectable: true,
   SetupRoleView: GenericSetupWerewolfRoleView,
 })
