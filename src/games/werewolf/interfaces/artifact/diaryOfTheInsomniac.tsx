@@ -2,14 +2,11 @@ import * as React from 'react'
 import { Artifact } from '.'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { getArtifact } from './artifacts'
-import { isWerewolf } from '../../helpers/isWerewolf'
-import { getCard } from '../card/cards'
 import { PromptView, ByArtifact } from '../prompt'
 import { Typography } from '@material-ui/core'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
-import { getNeighbor } from '../../helpers/neighbors'
-import { playerName } from '../../../../components/playerName'
+import { getInsomniacMessage } from '../../helpers/getInsomniacMessage'
 
 const ActivateView: PromptView<ByArtifact> = ({
   done,
@@ -18,22 +15,6 @@ const ActivateView: PromptView<ByArtifact> = ({
   const { game } = React.useContext(WerewolfGameContext)
   const artifact = getArtifact(artifactState.type)
   const player = game.players[playerId]
-
-  const left = getNeighbor(player.id, 'left', game)
-  const leftPlayer = left && game.players[left]
-  const right = getNeighbor(player.id, 'right', game)
-  const rightPlayer = right && game.players[right]
-
-  // TODO: Move this out to a helper. We eventually need to consider fang face
-  const didEitherWakeUp =
-    (rightPlayer &&
-      (rightPlayer.secondaryRole ||
-        getCard(rightPlayer.role).night ||
-        isWerewolf(rightPlayer, game))) ||
-    (leftPlayer &&
-      (leftPlayer.secondaryRole ||
-        getCard(leftPlayer.role).night ||
-        isWerewolf(leftPlayer, game)))
 
   return (
     <>
@@ -44,11 +25,7 @@ const ActivateView: PromptView<ByArtifact> = ({
         {artifact.description}
       </Typography>
 
-      <Typography>
-        One of your neighbors ({leftPlayer && playerName(leftPlayer)} or
-        {rightPlayer && playerName(rightPlayer)}){' '}
-        {didEitherWakeUp ? 'woke up' : `didn't wake up`} last night.
-      </Typography>
+      <Typography>{getInsomniacMessage(player, game)}</Typography>
 
       <ActionRow fixed>
         <Button color="green" onClick={() => done([])}>

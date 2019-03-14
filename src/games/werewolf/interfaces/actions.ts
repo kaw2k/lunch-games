@@ -186,7 +186,6 @@ export function actionToString(action: Actions): string | null {
   if (action.type === 'bless')
     return `${action.target} was blessed by ${action.source}`
 
-  // TODO Add a source
   if (action.type === 'guard')
     return `${action.target} was protected by the bodyguard`
 

@@ -80,7 +80,6 @@ export const WerewolfPlayerGame: React.SFC<Props> = () => {
     }
   }
 
-  // TODO: This should be spectate mode
   if (!player.alive) {
     return <WerewolfDead />
   }

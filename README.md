@@ -50,3 +50,5 @@ figure out how to only show who died at a particular time in the prompts menu
   - Find all the living roles in the game and get their combined weight. Try to balance the weight with the new role.
 
 Moderator -role count make clearer
+
+FINISH INSOMNIAC, TEST FANG FACE WITH INSOMNIAC

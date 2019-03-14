@@ -28,6 +28,14 @@ import { Sasquatch } from './sasquatch'
 import { WerewolfGame } from '../game'
 import { values } from 'ramda'
 import { PrivateInvestigator } from './privateInvestigator'
+import { Pacifist } from './pacifist'
+import { VillageIdiot } from './villageIdiot'
+import { Prince } from './prince'
+import { WolfMan } from './wolfMan'
+import { Insomniac } from './insomniac'
+import { Sorceress } from './sorceress'
+import { Revealer } from './revealer'
+import { FangFace } from './fangFace'
 
 export const Cards = [
   Bodyguard,
@@ -55,6 +63,14 @@ export const Cards = [
   Mason,
   Sasquatch,
   PrivateInvestigator,
+  Pacifist,
+  VillageIdiot,
+  WolfMan,
+  Prince,
+  Insomniac,
+  Sorceress,
+  Revealer,
+  FangFace,
 ]
 
 export const Roles = Cards.map(role => role.role)

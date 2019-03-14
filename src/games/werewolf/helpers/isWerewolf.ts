@@ -1,6 +1,7 @@
 import { PlayerWerewolf } from '../interfaces/player'
 import { WerewolfGame } from '../interfaces/game'
-import { getCard } from '../interfaces/card/cards'
+import { getCard, isRole } from '../interfaces/card/cards'
+import { values } from 'ramda'
 
 export function isWerewolf(
   player: PlayerWerewolf,
@@ -15,5 +16,20 @@ export function isWerewolf(
     (!!hasClaw &&
       (hasClaw.activated === 'played' ||
         game.options.werewolfArtifactAlwaysActive))
+  )
+}
+
+export function doesFangFaceWakeUp(
+  player: PlayerWerewolf,
+  game: WerewolfGame
+): boolean {
+  const livingWolves = values(game.players).filter(
+    p => p.alive && isWerewolf(p, game)
+  )
+
+  return (
+    livingWolves.length === 1 &&
+    isRole(livingWolves[0], 'fang face') &&
+    player.id === livingWolves[0].id
   )
 }

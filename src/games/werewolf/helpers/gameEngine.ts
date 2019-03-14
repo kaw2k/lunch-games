@@ -105,8 +105,7 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
       )
     }
 
-    // TODO: This should be the prince
-    if (player.role === 'mayor') {
+    if (player.role === 'prince') {
       return addPrompt(
         {
           id: Id(),
@@ -120,7 +119,6 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
     }
   }
 
-  // TODO: Add options here
   if (action.type === 'chewks kill') {
     const wolvesRemain = count(game.players, p => isWerewolf(p, game))
     const isWolf = isWerewolf(player, game)

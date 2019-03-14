@@ -1,6 +1,6 @@
 import { WerewolfGame } from '../interfaces/game'
 import values from 'ramda/es/values'
-import { isWerewolf } from './isWerewolf'
+import { isWerewolf, doesFangFaceWakeUp } from './isWerewolf'
 import { getCard, Roles, hasRole } from '../interfaces/card/cards'
 import { getGameRoles } from './getGameRoles'
 import { getPlayerByRole } from './getPlayersByRole'
@@ -9,7 +9,7 @@ import { Id } from '../../../helpers/id'
 
 function getWerewolves(game: WerewolfGame) {
   return values(game.players)
-    .filter(p => isWerewolf(p, game))
+    .filter(p => isWerewolf(p, game) && doesFangFaceWakeUp(p, game))
     .map(p => p.id)
 }
 
