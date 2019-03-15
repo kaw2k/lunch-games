@@ -66,9 +66,9 @@ const NightView: PromptView = ({ done, prompt }) => {
             const state = true
 
             let players = [player]
-            const left = getNeighbor(player.id, 'left', game)
+            const left = getNeighbor(player.id, 'left', 'skip-gaps', game)
             if (left) players = players.concat(game.players[left])
-            const right = getNeighbor(player.id, 'right', game)
+            const right = getNeighbor(player.id, 'right', 'skip-gaps', game)
             if (right) players = players.concat(game.players[right])
 
             const isOneBad = !!players.find(p => {

@@ -50,7 +50,6 @@ export function makeNightPrompts(game: WerewolfGame): Prompts[] {
   prompts = prompts.concat(
     getGameRoles(game)
       .filter(role => getCard(role).night && role !== 'werewolf')
-      .sort((a, b) => getCard(a).night!.order - getCard(b).night!.order)
       .map<Prompts>(role => {
         const p = getPlayerByRole(role, game)
         return {
@@ -74,27 +73,35 @@ export function makeNightPrompts(game: WerewolfGame): Prompts[] {
   ]
   prompts = prompts.concat(teams)
 
-  return prompts.filter(prompt => {
-    if (game.options.noFlip) return true
+  return prompts
+    .filter(prompt => {
+      if (game.options.noFlip) return true
 
-    if (
-      prompt.type === 'by role' &&
-      (!prompt.player || !game.players[prompt.player].alive)
-    ) {
-      return false
-    }
+      if (
+        prompt.type === 'by role' &&
+        (!prompt.player || !game.players[prompt.player].alive)
+      ) {
+        return false
+      }
 
-    if (
-      prompt.type === 'by name' &&
-      (!prompt.player || !game.players[prompt.player].alive)
-    ) {
-      return false
-    }
+      if (
+        prompt.type === 'by name' &&
+        (!prompt.player || !game.players[prompt.player].alive)
+      ) {
+        return false
+      }
 
-    if (prompt.type === 'by team') {
-      return !!prompt.players.find(player => game.players[player].alive)
-    }
+      if (prompt.type === 'by team') {
+        return !!prompt.players.find(player => game.players[player].alive)
+      }
 
-    return true
-  })
+      return true
+    })
+    .sort((a, b) => {
+      if (a.type === 'by message' || b.type === 'by message') return 0
+      if (a.type === 'by artifact' || b.type === 'by artifact') return 0
+      if (a.type === 'by name' || b.type === 'by name') return 1
+
+      return getCard(a.role).night!.order - getCard(b.role).night!.order
+    })
 }

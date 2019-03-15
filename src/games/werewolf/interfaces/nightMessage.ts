@@ -5,6 +5,7 @@ export enum NightMessageOrder {
   misc = 40,
   killing = 80,
   werewolf = 100,
+  postWerewolf = 125,
 }
 
 export interface NightMessage {

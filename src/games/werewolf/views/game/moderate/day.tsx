@@ -74,6 +74,10 @@ export const DayModerator: React.SFC<Props> = () => {
         <Typography variant="h2">{time.message}</Typography>
       )}
 
+      <Typography component="em">
+        {values(game.players).filter(p => p.alive).length} living players
+      </Typography>
+
       <div className={classes.twoColumns}>
         {sortBy(p => !p.alive, values(game.players)).map(player => (
           <WerewolfProfile

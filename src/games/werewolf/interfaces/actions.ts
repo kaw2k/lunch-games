@@ -16,7 +16,7 @@ enum ActionOrder {
 }
 
 type Action<Type extends string, Payload extends object> = {
-  id: string
+  id: Id
   type: Type
   order: ActionOrder
 } & Payload
@@ -79,6 +79,13 @@ export const chewksKill = AC<'chewks kill', Target>(
 )
 export const linkKill = AC<'link kill', Target>('link kill', ActionOrder.kill)
 export const guard = AC<'guard', Target>('guard', ActionOrder.misc)
+export const leprechaunDiversion = AC<
+  'leprechaun diversion',
+  {
+    actionId: Id
+    target: PlayerId
+  }
+>('leprechaun diversion', ActionOrder.misc)
 export const bless = AC<'bless', TargetAndSource>('bless', ActionOrder.misc)
 export const updatePlayer = AC<'update player', TargetUpdate>(
   'update player',
@@ -187,6 +194,7 @@ export type Actions =
   | ReturnType<typeof addAction>
   | ReturnType<typeof showPrompts>
   | ReturnType<typeof rodOfReincarnation>
+  | ReturnType<typeof leprechaunDiversion>
 
 export function actionToString(action: Actions): string | null {
   if (action.type === 'bless')
@@ -215,6 +223,8 @@ export function actionToString(action: Actions): string | null {
 
   if (action.type === 'chewks kill')
     return `${action.target} was torn apart by chewks`
+
+  if (action.type === 'leprechaun diversion') return null
 
   if (action.type === 'artifact kill')
     return `${action.target} was killed by an artifact`

@@ -12,7 +12,7 @@ export function getInsomniacMessage(
   let players: PlayerWerewolf[] = []
   let hasNightAction: boolean = false
 
-  const left = getNeighbor(player.id, 'left', game)
+  const left = getNeighbor(player.id, 'left', 'skip-gaps', game)
   if (left) {
     const target = game.players[left]
     const isFangFace = isRole(target, 'fang face')
@@ -27,7 +27,7 @@ export function getInsomniacMessage(
       (!!target.secondaryRole && !!getCard(target.secondaryRole).night)
   }
 
-  const right = getNeighbor(player.id, 'right', game)
+  const right = getNeighbor(player.id, 'right', 'skip-gaps', game)
   if (right) {
     const target = game.players[right]
     const isFangFace = isRole(target, 'fang face')

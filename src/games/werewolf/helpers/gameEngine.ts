@@ -7,6 +7,7 @@ import {
   updatePlayer,
   revivePlayer,
   rodOfReincarnation,
+  werewolfKill,
 } from '../interfaces/actions'
 import { assertNever } from '../../../helpers/assertNever'
 import sortBy from 'ramda/es/sortBy'
@@ -42,20 +43,17 @@ export function runActions(
   initialActions: Actions[] = []
 ): WerewolfGame {
   let game: WerewolfGame = { ...initialGame }
-  let remainingActions = game.actions.concat(initialActions)
-  game.actions = []
+  game.actions = game.actions.concat(initialActions)
 
   // Set a limit, just in case we hit some recursion...
   let count = 0
   const limit = 100
 
-  while (remainingActions.length && count < limit) {
-    remainingActions = sortBy(action => action.order, remainingActions)
-    const action = remainingActions[0]
-    remainingActions = remainingActions.slice(1)
+  while (game.actions.length && count < limit) {
+    game.actions = sortBy(action => action.order, game.actions)
+    const action = game.actions[0]
+    game.actions = game.actions.slice(1)
     game = performAction(action, game)
-    remainingActions = remainingActions.concat(game.actions)
-    game.actions = []
     count++
   }
 
@@ -218,6 +216,15 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
       { inCult: player.inCult.concat(action.source) },
       game
     )
+  }
+
+  if (action.type === 'leprechaun diversion') {
+    return pipe(
+      updateGame(game => ({
+        actions: game.actions.filter(a => a.id !== action.actionId),
+      })),
+      addAction(werewolfKill({ target: action.target }))
+    )(game)
   }
 
   // SETUP ACTIONS
@@ -531,14 +538,15 @@ const killPlayer = curry(
       game = addDelayedAction(actions, game)
     }
 
-    if (
-      isRole(player, 'mad bomber') &&
-      !game.options.madBomberOnlyKillsAdjacent
-    ) {
-      const onLeft = getNeighbor(player.id, 'left', game)
+    if (isRole(player, 'mad bomber')) {
+      const gaps = game.options.madBomberOnlyKillsAdjacent
+        ? 'allow-gaps'
+        : 'skip-gaps'
+
+      const onLeft = getNeighbor(player.id, 'left', gaps, game)
       if (onLeft) game = addAction(linkKill({ target: onLeft }), game)
 
-      const onRight = getNeighbor(player.id, 'right', game)
+      const onRight = getNeighbor(player.id, 'right', gaps, game)
       if (onRight) game = addAction(linkKill({ target: onRight }), game)
     }
 
