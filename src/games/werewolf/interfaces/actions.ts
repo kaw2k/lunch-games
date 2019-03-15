@@ -30,7 +30,12 @@ interface TargetAndSource {
 }
 interface TargetUpdate {
   target: PlayerId
-  updates: Partial<Pick<PlayerWerewolf, 'role' | 'secondaryRole' | 'state'>>
+  updates: Partial<
+    Pick<
+      PlayerWerewolf,
+      'role' | 'secondaryRole' | 'state' | 'markedByAlphaWolf'
+    >
+  >
 }
 interface TargetArtifact {
   target: PlayerId

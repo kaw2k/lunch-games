@@ -154,7 +154,7 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
       return updateWerewolfPlayer(player.id, { isBlessed: 'attacked' }, game)
     }
 
-    if (isCursed(player, game)) {
+    if (isCursed(player, game) || player.markedByAlphaWolf) {
       return pipe(
         updateWerewolfPlayer(player.id, { role: 'werewolf' }),
         addPrompt({
@@ -390,7 +390,12 @@ export function startDay(initialGame: WerewolfGame): WerewolfGame {
   values(game.players).forEach(player => {
     game.players[player.id].isBlessed =
       player.isBlessed === 'attacked' ? false : player.isBlessed || false
+
     game.players[player.id].isGuarded = false
+
+    if (player.markedByAlphaWolf && !isWerewolf(player, game)) {
+      game.players[player.id].markedByAlphaWolf = false
+    }
   })
 
   game = runActions(processQueuedActions(game))

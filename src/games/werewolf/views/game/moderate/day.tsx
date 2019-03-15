@@ -8,6 +8,7 @@ import {
   showPrompts,
   sudoKill,
   revivePlayer,
+  addDelayedAction,
 } from '../../../interfaces/actions'
 import { values, sortBy } from 'ramda'
 import { useCommonStyles } from '../../../../../helpers/commonStyles'
@@ -15,6 +16,7 @@ import { startNight } from '../../../helpers/gameEngine'
 import { PlayerId } from '../../../../../interfaces/player'
 import { useTimer } from '../../../../../hooks/useTimer'
 import { Typography } from '@material-ui/core'
+import { hasRole } from '../../../interfaces/card/cards'
 
 interface Props {}
 
@@ -51,6 +53,25 @@ export const DayModerator: React.SFC<Props> = () => {
             Moderator Kill
           </Button>
         </ActionRow>
+
+        {hasRole('mason', game) && (
+          <Button
+            confirm
+            onClick={() =>
+              runActions([
+                addDelayedAction({
+                  delayedAction: {
+                    occurrence: 'once',
+                    time: 'night',
+                    day: game.day,
+                    action: sudoKill({ target: player.id }),
+                  },
+                }),
+              ])
+            }>
+            they said the word mason
+          </Button>
+        )}
 
         <Button
           color="red"
