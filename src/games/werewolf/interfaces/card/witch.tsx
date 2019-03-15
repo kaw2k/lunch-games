@@ -152,6 +152,7 @@ export const Witch = Card({
   SetupRoleView: GenericSetupRoleView,
   randomlySelectable: true,
   appearsBad: always(false),
+  canFrankensteinAbsorbIt: true,
   night: {
     title,
     ModeratorView: NightView,

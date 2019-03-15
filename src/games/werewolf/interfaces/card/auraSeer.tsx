@@ -68,6 +68,7 @@ export const AuraSeer = Card({
   profile: require('../../static/aura-seer-profile.png'),
   SetupRoleView: GenericSetupRoleView,
   randomlySelectable: true,
+  canFrankensteinAbsorbIt: true,
   appearsBad: always(false),
   night: {
     title,

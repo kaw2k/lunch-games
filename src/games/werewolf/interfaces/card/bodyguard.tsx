@@ -50,6 +50,7 @@ export const Bodyguard = Card({
   profile: require('../../static/bodyguard-profile.png'),
   appearsBad: always(false),
   randomlySelectable: true,
+  canFrankensteinAbsorbIt: true,
   night: {
     title: nightTitle,
     ModeratorView: NightView,

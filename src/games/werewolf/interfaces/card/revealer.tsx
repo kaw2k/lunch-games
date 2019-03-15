@@ -63,6 +63,7 @@ export const Revealer = Card({
   SetupRoleView: GenericSetupRoleView,
   randomlySelectable: true,
   appearsBad: always(false),
+  canFrankensteinAbsorbIt: true,
   night: {
     title,
     ModeratorView: NightView,

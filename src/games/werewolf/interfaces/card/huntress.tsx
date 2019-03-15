@@ -91,6 +91,7 @@ export const Huntress = Card({
   SetupRoleView: GenericSetupRoleView,
   appearsBad: always(false),
   randomlySelectable: true,
+  canFrankensteinAbsorbIt: true,
   night: {
     title,
     ModeratorView: NightView,
