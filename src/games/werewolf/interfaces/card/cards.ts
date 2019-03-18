@@ -40,6 +40,8 @@ import { Leprechaun } from './leprechaun'
 import { MysticSeer } from './mysticSeer'
 import { FrankensteinsMonster } from './frankensteinsMonster'
 import { AlphaWolf } from './alphaWolf'
+import { Beholder } from './beholder'
+import { Zombie } from './zombie'
 
 export const Cards = [
   Bodyguard,
@@ -79,6 +81,8 @@ export const Cards = [
   MysticSeer,
   FrankensteinsMonster,
   AlphaWolf,
+  Beholder,
+  Zombie,
 ]
 
 export const Roles = Cards.map(role => role.role)

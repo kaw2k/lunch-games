@@ -18,6 +18,7 @@ export type Teams =
   | 'cult leader'
   | 'chewks'
   | 'boogyman'
+  | 'zombie'
 
 // ==========================
 // Cards

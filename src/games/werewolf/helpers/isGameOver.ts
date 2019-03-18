@@ -6,13 +6,15 @@ import values from 'ramda/es/values'
 import contains from 'ramda/es/contains'
 import pipe from 'ramda/es/pipe'
 import { isRole } from '../interfaces/card/cards'
+import all from 'ramda/es/all'
 
 export function isGameOver(game: WerewolfGame): WerewolfGame {
   return pipe(
     isChewksWin,
     isWerewolfWin,
     isCultWin,
-    isVillagerWin
+    isVillagerWin,
+    isZombieWin
   )(game)
 }
 
@@ -75,6 +77,25 @@ function isCultWin(game: WerewolfGame): WerewolfGame {
         },
         game
       )
+  }
+
+  return game
+}
+
+function isZombieWin(game: WerewolfGame): WerewolfGame {
+  const allEaten = all(
+    player => player.areBrainsEaten || isRole(player, 'zombie'),
+    values(game.players).filter(p => p.alive)
+  )
+
+  if (allEaten) {
+    return setVictory(
+      {
+        message: `Everyone's brains have been eaten. Zombies win!`,
+        team: 'zombie',
+      },
+      game
+    )
   }
 
   return game

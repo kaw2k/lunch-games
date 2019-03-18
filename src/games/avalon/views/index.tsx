@@ -100,6 +100,7 @@ export const AvalonView: React.SFC<{ room: Avalon }> = ({ room }) => {
           if (party && room.type === 'avalon-game') {
             addLeaderBoard({
               date: Date.now(),
+              lobby: room.id,
               gameType: 'avalon-game',
               winners: values(room.players)
                 .filter(p => p.party === party)

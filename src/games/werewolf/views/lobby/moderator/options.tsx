@@ -78,6 +78,13 @@ export const WerewolfModeratorLobbyOptions: React.SFC<Props> = ({ lobby }) => {
       />
 
       <Option
+        title="Behold The Seers"
+        option="beholderSeesAllSeers"
+        description="The beholder normally only sees the seer. If this is enabled, the beholder also sees the apprentice seer and the mystic seer."
+        lobby={lobby}
+      />
+
+      <Option
         title="Protection For All"
         option="protectWolves"
         description="Protections and blessings will prevent chewks from killing werewolves"

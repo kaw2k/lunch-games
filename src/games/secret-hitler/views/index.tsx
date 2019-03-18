@@ -91,6 +91,7 @@ export const SecretHitlerView: React.SFC<{ room: SecretHitler }> = ({
             addLeaderBoard({
               date: Date.now(),
               gameType: 'secret-hitler-game',
+              lobby: room.id,
               winners: values(room.players)
                 .filter(p => p.role.party === party)
                 .map(p => ({

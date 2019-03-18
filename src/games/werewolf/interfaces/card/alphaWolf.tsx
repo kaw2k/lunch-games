@@ -46,6 +46,10 @@ const NightView: PromptView = ({ done, prompt }) => {
       {!canConvertSomeone && (
         <>
           <Typography variant="h2">
+            You may transform one of the werewolves targets into a wolf. This
+            may only happen after a werewolf has died.
+          </Typography>
+          <Typography component="em">
             {!hasWerewolfDied
               ? 'You must wait for a werewolf to die before you can convert someone'
               : 'You already converted someone'}

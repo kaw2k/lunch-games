@@ -22,7 +22,7 @@ const title =
 const NightView: PromptView = ({ done, prompt }) => {
   const { game } = React.useContext(WerewolfGameContext)
   const [activeRole, setActiveRole] = React.useState<Roles | null>(null)
-  const [actions, addActions] = React.useState<{ [role: string]: Actions[] }>(
+  const [actions, addActions] = React.useState<{ [role in Roles]?: Actions[] }>(
     {}
   )
 

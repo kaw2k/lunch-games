@@ -92,6 +92,10 @@ export const leprechaunDiversion = AC<
   }
 >('leprechaun diversion', ActionOrder.misc)
 export const bless = AC<'bless', TargetAndSource>('bless', ActionOrder.misc)
+export const eatBrains = AC<'eat brains', Target>(
+  'eat brains',
+  ActionOrder.misc
+)
 export const updatePlayer = AC<'update player', TargetUpdate>(
   'update player',
   ActionOrder.misc
@@ -200,6 +204,7 @@ export type Actions =
   | ReturnType<typeof showPrompts>
   | ReturnType<typeof rodOfReincarnation>
   | ReturnType<typeof leprechaunDiversion>
+  | ReturnType<typeof eatBrains>
 
 export function actionToString(action: Actions): string | null {
   if (action.type === 'bless')
@@ -249,6 +254,7 @@ export function actionToString(action: Actions): string | null {
   if (action.type === 'end game') return null
   if (action.type === 'add action') return null
   if (action.type === 'show prompts') return null
+  if (action.type === 'eat brains') return null
   if (action.type === 'add delayed action') return null
 
   return assertNever(action)

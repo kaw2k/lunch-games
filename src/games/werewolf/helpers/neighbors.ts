@@ -29,3 +29,19 @@ export function getNeighbor(
 
   return player && game.players[player].alive ? player : null
 }
+
+export function getNeighbors(
+  start: PlayerId,
+  gaps: 'skip-gaps' | 'allow-gaps',
+  game: WerewolfGame
+): PlayerId[] {
+  let neighbors: PlayerId[] = []
+
+  const left = getNeighbor(start, 'left', gaps, game)
+  if (left) neighbors = neighbors.concat(left)
+
+  const right = getNeighbor(start, 'right', gaps, game)
+  if (right) neighbors = neighbors.concat(right)
+
+  return neighbors
+}

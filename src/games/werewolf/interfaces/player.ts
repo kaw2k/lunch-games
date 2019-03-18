@@ -20,5 +20,6 @@ export interface PlayerWerewolf extends Player {
   markedByAlphaWolf?: boolean
   copiedBy: PlayerId | null
   isBlessed: false | PlayerId | 'attacked'
+  areBrainsEaten: boolean
   state: { [key in Roles]?: any }
 }

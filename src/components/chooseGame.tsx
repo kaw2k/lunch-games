@@ -59,6 +59,7 @@ export const ChooseGame: React.SFC<{}> = () => {
                 killCult: true,
                 noFlip: true,
                 dayTimeLimit: 120,
+                beholderSeesAllSeers: false,
                 nightTimeLimit: 0,
                 cursedArtifactAlwaysActive: false,
                 werewolfArtifactAlwaysActive: false,

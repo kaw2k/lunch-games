@@ -29,6 +29,7 @@ export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
         isGuarded: false,
         linkedTo: [],
         ready: false,
+        areBrainsEaten: false,
         secondaryRole: null,
         role: shuffledRoles[i],
         state: {},

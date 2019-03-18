@@ -1,46 +1,33 @@
 import { PlayerWerewolf } from '../interfaces/player'
 import { WerewolfGame } from '../interfaces/game'
 import { getCard, isRole } from '../interfaces/card/cards'
-import { playerName } from '../../../components/playerName'
+import { playerNameList } from '../../../components/playerName'
 import { isWerewolf, doesFangFaceWakeUp } from './isWerewolf'
-import { getNeighbor } from './neighbors'
+import { getNeighbors } from './neighbors'
+import any from 'ramda/es/any'
 
 export function getInsomniacMessage(
   player: PlayerWerewolf,
   game: WerewolfGame
 ): string {
-  let players: PlayerWerewolf[] = []
-  let hasNightAction: boolean = false
+  const neighbors = getNeighbors(player.id, 'skip-gaps', game)
 
-  const left = getNeighbor(player.id, 'left', 'skip-gaps', game)
-  if (left) {
-    const target = game.players[left]
+  const hasWokenUp = any(pid => {
+    const target = game.players[pid]
     const isFangFace = isRole(target, 'fang face')
     const isFangFaceActive = doesFangFaceWakeUp(target, game)
 
-    players = players.concat(target)
-    hasNightAction =
-      hasNightAction ||
+    return (
       !!getCard(target.role).night ||
       isFangFaceActive ||
       (isWerewolf(target, game) && !isFangFace) ||
       (!!target.secondaryRole && !!getCard(target.secondaryRole).night)
-  }
+    )
+  }, neighbors)
 
-  const right = getNeighbor(player.id, 'right', 'skip-gaps', game)
-  if (right) {
-    const target = game.players[right]
-    const isFangFace = isRole(target, 'fang face')
-    const isFangFaceActive = doesFangFaceWakeUp(target, game)
+  const names = playerNameList(neighbors, game)
 
-    players = players.concat(target)
-    hasNightAction =
-      hasNightAction ||
-      !!getCard(target.role).night ||
-      isFangFaceActive ||
-      (isWerewolf(target, game) && !isFangFace) ||
-      (!!target.secondaryRole && !!getCard(target.secondaryRole).night)
-  }
-
-  return players.map(p => playerName(p)).join(', ')
+  return hasWokenUp
+    ? `One of your neighbors (${names}) woke up last night`
+    : `None of your neighbors (${names}) woke up last night`
 }

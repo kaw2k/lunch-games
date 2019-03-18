@@ -21,6 +21,7 @@ interface WerewolfOptions {
   cursedArtifactAlwaysActive: boolean
   werewolfArtifactAlwaysActive: boolean
   madBomberOnlyKillsAdjacent: boolean
+  beholderSeesAllSeers: boolean
   protectWolves: boolean
 }
 

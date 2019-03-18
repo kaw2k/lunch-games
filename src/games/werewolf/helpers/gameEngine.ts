@@ -31,7 +31,7 @@ import { isRole, getCard } from '../interfaces/card/cards'
 import { Prompts } from '../interfaces/prompt'
 import { Id } from '../../../helpers/id'
 import { playerName } from '../../../components/playerName'
-import { getNeighbor } from './neighbors'
+import { getNeighbors } from './neighbors'
 import { getNewRole } from './getNewRole'
 
 // ===========================================================
@@ -208,6 +208,10 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
 
   if (action.type === 'guard') {
     return updateWerewolfPlayer(player.id, { isGuarded: true }, game)
+  }
+
+  if (action.type === 'eat brains') {
+    return updateWerewolfPlayer(player.id, { areBrainsEaten: true }, game)
   }
 
   if (action.type === 'indoctrinate') {
@@ -433,7 +437,14 @@ export function startDawn(initialGame: WerewolfGame): WerewolfGame {
   }
   game.killedAtDay = []
   game.prompts = {
-    items: game.prompts.items.concat(prompts),
+    items: sortBy(prompt => {
+      if (prompt.type === 'by role') return 0
+      if (prompt.type === 'by message') return 1
+      if (prompt.type === 'by name') return 2
+      if (prompt.type === 'by artifact') return 3
+      if (prompt.type === 'by team') return 4
+      return 5
+    }, game.prompts.items.concat(prompts)),
     active: null,
     show: true,
   }
@@ -548,11 +559,10 @@ const killPlayer = curry(
         ? 'allow-gaps'
         : 'skip-gaps'
 
-      const onLeft = getNeighbor(player.id, 'left', gaps, game)
-      if (onLeft) game = addAction(linkKill({ target: onLeft }), game)
-
-      const onRight = getNeighbor(player.id, 'right', gaps, game)
-      if (onRight) game = addAction(linkKill({ target: onRight }), game)
+      game = getNeighbors(player.id, gaps, game).reduce(
+        (deltaGame, target) => addAction(linkKill({ target }), deltaGame),
+        game
+      )
     }
 
     if (player.copiedBy) {

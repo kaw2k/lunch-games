@@ -20,6 +20,8 @@ import { AmuletOfProtection } from './amuletOfProtection'
 import { DiaryOfTheInsomniac } from './diaryOfTheInsomniac'
 import { StoneOfAlteration } from './stoneOfAlteration'
 import { RodOfReincarnation } from './rodOfReincarnation'
+import { AmethystOfKnowledge } from './amethystOfKnowledge'
+import { RubyOfKismet } from './rubyOfKismet'
 
 export interface ArtifactState {
   type: Artifacts
@@ -60,6 +62,8 @@ export const Artifacts = [
   DiaryOfTheInsomniac,
   StoneOfAlteration,
   RodOfReincarnation,
+  AmethystOfKnowledge,
+  RubyOfKismet,
 ]
 export type Artifacts = (typeof Artifacts)[0]['type']
 
