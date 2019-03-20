@@ -35,21 +35,19 @@ export const WerewolfPlayerDayOverview: React.SFC = ({}) => {
         upper limit. Note if someone changes their role, there may be an
         unlisted role in the game.
       </Typography>
-      <div className={classes.twoColumns}>
-        {uniq(game.initialRoles).map(role => {
-          const card = getCard(role)
-          const numCard = count(game.initialRoles, r => r === card.role)
-          return (
-            <Profile
-              key={card.role}
-              text={`${card.role}: ${numCard}`}
-              image={card.profile}
-              alignItems="flex-start"
-              subtext={card.description}
-            />
-          )
-        })}
-      </div>
+      {uniq(game.initialRoles).map(role => {
+        const card = getCard(role)
+        const numCard = count(game.initialRoles, r => r === card.role)
+        return (
+          <Profile
+            key={card.role}
+            text={`${card.role}: ${numCard}`}
+            image={card.profile}
+            alignItems="flex-start"
+            subtext={card.description}
+          />
+        )
+      })}
 
       <Typography variant="h2">Possible Artifacts</Typography>
       <Typography gutterBottom component="em">

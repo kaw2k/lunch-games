@@ -8,6 +8,7 @@ export const InspectRole: React.SFC<{}> = () => {
   return (
     <ChoosePlayers
       title="Who would you like to inspect?"
+      columns={2}
       doneText="inspect"
       players={game.players}
       removePlayer

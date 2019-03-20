@@ -4,9 +4,8 @@ import { WerewolfPlayerNight } from './night'
 import { WerewolfPlayerDay } from './day'
 import { getCard } from '../../../interfaces/card/cards'
 import { getArtifact } from '../../../interfaces/artifact/artifacts'
-import { Actions, updateArtifact } from '../../../interfaces/actions'
+import { Actions } from '../../../interfaces/actions'
 import { runActions } from '../../../helpers/gameEngine'
-import { Id } from '../../../../../helpers/id'
 import { WerewolfDead } from './dead'
 
 interface Props {}
@@ -46,37 +45,6 @@ export const WerewolfPlayerGame: React.SFC<Props> = () => {
       if (View) {
         return <View prompt={active} done={done} />
       }
-    }
-  }
-
-  const playingArtifact = player.artifacts.find(a => a.activated === 'playing')
-  if (playingArtifact) {
-    const View = getArtifact(playingArtifact.type).ActivateView
-    if (View) {
-      return (
-        <View
-          done={actions => {
-            updateGame(
-              runActions(game, [
-                ...actions,
-                updateArtifact({
-                  target: player.id,
-                  artifact: playingArtifact.type,
-                  updates: {
-                    activated: 'played',
-                  },
-                }),
-              ])
-            )
-          }}
-          prompt={{
-            type: 'by artifact',
-            id: Id(),
-            player: player.id,
-            artifact: playingArtifact,
-          }}
-        />
-      )
     }
   }
 

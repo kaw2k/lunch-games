@@ -52,7 +52,8 @@ export const PromptModerator: React.SFC<Props> = ({}) => {
   const active = game.prompts.active
   if (active) {
     if (active.type === 'by artifact') {
-      const View = getArtifact(active.artifact.type).MorningView
+      const artifact = getArtifact(active.artifact.type)
+      const View = artifact.MorningView || artifact.ActivateView
       if (View) {
         return <View prompt={active} done={done} />
       }

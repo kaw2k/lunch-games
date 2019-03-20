@@ -1,13 +1,12 @@
 import * as React from 'react'
 import { Artifact } from '.'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
-import { PromptView, ByArtifact } from '../prompt'
+import { PromptView, ByArtifact, ByMessage } from '../prompt'
 import { Typography } from '@material-ui/core'
 import { getNewRole } from '../../helpers/getNewRole'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
 import { updatePlayer, showPrompts } from '../actions'
-import { Id } from '../../../../helpers/id'
 import { playerName } from '../../../../components/playerName'
 
 const ActivateView: PromptView<ByArtifact> = ({
@@ -37,13 +36,12 @@ const ActivateView: PromptView<ByArtifact> = ({
               }),
               showPrompts({
                 prompts: [
-                  {
-                    type: 'by message',
-                    id: Id(),
-                    message: `SECRET: ${playerName(player)} changed from ${
+                  ByMessage({
+                    secret: true,
+                    message: `${playerName(player)} changed from ${
                       player.role
                     } to ${role}`,
-                  },
+                  }),
                 ],
               }),
             ])

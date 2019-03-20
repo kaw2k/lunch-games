@@ -54,6 +54,8 @@ const NightView: PromptView = ({ done, prompt }) => {
             doneText="kill"
             removePlayer={player}
             players={values(game.players).filter(p => p.alive)}
+            cancelText="no thx"
+            onCancel={() => done([])}
             onDone={([target]) => {
               done([
                 linkKill({ target }),

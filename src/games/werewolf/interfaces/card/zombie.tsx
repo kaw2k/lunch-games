@@ -11,7 +11,7 @@ import { Emoji } from '../emoji'
 import { NightMessageOrder } from '../nightMessage'
 import { GenericSetupRoleView } from '../../components/setupRole/genericSetupRole'
 import { NoNightActionView } from '../../components/night/noNightActionView'
-import { PromptView } from '../prompt'
+import { PromptView, ByMessage } from '../prompt'
 import { playerName } from '../../../../components/playerName'
 import { Id } from '../../../../helpers/id'
 
@@ -40,14 +40,12 @@ const NightView: PromptView = ({ done, prompt }) => {
               eatBrains({ target }),
               showPrompts({
                 prompts: [
-                  {
-                    type: 'by message',
-                    id: Id(),
+                  ByMessage({
                     message: `${playerName(
                       target,
                       game
                     )} has had their brains eaten. They may no longer vote.`,
-                  },
+                  }),
                 ],
               }),
             ])

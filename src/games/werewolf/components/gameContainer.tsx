@@ -35,22 +35,17 @@ export const GameContainer: React.SFC<Props> = ({ children }) => {
         <ActionRow>
           <Button
             color="red"
-            onClick={() => {
-              endGame('werewolves', 'The bad team won!')
-            }}>
+            confirm
+            onClick={() => endGame('werewolves', 'The bad team won!')}>
             bad
           </Button>
           <Button
             color="teal"
-            onClick={() => {
-              endGame('villagers', 'The good team won!')
-            }}>
+            confirm
+            onClick={() => endGame('villagers', 'The good team won!')}>
             good
           </Button>
-          <Button
-            onClick={() => {
-              endGame()
-            }}>
+          <Button confirm onClick={() => endGame()}>
             no one
           </Button>
         </ActionRow>

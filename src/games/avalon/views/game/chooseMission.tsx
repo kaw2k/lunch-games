@@ -17,6 +17,7 @@ export const ChooseMission: React.SFC<{ endTurn: () => void }> = ({
   return (
     <ChoosePlayers
       onCancel={endTurn}
+      columns={2}
       title={`Choose your mission with ${playersNeeded} people, it needs ${failsNeeded} fail. You may choose to not put yourself on the mission if you wish.`}
       numToSelect={playersNeeded}
       players={game.players}
