@@ -12,6 +12,7 @@ import contains from 'ramda/es/contains'
 import { PromptView, ByArtifact } from '../prompt'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
+import { ArtifactType } from '../../../../helpers/id'
 
 export const ArtifactMorningView: PromptView<ByArtifact> = ({
   done,
@@ -84,7 +85,7 @@ export const ArtifactMorningView: PromptView<ByArtifact> = ({
 }
 
 export const AmuletOfProtection = Artifact({
-  type: 'amulet of protection',
+  type: ArtifactType('amulet of protection'),
   title: 'Amulet of Protection',
   category: 'Misc',
   description:

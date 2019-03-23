@@ -1,7 +1,8 @@
 import { Artifact } from '.'
+import { ArtifactType } from '../../../../helpers/id'
 
 export const VoteFromBeyond = Artifact({
-  type: 'vote from beyond',
+  type: ArtifactType('vote from beyond'),
   category: 'Misc',
   title: 'Vote From Beyond',
   description:

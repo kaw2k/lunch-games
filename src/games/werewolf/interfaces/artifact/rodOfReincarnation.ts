@@ -1,7 +1,8 @@
 import { Artifact } from '.'
+import { ArtifactType } from '../../../../helpers/id'
 
 export const RodOfReincarnation = Artifact({
-  type: 'rod of reincarnation',
+  type: ArtifactType('rod of reincarnation'),
   title: 'Rod of Reincarnation',
   category: 'Rebirth',
   description:

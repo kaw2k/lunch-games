@@ -6,6 +6,7 @@ import { values } from 'ramda'
 import { getArtifact } from './artifacts'
 import { PromptView, ByArtifact } from '../prompt'
 import { playerName } from '../../../../components/playerName'
+import { ArtifactType } from '../../../../helpers/id'
 
 const ActivateView: PromptView<ByArtifact> = ({
   done,
@@ -32,7 +33,7 @@ const ActivateView: PromptView<ByArtifact> = ({
 }
 
 export const StaffOfTheSeer = Artifact({
-  type: 'staff of the seer',
+  type: ArtifactType('staff of the seer'),
   title: 'Staff of the Seer',
   category: 'Inspection',
   description: 'Choose a player and secretly view their role.',

@@ -6,6 +6,7 @@ import { updatePlayer } from '../actions'
 import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { values } from 'ramda'
 import { PromptView, ByArtifact } from '../prompt'
+import { ArtifactType } from '../../../../helpers/id'
 
 const ActivateView: PromptView<ByArtifact> = ({
   done,
@@ -38,7 +39,7 @@ const ActivateView: PromptView<ByArtifact> = ({
 }
 
 export const MirrorOfTheDoppleganger = Artifact({
-  type: 'mirror of the doppleganger',
+  type: ArtifactType('mirror of the doppleganger'),
   title: 'Mirror of the Doppleganger',
   category: 'Imitate Role',
   description:

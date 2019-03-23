@@ -7,6 +7,7 @@ import { Typography } from '@material-ui/core'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
 import { getInsomniacMessage } from '../../helpers/getInsomniacMessage'
+import { ArtifactType } from '../../../../helpers/id'
 
 const ActivateView: PromptView<ByArtifact> = ({
   done,
@@ -37,7 +38,7 @@ const ActivateView: PromptView<ByArtifact> = ({
 }
 
 export const DiaryOfTheInsomniac = Artifact({
-  type: 'diary of the insomniac',
+  type: ArtifactType('diary of the insomniac'),
   title: 'Diary of the Insomniac',
   description:
     'You are told if either of your neighbors woke up the previous night.',

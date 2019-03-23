@@ -12,6 +12,7 @@ import { playerName } from '../../../../components/playerName'
 import { ArtifactView } from '../../components/artifact/artifactView'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
+import { ArtifactType } from '../../../../helpers/id'
 
 const ActivateView: PromptView<ByArtifact> = ({
   done,
@@ -65,7 +66,7 @@ const ActivateView: PromptView<ByArtifact> = ({
 }
 
 export const AmethystOfKnowledge = Artifact({
-  type: 'amethyst of knowledge',
+  type: ArtifactType('amethyst of knowledge'),
   title: 'Amethyst of Knowledge',
   description:
     'Choose a player with an unrevealed artifact and secretly view it. Decide if you want that player to reveal that artifact now.',

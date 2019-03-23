@@ -1,6 +1,7 @@
 import { PromptView, ByArtifact } from '../prompt'
+import { ArtifactType } from '../../../../helpers/id'
 
-export interface Artifact<Type extends string> {
+export interface Artifact<Type extends ArtifactType> {
   type: Type
   title: string
   description: string
@@ -18,6 +19,6 @@ export interface Artifact<Type extends string> {
   OnDeathView?: PromptView
 }
 
-export const Artifact = <Type extends string>(
+export const Artifact = <Type extends ArtifactType>(
   artifact: Artifact<Type>
 ): Artifact<Type> => artifact

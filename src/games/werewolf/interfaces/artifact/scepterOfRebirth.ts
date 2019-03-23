@@ -1,7 +1,8 @@
 import { Artifact } from '.'
+import { ArtifactType } from '../../../../helpers/id'
 
 export const ScepterOfRebirth = Artifact({
-  type: 'scepter of rebirth',
+  type: ArtifactType('scepter of rebirth'),
   title: 'Scepter of Rebirth',
   category: 'Rebirth',
   description:

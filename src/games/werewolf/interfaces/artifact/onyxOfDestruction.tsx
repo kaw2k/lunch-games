@@ -9,11 +9,12 @@ import { Typography } from '@material-ui/core'
 import { Button } from '../../../../components/button'
 import { destroyArtifact } from '../actions'
 import { PromptView, ByArtifact } from '../prompt'
+import { ArtifactType } from '../../../../helpers/id'
 
 const ActivateView: PromptView<ByArtifact> = ({ done }) => {
   const { game } = React.useContext(WerewolfGameContext)
   const [pid, setPid] = useState<PlayerId | null>(null)
-  const artifact = getArtifact('onyx of destruction')
+  const artifact = getArtifact(OnyxOfDestruction.type)
 
   if (pid) {
     const target = game.players[pid]
@@ -53,7 +54,7 @@ const ActivateView: PromptView<ByArtifact> = ({ done }) => {
 }
 
 export const OnyxOfDestruction = Artifact({
-  type: 'onyx of destruction',
+  type: ArtifactType('onyx of destruction'),
   title: 'Onyx of Destruction',
   category: 'Target Other Artifacts',
   description:

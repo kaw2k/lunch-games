@@ -11,6 +11,7 @@ import contains from 'ramda/es/contains'
 import { shuffle } from '../../../../helpers/shuffle'
 import { giveArtifact, updateArtifact } from '../actions'
 import { Id } from '../../../../helpers/id'
+import { ArtifactType } from '../../../../helpers/id'
 
 const ActivateView: PromptView<ByArtifact> = ({
   done,
@@ -91,7 +92,7 @@ const ActivateView: PromptView<ByArtifact> = ({
 }
 
 export const CitrineOfFortune = Artifact({
-  type: 'citrine of fortune',
+  type: ArtifactType('citrine of fortune'),
   title: 'Citrine of Fortune',
   category: 'Chaos',
   description:

@@ -6,6 +6,7 @@ import { artifactKill, addDelayedAction } from '../actions'
 import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { values } from 'ramda'
 import { PromptView, ByArtifact } from '../prompt'
+import { ArtifactType } from '../../../../helpers/id'
 
 const ActivateView: PromptView<ByArtifact> = ({
   done,
@@ -40,7 +41,7 @@ const ActivateView: PromptView<ByArtifact> = ({
 }
 
 export const BreathOfTheOldMan = Artifact({
-  type: 'breath of the old man',
+  type: ArtifactType('breath of the old man'),
   title: 'Breath of the Old Man',
   category: 'Killing',
   description: 'Choose a player to be eliminated the night after the next day.',

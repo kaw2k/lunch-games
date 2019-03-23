@@ -8,6 +8,7 @@ import { values } from 'ramda'
 import { isWerewolf } from '../../helpers/isWerewolf'
 import { getCard } from '../card/cards'
 import { PromptView, ByArtifact } from '../prompt'
+import { ArtifactType } from '../../../../helpers/id'
 
 const ActivateView: PromptView<ByArtifact> = ({
   done,
@@ -47,7 +48,7 @@ const ActivateView: PromptView<ByArtifact> = ({
 }
 
 export const OrbOfSpeculation = Artifact({
-  type: 'orb of speculation',
+  type: ArtifactType('orb of speculation'),
   title: 'Orb of Speculation',
   category: 'Chaos',
   description:

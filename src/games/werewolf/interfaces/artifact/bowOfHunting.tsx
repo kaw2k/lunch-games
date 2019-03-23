@@ -6,6 +6,7 @@ import { values } from 'ramda'
 import { passArtifact, updateArtifact, artifactKill } from '../actions'
 import { getArtifact } from './artifacts'
 import { PromptView, ByArtifact } from '../prompt'
+import { ArtifactType } from '../../../../helpers/id'
 
 const ActivateView: PromptView<ByArtifact> = ({
   done,
@@ -60,7 +61,7 @@ const ActivateView: PromptView<ByArtifact> = ({
 }
 
 export const BowOfHunting = Artifact({
-  type: 'bow of hunting',
+  type: ArtifactType('bow of hunting'),
   title: 'Bow of Hunting',
   category: 'Killing',
   description:

@@ -9,6 +9,7 @@ import { Button } from '../../../../components/button'
 import { updatePlayer, showPrompts } from '../actions'
 import { playerName } from '../../../../components/playerName'
 import { Villager } from '../card/villager'
+import { ArtifactType } from '../../../../helpers/id'
 
 const ActivateView: PromptView<ByArtifact> = ({
   done,
@@ -55,7 +56,7 @@ const ActivateView: PromptView<ByArtifact> = ({
 }
 
 export const StoneOfAlteration = Artifact({
-  type: 'stone of alteration',
+  type: ArtifactType('stone of alteration'),
   title: 'Stone of Alteration',
   category: 'Chaos',
   description: 'When you play this card you receive a new role',

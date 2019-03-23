@@ -5,7 +5,6 @@ import { WerewolfLobby } from '../../../interfaces/game'
 import { Profile } from '../../../../../components/profile'
 import { count } from '../../../../../helpers/count'
 import { RoomContext } from '../../../../../helpers/contexts'
-import { getWeight } from '../../../helpers/getWeight'
 import { Button } from '../../../../../components/button'
 import { makeStyles } from '@material-ui/styles'
 import { Artifacts } from '../../../interfaces/artifact/artifacts'
@@ -50,7 +49,6 @@ export const WerewolfModeratorLobbyArtifacts: React.SFC<Props> = ({
 
   return (
     <Layout padded>
-      <Typography variant="h2">Roles: {getWeight(lobby.roles)}</Typography>
       <Button onClick={reset}>Reset</Button>
       {toPairs(groupBy(a => a.category, Artifacts)).map(
         ([group, artifacts]) => (

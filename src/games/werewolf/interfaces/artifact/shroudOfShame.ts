@@ -1,8 +1,9 @@
 import { Artifact } from '.'
 import { GenericArtifactMorningView } from '../../components/artifact/genericMorningView'
+import { ArtifactType } from '../../../../helpers/id'
 
 export const ShroudOfShame = Artifact({
-  type: 'shroud of shame',
+  type: ArtifactType('shroud of shame'),
   title: 'Shroud of shame',
   category: 'Chaos',
   description:

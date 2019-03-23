@@ -1,7 +1,8 @@
 import { Artifact } from '.'
+import { ArtifactType } from '../../../../helpers/id'
 
 export const SkimmerOfTheCursed = Artifact({
-  type: 'skimmer of the cursed',
+  type: ArtifactType('skimmer of the cursed'),
   title: 'Skimmer of the Cursed',
   category: 'Imitate Role',
   description:

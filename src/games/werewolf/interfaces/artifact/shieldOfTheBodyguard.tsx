@@ -10,6 +10,7 @@ import { WerewolfProfile } from '../../components/werewolfProfile'
 import { values } from 'ramda'
 import contains from 'ramda/es/contains'
 import { PromptView, ByArtifact } from '../prompt'
+import { ArtifactType } from '../../../../helpers/id'
 
 export const ArtifactMorningView: PromptView<ByArtifact> = ({
   done,
@@ -62,7 +63,7 @@ export const ArtifactMorningView: PromptView<ByArtifact> = ({
 }
 
 export const ShieldOfTheBodyguard = Artifact({
-  type: 'shield of the bodyguard',
+  type: ArtifactType('shield of the bodyguard'),
   title: 'Shield of the Bodyguard',
   category: 'Imitate Role',
   description:

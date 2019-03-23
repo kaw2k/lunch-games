@@ -6,10 +6,11 @@ import { values } from 'ramda'
 import { passArtifact, updateArtifact } from '../actions'
 import { getArtifact } from './artifacts'
 import { PromptView, ByArtifact } from '../prompt'
+import { ArtifactType } from '../../../../helpers/id'
 
 const ActivateView: PromptView<ByArtifact> = ({ done, prompt: { player } }) => {
   const { game } = React.useContext(WerewolfGameContext)
-  const artifact = getArtifact('blood of the diseased')
+  const artifact = getArtifact(BloodOfTheDiseased.type)
 
   return (
     <ChoosePlayers
@@ -22,13 +23,13 @@ const ActivateView: PromptView<ByArtifact> = ({ done, prompt: { player } }) => {
         done([
           updateArtifact({
             target: player,
-            artifact: 'blood of the diseased',
+            artifact: BloodOfTheDiseased.type,
             updates: {
               activated: 'played',
             },
           }),
           passArtifact({
-            artifact: 'blood of the diseased',
+            artifact: BloodOfTheDiseased.type,
             source: player,
             target,
           }),
@@ -39,7 +40,7 @@ const ActivateView: PromptView<ByArtifact> = ({ done, prompt: { player } }) => {
 }
 
 export const BloodOfTheDiseased = Artifact({
-  type: 'blood of the diseased',
+  type: ArtifactType('blood of the diseased'),
   title: 'Blood of the Diseased',
   category: 'Imitate Role',
   description:

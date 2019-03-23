@@ -12,6 +12,7 @@ import { playerName } from '../../../../components/playerName'
 import { ArtifactView } from '../../components/artifact/artifactView'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
+import { ArtifactType } from '../../../../helpers/id'
 
 const ActivateView: PromptView<ByArtifact> = ({
   done,
@@ -75,7 +76,7 @@ const ActivateView: PromptView<ByArtifact> = ({
 }
 
 export const RubyOfKismet = Artifact({
-  type: 'ruby of kismet',
+  type: ArtifactType('ruby of kismet'),
   title: 'Ruby of Kismet',
   description:
     'Choose two players and have each of them reveal their artifacts in the order you choose.',
