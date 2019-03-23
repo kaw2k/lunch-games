@@ -18,6 +18,7 @@ import { useTimer } from '../../../../../hooks/useTimer'
 import { Typography } from '@material-ui/core'
 import { hasRole } from '../../../interfaces/card/cards'
 import { Mason } from '../../../interfaces/card/mason'
+import { ArtifactView } from '../../../components/artifact/artifactView';
 
 interface Props {}
 
@@ -36,15 +37,11 @@ export const DayModerator: React.SFC<Props> = () => {
       <>
         <WerewolfProfile player={player} showLiving showRole />
 
+        {player.artifacts.map(artifactState =>
+            <ArtifactView showPlay artifactState={artifactState} player={player} />
+          )}
+
         <ActionRow>
-          <Button
-            confirm
-            onClick={() => {
-              runActions([revivePlayer({ target: player.id })])
-              setSelectedPlayer(null)
-            }}>
-            Revive
-          </Button>
           <Button
             confirm="you should only use this as a last resort"
             onClick={() => {
@@ -53,12 +50,21 @@ export const DayModerator: React.SFC<Props> = () => {
             }}>
             Moderator Kill
           </Button>
-        </ActionRow>
+
+          {!player.alive &&<Button
+            confirm
+            onClick={() => {
+              runActions([revivePlayer({ target: player.id })])
+              setSelectedPlayer(null)
+            }}>
+            Revive
+          </Button>}
 
         {hasRole(Mason.role, game) && (
           <Button
             confirm
-            onClick={() =>
+            onClick={() => {
+              setSelectedPlayer(null)
               runActions([
                 addDelayedAction({
                   delayedAction: {
@@ -69,10 +75,14 @@ export const DayModerator: React.SFC<Props> = () => {
                   },
                 }),
               ])
+            }
             }>
             they said the word mason
           </Button>
         )}
+
+        </ActionRow>
+
 
         <Button
           color="red"
@@ -80,8 +90,9 @@ export const DayModerator: React.SFC<Props> = () => {
             runActions([voteKill({ target: player.id }), showPrompts({})])
             setSelectedPlayer(null)
           }}>
-          Kill
+          Lynch/Kill
         </Button>
+
 
         <ActionRow fixed>
           <Button onClick={() => setSelectedPlayer(null)}>cancel</Button>

@@ -5,6 +5,7 @@ import { PlayerWerewolf } from '../../interfaces/player'
 import { makeStyles } from '@material-ui/styles'
 import { colors, Typography } from '@material-ui/core'
 import { ClawViewRole } from './clawViewRole'
+import { ArtifactView } from '../artifact/artifactView';
 
 interface Props {
   player: PlayerWerewolf
@@ -60,6 +61,9 @@ export const SetupRoleContainer: React.SFC<Props> = ({ player, children }) => {
   return (
     <>
       <ClawViewRole />
+      {player.artifacts.map(artifactState =>
+          <ArtifactView player={player} artifactState={artifactState}/>
+        )}
       {children}
     </>
   )
