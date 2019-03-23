@@ -8,6 +8,7 @@ import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
 import { updatePlayer, showPrompts } from '../actions'
 import { playerName } from '../../../../components/playerName'
+import { Villager } from '../card/villager'
 
 const ActivateView: PromptView<ByArtifact> = ({
   done,
@@ -30,7 +31,7 @@ const ActivateView: PromptView<ByArtifact> = ({
               updatePlayer({
                 target: playerId,
                 updates: {
-                  role: 'villager',
+                  role: Villager.role,
                   secondaryRole: role,
                 },
               }),

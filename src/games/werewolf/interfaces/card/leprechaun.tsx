@@ -15,6 +15,7 @@ import { PromptView } from '../prompt'
 import { getNeighbor } from '../../helpers/neighbors'
 import { PlayerId } from '../../../../interfaces/player'
 import contains from 'ramda/es/contains'
+import { CardRole } from '../../../../helpers/id'
 
 type WerewolfKill = ReturnType<typeof werewolfKill>
 
@@ -134,7 +135,7 @@ const NightView: PromptView = ({ done, prompt }) => {
 }
 
 export const Leprechaun = Card({
-  role: 'leprechaun',
+  role: CardRole('leprechaun'),
   weight: 5,
   team: 'villagers',
   emoji: Emoji('🌈'),

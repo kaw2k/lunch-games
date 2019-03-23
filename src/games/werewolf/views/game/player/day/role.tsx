@@ -6,6 +6,7 @@ import { isWerewolf } from '../../../../helpers/isWerewolf'
 import values from 'ramda/es/values'
 import { Typography } from '@material-ui/core'
 import { isRole } from '../../../../interfaces/card/cards'
+import { Mason } from '../../../../interfaces/card/mason'
 
 export const WerewolfPlayerDayRole: React.SFC = ({}) => {
   const { player, game } = React.useContext(WerewolfGameContext)
@@ -25,10 +26,10 @@ export const WerewolfPlayerDayRole: React.SFC = ({}) => {
         </>
       )}
 
-      {isRole(player, 'mason') && (
+      {isRole(player, Mason.role) && (
         <ViewAllies
           allies={values(game.players).filter(
-            p => isRole(p, 'mason') && p.id !== player.id
+            p => isRole(p, Mason.role) && p.id !== player.id
           )}
         />
       )}

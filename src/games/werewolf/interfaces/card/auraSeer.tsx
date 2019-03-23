@@ -13,6 +13,9 @@ import { NoNightActionView } from '../../components/night/noNightActionView'
 import { isRole } from './cards'
 import { PromptView } from '../prompt'
 import { playerName } from '../../../../components/playerName'
+import { CardRole } from '../../../../helpers/id'
+import { Werewolf } from './werewolf'
+import { Villager } from './villager'
 
 const title = 'Aura Seer, wake up!'
 const description =
@@ -36,8 +39,8 @@ const NightView: PromptView = ({ done, prompt }) => {
         doneText="inspect"
         onDone={([targetId]) => {
           const target = game.players[targetId]
-          const isWerewolf = isRole(target, 'werewolf')
-          const isVillager = isRole(target, 'villager')
+          const isWerewolf = isRole(target, Werewolf.role)
+          const isVillager = isRole(target, Villager.role)
 
           alert(
             !(isWerewolf || isVillager)
@@ -54,7 +57,7 @@ const NightView: PromptView = ({ done, prompt }) => {
 }
 
 export const AuraSeer = Card({
-  role: 'aura seer',
+  role: CardRole('aura seer'),
   weight: 3,
   team: 'villagers',
   emoji: Emoji('😇'),

@@ -8,6 +8,7 @@ import { ViewRole } from '../../components/viewRole/role'
 import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { copyPlayer } from '../actions'
 import { SetupViewProps } from '../setupViewInterfaces'
+import { CardRole } from '../../../../helpers/id'
 
 export const SetupView: React.SFC<SetupViewProps> = ({ ready }) => {
   const { player, game } = React.useContext(WerewolfGameContext)
@@ -37,7 +38,7 @@ export const SetupView: React.SFC<SetupViewProps> = ({ ready }) => {
 }
 
 export const Doppleganger = Card({
-  role: 'doppleganger',
+  role: CardRole('doppleganger'),
   weight: -2,
   team: 'villagers',
   emoji: Emoji('🤷‍♀️'),

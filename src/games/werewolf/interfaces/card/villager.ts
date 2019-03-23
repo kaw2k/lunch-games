@@ -2,9 +2,10 @@ import { always } from 'ramda'
 import { Card } from '.'
 import { Emoji } from '../emoji'
 import { GenericSetupRoleView } from '../../components/setupRole/genericSetupRole'
+import { CardRole } from '../../../../helpers/id'
 
 export const Villager = Card({
-  role: 'villager',
+  role: CardRole('villager'),
   team: 'villagers',
   description: 'You are job is to find the werewolves and kill them',
   hints: [],

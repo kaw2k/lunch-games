@@ -5,6 +5,7 @@ import { getCard } from '../../../interfaces/card/cards'
 import { Actions } from '../../../interfaces/actions'
 import { Typography } from '@material-ui/core'
 import { NoNightActionView } from '../../../components/night/noNightActionView'
+import { Werewolf } from '../../../interfaces/card/werewolf'
 
 interface Props {}
 
@@ -60,7 +61,7 @@ export const WerewolfPlayerNight: React.SFC<Props> = ({}) => {
     contains(player.id, game.prompts.active.players)
   ) {
     if (game.prompts.active.role === 'werewolf') {
-      const werewolf = getCard('werewolf')
+      const werewolf = Werewolf
       const View = werewolf.night && werewolf.night.PlayerView
       if (View) {
         return <View prompt={game.prompts.active} done={done} />

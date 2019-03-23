@@ -10,6 +10,7 @@ import values from 'ramda/es/values'
 import { NoNightActionView } from '../../components/night/noNightActionView'
 import { linkKill } from '../actions'
 import { Typography } from '@material-ui/core'
+import { CardRole } from '../../../../helpers/id'
 
 const OnDeathView: PromptView = ({ prompt, done }) => {
   const { game } = React.useContext(WerewolfGameContext)
@@ -41,7 +42,7 @@ const OnDeathView: PromptView = ({ prompt, done }) => {
 }
 
 export const Hunter = Card({
-  role: 'hunter',
+  role: CardRole('hunter'),
   weight: 3,
   team: 'villagers',
   emoji: Emoji('🏹'),

@@ -2,9 +2,10 @@ import { always } from 'ramda'
 import { Card } from '.'
 import { Emoji } from '../emoji'
 import { GenericSetupRoleView } from '../../components/setupRole/genericSetupRole'
+import { CardRole } from '../../../../helpers/id'
 
 export const Mayor = Card({
-  role: 'mayor',
+  role: CardRole('mayor'),
   weight: 2,
   team: 'villagers',
   emoji: Emoji('👩🏽‍🎤'),

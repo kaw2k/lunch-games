@@ -15,6 +15,7 @@ import { NightMessageOrder } from '../nightMessage'
 import { GenericSetupRoleView } from '../../components/setupRole/genericSetupRole'
 import { NoNightActionView } from '../../components/night/noNightActionView'
 import { PromptView } from '../prompt'
+import { CardRole } from '../../../../helpers/id'
 
 interface State {
   hasAttacked: boolean
@@ -137,7 +138,7 @@ const NightView: PromptView = ({ done, prompt }) => {
 }
 
 export const Witch = Card({
-  role: 'witch',
+  role: CardRole('witch'),
   weight: 4,
   team: 'villagers',
   emoji: Emoji('🧙‍♂️'),

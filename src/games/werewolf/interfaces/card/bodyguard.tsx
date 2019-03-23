@@ -11,6 +11,7 @@ import { Emoji } from '../emoji'
 import { NightMessageOrder } from '../nightMessage'
 import { GenericSetupRoleView } from '../../components/setupRole/genericSetupRole'
 import { PromptView } from '../prompt'
+import { CardRole } from '../../../../helpers/id'
 
 const nightTitle =
   'Bodyguard, wake up! Protect someone, they will not die tonight.'
@@ -36,7 +37,7 @@ const NightView: PromptView = ({ done, prompt }) => {
 }
 
 export const Bodyguard = Card({
-  role: 'bodyguard',
+  role: CardRole('bodyguard'),
   weight: 3,
   team: 'villagers',
   emoji: Emoji('👮‍♀️'),

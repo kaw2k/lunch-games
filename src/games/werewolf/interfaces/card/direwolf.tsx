@@ -8,6 +8,7 @@ import { ViewRole } from '../../components/viewRole/role'
 import { ViewAllies } from '../../components/viewRole/allies'
 import { isWerewolf } from '../../helpers/isWerewolf'
 import { ChoosePlayers } from '../../../../components/choosePlayers'
+import { CardRole } from '../../../../helpers/id'
 
 const SetupRoleView: React.SFC<{
   ready: (actions: Actions[]) => void
@@ -43,7 +44,7 @@ const SetupRoleView: React.SFC<{
 }
 
 export const Direwolf = Card({
-  role: 'direwolf',
+  role: CardRole('direwolf'),
   weight: -4,
   team: 'werewolves',
   emoji: Emoji('🐩'),

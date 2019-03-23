@@ -13,6 +13,8 @@ import { NoNightActionView } from '../../components/night/noNightActionView'
 import { isRole } from './cards'
 import { PromptView } from '../prompt'
 import { playerName } from '../../../../components/playerName'
+import { CardRole } from '../../../../helpers/id'
+import { Seer } from './seer'
 
 const title = 'Sorceress, wake up!'
 const description = 'Inspect someone, I will tell you if they are the seer.'
@@ -35,7 +37,7 @@ const NightView: PromptView = ({ done, prompt }) => {
         doneText="inspect"
         onDone={([targetId]) => {
           const target = game.players[targetId]
-          const isSeer = isRole(target, 'seer')
+          const isSeer = isRole(target, Seer.role)
 
           alert(
             isSeer
@@ -52,7 +54,7 @@ const NightView: PromptView = ({ done, prompt }) => {
 }
 
 export const Sorceress = Card({
-  role: 'sorceress',
+  role: CardRole('sorceress'),
   weight: -3,
   team: 'werewolves allies',
   emoji: Emoji('🧙‍♀️'),

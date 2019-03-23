@@ -13,7 +13,7 @@ import { GenericSetupRoleView } from '../../components/setupRole/genericSetupRol
 import { NoNightActionView } from '../../components/night/noNightActionView'
 import { PromptView, ByMessage } from '../prompt'
 import { playerName } from '../../../../components/playerName'
-import { Id } from '../../../../helpers/id'
+import { CardRole } from '../../../../helpers/id'
 
 const nightTitle = `Zombie, wake up!`
 const description = `You may eat someones brains, they will no longer be able to vote.`
@@ -59,7 +59,7 @@ const NightView: PromptView = ({ done, prompt }) => {
 }
 
 export const Zombie = Card({
-  role: 'zombie',
+  role: CardRole('zombie'),
   weight: -3,
   team: 'zombie',
   emoji: Emoji('🧟‍♂️'),

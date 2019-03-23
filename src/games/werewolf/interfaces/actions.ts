@@ -1,6 +1,6 @@
 import { PlayerId } from '../../../interfaces/player'
 import { PlayerWerewolf } from './player'
-import { Id } from '../../../helpers/id'
+import { Id, ActionId } from '../../../helpers/id'
 import { assertNever } from '../../../helpers/assertNever'
 import { Artifacts, ArtifactState } from './artifact/artifacts'
 import { Teams } from './card'
@@ -16,7 +16,7 @@ enum ActionOrder {
 }
 
 type Action<Type extends string, Payload extends object> = {
-  id: Id
+  id: ActionId
   type: Type
   order: ActionOrder
 } & Payload
@@ -50,7 +50,7 @@ function Action<Type extends string, Payload extends object>(
   return {
     type,
     order,
-    id: Id(),
+    id: ActionId(),
     ...payload,
   }
 }

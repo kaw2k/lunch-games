@@ -8,6 +8,7 @@ import { ViewRole } from '../../components/viewRole/role'
 import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { linkPlayer } from '../actions'
 import { SetupViewProps } from '../setupViewInterfaces'
+import { CardRole } from '../../../../helpers/id'
 
 export const VAWolfSetup: React.SFC<SetupViewProps> = ({ ready }) => {
   const { player, game } = React.useContext(WerewolfGameContext)
@@ -36,7 +37,7 @@ export const VAWolfSetup: React.SFC<SetupViewProps> = ({ ready }) => {
 }
 
 export const VAWolf = Card({
-  role: 'va wolf',
+  role: CardRole('va wolf'),
   weight: -2,
   team: 'villagers',
   emoji: Emoji('👵'),

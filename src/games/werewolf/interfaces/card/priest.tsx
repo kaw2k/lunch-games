@@ -15,6 +15,7 @@ import { NightMessageOrder } from '../nightMessage'
 import { GenericSetupRoleView } from '../../components/setupRole/genericSetupRole'
 import { NoNightActionView } from '../../components/night/noNightActionView'
 import { PromptView } from '../prompt'
+import { CardRole } from '../../../../helpers/id'
 
 const title = 'Priest, wake up! Bless someone.'
 const description = `They will be protected until they are attacked the first time. You can't bless another person until your first blessing goes away.`
@@ -68,7 +69,7 @@ const NightView: PromptView = ({ done, prompt }) => {
 }
 
 export const Priest = Card({
-  role: 'priest',
+  role: CardRole('priest'),
   weight: 3,
   team: 'villagers',
   emoji: Emoji('🙏'),

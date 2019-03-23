@@ -10,6 +10,10 @@ import { ViewAllies } from '../../components/viewRole/allies'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
 import { PlayerWerewolf } from '../player'
+import { CardRole } from '../../../../helpers/id'
+import { Seer } from './seer'
+import { MysticSeer } from './mysticSeer'
+import { ApprenticeSeer } from './apprenticeSeer'
 
 interface Props {
   ready: (actions: Actions[]) => void
@@ -20,15 +24,15 @@ export const SetupRoleView: React.SFC<Props> = ({ ready }) => {
 
   let players: PlayerWerewolf[] = []
 
-  const seer = values(game.players).find(p => isRole(p, 'seer'))
+  const seer = values(game.players).find(p => isRole(p, Seer.role))
   if (seer) players = players.concat(seer)
 
-  const mysticSeer = values(game.players).find(p => isRole(p, 'mystic seer'))
+  const mysticSeer = values(game.players).find(p => isRole(p, MysticSeer.role))
   if (game.options.beholderSeesAllSeers && mysticSeer)
     players = players.concat(mysticSeer)
 
   const apprenticeSeer = values(game.players).find(p =>
-    isRole(p, 'apprentice seer')
+    isRole(p, ApprenticeSeer.role)
   )
   if (game.options.beholderSeesAllSeers && apprenticeSeer)
     players = players.concat(apprenticeSeer)
@@ -48,7 +52,7 @@ export const SetupRoleView: React.SFC<Props> = ({ ready }) => {
 }
 
 export const Beholder = Card({
-  role: 'beholder',
+  role: CardRole('beholder'),
   weight: 2,
   team: 'villagers',
   emoji: Emoji('👁'),

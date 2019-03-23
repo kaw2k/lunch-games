@@ -13,6 +13,8 @@ import { NoNightActionView } from '../../components/night/noNightActionView'
 import { getCard, isRole } from './cards'
 import { count } from '../../../../helpers/count'
 import { PromptView } from '../prompt'
+import { CardRole } from '../../../../helpers/id'
+import { Seer } from './seer'
 
 const title = 'Apprentice Seer, wake up!'
 const description = 'If the seer is dead, you get to inspect someone.'
@@ -23,7 +25,7 @@ const NightView: PromptView = ({ done, prompt }) => {
   const playerId =
     (prompt.type === 'by role' || prompt.type === 'by name') && prompt.player
 
-  const seers = count(game.players, p => p.alive && isRole(p, 'seer'))
+  const seers = count(game.players, p => p.alive && isRole(p, Seer.role))
 
   if (!playerId || seers) {
     return <NoNightActionView done={() => done([])} data={title} />
@@ -54,7 +56,7 @@ const NightView: PromptView = ({ done, prompt }) => {
 }
 
 export const ApprenticeSeer = Card({
-  role: 'apprentice seer',
+  role: CardRole('apprentice seer'),
   weight: 4,
   team: 'villagers',
   emoji: Emoji('🧖‍'),

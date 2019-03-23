@@ -18,6 +18,7 @@ import { PromptView } from '../prompt'
 import { getNeighbor } from '../../helpers/neighbors'
 import { getCard } from './cards'
 import { playerName } from '../../../../components/playerName'
+import { CardRole } from '../../../../helpers/id'
 
 type State = boolean
 const defaultState: State = false
@@ -106,7 +107,7 @@ const NightView: PromptView = ({ done, prompt }) => {
 }
 
 export const PrivateInvestigator = Card({
-  role: 'pi',
+  role: CardRole('pi'),
   weight: 3,
   team: 'villagers',
   emoji: Emoji('👻'),

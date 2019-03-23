@@ -7,6 +7,9 @@ import contains from 'ramda/es/contains'
 import pipe from 'ramda/es/pipe'
 import { isRole } from '../interfaces/card/cards'
 import all from 'ramda/es/all'
+import { Chewks } from '../interfaces/card/chewks'
+import { CultLeader } from '../interfaces/card/cultleader'
+import { Zombie } from '../interfaces/card/zombie'
 
 export function isGameOver(game: WerewolfGame): WerewolfGame {
   return pipe(
@@ -20,7 +23,7 @@ export function isGameOver(game: WerewolfGame): WerewolfGame {
 
 function isChewksWin(game: WerewolfGame): WerewolfGame {
   const living = values(game.players).filter(p => p.alive)
-  const chewks = count(living, p => isRole(p, 'chewks'))
+  const chewks = count(living, p => isRole(p, Chewks.role))
 
   if (chewks === 1 && living.length === 2) {
     return setVictory({ team: 'chewks', message: 'Chewks has won!' }, game)
@@ -33,7 +36,7 @@ function isWerewolfWin(game: WerewolfGame): WerewolfGame {
   const living = values(game.players).filter(p => p.alive)
   const numWolves = count(living, p => isWerewolf(p, game))
   const nonWolves = living.length - numWolves
-  const chewks = count(living, p => isRole(p, 'chewks'))
+  const chewks = count(living, p => isRole(p, Chewks.role))
 
   if (!chewks && numWolves >= nonWolves) {
     return setVictory(
@@ -48,7 +51,7 @@ function isWerewolfWin(game: WerewolfGame): WerewolfGame {
 function isVillagerWin(game: WerewolfGame): WerewolfGame {
   const living = values(game.players).filter(p => p.alive)
   const numWolves = count(living, p => isWerewolf(p, game))
-  const numChewks = count(living, p => isRole(p, 'chewks'))
+  const numChewks = count(living, p => isRole(p, Chewks.role))
 
   const badPeopleRemain = numWolves + numChewks
 
@@ -64,7 +67,7 @@ function isVillagerWin(game: WerewolfGame): WerewolfGame {
 
 function isCultWin(game: WerewolfGame): WerewolfGame {
   for (let player of values(game.players)) {
-    if (!isRole(player, 'cult leader')) continue
+    if (!isRole(player, CultLeader.role)) continue
 
     const livingPlayers = values(game.players).filter(p => p.alive)
     const cultMembers = count(livingPlayers, p => contains(player.id, p.inCult))
@@ -84,7 +87,7 @@ function isCultWin(game: WerewolfGame): WerewolfGame {
 
 function isZombieWin(game: WerewolfGame): WerewolfGame {
   const allEaten = all(
-    player => player.areBrainsEaten || isRole(player, 'zombie'),
+    player => player.areBrainsEaten || isRole(player, Zombie.role),
     values(game.players).filter(p => p.alive)
   )
 

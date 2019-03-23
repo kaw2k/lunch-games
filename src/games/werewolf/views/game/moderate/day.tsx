@@ -17,6 +17,7 @@ import { PlayerId } from '../../../../../interfaces/player'
 import { useTimer } from '../../../../../hooks/useTimer'
 import { Typography } from '@material-ui/core'
 import { hasRole } from '../../../interfaces/card/cards'
+import { Mason } from '../../../interfaces/card/mason'
 
 interface Props {}
 
@@ -54,7 +55,7 @@ export const DayModerator: React.SFC<Props> = () => {
           </Button>
         </ActionRow>
 
-        {hasRole('mason', game) && (
+        {hasRole(Mason.role, game) && (
           <Button
             confirm
             onClick={() =>

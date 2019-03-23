@@ -12,6 +12,7 @@ import { GenericSetupRoleView } from '../../components/setupRole/genericSetupRol
 import { NoNightActionView } from '../../components/night/noNightActionView'
 import { PromptView } from '../prompt'
 import { playerName } from '../../../../components/playerName'
+import { CardRole } from '../../../../helpers/id'
 
 const title = 'Mystic Seer, wake up! Inspect someone!'
 
@@ -46,7 +47,7 @@ const NightView: PromptView = ({ done, prompt }) => {
 }
 
 export const MysticSeer = Card({
-  role: 'mystic seer',
+  role: CardRole('mystic seer'),
   weight: 9,
   team: 'villagers',
   emoji: Emoji('🔮'),

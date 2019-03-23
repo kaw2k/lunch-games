@@ -13,6 +13,7 @@ import { WerewolfProfile } from '../../components/werewolfProfile'
 import { chewksKill } from '../actions'
 import { NoNightActionView } from '../../components/night/noNightActionView'
 import { PromptView } from '../prompt'
+import { CardRole } from '../../../../helpers/id'
 
 const title = 'Chewks, wake up and kill someone.'
 const description =
@@ -46,7 +47,7 @@ const NightModerator: PromptView = ({ done, prompt }) => {
 }
 
 export const Chewks = Card({
-  role: 'chewks',
+  role: CardRole('chewks'),
   weight: 4,
   team: 'chewks',
   emoji: Emoji('💆‍♂️'),

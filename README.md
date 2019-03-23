@@ -21,6 +21,8 @@ npm start
   - Werewolf doesn't need to be played for it to be active
 
 - Role Mods
+  - Sasquatch
+    - doesn't transform first night
   - Priest
     - blessing dies with the priest
     - protects against all calamities (chewks, vampires, boogyman)
@@ -30,6 +32,16 @@ npm start
     - protects against all calamities (chewks, vampires, boogyman)
   - Vampire
     - bite kills by any seconding / bite kills when they are seconded (persists thru entire game)
+
+### HELP
+
+- Scan and process all the cards
+  - card.png, circle.png, square.png (or just card and square)
+- Make assets for avalon
+- Play test the heck out of
+  - Artifacts, anything that kills, modifies other artifacts, or changes roles
+  - Leprichaun and how it intercts with other roles like alpha wolf, body guard, etc
+  - Frankenstein and how it interacts with roles
 
 ### TODO / NB
 
@@ -69,3 +81,5 @@ npm start
 * Moderator can perform all artifact actions
 * Try adding artifact action which excepts generic actions, not the list of actions
 * End game needs a second player to end the game. A modal shows up for everyone else to end the game with their choice. You can cancel.
+
+* Figure out a way to stop all these circular dependencies. It boils down to not repeating types. If I had a union of strings of all the cards / artifacts then it wouldn't be an issue. OR maybe if I have a base id type for cards and artifacts and actions...

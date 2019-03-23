@@ -13,6 +13,7 @@ import { NoNightActionView } from '../../components/night/noNightActionView'
 import { PromptView } from '../prompt'
 import { isWerewolf } from '../../helpers/isWerewolf'
 import { linkKill } from '../actions'
+import { CardRole } from '../../../../helpers/id'
 
 const title = 'Revealer, wake up! Inspect someone!'
 const description = `You may point at someone, if they are a wolf they die, otherwise you die.`
@@ -51,7 +52,7 @@ const NightView: PromptView = ({ done, prompt }) => {
 }
 
 export const Revealer = Card({
-  role: 'revealer',
+  role: CardRole('revealer'),
   weight: 4,
   team: 'villagers',
   emoji: Emoji('✨️'),

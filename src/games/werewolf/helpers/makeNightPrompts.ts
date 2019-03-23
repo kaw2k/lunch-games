@@ -6,13 +6,16 @@ import { getGameRoles } from './getGameRoles'
 import { getPlayerByRole } from './getPlayersByRole'
 import { Prompts, ByTeam, ByMessage } from '../interfaces/prompt'
 import { Id } from '../../../helpers/id'
+import { Werewolf } from '../interfaces/card/werewolf'
+import { FangFace } from '../interfaces/card/fangFace'
+import { Sasquatch } from '../interfaces/card/sasquatch'
 
 function getWerewolves(game: WerewolfGame) {
   return values(game.players)
     .filter(p => {
       return (
-        (isRole(p, 'fang face') && doesFangFaceWakeUp(p, game)) ||
-        (!isRole(p, 'fang face') && isWerewolf(p, game))
+        (isRole(p, FangFace.role) && doesFangFaceWakeUp(p, game)) ||
+        (!isRole(p, FangFace.role) && isWerewolf(p, game))
       )
     })
     .map(p => p.id)
@@ -23,7 +26,7 @@ export function makeNightPrompts(game: WerewolfGame): Prompts[] {
 
   // Check for sasquatch
   // ----------------------------
-  if (hasRole('sasquatch', game) && !game.killedAtDay.length) {
+  if (hasRole(Sasquatch.role, game) && !game.killedAtDay.length) {
     const sasquatchPrompt: ByMessage = {
       id: Id(),
       type: 'by message',
@@ -68,7 +71,7 @@ export function makeNightPrompts(game: WerewolfGame): Prompts[] {
       id: Id(),
       type: 'by team',
       players: getWerewolves(game),
-      role: 'werewolf',
+      role: Werewolf.role,
     },
   ]
   prompts = prompts.concat(teams)

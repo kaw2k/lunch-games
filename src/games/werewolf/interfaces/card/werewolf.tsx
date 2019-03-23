@@ -20,6 +20,8 @@ import { isRole } from './cards'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
 import { Typography } from '@material-ui/core'
+import { CardRole } from '../../../../helpers/id'
+import { FruitBrute } from './fruitBrute'
 
 const title = 'Werewolves, wake up and kill people'
 
@@ -46,7 +48,7 @@ const NightModerator: PromptView = ({ done, prompt }) => {
   const wolves = values(game.players).filter(
     p => p.alive && isWerewolf(p, game)
   )
-  if (wolves.length === 1 && !!wolves.find(p => isRole(p, 'fruit brute'))) {
+  if (wolves.length === 1 && !!wolves.find(p => isRole(p, FruitBrute.role))) {
     return (
       <NightViewBase done={done} prompt={prompt} title={title}>
         <Typography component="em">
@@ -112,7 +114,7 @@ const NightPlayer: PromptView = ({ done, prompt }) => {
     p => p.alive && isWerewolf(p, game)
   )
 
-  if (wolves.length === 1 && !!wolves.find(p => isRole(p, 'fruit brute'))) {
+  if (wolves.length === 1 && !!wolves.find(p => isRole(p, FruitBrute.role))) {
     return (
       <NightViewBase done={done} prompt={prompt} title={title}>
         <Typography component="em">
@@ -175,7 +177,7 @@ const NightPlayer: PromptView = ({ done, prompt }) => {
 }
 
 export const Werewolf = Card({
-  role: 'werewolf',
+  role: CardRole('werewolf'),
   team: 'werewolves',
   description: `You are a werewolf, Kill everyone who's not a werewolf.`,
   hints: [

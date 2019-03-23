@@ -15,6 +15,7 @@ import { NightMessageOrder } from '../nightMessage'
 import { GenericSetupRoleView } from '../../components/setupRole/genericSetupRole'
 import { NoNightActionView } from '../../components/night/noNightActionView'
 import { PromptView } from '../prompt'
+import { CardRole } from '../../../../helpers/id'
 
 const title =
   'Huntress, wake up! Once per game you may point at someone to kill them.'
@@ -30,7 +31,7 @@ const NightView: PromptView = ({ done, prompt }) => {
   }
 
   const player = game.players[playerId]
-  const hasUsedPower = !!player.state.huntress
+  const hasUsedPower = !!player.state[Huntress.role]
 
   return (
     <NightViewBase prompt={prompt} title={title} done={done}>
@@ -79,7 +80,7 @@ const NightView: PromptView = ({ done, prompt }) => {
 }
 
 export const Huntress = Card({
-  role: 'huntress',
+  role: CardRole('huntress'),
   weight: 3,
   team: 'villagers',
   emoji: Emoji('🏹️'),

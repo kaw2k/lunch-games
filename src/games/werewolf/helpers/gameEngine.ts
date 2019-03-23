@@ -33,6 +33,14 @@ import { Id } from '../../../helpers/id'
 import { playerName } from '../../../components/playerName'
 import { getNeighbors } from './neighbors'
 import { getNewRole } from './getNewRole'
+import { Werewolf } from '../interfaces/card/werewolf'
+import { Doppleganger } from '../interfaces/card/doppleganger'
+import { Villager } from '../interfaces/card/villager'
+import { WolfCub } from '../interfaces/card/wolfCub'
+import { Sasquatch } from '../interfaces/card/sasquatch'
+import { Cursed } from '../interfaces/card/cursed'
+import { Diseased } from '../interfaces/card/diseased'
+import { MadBomber } from '../interfaces/card/madBomber'
 
 // ===========================================================
 // THE GAME ENGINE
@@ -156,7 +164,7 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
 
     if (isCursed(player, game) || player.markedByAlphaWolf) {
       return pipe(
-        updateWerewolfPlayer(player.id, { role: 'werewolf' }),
+        updateWerewolfPlayer(player.id, { role: Werewolf.role }),
         addPrompt({
           id: Id(),
           type: 'by message',
@@ -305,7 +313,7 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
         updatePlayer({
           target: action.target,
           updates: {
-            role: 'villager',
+            role: Villager.role,
             secondaryRole: getNewRole(player, game),
           },
         }),
@@ -321,7 +329,7 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
     if (player.copiedBy) {
       game = updateWerewolfPlayer(
         player.copiedBy,
-        { role: 'doppleganger' },
+        { role: Doppleganger.role },
         game
       )
     }
@@ -344,7 +352,7 @@ export function startNight(initialGame: WerewolfGame): WerewolfGame {
   game.time = 'night'
 
   const numberOfCubsKilled = [...game.killedAtDay, ...game.killedAtDawn].filter(
-    pid => isRole(game.players[pid], 'wolf cub')
+    pid => isRole(game.players[pid], WolfCub.role)
   ).length
 
   game.numberOfPeopleToKill = game.numberOfPeopleToKill + numberOfCubsKilled
@@ -361,8 +369,8 @@ export function startNight(initialGame: WerewolfGame): WerewolfGame {
     player => ({
       ...player,
       role:
-        isRole(player, 'sasquatch') && !game.killedAtDay.length
-          ? 'werewolf'
+        isRole(player, Sasquatch.role) && !game.killedAtDay.length
+          ? Werewolf.role
           : player.role,
       artifacts: player.artifacts.map(a => ({
         ...a,
@@ -496,7 +504,7 @@ function isCursed(player: PlayerWerewolf, game: WerewolfGame): boolean {
   )
 
   return (
-    isRole(player, 'cursed') ||
+    isRole(player, Cursed.role) ||
     !!(
       cursedArtifact &&
       (cursedArtifact.activated === 'played' ||
@@ -509,7 +517,7 @@ function isDiseased(player: PlayerWerewolf, game: WerewolfGame): boolean {
   const diseasedArtifact = player.artifacts.find(
     a => a.type === 'blood of the diseased' && a.activated === 'played'
   )
-  return isRole(player, 'diseased') || !!diseasedArtifact
+  return isRole(player, Diseased.role) || !!diseasedArtifact
 }
 
 const killPlayer = curry(
@@ -554,7 +562,7 @@ const killPlayer = curry(
       game = addDelayedAction(actions, game)
     }
 
-    if (isRole(player, 'mad bomber')) {
+    if (isRole(player, MadBomber.role)) {
       const gaps = game.options.madBomberOnlyKillsAdjacent
         ? 'allow-gaps'
         : 'skip-gaps'

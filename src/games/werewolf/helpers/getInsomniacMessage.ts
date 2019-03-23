@@ -5,6 +5,7 @@ import { playerNameList } from '../../../components/playerName'
 import { isWerewolf, doesFangFaceWakeUp } from './isWerewolf'
 import { getNeighbors } from './neighbors'
 import any from 'ramda/es/any'
+import { FangFace } from '../interfaces/card/fangFace'
 
 export function getInsomniacMessage(
   player: PlayerWerewolf,
@@ -14,7 +15,7 @@ export function getInsomniacMessage(
 
   const hasWokenUp = any(pid => {
     const target = game.players[pid]
-    const isFangFace = isRole(target, 'fang face')
+    const isFangFace = isRole(target, FangFace.role)
     const isFangFaceActive = doesFangFaceWakeUp(target, game)
 
     return (

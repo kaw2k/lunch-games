@@ -2,11 +2,12 @@ import { always } from 'ramda'
 import { Card } from '.'
 import { Emoji } from '../emoji'
 import { GenericSetupWerewolfRoleView } from '../../components/setupRole/genericWerewolfViewRole'
+import { CardRole } from '../../../../helpers/id'
 
 // deathMessage: 'the wolf cub died, wolves get to kill two people next night',
 
 export const WolfCub = Card({
-  role: 'wolf cub',
+  role: CardRole('wolf cub'),
   weight: -8,
   team: 'werewolves',
   emoji: Emoji('🐶'),

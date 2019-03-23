@@ -13,6 +13,7 @@ import { NightMessageOrder } from '../nightMessage'
 import { GenericSetupRoleView } from '../../components/setupRole/genericSetupRole'
 import { NoNightActionView } from '../../components/night/noNightActionView'
 import { PromptView } from '../prompt'
+import { CardRole } from '../../../../helpers/id'
 
 const nightTitle = `Cult leader, wake up! Indoctrinate someone, they are now in your cult.`
 
@@ -44,7 +45,7 @@ const NightView: PromptView = ({ done, prompt }) => {
 }
 
 export const CultLeader = Card({
-  role: 'cult leader',
+  role: CardRole('cult leader'),
   weight: 1,
   team: 'cult leader',
   emoji: Emoji('🍷'),

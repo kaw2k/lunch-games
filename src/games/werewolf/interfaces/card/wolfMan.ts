@@ -2,9 +2,10 @@ import { always } from 'ramda'
 import { Card } from '.'
 import { Emoji } from '../emoji'
 import { GenericSetupWerewolfRoleView } from '../../components/setupRole/genericWerewolfViewRole'
+import { CardRole } from '../../../../helpers/id'
 
 export const WolfMan = Card({
-  role: 'wolf man',
+  role: CardRole('wolf man'),
   weight: -9,
   team: 'werewolves',
   emoji: Emoji('🦁'),

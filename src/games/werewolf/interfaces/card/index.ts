@@ -5,6 +5,7 @@ import { Image } from '../image'
 import { Emoji } from '../emoji'
 import { SetupViewProps } from '../setupViewInterfaces'
 import { PromptView } from '../prompt'
+import { CardRole } from '../../../../helpers/id'
 
 // ==========================
 // Teams
@@ -23,7 +24,7 @@ export type Teams =
 // ==========================
 // Cards
 // ==========================
-export interface Card<Role extends string = string> {
+export interface Card<Role extends CardRole> {
   // The unique role of a card
   role: Role
   // Which faction the player belongs to
@@ -56,4 +57,5 @@ export interface Card<Role extends string = string> {
   }
 }
 
-export const Card = <Role extends string>(card: Card<Role>): Card<Role> => card
+export const Card = <Role extends CardRole>(card: Card<Role>): Card<Role> =>
+  card

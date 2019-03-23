@@ -2,6 +2,7 @@ import { PlayerWerewolf } from '../interfaces/player'
 import { WerewolfGame } from '../interfaces/game'
 import { getCard, isRole } from '../interfaces/card/cards'
 import { values } from 'ramda'
+import { FangFace } from '../interfaces/card/fangFace'
 
 export function isWerewolf(
   player: PlayerWerewolf,
@@ -29,7 +30,7 @@ export function doesFangFaceWakeUp(
 
   return (
     livingWolves.length === 1 &&
-    isRole(livingWolves[0], 'fang face') &&
+    isRole(livingWolves[0], FangFace.role) &&
     player.id === livingWolves[0].id
   )
 }

@@ -15,6 +15,7 @@ import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
 import { Typography } from '@material-ui/core'
 import { NoNightActionView } from '../../components/night/noNightActionView'
+import { CardRole } from '../../../../helpers/id'
 
 type WerewolfKill = ReturnType<typeof werewolfKill>
 
@@ -87,7 +88,7 @@ const NightView: PromptView = ({ done, prompt }) => {
 }
 
 export const AlphaWolf = Card({
-  role: 'alpha wolf',
+  role: CardRole('alpha wolf'),
   weight: -9,
   team: 'werewolves',
   emoji: Emoji('🐻'),

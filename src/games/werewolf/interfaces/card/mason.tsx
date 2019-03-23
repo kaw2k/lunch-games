@@ -9,6 +9,7 @@ import { ViewRole } from '../../components/viewRole/role'
 import { ViewAllies } from '../../components/viewRole/allies'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
+import { CardRole } from '../../../../helpers/id'
 
 interface Props {
   ready: (actions: Actions[]) => void
@@ -22,7 +23,7 @@ export const SetupRoleView: React.SFC<Props> = ({ ready }) => {
       <ViewRole role={player.role} />
       <ViewAllies
         allies={values(game.players).filter(
-          p => p.id !== player.id && isRole(p, 'mason')
+          p => p.id !== player.id && isRole(p, Mason.role)
         )}
       />
 
@@ -36,7 +37,7 @@ export const SetupRoleView: React.SFC<Props> = ({ ready }) => {
 }
 
 export const Mason = Card({
-  role: 'mason',
+  role: CardRole('mason'),
   weight: 2,
   team: 'villagers',
   emoji: Emoji('👁'),

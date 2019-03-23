@@ -12,6 +12,7 @@ import { Typography } from '@material-ui/core'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
 import { getInsomniacMessage } from '../../helpers/getInsomniacMessage'
+import { CardRole } from '../../../../helpers/id'
 
 const title = 'Insomniac, wake up!'
 
@@ -41,7 +42,7 @@ const NightView: PromptView = ({ done, prompt }) => {
 }
 
 export const Insomniac = Card({
-  role: 'insomniac',
+  role: CardRole('insomniac'),
   weight: 3,
   team: 'villagers',
   emoji: Emoji('😴'),

@@ -15,6 +15,7 @@ import { Typography } from '@material-ui/core'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
 import { Id } from '../../../../helpers/id'
+import { CardRole } from '../../../../helpers/id'
 
 const title =
   'Frankensteins monster, wake up! Perform any actions that you can!'
@@ -22,7 +23,7 @@ const title =
 const NightView: PromptView = ({ done, prompt }) => {
   const { game } = React.useContext(WerewolfGameContext)
   const [activeRole, setActiveRole] = React.useState<Roles | null>(null)
-  const [actions, addActions] = React.useState<{ [role in Roles]?: Actions[] }>(
+  const [actions, addActions] = React.useState<{ [role: string]: Actions[] }>(
     {}
   )
 
@@ -85,7 +86,7 @@ const NightView: PromptView = ({ done, prompt }) => {
 }
 
 export const FrankensteinsMonster = Card({
-  role: 'frankensteins monster',
+  role: CardRole('frankensteins monster'),
   weight: 0,
   team: 'villagers',
   emoji: Emoji('🌭'),
