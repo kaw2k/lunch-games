@@ -106,7 +106,6 @@ export const WerewolfModeratorLobbyOptions: React.SFC<Props> = ({ lobby }) => {
         lobby={lobby}
       />
 
-
       <Typography className={classes.section} variant="h2">
         Artifact Settings
       </Typography>

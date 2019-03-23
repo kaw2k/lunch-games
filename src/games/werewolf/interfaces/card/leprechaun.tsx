@@ -64,7 +64,9 @@ const NightView: PromptView = ({ done, prompt }) => {
             other players besides yourself who you have not defended before.
           </Typography>
           <ChoosePlayers
-            players={werewolfAttacks.map(action => game.players[action.target])}
+            players={werewolfAttacks.map(
+              action => game.players[action.target]
+            )}
             cancelText="no one i guess"
             onCancel={() => done([])}
             doneText="choose player"
@@ -74,7 +76,8 @@ const NightView: PromptView = ({ done, prompt }) => {
                 key={props.player.id}
                 {...props}
                 disabled={
-                  (!game.options.luckyLeprechaun && props.player.id === playerId) ||
+                  (!game.options.luckyLeprechaun &&
+                    props.player.id === playerId) ||
                   contains(props.player.id, previouslyDivertedPlayers)
                 }
               />
