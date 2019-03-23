@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Actions } from './actions'
+import { Action } from './actions'
 import { Roles } from './card/cards'
 import { PlayerId } from '../../../interfaces/player'
 import { ArtifactState } from './artifact'
@@ -83,7 +83,7 @@ export function ByMessage(
 export type Prompts = ByRole | ByName | ByTeam | ByMessage | ByArtifact
 
 export interface PromptViewProps<P = Prompts> {
-  done: (actions: Actions[]) => void
+  done: <Actions extends Action<any, any>[]>(actions: Actions) => void
   prompt: P
 }
 

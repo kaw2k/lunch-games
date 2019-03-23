@@ -1,7 +1,11 @@
-import { PromptView, ByArtifact } from '../prompt'
+import { PromptView, ByArtifact, PromptViewProps } from '../prompt'
 import { ArtifactType } from '../../../../helpers/id'
 import { PlayerId } from '../../../../interfaces/player'
+import { WerewolfGame } from '../game'
 
+// =======================================
+// BASE TYPE
+// =======================================
 export interface Artifact<Type extends ArtifactType> {
   type: Type
   title: string
@@ -15,7 +19,12 @@ export interface Artifact<Type extends ArtifactType> {
     | 'Misc'
     | 'Rebirth'
     | 'Target Other Artifacts'
+  // If you require user input...
   ActivateView?: PromptView<ByArtifact>
+  // If you don't need a full component but just to do some stuff...
+  ActivateCallback?: (
+    props: PromptViewProps<ByArtifact> & { game: WerewolfGame }
+  ) => void
   MorningView?: PromptView<ByArtifact>
   OnDeathView?: PromptView
 }
@@ -24,6 +33,9 @@ export const Artifact = <Type extends ArtifactType>(
   artifact: Artifact<Type>
 ): Artifact<Type> => artifact
 
+// =======================================
+// STATE
+// =======================================
 export interface ArtifactState {
   type: ArtifactType
   state: any

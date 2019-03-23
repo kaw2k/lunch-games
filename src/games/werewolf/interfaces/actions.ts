@@ -16,7 +16,7 @@ enum ActionOrder {
   postKill = 150,
 }
 
-type Action<Type extends string, Payload extends object> = {
+export type Action<Type extends string, Payload extends object> = {
   id: ActionId
   type: Type
   order: ActionOrder

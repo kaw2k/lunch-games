@@ -7,6 +7,7 @@ import { PlayerWerewolf } from '../../interfaces/player'
 import { PlayerId } from '../../../../interfaces/player'
 import { updateArtifact } from '../../interfaces/actions'
 import { ArtifactState } from '../../interfaces/artifact'
+import { ActionId } from '../../../../helpers/id'
 
 interface Props {
   artifactState: ArtifactState
@@ -40,7 +41,7 @@ export const ArtifactView: React.SFC<Props> = ({
   showPlay,
   action,
 }) => {
-  const { runActions } = React.useContext(WerewolfGameContext)
+  const { game, runActions } = React.useContext(WerewolfGameContext)
   const artifact = getArtifact(artifactState.type)
 
   return (
@@ -80,7 +81,25 @@ export const ArtifactView: React.SFC<Props> = ({
               size="small"
               confirm="are you sure? once you start, there is no going back."
               onClick={() => {
-                if (getArtifact(artifactState.type).ActivateView) {
+                const artifact = getArtifact(artifactState.type)
+
+                if (artifact.ActivateCallback) {
+                  artifact.ActivateCallback({
+                    game,
+                    prompt: {
+                      artifact: artifactState,
+                      id: ActionId(),
+                      player: player.id,
+                      type: 'by artifact',
+                    },
+                    done: actions => {
+                      runActions([
+                        toggleArtifact(player.id, artifactState.type, 'played'),
+                        ...actions,
+                      ])
+                    },
+                  })
+                } else if (artifact.ActivateView) {
                   runActions([
                     toggleArtifact(player.id, artifactState.type, 'playing'),
                   ])
