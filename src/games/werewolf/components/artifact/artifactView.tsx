@@ -1,15 +1,12 @@
 import * as React from 'react'
 import { Card, CardContent, Typography, CardActions } from '@material-ui/core'
-import {
-  getArtifact,
-  ArtifactState,
-  Artifacts,
-} from '../../interfaces/artifact/artifacts'
+import { getArtifact, Artifacts } from '../../interfaces/artifact/artifacts'
 import { Button } from '../../../../components/button'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { PlayerWerewolf } from '../../interfaces/player'
 import { PlayerId } from '../../../../interfaces/player'
 import { updateArtifact } from '../../interfaces/actions'
+import { ArtifactState } from '../../interfaces/artifact'
 
 interface Props {
   artifactState: ArtifactState

@@ -8,7 +8,6 @@ import { ShroudOfShame } from './shroudOfShame'
 import { MirrorOfTheDoppleganger } from './mirrorOfTheDoppleganger'
 import { BreathOfTheOldMan } from './breathOfTheOldMan'
 import { ShieldOfTheBodyguard } from './shieldOfTheBodyguard'
-import { PlayerId } from '../../../../interfaces/player'
 import { VoidOfNothingness } from './voidOfNothingness'
 import { BowOfHunting } from './bowOfHunting'
 import { ClawOfTheWerewolf } from './clawOfTheWerewolf'
@@ -22,24 +21,6 @@ import { StoneOfAlteration } from './stoneOfAlteration'
 import { RodOfReincarnation } from './rodOfReincarnation'
 import { AmethystOfKnowledge } from './amethystOfKnowledge'
 import { RubyOfKismet } from './rubyOfKismet'
-
-export interface ArtifactState {
-  type: Artifacts
-  state: any
-  linked?: null | PlayerId // If a player copies your artifact, give them an active artifact when your is played
-  activated: 'unplayed' | 'playing' | 'played'
-}
-export function ArtifactState(
-  type: Artifacts,
-  state: Partial<ArtifactState> = {}
-): ArtifactState {
-  return {
-    type,
-    activated: 'unplayed',
-    state: null,
-    ...state,
-  }
-}
 
 export const Artifacts = [
   BloodOfTheDiseased,

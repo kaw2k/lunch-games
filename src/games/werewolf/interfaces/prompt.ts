@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { Actions } from './actions'
 import { Roles } from './card/cards'
 import { PlayerId } from '../../../interfaces/player'
-import { ArtifactState } from './artifact/artifacts'
+import { ArtifactState } from './artifact'
 import { Id } from '../../../helpers/id'
 
 export interface ByRole {

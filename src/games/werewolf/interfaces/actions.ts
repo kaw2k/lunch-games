@@ -2,10 +2,11 @@ import { PlayerId } from '../../../interfaces/player'
 import { PlayerWerewolf } from './player'
 import { Id, ActionId } from '../../../helpers/id'
 import { assertNever } from '../../../helpers/assertNever'
-import { Artifacts, ArtifactState } from './artifact/artifacts'
+import { Artifacts } from './artifact/artifacts'
 import { Teams } from './card'
 import { DelayAction } from './delayAction'
 import { Prompts } from './prompt'
+import { ArtifactState } from './artifact'
 
 enum ActionOrder {
   setup = 0,

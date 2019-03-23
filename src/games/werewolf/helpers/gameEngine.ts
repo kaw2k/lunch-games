@@ -20,11 +20,7 @@ import { DelayAction } from '../interfaces/delayAction'
 import { clone } from '../../../helpers/clone'
 import { makeNightPrompts } from './makeNightPrompts'
 import map from 'ramda/es/map'
-import {
-  getArtifact,
-  ArtifactState,
-  Artifacts,
-} from '../interfaces/artifact/artifacts'
+import { getArtifact, Artifacts } from '../interfaces/artifact/artifacts'
 import { count } from '../../../helpers/count'
 import { isWerewolf } from './isWerewolf'
 import { isRole, getCard } from '../interfaces/card/cards'
@@ -41,6 +37,7 @@ import { Sasquatch } from '../interfaces/card/sasquatch'
 import { Cursed } from '../interfaces/card/cursed'
 import { Diseased } from '../interfaces/card/diseased'
 import { MadBomber } from '../interfaces/card/madBomber'
+import { ArtifactState } from '../interfaces/artifact'
 
 // ===========================================================
 // THE GAME ENGINE

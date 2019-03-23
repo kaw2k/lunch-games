@@ -3,7 +3,8 @@ import { isModerator } from './isModerator'
 import { shuffle } from '../../../helpers/shuffle'
 import { PlayerWerewolf } from '../interfaces/player'
 import { Roles } from '../interfaces/card/cards'
-import { Artifacts, ArtifactState } from '../interfaces/artifact/artifacts'
+import { Artifacts } from '../interfaces/artifact/artifacts'
+import { ArtifactState } from '../interfaces/artifact'
 
 export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
   const players = shuffle(
