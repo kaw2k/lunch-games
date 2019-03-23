@@ -33,7 +33,7 @@ import { Werewolf } from '../interfaces/card/werewolf'
 import { Doppleganger } from '../interfaces/card/doppleganger'
 import { Villager } from '../interfaces/card/villager'
 import { WolfCub } from '../interfaces/card/wolfCub'
-import { Sasquatch } from '../interfaces/card/sasquatch'
+import { setSasquatchWakeUpState } from '../interfaces/card/sasquatch'
 import { Cursed } from '../interfaces/card/cursed'
 import { Diseased } from '../interfaces/card/diseased'
 import { MadBomber } from '../interfaces/card/madBomber'
@@ -365,14 +365,7 @@ export function startNight(initialGame: WerewolfGame): WerewolfGame {
   game.players = map(
     player => ({
       ...player,
-      role:
-        isRole(player, Sasquatch.role) && !game.killedAtDay.length
-          ? Werewolf.role
-          : player.role,
-      artifacts: player.artifacts.map(a => ({
-        ...a,
-        performedMorningAction: false,
-      })),
+      sasquatchWakesUp: setSasquatchWakeUpState(player, game),
     }),
     game.players
   )

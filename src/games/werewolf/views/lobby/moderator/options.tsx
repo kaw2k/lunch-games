@@ -85,6 +85,13 @@ export const WerewolfModeratorLobbyOptions: React.SFC<Props> = ({ lobby }) => {
       />
 
       <Option
+        title="Sasquatch is Chill"
+        option="sasquatchIsChill"
+        description="Sasquatch will not transform the first night if no one dies during the day."
+        lobby={lobby}
+      />
+
+      <Option
         title="Protection For All"
         option="protectWolves"
         description="Protections and blessings will prevent chewks from killing werewolves"

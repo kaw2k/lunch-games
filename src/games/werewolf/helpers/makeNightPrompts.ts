@@ -1,35 +1,22 @@
 import { WerewolfGame } from '../interfaces/game'
-import values from 'ramda/es/values'
-import { isWerewolf, doesFangFaceWakeUp } from './isWerewolf'
-import { getCard, Roles, hasRole, isRole } from '../interfaces/card/cards'
+import { getWerewolves } from './isWerewolf'
+import { getCard, Roles } from '../interfaces/card/cards'
 import { getGameRoles } from './getGameRoles'
 import { getPlayerByRole } from './getPlayersByRole'
 import { Prompts, ByTeam, ByMessage } from '../interfaces/prompt'
 import { Id } from '../../../helpers/id'
 import { Werewolf } from '../interfaces/card/werewolf'
-import { FangFace } from '../interfaces/card/fangFace'
-import { Sasquatch } from '../interfaces/card/sasquatch'
-import sortBy from 'ramda/es/sortBy'
+import { shouldAnnounceSasquatch } from '../interfaces/card/sasquatch'
 import { NightMessageOrder } from '../interfaces/nightMessage'
 import { assertNever } from '../../../helpers/assertNever'
-
-function getWerewolves(game: WerewolfGame) {
-  return values(game.players)
-    .filter(p => {
-      return (
-        (isRole(p, FangFace.role) && doesFangFaceWakeUp(p, game)) ||
-        (!isRole(p, FangFace.role) && isWerewolf(p, game))
-      )
-    })
-    .map(p => p.id)
-}
+import { values, sortBy } from 'ramda'
 
 export function makeNightPrompts(game: WerewolfGame): Prompts[] {
   let prompts: Prompts[] = []
 
   // Check for sasquatch
   // ----------------------------
-  if (hasRole(Sasquatch.role, game) && !game.killedAtDay.length) {
+  if (shouldAnnounceSasquatch(game)) {
     const sasquatchPrompt: ByMessage = {
       id: Id(),
       type: 'by message',

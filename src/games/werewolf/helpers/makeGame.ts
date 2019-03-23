@@ -33,6 +33,7 @@ export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
         areBrainsEaten: false,
         secondaryRole: null,
         role: shuffledRoles[i],
+        sasquatchWakesUp: false,
         state: {},
         copiedBy: null,
       }

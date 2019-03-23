@@ -64,6 +64,7 @@ export const ChooseGame: React.SFC<{}> = () => {
                 cursedArtifactAlwaysActive: false,
                 werewolfArtifactAlwaysActive: false,
                 madBomberOnlyKillsAdjacent: true,
+                sasquatchIsChill: true,
                 protectWolves: false,
               },
             }

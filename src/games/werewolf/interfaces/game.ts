@@ -23,6 +23,7 @@ interface WerewolfOptions {
   madBomberOnlyKillsAdjacent: boolean
   beholderSeesAllSeers: boolean
   protectWolves: boolean
+  sasquatchIsChill: boolean
 }
 
 export interface Victory {
