@@ -155,6 +155,6 @@ export const Leprechaun = Card({
     title,
     ModeratorView: NightView,
     PlayerView: NightView,
-    order: NightMessageOrder.postWerewolf,
+    order: NightMessageOrder.leprechaun,
   },
 })

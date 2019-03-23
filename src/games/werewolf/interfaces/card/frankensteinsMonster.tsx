@@ -101,6 +101,6 @@ export const FrankensteinsMonster = Card({
     title,
     ModeratorView: NightView,
     PlayerView: NightView,
-    order: NightMessageOrder.inspection,
+    order: NightMessageOrder.frankenstein,
   },
 })

@@ -5,10 +5,8 @@ export enum NightMessageOrder {
   misc = 40,
   killing = 80,
   werewolf = 100,
-  postWerewolf = 125,
-}
-
-export interface NightMessage {
-  message: string
-  order: NightMessageOrder
+  alphaWolf = 125,
+  leprechaun = 150,
+  frankenstein = 175,
+  last = 200,
 }

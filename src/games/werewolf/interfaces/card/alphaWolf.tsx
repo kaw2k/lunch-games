@@ -104,6 +104,6 @@ export const AlphaWolf = Card({
     title,
     ModeratorView: NightView,
     PlayerView: NightView,
-    order: NightMessageOrder.postWerewolf - 1,
+    order: NightMessageOrder.alphaWolf,
   },
 })

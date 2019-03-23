@@ -9,6 +9,9 @@ import { Id } from '../../../helpers/id'
 import { Werewolf } from '../interfaces/card/werewolf'
 import { FangFace } from '../interfaces/card/fangFace'
 import { Sasquatch } from '../interfaces/card/sasquatch'
+import sortBy from 'ramda/es/sortBy'
+import { NightMessageOrder } from '../interfaces/nightMessage'
+import { assertNever } from '../../../helpers/assertNever'
 
 function getWerewolves(game: WerewolfGame) {
   return values(game.players)
@@ -76,35 +79,39 @@ export function makeNightPrompts(game: WerewolfGame): Prompts[] {
   ]
   prompts = prompts.concat(teams)
 
+  prompts = prompts.filter(prompt => {
+    if (game.options.noFlip) return true
+
+    if (
+      prompt.type === 'by role' &&
+      (!prompt.player || !game.players[prompt.player].alive)
+    ) {
+      return false
+    }
+
+    if (
+      prompt.type === 'by name' &&
+      (!prompt.player || !game.players[prompt.player].alive)
+    ) {
+      return false
+    }
+
+    if (prompt.type === 'by team') {
+      return !!prompt.players.find(player => game.players[player].alive)
+    }
+
+    return true
+  })
+
+  prompts = sortBy(prompt => {
+    if (prompt.type === 'by message') return NightMessageOrder.none
+    if (prompt.type === 'by artifact') return NightMessageOrder.none
+    if (prompt.type === 'by team') return NightMessageOrder.werewolf
+    if (prompt.type === 'by role') return getCard(prompt.role).night!.order
+    if (prompt.type === 'by name') return NightMessageOrder.last
+
+    return assertNever(prompt)
+  }, prompts)
+
   return prompts
-    .filter(prompt => {
-      if (game.options.noFlip) return true
-
-      if (
-        prompt.type === 'by role' &&
-        (!prompt.player || !game.players[prompt.player].alive)
-      ) {
-        return false
-      }
-
-      if (
-        prompt.type === 'by name' &&
-        (!prompt.player || !game.players[prompt.player].alive)
-      ) {
-        return false
-      }
-
-      if (prompt.type === 'by team') {
-        return !!prompt.players.find(player => game.players[player].alive)
-      }
-
-      return true
-    })
-    .sort((a, b) => {
-      if (a.type === 'by message' || b.type === 'by message') return 0
-      if (a.type === 'by artifact' || b.type === 'by artifact') return 0
-      if (a.type === 'by name' || b.type === 'by name') return 1
-
-      return getCard(a.role).night!.order - getCard(b.role).night!.order
-    })
 }
