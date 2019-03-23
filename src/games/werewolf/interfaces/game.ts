@@ -24,6 +24,7 @@ interface WerewolfOptions {
   beholderSeesAllSeers: boolean
   protectWolves: boolean
   sasquatchIsChill: boolean
+  luckyLeprechaun: boolean
 }
 
 export interface Victory {

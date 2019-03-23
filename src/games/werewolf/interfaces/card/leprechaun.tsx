@@ -74,7 +74,7 @@ const NightView: PromptView = ({ done, prompt }) => {
                 key={props.player.id}
                 {...props}
                 disabled={
-                  props.player.id === playerId ||
+                  (!game.options.luckyLeprechaun && props.player.id === playerId) ||
                   contains(props.player.id, previouslyDivertedPlayers)
                 }
               />

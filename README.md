@@ -75,11 +75,9 @@ npm start
 
 - Add option for moderator to turn off player actions
   - frankenstein should have all buttons if no-flip, only dead are enabled
-  - have more explicit "secret" for all prompts. night action base should make description mandetory and a potential property for secret message
+  - have more explicit "secret" for all prompts. night action base should make description mandatory and a potential property for secret message
 
 * Players' artifact buttons are disabled if someone is playing an artifact
 * Moderator can perform all artifact actions
 * Try adding artifact action which excepts generic actions, not the list of actions
-* End game needs a second player to end the game. A modal shows up for everyone else to end the game with their choice. You can cancel.
-
-* Figure out a way to stop all these circular dependencies. It boils down to not repeating types. If I had a union of strings of all the cards / artifacts then it wouldn't be an issue. OR maybe if I have a base id type for cards and artifacts and actions...
+* End game needs a second player to end the game. A modal shows up for everyone else to end the game with their choice. You can cancel. Also, end game is in a sub menu of the menu.

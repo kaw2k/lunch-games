@@ -60,9 +60,17 @@ export const WerewolfModeratorLobbyOptions: React.SFC<Props> = ({ lobby }) => {
         lobby={lobby}
       />
 
+      <Option
+        title="Protection For All"
+        option="protectWolves"
+        description="Protections and blessings will prevent chewks from killing werewolves."
+        lobby={lobby}
+      />
+
       <Typography className={classes.section} variant="h2">
         Role Settings
       </Typography>
+
       <Option
         title="Kill Cult"
         option="killCult"
@@ -85,22 +93,24 @@ export const WerewolfModeratorLobbyOptions: React.SFC<Props> = ({ lobby }) => {
       />
 
       <Option
-        title="Sasquatch is Chill"
+        title="Sasquatch Is Chill"
         option="sasquatchIsChill"
         description="Sasquatch will not transform the first night if no one dies during the day."
         lobby={lobby}
       />
 
       <Option
-        title="Protection For All"
-        option="protectWolves"
-        description="Protections and blessings will prevent chewks from killing werewolves"
+        title="Lucky Leprechaun"
+        option="luckyLeprechaun"
+        description="The leprechaun can divert the werewolves from attacking themselves once."
         lobby={lobby}
       />
+
 
       <Typography className={classes.section} variant="h2">
         Artifact Settings
       </Typography>
+
       <Option
         title="Always Cursed"
         option="cursedArtifactAlwaysActive"
