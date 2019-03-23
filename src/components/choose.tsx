@@ -9,7 +9,7 @@ import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { equals, values } from 'ramda'
 
-interface Props<Item> {
+export interface Props<Item> {
   title?: string
   description?: string
   numToSelect?: number // Number of items to select
