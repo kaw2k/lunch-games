@@ -15,6 +15,7 @@ export const WerewolfPlayerNight: React.SFC<Props> = ({}) => {
   if (game.time === 'day') return null
 
   if (
+    game.options.moderatorOnly ||
     game.time === 'dawn' ||
     game.playerInteraction.ready ||
     !game.prompts.active

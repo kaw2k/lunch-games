@@ -4,9 +4,10 @@ import { WerewolfPlayerNight } from './night'
 import { WerewolfPlayerDay } from './day'
 import { getCard } from '../../../interfaces/card/cards'
 import { getArtifact } from '../../../interfaces/artifact/artifacts'
-import { Actions } from '../../../interfaces/actions'
-import { runActions } from '../../../helpers/gameEngine'
+import { Actions, updateArtifact } from '../../../interfaces/actions'
 import { WerewolfDead } from './dead'
+import { Id } from '../../../../../helpers/id'
+import { runActions } from '../../../helpers/gameEngine'
 
 interface Props {}
 
@@ -24,8 +25,43 @@ export const WerewolfPlayerGame: React.SFC<Props> = () => {
     })
   }
 
+  const activeArtifactState = player.artifacts.find(
+    a => a.activated === 'playing'
+  )
+  if (!game.options.moderatorOnly && activeArtifactState) {
+    const artifact = getArtifact(activeArtifactState.type)
+    const View = artifact.ActivateView
+    if (View) {
+      return (
+        <View
+          done={actions => {
+            updateGame(
+              runActions(game, [
+                updateArtifact({
+                  target: player.id,
+                  artifact: activeArtifactState.type,
+                  updates: {
+                    activated: 'played',
+                  },
+                }),
+                ...actions,
+              ])
+            )
+          }}
+          prompt={{
+            type: 'by artifact',
+            artifact: activeArtifactState,
+            id: Id(),
+            player: player.id,
+          }}
+        />
+      )
+    }
+  }
+
   const active = game.prompts.active
   if (
+    !game.options.moderatorOnly &&
     game.time !== 'night' &&
     active &&
     (active.type === 'by name' ||

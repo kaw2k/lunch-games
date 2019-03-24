@@ -14,6 +14,7 @@ import { Id } from '../../../helpers/id'
 interface WerewolfOptions {
   dayTimeLimit: number
   nightTimeLimit: number
+  moderatorOnly: boolean
   boogymanOP: boolean
   noFlip: boolean
   ghost: boolean

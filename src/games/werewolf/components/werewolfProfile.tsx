@@ -4,8 +4,9 @@ import { PlayerWerewolf } from '../interfaces/player'
 import { Profile, Props as ProfileProps } from '../../../components/profile'
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import { getCard } from '../interfaces/card/cards'
+import { getCard, isRole } from '../interfaces/card/cards'
 import { WerewolfGameContext } from '../../../helpers/contexts'
+import { Sasquatch } from '../interfaces/card/sasquatch';
 
 interface Props extends Partial<ProfileProps> {
   player: PlayerWerewolf
@@ -46,6 +47,7 @@ export const WerewolfProfile: React.SFC<Props> = ({
             <Typography>
               {player.role}
               {player.secondaryRole && ` / ${player.secondaryRole}`}
+              {isRole(player, Sasquatch.role) && (player.sasquatchWakesUp ? ` (werewolf)` : ` (villager)`)}
             </Typography>
           )}
           {showReady && (

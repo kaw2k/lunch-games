@@ -61,6 +61,13 @@ export const WerewolfModeratorLobbyOptions: React.SFC<Props> = ({ lobby }) => {
       />
 
       <Option
+        title="Moderator Only"
+        option="moderatorOnly"
+        description="Only the moderator can perform actions and artifacts."
+        lobby={lobby}
+      />
+
+      <Option
         title="Protection For All"
         option="protectWolves"
         description="Protections and blessings will prevent chewks from killing werewolves."

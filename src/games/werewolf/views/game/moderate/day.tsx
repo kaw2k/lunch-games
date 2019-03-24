@@ -9,6 +9,7 @@ import {
   sudoKill,
   revivePlayer,
   addDelayedAction,
+  updateArtifact,
 } from '../../../interfaces/actions'
 import { values, sortBy } from 'ramda'
 import { useCommonStyles } from '../../../../../helpers/commonStyles'
@@ -19,6 +20,9 @@ import { Typography } from '@material-ui/core'
 import { hasRole } from '../../../interfaces/card/cards'
 import { Mason } from '../../../interfaces/card/mason'
 import { ArtifactView } from '../../../components/artifact/artifactView';
+import { isAnotherArtifactActive } from '../../../helpers/artifact';
+import { getArtifact } from '../../../interfaces/artifact/artifacts';
+import { Id } from '../../../../../helpers/id';
 
 interface Props {}
 
@@ -29,6 +33,33 @@ export const DayModerator: React.SFC<Props> = () => {
   )
   const classes = useCommonStyles()
   const time = useTimer(game.timer || Date.now(), game.options.dayTimeLimit)
+
+  const activeArtifact = isAnotherArtifactActive(game)
+  if (activeArtifact) {
+    const View = getArtifact(activeArtifact.artifactState.type).ActivateView
+    if (View) {
+      return         <View
+      done={actions => {
+        runActions([
+          updateArtifact({
+            target: activeArtifact.player,
+            artifact: activeArtifact.artifactState.type,
+            updates: {
+              activated: 'played',
+            },
+          }),
+          ...actions,
+        ])
+      }}
+      prompt={{
+        type: 'by artifact',
+        artifact: activeArtifact.artifactState,
+        id: Id(),
+        player: activeArtifact.player,
+      }}
+    />
+    }
+  }
 
   if (selectedPlayer) {
     const player = game.players[selectedPlayer]

@@ -8,6 +8,8 @@ import { PlayerId } from '../../../../interfaces/player'
 import { updateArtifact } from '../../interfaces/actions'
 import { ArtifactState } from '../../interfaces/artifact'
 import { ActionId } from '../../../../helpers/id'
+import { isAnotherArtifactActive } from '../../helpers/artifact';
+import { isModerator } from '../../helpers/isModerator';
 
 interface Props {
   artifactState: ArtifactState
@@ -41,8 +43,9 @@ export const ArtifactView: React.SFC<Props> = ({
   showPlay,
   action,
 }) => {
-  const { game, runActions } = React.useContext(WerewolfGameContext)
+  const { game, runActions, player: gamePlayer } = React.useContext(WerewolfGameContext)
   const artifact = getArtifact(artifactState.type)
+  const isMod = isModerator(gamePlayer, game)
 
   return (
     <Card key={artifactState.type}>
@@ -66,7 +69,7 @@ export const ArtifactView: React.SFC<Props> = ({
         <Typography>{artifact.description}</Typography>
       </CardContent>
 
-      {(showPlay || action) && (
+      {(!game.options.moderatorOnly || isMod) && (showPlay || action) && (
         <CardActions>
           {action && (
             <Button fullWidth={false} size="small" onClick={action.callback}>
@@ -78,6 +81,7 @@ export const ArtifactView: React.SFC<Props> = ({
             <Button
               color="green"
               fullWidth={false}
+              disabled={!!isAnotherArtifactActive(game)}
               size="small"
               confirm="are you sure? once you start, there is no going back."
               onClick={() => {

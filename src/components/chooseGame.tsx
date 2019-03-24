@@ -58,6 +58,7 @@ export const ChooseGame: React.SFC<{}> = () => {
                 ghost: false,
                 killCult: true,
                 noFlip: true,
+                moderatorOnly: false,
                 dayTimeLimit: 120,
                 beholderSeesAllSeers: false,
                 nightTimeLimit: 0,
