@@ -70,7 +70,11 @@ export const WerewolfModeratorLobbyRoles: React.SFC<Props> = ({ lobby }) => {
                 <Profile
                   key={card.role}
                   className={
-                    count(lobby.werewolfRoles, r => r === card.role) ? '' : classes.dim
+                    count(lobby.werewolfRoles, r => r === card.role)
+
+                         
+                                       ? ''
+                      : classes.dim
                   }
                   text={card.role}
                   image={card.profile}

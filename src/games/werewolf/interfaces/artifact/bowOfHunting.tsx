@@ -3,7 +3,12 @@ import { Artifact } from '.'
 import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values } from 'ramda'
-import { passArtifact, updateArtifact, artifactKill, showPrompts } from '../actions'
+import {
+  passArtifact,
+  updateArtifact,
+  artifactKill,
+  showPrompts,
+} from '../actions'
 import { getArtifact } from './artifacts'
 import { PromptView, ByArtifact } from '../prompt'
 import { ArtifactType } from '../../../../helpers/id'
@@ -25,10 +30,7 @@ const ActivateView: PromptView<ByArtifact> = ({
         columns={2}
         doneText="kill with bow"
         onDone={([target]) => {
-          done([
-            artifactKill({ target }),
-            showPrompts({})
-          ])
+          done([artifactKill({ target }), showPrompts({})])
         }}
       />
     )

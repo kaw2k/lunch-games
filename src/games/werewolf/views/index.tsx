@@ -26,10 +26,14 @@ export const WerewolfView: React.SFC<{ room: Werewolf }> = ({ room }) => {
   function toggleModerator() {
     if (room.type === 'werewolf-game') return
 
-    if (room.werewolfModerators.find(pid => pid === player.id)) {
+    if (room.werewolfModerators.find(
+          pid => pid === player.id
+        )) {
       setRoom({
         ...room,
-        werewolfModerators: room.werewolfModerators.filter(pid => pid !== player.id),
+        werewolfModerators: room.werewolfModerators.filter(
+          pid => pid !== player.id
+        ),
       })
     } else {
       setRoom({

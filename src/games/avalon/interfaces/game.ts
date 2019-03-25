@@ -2,7 +2,7 @@ import { Player, PlayerId } from '../../../interfaces/player'
 import { RoomId, Lobby } from '../../../interfaces/room'
 import { Hash } from '../../../interfaces/hash'
 import { PlayerAvalon } from './player'
-import { Omit } from '@material-ui/core';
+import { Omit } from '@material-ui/core'
 
 export type VotesNeededToFail = 1 | 2
 export type PeopleOnMission = 2 | 3 | 4 | 5

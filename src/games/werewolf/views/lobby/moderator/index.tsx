@@ -54,14 +54,24 @@ export const WerewolfModeratorLobby: React.SFC<Props> = ({
   return (
     <div className={classes.root}>
       {view === View.lobby && (
-        <WerewolfPlayerLobby lobby={lobby} toggleModerator={toggleModerator} />
+        <WerewolfPlayerLobby
+
+                   lobby={lobby}
+          toggleModerator={
+         toggleModerator}
+       
+        />
       )}
 
-      {view === View.roles && <WerewolfModeratorLobbyRoles lobby={lobby} />}
+      {view === View.roles && (
+        <WerewolfModeratorLobbyRoles lobby={lobby} />
+      )}
       {view === View.artifacts && (
         <WerewolfModeratorLobbyArtifacts lobby={lobby} />
       )}
-      {view === View.options && <WerewolfModeratorLobbyOptions lobby={lobby} />}
+      {view === View.options && (
+        <WerewolfModeratorLobbyOptions lobby={lobby} />
+      )}
       {view === View.start && (
         <WerewolfModeratorLobbyStart lobby={lobby} startGame={startGame} />
       )}
@@ -88,8 +98,15 @@ export const WerewolfModeratorLobby: React.SFC<Props> = ({
           icon={
             <Badge
               showZero
-              color={getWeight(lobby.werewolfRoles) < 0 ? 'secondary' : 'primary'}
-              badgeContent={`${lobby.werewolfRoles.length}/${getWeight(lobby.werewolfRoles)}`}>
+              color={
+                getWeight(
+                lobby.werewolfRoles
+              ) < 0 ? 'secondary' : 'primary'
+              
+              }
+              badgeContent={`${lobby.werewolfRoles.length}/${getWeight(
+                lobby.werewolfRoles
+              )}`}>
               <Icon>face</Icon>
             </Badge>
           }

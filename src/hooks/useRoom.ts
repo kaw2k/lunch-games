@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Player } from '../interfaces/player'
 import { Loading } from '../interfaces/loading'
 import { useDocument } from 'react-firebase-hooks/firestore'
-import { Room, RoomId } from '../interfaces/room'
+import { Room, RoomId, Lobby } from '../interfaces/room'
 import * as RoomAPI from '../apis/room'
 import * as local from '../helpers/localstorage'
 import { database, firebaseArrayAdd } from '../helpers/firebase'
@@ -65,10 +65,13 @@ export function useRoom(
       const room = await RoomAPI.get(id)
 
       if (!room) {
-        await RoomAPI.set(id, {
+        const lobby: Lobby = {
           type: 'lobby',
           id: id,
-        } as Room)
+          lobbyPlayers: []
+        }
+
+        await RoomAPI.set(id, lobby)
       }
 
       await database.rooms.doc(id).update({

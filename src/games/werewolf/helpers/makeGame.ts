@@ -13,9 +13,13 @@ export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
   const shuffledRoles = shuffle(roles)
   const shouldHaveArtifact = !!lobby.werewolfArtifacts.length
   const extraArtifacts = shuffle(
-    Artifacts.map(a => a.type).filter(a => !!lobby.werewolfArtifacts.find(l => a !== l))
+    Artifacts.map(a => a.type).filter(
+      a => !!lobby.werewolfArtifacts.find(l => a !== l)
+    )
   )
-  const shuffledArtifacts = shuffle(lobby.werewolfArtifacts).concat(extraArtifacts)
+  const shuffledArtifacts = shuffle(lobby.werewolfArtifacts).concat(
+    extraArtifacts
+  )
 
   const gamePlayers = players.reduce<WerewolfGame['players']>(
     (memo, player, i) => {

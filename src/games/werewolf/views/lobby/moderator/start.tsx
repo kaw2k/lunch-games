@@ -36,7 +36,9 @@ export const WerewolfModeratorLobbyStart: React.SFC<Props> = ({
     }
   }
 
-  const cards = uniq(sortBy(card => -1 * card.weight, lobby.werewolfRoles.map(getCard)))
+  const cards = uniq(
+    sortBy(card => -1 * card.weight, lobby.werewolfRoles.map(getCard))
+  )
   const weight = getWeight(roles)
   const numberOfPlayers = lobby.lobbyPlayers.filter(
     p => !lobby.werewolfModerators.find(pid => pid === p.id)
