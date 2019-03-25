@@ -24,15 +24,17 @@ export const WerewolfView: React.SFC<{ room: Werewolf }> = ({ room }) => {
   const { updatePlayer } = React.useContext(RoomContext)
 
   function toggleModerator() {
-    if (room.moderators.find(pid => pid === player.id)) {
+    if (room.type === 'werewolf-game') return
+
+    if (room.werewolfModerators.find(pid => pid === player.id)) {
       setRoom({
         ...room,
-        moderators: room.moderators.filter(pid => pid !== player.id),
+        werewolfModerators: room.werewolfModerators.filter(pid => pid !== player.id),
       })
     } else {
       setRoom({
         ...room,
-        moderators: room.moderators.concat(player.id),
+        werewolfModerators: room.werewolfModerators.concat(player.id),
       })
     }
   }
@@ -73,10 +75,10 @@ export const WerewolfView: React.SFC<{ room: Werewolf }> = ({ room }) => {
               type: 'werewolf-lobby',
               lobbyPlayers: room.lobbyPlayers || [],
               victoryMessage: message || null,
-              artifacts: room.initialArtifacts,
-              moderators: room.moderators,
-              options: room.options,
-              roles: room.initialRoles,
+              werewolfArtifacts: room.initialArtifacts,
+              werewolfModerators: room.moderators,
+              werewolfOptions: room.options,
+              werewolfRoles: room.initialRoles,
             })
           },
         }}>
@@ -101,10 +103,10 @@ export const WerewolfView: React.SFC<{ room: Werewolf }> = ({ room }) => {
             type: 'werewolf-lobby',
             lobbyPlayers: room.lobbyPlayers || [],
             victoryMessage: message || null,
-            artifacts: room.initialArtifacts,
-            moderators: room.moderators,
-            options: room.options,
-            roles: room.initialRoles,
+            werewolfArtifacts: room.initialArtifacts,
+            werewolfModerators: room.moderators,
+            werewolfOptions: room.options,
+            werewolfRoles: room.initialRoles,
           })
         },
       }}>

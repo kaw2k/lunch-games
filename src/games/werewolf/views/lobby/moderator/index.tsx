@@ -88,8 +88,8 @@ export const WerewolfModeratorLobby: React.SFC<Props> = ({
           icon={
             <Badge
               showZero
-              color={getWeight(lobby.roles) < 0 ? 'secondary' : 'primary'}
-              badgeContent={`${lobby.roles.length}/${getWeight(lobby.roles)}`}>
+              color={getWeight(lobby.werewolfRoles) < 0 ? 'secondary' : 'primary'}
+              badgeContent={`${lobby.werewolfRoles.length}/${getWeight(lobby.werewolfRoles)}`}>
               <Icon>face</Icon>
             </Badge>
           }
@@ -98,7 +98,7 @@ export const WerewolfModeratorLobby: React.SFC<Props> = ({
           label="Artifacts"
           value={View.artifacts}
           icon={
-            <Badge badgeContent={lobby.artifacts.length}>
+            <Badge badgeContent={lobby.werewolfArtifacts.length}>
               <Icon>book</Icon>
             </Badge>
           }

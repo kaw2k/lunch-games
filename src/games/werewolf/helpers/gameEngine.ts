@@ -296,12 +296,14 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
     )
     if (!artifact || artifact.activated === 'played') return game
 
+    const newRole = getNewRole(player, game)
+
     return pipe(
       addPrompt({
         type: 'by message',
         id: Id(),
         message: `${player.name ||
-          player.id} came back to life with a new role!`,
+          player.id} came back to life with a new role! (SECRET: they are the ${newRole})`,
         player: player.id,
       }),
       updateArtifact(player.id, artifact.type, { activated: 'played' }),
@@ -311,7 +313,7 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
           target: action.target,
           updates: {
             role: Villager.role,
-            secondaryRole: getNewRole(player, game),
+            secondaryRole: newRole,
           },
         }),
       ])
@@ -348,12 +350,17 @@ export function startNight(initialGame: WerewolfGame): WerewolfGame {
 
   game.time = 'night'
 
-  const numberOfCubsKilled = [...game.killedAtDay, ...game.killedAtDawn].filter(
-    pid => isRole(game.players[pid], WolfCub.role)
-  ).length
+  const numberOfCubsKilled = [
+    ...game.killedAtNight,
+    ...game.killedAtDay,
+    ...game.killedAtDawn,
+  ].filter(pid => isRole(game.players[pid], WolfCub.role)).length
 
   game.numberOfPeopleToKill = game.numberOfPeopleToKill + numberOfCubsKilled
+
   game.killedAtDawn = []
+  game.killedAtDay = []
+  game.killedAtNight = []
 
   game.timer = Date.now()
 
@@ -387,7 +394,6 @@ export function startDay(initialGame: WerewolfGame): WerewolfGame {
   game.time = 'day'
   game.prompts = { items: [], active: null, show: false }
   game.playerInteraction = { actions: [], ready: false }
-  game.killedAtNight = []
   game.timer = Date.now()
   values(game.players).forEach(player => {
     game.players[player.id].isBlessed =
@@ -433,7 +439,6 @@ export function startDawn(initialGame: WerewolfGame): WerewolfGame {
     ready: false,
     actions: [],
   }
-  game.killedAtDay = []
   game.prompts = {
     items: sortBy(prompt => {
       if (prompt.type === 'by role') return 0

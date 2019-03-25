@@ -37,18 +37,18 @@ export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
   const { kickPlayer, leaveRoom, updateRoom } = React.useContext(RoomContext)
 
   function rolesInGame(role: Role): number {
-    return lobby.roles.filter(r => r === role).length
+    return lobby.avalonRoles.filter(r => r === role).length
   }
 
   function updateRoles(role: Role) {
     if (role !== 'good' && role !== 'bad') {
       if (rolesInGame(role)) {
         updateRoom({
-          roles: firebaseArrayRemove(role),
+          avalonRoles: firebaseArrayRemove(role),
         })
       } else {
         updateRoom({
-          roles: firebaseArrayAdd(role),
+          avalonRoles: firebaseArrayAdd(role),
         })
       }
     } else if (
@@ -56,11 +56,11 @@ export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
       (role === 'bad' && rolesInGame('bad') > 3)
     ) {
       updateRoom({
-        roles: firebaseArrayRemove(role),
+        avalonRoles: firebaseArrayRemove(role),
       })
     } else {
       updateRoom({
-        roles: lobby.roles.concat(role),
+        avalonRoles: lobby.avalonRoles.concat(role),
       })
     }
   }
@@ -75,7 +75,7 @@ export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
     { role: 'bad', message: 'try to pass bad missions' },
   ]
 
-  const isValid = isGameValid(lobby.lobbyPlayers.length, lobby.roles)
+  const isValid = isGameValid(lobby.lobbyPlayers.length, lobby.avalonRoles)
 
   return (
     <Layout padded>
@@ -127,17 +127,17 @@ export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
             <Checkbox
               id="lol"
               type="checkbox"
-              checked={lobby.ladyOfTheLake}
+              checked={lobby.avalonLadyOfTheLake}
               onChange={e => {
                 updateRoom({
-                  ladyOfTheLake: e.target.checked,
-                  roles: lobby.roles,
+                  avalonLadyOfTheLake: e.target.checked,
+                  avalonRoles: lobby.avalonRoles,
                 })
               }}
             />
           </label>
           <Button
-            onClick={() => updateRoom({ ladyOfTheLake: false, roles: [] })}>
+            onClick={() => updateRoom({ avalonLadyOfTheLake: false, avalonRoles: [] })}>
             reset
           </Button>
         </div>

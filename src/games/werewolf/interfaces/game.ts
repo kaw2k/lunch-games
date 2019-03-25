@@ -107,11 +107,10 @@ export interface WerewolfGame {
 
 export interface WerewolfLobby extends Omit<Lobby, 'type'> {
   type: 'werewolf-lobby'
-  id: RoomId
-  roles: Roles[]
-  artifacts: Artifacts[]
-  options: WerewolfOptions
-  moderators: PlayerId[]
+  werewolfRoles: Roles[]
+  werewolfArtifacts: Artifacts[]
+  werewolfOptions: WerewolfOptions
+  werewolfModerators: PlayerId[]
 }
 
 export type Werewolf = WerewolfGame | WerewolfLobby

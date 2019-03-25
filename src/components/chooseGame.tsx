@@ -4,9 +4,28 @@ import { AvalonLobby } from '../games/avalon/interfaces/game'
 import { RoomContext } from '../helpers/contexts'
 import { Lobby, Room } from '../interfaces/room'
 import { WerewolfLobby } from '../games/werewolf/interfaces/game'
+import { Omit } from '@material-ui/core'
+import mergeDeepLeft from 'ramda/es/mergeDeepLeft'
+
+type LobbyType<T extends Room['type']> = T extends 'lobby'
+  ? Lobby
+  : T extends 'secret-hitler-lobby'
+  ? SecretHitlerLobby
+  : T extends 'avalon-lobby'
+  ? AvalonLobby
+  : T extends 'werewolf-lobby'
+  ? WerewolfLobby
+  : never
 
 export const ChooseGame: React.SFC<{}> = () => {
-  const { setRoom, room } = React.useContext(RoomContext)
+  const { updateRoom: _updateRoom, room } = React.useContext(RoomContext)
+
+  function updateRoom<T extends Room['type']>(
+    type: T,
+    props: Omit<LobbyType<T>, keyof Lobby>
+  ) {
+    _updateRoom({ ...mergeDeepLeft(room, props), type } as Room)
+  }
 
   const lobby: Lobby['type'] = 'lobby'
   const secretHitler: SecretHitlerLobby['type'] = 'secret-hitler-lobby'
@@ -20,40 +39,19 @@ export const ChooseGame: React.SFC<{}> = () => {
         onChange={e => {
           const game = e.target.value as Room['type']
 
-          if (game === lobby) {
-            const newLobby: Lobby = {
-              type: game,
-              lobbyPlayers: room.lobbyPlayers,
-              id: room.id,
-            }
-            setRoom(newLobby)
-          } else if (game === secretHitler) {
-            const newLobby: SecretHitlerLobby = {
-              type: game,
-              lobbyPlayers: room.lobbyPlayers,
-              id: room.id,
-            }
-            setRoom(newLobby)
+          if (game === lobby || game === secretHitler) {
+            updateRoom(game, {})
           } else if (game === avalon) {
-            const newLobby: AvalonLobby = {
-              id: room.id,
-              lobbyPlayers: room.lobbyPlayers,
-              type: game,
-              victoryMessage: null,
-              ladyOfTheLake: false,
-              roles: [],
-            }
-            setRoom(newLobby)
+            updateRoom('avalon-lobby', {
+              avalonLadyOfTheLake: false,
+              avalonRoles: [],
+            })
           } else if (game === werewolf) {
-            const newLobby: WerewolfLobby = {
-              id: room.id,
-              lobbyPlayers: room.lobbyPlayers,
-              moderators: [],
-              type: 'werewolf-lobby',
-              victoryMessage: null,
-              artifacts: [],
-              roles: [],
-              options: {
+            updateRoom('werewolf-lobby', {
+              werewolfArtifacts: [],
+              werewolfRoles: [],
+              werewolfModerators: [],
+              werewolfOptions: {
                 boogymanOP: false,
                 ghost: false,
                 killCult: true,
@@ -69,8 +67,7 @@ export const ChooseGame: React.SFC<{}> = () => {
                 protectWolves: false,
                 luckyLeprechaun: false,
               },
-            }
-            setRoom(newLobby)
+            })
           }
         }}>
         <option value={lobby}>Select a game</option>

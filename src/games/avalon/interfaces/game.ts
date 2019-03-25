@@ -1,7 +1,8 @@
 import { Player, PlayerId } from '../../../interfaces/player'
-import { RoomId } from '../../../interfaces/room'
+import { RoomId, Lobby } from '../../../interfaces/room'
 import { Hash } from '../../../interfaces/hash'
 import { PlayerAvalon } from './player'
+import { Omit } from '@material-ui/core';
 
 export type VotesNeededToFail = 1 | 2
 export type PeopleOnMission = 2 | 3 | 4 | 5
@@ -16,15 +17,10 @@ export type Role =
   | 'good'
   | 'bad'
 
-export interface AvalonLobby {
+export interface AvalonLobby extends Omit<Lobby, 'type'> {
   type: 'avalon-lobby'
-  id: RoomId
-  lobbyPlayers: Player[]
-
-  victoryMessage?: string | null
-
-  ladyOfTheLake: boolean
-  roles: Role[]
+  avalonLadyOfTheLake: boolean
+  avalonRoles: Role[]
 }
 
 export interface Mission {

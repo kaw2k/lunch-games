@@ -23,11 +23,11 @@ export const WerewolfModeratorLobbyStart: React.SFC<Props> = ({
   startGame,
 }) => {
   const classes = useCommonStyles()
-  const [roles, setRoles] = React.useState(lobby.roles)
+  const [roles, setRoles] = React.useState(lobby.werewolfRoles)
 
   function addOrRemoveRole(role: Roles): void {
     const numberOfCardInGame = count(roles, r => r === role)
-    const numberOfCardInDeck = count(lobby.roles, r => r === role)
+    const numberOfCardInDeck = count(lobby.werewolfRoles, r => r === role)
 
     if (numberOfCardInGame + 1 > numberOfCardInDeck) {
       setRoles(roles.filter(r => r !== role))
@@ -36,10 +36,10 @@ export const WerewolfModeratorLobbyStart: React.SFC<Props> = ({
     }
   }
 
-  const cards = uniq(sortBy(card => -1 * card.weight, lobby.roles.map(getCard)))
+  const cards = uniq(sortBy(card => -1 * card.weight, lobby.werewolfRoles.map(getCard)))
   const weight = getWeight(roles)
   const numberOfPlayers = lobby.lobbyPlayers.filter(
-    p => !lobby.moderators.find(pid => pid === p.id)
+    p => !lobby.werewolfModerators.find(pid => pid === p.id)
   ).length
   const numberOfCardsInGame = roles.length
 

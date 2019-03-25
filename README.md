@@ -17,12 +17,7 @@ npm start
 ### Options
 
 - Artifacts
-
-  - Werewolf doesn't need to be played for it to be active
-
 - Role Mods
-  - Sasquatch
-    - doesn't transform first night
   - Priest
     - blessing dies with the priest
     - protects against all calamities (chewks, vampires, boogyman)
@@ -40,7 +35,7 @@ npm start
 - Make assets for avalon
 - Play test the heck out of
   - Artifacts, anything that kills, modifies other artifacts, or changes roles
-  - Leprichaun and how it intercts with other roles like alpha wolf, body guard, etc
+  - Leprechaun and how it interacts with other roles like alpha wolf, body guard, etc
   - Frankenstein and how it interacts with roles
 
 ### TODO / NB
@@ -48,20 +43,8 @@ npm start
 - Make a isBranded toggle on players to remove their active state
 - Add diseased protection type, this will be a better hold for protections and figuring things out. clean this up after night ends
 - Boogyman also works fine, just set night timers, add in option for after every role
-- Try to add isGameOver before dawn, that way you don't need to read artifacts if the game is over
-- Remove the need for mad bomber to specify neighbors
 - Add more visible profile counts / selected states
-- Test insomniac
-- Test Fang Face
 
-- For things that alter roles
-
-  - Try to stay within the same faction, for wolves it would be wolves and allies
-  - Find all the living roles in the game and get their combined weight. Try to balance the weight with the new role.
-
-* Moderator should see the active artifact. Maybe you request to play an artifact and the moderator sees it
-* Moderator should be able to see who has what artifact
-* Roles in player day should be one column
 * When waking people up at night, display their name
 * Make sure prompts for rebirth work
 * At night it helps if moderator sees names AND roles
@@ -77,7 +60,8 @@ npm start
   - frankenstein should have all buttons if no-flip, only dead are enabled
   - have more explicit "secret" for all prompts. night action base should make description mandatory and a potential property for secret message
 
-* Players' artifact buttons are disabled if someone is playing an artifact
-* Moderator can perform all artifact actions
 * Try adding artifact action which excepts generic actions, not the list of actions
 * End game needs a second player to end the game. A modal shows up for everyone else to end the game with their choice. You can cancel. Also, end game is in a sub menu of the menu.
+
+- Sometimes people get double artifacts
+- Save seating chart for subsequent games

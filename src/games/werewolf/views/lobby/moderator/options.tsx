@@ -135,7 +135,7 @@ export const WerewolfModeratorLobbyOptions: React.SFC<Props> = ({ lobby }) => {
 }
 
 const Option: React.SFC<{
-  option: keyof WerewolfLobby['options']
+  option: keyof WerewolfLobby['werewolfOptions']
   title: string
   description: string
   lobby: WerewolfLobby
@@ -148,11 +148,11 @@ const Option: React.SFC<{
       <Checkbox
         id={option}
         type="checkbox"
-        checked={!!lobby.options[option]}
+        checked={!!lobby.werewolfOptions[option]}
         onChange={e => {
           updateRoom({
             options: {
-              ...lobby.options,
+              ...lobby.werewolfOptions,
               [option]: e.target.checked,
             },
           })
@@ -171,7 +171,7 @@ const Option: React.SFC<{
 }
 
 const Value: React.SFC<{
-  option: keyof WerewolfLobby['options']
+  option: keyof WerewolfLobby['werewolfOptions']
   title: string
   description: string
   lobby: WerewolfLobby
@@ -183,13 +183,13 @@ const Value: React.SFC<{
     <label className={classes.label} htmlFor={option}>
       <Input
         id={option}
-        value={lobby.options[option]}
+        value={lobby.werewolfOptions[option]}
         type="tel"
         className={classes.input}
         onChange={e =>
           updateRoom({
-            options: {
-              ...lobby.options,
+            werewolfOptions: {
+              ...lobby.werewolfOptions,
               [option]: parseInt(e.target.value.replace(/\D/g, '') || '0', 10),
             },
           })

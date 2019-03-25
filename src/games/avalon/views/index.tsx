@@ -31,7 +31,7 @@ export const AvalonView: React.SFC<{ room: Avalon }> = ({ room }) => {
           const first = shuffle(players)[0]
           const firstPlayer = first.name || first.id
           let message = `${firstPlayer} goes first.`
-          if (room.ladyOfTheLake) {
+          if (room.avalonLadyOfTheLake) {
             message += ` The person to ${firstPlayer}'s right gets to claim lady of the lake.`
           }
 
@@ -39,12 +39,12 @@ export const AvalonView: React.SFC<{ room: Avalon }> = ({ room }) => {
             type: 'avalon-game',
             id: room.id,
             chaos: 0,
-            ladyOfTheLake: room.ladyOfTheLake,
+            ladyOfTheLake: room.avalonLadyOfTheLake,
             nextLadyOfTheLake: null,
             lobbyPlayers: room.lobbyPlayers,
             currentMission: null,
-            players: assignRoles(room.lobbyPlayers, room.roles),
-            roles: room.roles,
+            players: assignRoles(room.lobbyPlayers, room.avalonRoles),
+            roles: room.avalonRoles,
             missionResults: [],
             message,
           })
@@ -69,8 +69,8 @@ export const AvalonView: React.SFC<{ room: Avalon }> = ({ room }) => {
             type: 'avalon-lobby',
             lobbyPlayers: room.lobbyPlayers,
             victoryMessage: null,
-            ladyOfTheLake: room.ladyOfTheLake,
-            roles: room.roles,
+            avalonLadyOfTheLake: room.ladyOfTheLake,
+            avalonRoles: room.roles,
           })
         }}
       />
@@ -93,8 +93,8 @@ export const AvalonView: React.SFC<{ room: Avalon }> = ({ room }) => {
             type: 'avalon-lobby',
             lobbyPlayers: room.lobbyPlayers || [],
             victoryMessage: message || null,
-            ladyOfTheLake: room.ladyOfTheLake,
-            roles: room.roles,
+            avalonLadyOfTheLake: room.ladyOfTheLake,
+            avalonRoles: room.roles,
           })
 
           if (party && room.type === 'avalon-game') {

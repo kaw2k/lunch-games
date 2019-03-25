@@ -25,25 +25,29 @@ export const WerewolfModeratorLobbyArtifacts: React.SFC<Props> = ({
   lobby,
 }) => {
   const classes = useStyles()
+  // const  updateRoom: ((room: Partial<WerewolfLobby>) => void) = React.useContext(RoomContext).updateRoom
   const { updateRoom } = React.useContext(RoomContext)
 
   function addOrRemoveArtifact(type: Artifacts): void {
-    const numberOfArtifactInDeck = count(lobby.artifacts, r => r === type)
+    const numberOfArtifactInDeck = count(
+      lobby.werewolfArtifacts,
+      r => r === type
+    )
 
     if (numberOfArtifactInDeck) {
       updateRoom({
-        artifacts: lobby.artifacts.filter(r => r !== type),
+        werewolfArtifacts: lobby.werewolfArtifacts.filter(r => r !== type),
       })
     } else {
       updateRoom({
-        artifacts: lobby.artifacts.concat(type),
+        werewolfArtifacts: lobby.werewolfArtifacts.concat(type),
       })
     }
   }
 
   function reset() {
     updateRoom({
-      artifacts: [],
+      werewolfArtifacts: [],
     })
   }
 
@@ -62,7 +66,7 @@ export const WerewolfModeratorLobbyArtifacts: React.SFC<Props> = ({
                 text={artifact.title}
                 alignItems="flex-start"
                 className={
-                  count(lobby.artifacts, a => a === artifact.type)
+                  count(lobby.werewolfArtifacts, a => a === artifact.type)
                     ? ''
                     : classes.dim
                 }

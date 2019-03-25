@@ -36,22 +36,22 @@ export const WerewolfModeratorLobbyRoles: React.SFC<Props> = ({ lobby }) => {
 
   function addOrRemoveRole(role: Roles): void {
     const card = getCard(role)
-    const numberOfCardInDeck = count(lobby.roles, r => r === role)
+    const numberOfCardInDeck = count(lobby.werewolfRoles, r => r === role)
 
     if (numberOfCardInDeck + 1 > card.cardCount) {
       updateRoom({
-        roles: lobby.roles.filter(r => r !== role),
+        werewolfRoles: lobby.werewolfRoles.filter(r => r !== role),
       })
     } else {
       updateRoom({
-        roles: lobby.roles.concat(role),
+        werewolfRoles: lobby.werewolfRoles.concat(role),
       })
     }
   }
 
   function reset() {
     updateRoom({
-      roles: [],
+      werewolfRoles: [],
     })
   }
 
@@ -70,13 +70,13 @@ export const WerewolfModeratorLobbyRoles: React.SFC<Props> = ({ lobby }) => {
                 <Profile
                   key={card.role}
                   className={
-                    count(lobby.roles, r => r === card.role) ? '' : classes.dim
+                    count(lobby.werewolfRoles, r => r === card.role) ? '' : classes.dim
                   }
                   text={card.role}
                   image={card.profile}
                   alignItems="flex-start"
                   subtext={`Weight: ${card.weight}, Count: ${count(
-                    lobby.roles,
+                    lobby.werewolfRoles,
                     r => r === card.role
                   )}`}
                   onClick={() => addOrRemoveRole(card.role)}
