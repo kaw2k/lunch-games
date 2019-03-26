@@ -4,6 +4,7 @@ import { Button } from '../../../components/button'
 import { Typography } from '@material-ui/core'
 import { AvalonGameContext } from '../../../helpers/contexts'
 import { ViewRole } from './game/viewRole'
+import { FullScreenNotice } from '../../../components/fullScreenNotice'
 
 interface Props {
   ready: () => void
@@ -14,13 +15,7 @@ export const GameSetup: React.SFC<Props> = ({ ready }) => {
   const [showRole, setShowRole] = React.useState(false)
 
   if (player.ready) {
-    return (
-      <>
-        <Typography align="center" variant="h2">
-          Waiting for game to start...
-        </Typography>
-      </>
-    )
+    return <FullScreenNotice>Waiting for game to start...</FullScreenNotice>
   }
 
   if (!showRole) {
@@ -31,7 +26,7 @@ export const GameSetup: React.SFC<Props> = ({ ready }) => {
         </Typography>
 
         <ActionRow fixed>
-          <Button color="black" onClick={() => setShowRole(true)}>
+          <Button color="green" onClick={() => setShowRole(true)}>
             show role
           </Button>
         </ActionRow>

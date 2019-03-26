@@ -2,43 +2,20 @@ import * as React from 'react'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
 import { PlayerWerewolf } from '../../interfaces/player'
-import { makeStyles } from '@material-ui/styles'
-import { colors, Typography } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import { ClawViewRole } from './clawViewRole'
-import { ArtifactView } from '../artifact/artifactView';
+import { ArtifactView } from '../artifact/artifactView'
+import { FullScreenNotice } from '../../../../components/fullScreenNotice'
 
 interface Props {
   player: PlayerWerewolf
 }
 
-const useStyles = makeStyles({
-  done: {
-    position: 'fixed',
-    top: '1em',
-    bottom: '1em',
-    right: '1em',
-    left: '1em',
-    background: colors.green[400],
-    color: 'white',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: '4px',
-  },
-})
-
 export const SetupRoleContainer: React.SFC<Props> = ({ player, children }) => {
   const [viewRole, setViewRole] = React.useState(false)
-  const classes = useStyles()
 
   if (player.ready) {
-    return (
-      <div className={classes.done}>
-        <Typography variant="h1" color="inherit" align="center">
-          waiting for other players
-        </Typography>
-      </div>
-    )
+    return <FullScreenNotice>Waiting for game to start...</FullScreenNotice>
   }
 
   if (!viewRole) {
@@ -61,9 +38,9 @@ export const SetupRoleContainer: React.SFC<Props> = ({ player, children }) => {
   return (
     <>
       <ClawViewRole />
-      {player.artifacts.map(artifactState =>
-          <ArtifactView player={player} artifactState={artifactState}/>
-        )}
+      {player.artifacts.map(artifactState => (
+        <ArtifactView player={player} artifactState={artifactState} />
+      ))}
       {children}
     </>
   )
