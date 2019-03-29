@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Werewolf } from '../interfaces/game'
+import { Werewolf, WerewolfLobby } from '../interfaces/game'
 import { Room } from '../../../interfaces/room'
 import { WerewolfPlayerGame } from './game/player'
 import { RoomContext, WerewolfGameContext } from '../../../helpers/contexts'
@@ -23,22 +23,20 @@ export const WerewolfView: React.SFC<{ room: Werewolf }> = ({ room }) => {
   const { player, setRoom, updateRoom } = React.useContext(RoomContext)
   const { updatePlayer } = React.useContext(RoomContext)
 
-  function toggleModerator() {
+  function toggleProperty(
+    key: keyof Pick<WerewolfLobby, 'spectators' | 'werewolfModerators'>
+  ) {
     if (room.type === 'werewolf-game') return
 
-    if (room.werewolfModerators.find(
-          pid => pid === player.id
-        )) {
+    if (room[key].find(pid => pid === player.id)) {
       setRoom({
         ...room,
-        werewolfModerators: room.werewolfModerators.filter(
-          pid => pid !== player.id
-        ),
+        [key]: room[key].filter(pid => pid !== player.id),
       })
     } else {
       setRoom({
         ...room,
-        werewolfModerators: room.werewolfModerators.concat(player.id),
+        [key]: room[key].concat(player.id),
       })
     }
   }
@@ -50,12 +48,17 @@ export const WerewolfView: React.SFC<{ room: Werewolf }> = ({ room }) => {
         <WerewolfModeratorLobby
           lobby={room}
           startGame={roles => setRoom(makeGame(roles, room))}
-          toggleModerator={toggleModerator}
+          toggleModerator={() => toggleProperty('werewolfModerators')}
+          toggleSpectator={() => toggleProperty('spectators')}
         />
       )
     } else {
       return (
-        <WerewolfPlayerLobby lobby={room} toggleModerator={toggleModerator} />
+        <WerewolfPlayerLobby
+          lobby={room}
+          toggleSpectator={() => toggleProperty('spectators')}
+          toggleModerator={() => toggleProperty('werewolfModerators')}
+        />
       )
     }
   }
@@ -78,6 +81,7 @@ export const WerewolfView: React.SFC<{ room: Werewolf }> = ({ room }) => {
               id: room.id,
               type: 'werewolf-lobby',
               lobbyPlayers: room.lobbyPlayers || [],
+              spectators: [],
               victoryMessage: message || null,
               werewolfArtifacts: room.initialArtifacts,
               werewolfModerators: room.moderators,
@@ -107,6 +111,7 @@ export const WerewolfView: React.SFC<{ room: Werewolf }> = ({ room }) => {
             type: 'werewolf-lobby',
             lobbyPlayers: room.lobbyPlayers || [],
             victoryMessage: message || null,
+            spectators: [],
             werewolfArtifacts: room.initialArtifacts,
             werewolfModerators: room.moderators,
             werewolfOptions: room.options,

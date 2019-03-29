@@ -5,10 +5,13 @@ import { PlayerWerewolf } from '../interfaces/player'
 import { Roles } from '../interfaces/card/cards'
 import { Artifacts } from '../interfaces/artifact/artifacts'
 import { ArtifactState } from '../interfaces/artifact'
+import { isSpectator } from '../../../helpers/isSpectator'
 
 export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
   const players = shuffle(
-    lobby.lobbyPlayers.filter(p => !isModerator(p, lobby))
+    lobby.lobbyPlayers.filter(
+      p => !(isModerator(p, lobby) && isSpectator(p, lobby))
+    )
   )
   const shuffledRoles = shuffle(roles)
   const shouldHaveArtifact = !!lobby.werewolfArtifacts.length

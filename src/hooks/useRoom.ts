@@ -24,20 +24,17 @@ export function useRoom(
   const { value, error, loading } = useDocument(doc)
   const room = value ? (value.data() as Room) || null : null
 
-  React.useEffect(
-    () => {
-      // If we are not part of the lobby, kick us out
-      if (
-        room &&
-        player &&
-        !room.lobbyPlayers.find(p => p.id === (player as Player).id)
-      ) {
-        local.roomId.set(null)
-        setRoomId(null)
-      }
-    },
-    [loading, room && (room.lobbyPlayers || []).length]
-  )
+  React.useEffect(() => {
+    // If we are not part of the lobby, kick us out
+    if (
+      room &&
+      player &&
+      !room.lobbyPlayers.find(p => p.id === (player as Player).id)
+    ) {
+      local.roomId.set(null)
+      setRoomId(null)
+    }
+  }, [loading, room && (room.lobbyPlayers || []).length])
 
   if (loading) return { loading: true }
   if (error) return { loading: false, error: true }
@@ -68,7 +65,8 @@ export function useRoom(
         const lobby: Lobby = {
           type: 'lobby',
           id: id,
-          lobbyPlayers: []
+          lobbyPlayers: [],
+          spectators: [],
         }
 
         await RoomAPI.set(id, lobby)

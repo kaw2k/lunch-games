@@ -11,6 +11,7 @@ npm start
 
 - Not clear when you are waiting to flip the cards, make the entire screen green
 - Same thing for avalon
+- Add destroying lady of the lake to avalon
 
 ## WEREWOLF
 
@@ -40,6 +41,8 @@ npm start
 
 ### TODO / NB
 
+- Separate games from lobbies, so you can leave a game to modify the next lobby. If a game is going for a specific lobby you have an option to view it
+- Add spectate option in all lobbies
 - Make a isBranded toggle on players to remove their active state
 - Add diseased protection type, this will be a better hold for protections and figuring things out. clean this up after night ends
 - Boogyman also works fine, just set night timers, add in option for after every role
@@ -65,3 +68,6 @@ npm start
 
 - Sometimes people get double artifacts
 - Save seating chart for subsequent games
+
+- I think there is a bug with leprechaun and alpha wolf where multiple conversions happen
+- Add chat feature

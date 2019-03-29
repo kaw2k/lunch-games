@@ -11,10 +11,12 @@ import { WerewolfRules } from '../../rules'
 import '../../../helpers/gameEngine'
 import { isModerator } from '../../../helpers/isModerator'
 import { playerName } from '../../../../../components/playerName'
+import { isSpectator } from '../../../../../helpers/isSpectator'
 
 interface Props {
   lobby: WerewolfLobby
   toggleModerator: () => void
+  toggleSpectator: () => void
 }
 
 enum View {
@@ -25,6 +27,7 @@ enum View {
 export const WerewolfPlayerLobby: React.SFC<Props> = ({
   lobby,
   toggleModerator,
+  toggleSpectator,
 }) => {
   const { kickPlayer, leaveRoom, player } = React.useContext(RoomContext)
   const [view, setView] = React.useState(View.lobby)
@@ -58,7 +61,13 @@ export const WerewolfPlayerLobby: React.SFC<Props> = ({
         <Profile
           key={p.id}
           text={p.name || p.id}
-          subtext={isModerator(p, lobby) ? 'moderator' : ''}
+          subtext={
+            isModerator(p, lobby)
+              ? 'moderator'
+              : isSpectator(p, lobby)
+              ? 'spectating'
+              : ''
+          }
           image={p.profileImg}
           onClick={() =>
             confirm(`Do you want to kick ${playerName(p)}`) && kickPlayer(p)
@@ -66,15 +75,22 @@ export const WerewolfPlayerLobby: React.SFC<Props> = ({
         />
       ))}
 
-      <ActionRow fixed>
+      <ActionRow>
+        {!isModerator(player, lobby) && (
+          <Button onClick={leaveRoom}>leave</Button>
+        )}
+
+        <Button onClick={() => setView(View.rules)}>Rules</Button>
+
+        {!isModerator(player, lobby) && (
+          <Button onClick={toggleSpectator}>
+            {isSpectator(player, lobby) ? 'Stop Spectating' : 'Spectate'}
+          </Button>
+        )}
+
         <Button onClick={toggleModerator}>
           {isModerator(player, lobby) ? 'Stop Moderating' : 'Moderate'}
         </Button>
-      </ActionRow>
-
-      <ActionRow>
-        <Button onClick={leaveRoom}>leave</Button>
-        <Button onClick={() => setView(View.rules)}>Rules</Button>
       </ActionRow>
     </Layout>
   )

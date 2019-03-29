@@ -86,8 +86,8 @@ export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
       <div>
         <Typography variant="h2">Lobby: {lobby.id}</Typography>
         <Typography component="em">
-          You need between 5 and 10 players to play. Click on someone to
-          remove them from the game.
+          You need between 5 and 10 players to play. Click on someone to remove
+          them from the game.
         </Typography>
       </div>
 
@@ -102,9 +102,7 @@ export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
               text={p.name || p.id}
               image={p.profileImg}
               onClick={() =>
-                confirm(`Do you want to kick ${playerName(p)}`) &&
-               
-                kickPlayer(p)
+                confirm(`Do you want to kick ${playerName(p)}`) && kickPlayer(p)
               }
             />
           ))}
@@ -140,9 +138,7 @@ export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
           </label>
           <Button
             onClick={() =>
-             
               updateRoom({ avalonLadyOfTheLake: false, avalonRoles: [] })
-            
             }>
             reset
           </Button>

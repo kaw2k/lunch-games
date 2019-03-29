@@ -67,6 +67,7 @@ export const AvalonView: React.SFC<{ room: Avalon }> = ({ room }) => {
           setRoom({
             id: room.id,
             type: 'avalon-lobby',
+            spectators: [],
             lobbyPlayers: room.lobbyPlayers,
             victoryMessage: null,
             avalonLadyOfTheLake: room.ladyOfTheLake,
@@ -92,6 +93,7 @@ export const AvalonView: React.SFC<{ room: Avalon }> = ({ room }) => {
             id: room.id,
             type: 'avalon-lobby',
             lobbyPlayers: room.lobbyPlayers || [],
+            spectators: [],
             victoryMessage: message || null,
             avalonLadyOfTheLake: room.ladyOfTheLake,
             avalonRoles: room.roles,

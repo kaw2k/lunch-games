@@ -64,6 +64,7 @@ export const SecretHitlerView: React.SFC<{ room: SecretHitler }> = ({
           setRoom({
             id: room.id,
             type: 'secret-hitler-lobby',
+            spectators: [],
             lobbyPlayers: room.lobbyPlayers,
             victoryMessage: null,
           })
@@ -83,6 +84,7 @@ export const SecretHitlerView: React.SFC<{ room: SecretHitler }> = ({
           setRoom({
             id: room.id,
             type: 'secret-hitler-lobby',
+            spectators: [],
             lobbyPlayers: room.lobbyPlayers || [],
             victoryMessage: message || null,
           })

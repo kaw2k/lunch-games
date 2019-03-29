@@ -15,11 +15,13 @@ import { WerewolfModeratorLobbyOptions } from './options'
 import { Roles } from '../../../interfaces/card/cards'
 import { getWeight } from '../../../helpers/getWeight'
 import { isModerator } from '../../../helpers/isModerator'
+import { isSpectator } from '../../../../../helpers/isSpectator'
 
 interface Props {
   lobby: WerewolfLobby
   startGame: (roles: Roles[]) => void
   toggleModerator: () => void
+  toggleSpectator: () => void
 }
 
 enum View {
@@ -47,6 +49,7 @@ export const WerewolfModeratorLobby: React.SFC<Props> = ({
   startGame,
   lobby,
   toggleModerator,
+  toggleSpectator,
 }) => {
   const [view, setView] = React.useState(View.lobby)
   const classes = useStyles()
@@ -55,23 +58,17 @@ export const WerewolfModeratorLobby: React.SFC<Props> = ({
     <div className={classes.root}>
       {view === View.lobby && (
         <WerewolfPlayerLobby
-
-                   lobby={lobby}
-          toggleModerator={
-         toggleModerator}
-       
+          lobby={lobby}
+          toggleSpectator={toggleSpectator}
+          toggleModerator={toggleModerator}
         />
       )}
 
-      {view === View.roles && (
-        <WerewolfModeratorLobbyRoles lobby={lobby} />
-      )}
+      {view === View.roles && <WerewolfModeratorLobbyRoles lobby={lobby} />}
       {view === View.artifacts && (
         <WerewolfModeratorLobbyArtifacts lobby={lobby} />
       )}
-      {view === View.options && (
-        <WerewolfModeratorLobbyOptions lobby={lobby} />
-      )}
+      {view === View.options && <WerewolfModeratorLobbyOptions lobby={lobby} />}
       {view === View.start && (
         <WerewolfModeratorLobbyStart lobby={lobby} startGame={startGame} />
       )}
@@ -86,7 +83,9 @@ export const WerewolfModeratorLobby: React.SFC<Props> = ({
           icon={
             <Badge
               badgeContent={
-                lobby.lobbyPlayers.filter(p => !isModerator(p, lobby)).length
+                lobby.lobbyPlayers.filter(
+                  p => !isModerator(p, lobby) && !isSpectator(p, lobby)
+                ).length
               }>
               <Icon>group</Icon>
             </Badge>
@@ -99,10 +98,7 @@ export const WerewolfModeratorLobby: React.SFC<Props> = ({
             <Badge
               showZero
               color={
-                getWeight(
-                lobby.werewolfRoles
-              ) < 0 ? 'secondary' : 'primary'
-              
+                getWeight(lobby.werewolfRoles) < 0 ? 'secondary' : 'primary'
               }
               badgeContent={`${lobby.werewolfRoles.length}/${getWeight(
                 lobby.werewolfRoles

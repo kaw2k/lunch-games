@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/styles'
 
 export interface Props extends Omit<ButtonProps, 'color' | 'variant'> {
   confirm?: string | boolean
-  color?: 'blue' | 'green' | 'red' | 'teal' | 'black' | null | false
+  color?: 'blue' | 'green' | 'red' | 'teal' | 'black' | 'inherit' | null | false
 }
 
 function makeColor(color: Color) {
@@ -39,6 +39,9 @@ const useStyles = makeStyles(theme => ({
     color: 'black',
     border: '1px solid black',
   },
+  inherit: {
+    color: 'inherit',
+  },
 }))
 
 export const Button: React.SFC<Props> = ({
@@ -67,6 +70,7 @@ export const Button: React.SFC<Props> = ({
         [classes.green]: color === 'green',
         [classes.teal]: color === 'teal',
         [classes.black]: color === 'black',
+        [classes.inherit]: color === 'inherit',
       })}
       onClick={e => {
         if (onClick && confirm && !timer) {

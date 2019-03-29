@@ -12,6 +12,8 @@ import { ActionRow } from '../../../../../components/actionRow'
 import { uniq } from 'ramda'
 import { Roles, getCard } from '../../../interfaces/card/cards'
 import { useCommonStyles } from '../../../../../helpers/commonStyles'
+import { isModerator } from '../../../helpers/isModerator'
+import { isSpectator } from '../../../../../helpers/isSpectator'
 
 interface Props {
   lobby: WerewolfLobby
@@ -41,7 +43,7 @@ export const WerewolfModeratorLobbyStart: React.SFC<Props> = ({
   )
   const weight = getWeight(roles)
   const numberOfPlayers = lobby.lobbyPlayers.filter(
-    p => !lobby.werewolfModerators.find(pid => pid === p.id)
+    p => !isModerator(p, lobby) && !isSpectator(p, lobby)
   ).length
   const numberOfCardsInGame = roles.length
 
