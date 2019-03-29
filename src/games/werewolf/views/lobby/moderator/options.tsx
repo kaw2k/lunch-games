@@ -151,7 +151,7 @@ const Option: React.SFC<{
         checked={!!lobby.werewolfOptions[option]}
         onChange={e => {
           updateRoom({
-            options: {
+            werewolfOptions: {
               ...lobby.werewolfOptions,
               [option]: e.target.checked,
             },
