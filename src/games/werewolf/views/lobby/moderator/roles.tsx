@@ -57,7 +57,7 @@ export const WerewolfModeratorLobbyRoles: React.SFC<Props> = ({ lobby }) => {
 
   return (
     <Layout padded>
-      <Button onClick={reset}>Reset</Button>
+      <Button onClick={reset}>Reset!</Button>
 
       <div>
         {cards.map(([team, cardsInTeam]) => (
@@ -71,9 +71,7 @@ export const WerewolfModeratorLobbyRoles: React.SFC<Props> = ({ lobby }) => {
                   key={card.role}
                   className={
                     count(lobby.werewolfRoles, r => r === card.role)
-
-                         
-                                       ? ''
+                      ? ''
                       : classes.dim
                   }
                   text={card.role}

@@ -75,12 +75,10 @@ export const WerewolfPlayerLobby: React.SFC<Props> = ({
         />
       ))}
 
-      <ActionRow>
+      <ActionRow fixed>
         {!isModerator(player, lobby) && (
           <Button onClick={leaveRoom}>leave</Button>
         )}
-
-        <Button onClick={() => setView(View.rules)}>Rules</Button>
 
         {!isModerator(player, lobby) && (
           <Button onClick={toggleSpectator}>

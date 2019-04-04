@@ -31,6 +31,7 @@ npm start
 
 ### HELP
 
+- Very infrequently you can get into a bad state with secret hitler. I was inspecting the top three cards of the deck, when i pressed done the played cards were different.
 - Scan and process all the cards
   - card.png, circle.png, square.png (or just card and square)
 - Make assets for avalon

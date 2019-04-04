@@ -15,9 +15,42 @@
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="apple-touch-icon" href="./static/icon-180.png" />
     <link rel="icon" sizes="192x192" href="./static/icon-192.png" />
+    <link rel="icon" sizes="512x512" href="./static/icon-512.png" />
+
+    <!-- iPhone Xs Max (1242px x 2688px) -->
+    <link
+      rel="apple-touch-startup-image"
+      media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)"
+      href="./static/icon-1242-2688.png"
+    />
+    <!-- iPhone Xr (828px x 1792px) -->
+    <link
+      rel="apple-touch-startup-image"
+      media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)"
+      href="./static/icon-828-1792.png"
+    />
+    <!-- iPhone X, Xs (1125px x 2436px) -->
+    <link
+      rel="apple-touch-startup-image"
+      media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)"
+      href="./static/icon-1125-2436.png"
+    />
+    <!-- iPhone 8 Plus, 7 Plus, 6s Plus, 6 Plus (1242px x 2208px) -->
+    <link
+      rel="apple-touch-startup-image"
+      media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)"
+      href="./static/icon-1242-2208.png"
+    />
+    <!-- iPhone 8, 7, 6s, 6 (750px x 1334px) -->
+    <link
+      rel="apple-touch-startup-image"
+      media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
+      href="./static/icon-750-1334.png"
+    />
+
+    <meta name="theme-color" content="#fff" />
 
     <link
-      <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
     />
@@ -30,7 +63,10 @@
 
   <body>
     <div id="root"></div>
+
+    <script src="./sw.ts"></script>
     <script src="./index.tsx"></script>
+
     <style>
       #root {
         max-width: 600px;
