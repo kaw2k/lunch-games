@@ -1,6 +1,4 @@
 import * as React from 'react'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
-import { WerewolfProfile } from '../../components/werewolfProfile'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values } from 'ramda'
 import { guard } from '../actions'
@@ -12,6 +10,7 @@ import { NightMessageOrder } from '../nightMessage'
 import { GenericSetupRoleView } from '../../components/setupRole/genericSetupRole'
 import { PromptView } from '../prompt'
 import { CardRole } from '../../../../helpers/id'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 const nightTitle =
   'Bodyguard, wake up! Protect someone, they will not die tonight.'
@@ -22,15 +21,13 @@ const NightView: PromptView = ({ done, prompt }) => {
   return (
     <>
       <NightViewBase prompt={prompt} done={done} title={nightTitle}>
-        <ChoosePlayers
+        <ChooseWerewolfPlayer
           doneText="protect"
-          columns={2}
+          players={values(game.players).filter(p => p.alive)}
           onDone={([target]) => {
-            done([guard({ target })])
+            done([guard({ target: target.id })])
           }}
-          players={values(game.players).filter(p => p.alive)}>
-          {props => <WerewolfProfile key={props.player.id} {...props} />}
-        </ChoosePlayers>
+        />
       </NightViewBase>
     </>
   )

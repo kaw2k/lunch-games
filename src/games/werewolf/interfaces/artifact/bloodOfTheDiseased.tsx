@@ -1,23 +1,22 @@
 import * as React from 'react'
 import { Artifact } from '.'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values } from 'ramda'
 import { passArtifact, updateArtifact } from '../actions'
 import { getArtifact } from './artifacts'
 import { PromptView, ByArtifact } from '../prompt'
 import { ArtifactType } from '../../../../helpers/id'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 const ActivateView: PromptView<ByArtifact> = ({ done, prompt: { player } }) => {
   const { game } = React.useContext(WerewolfGameContext)
   const artifact = getArtifact(BloodOfTheDiseased.type)
 
   return (
-    <ChoosePlayers
+    <ChooseWerewolfPlayer
       title={artifact.title}
       description={artifact.description}
       players={values(game.players).filter(p => p.alive)}
-      columns={2}
       doneText="make diseased"
       onDone={([target]) => {
         done([
@@ -31,7 +30,7 @@ const ActivateView: PromptView<ByArtifact> = ({ done, prompt: { player } }) => {
           passArtifact({
             artifact: BloodOfTheDiseased.type,
             source: player,
-            target,
+            target: target.id,
           }),
         ])
       }}

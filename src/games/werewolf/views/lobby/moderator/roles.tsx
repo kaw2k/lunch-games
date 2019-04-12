@@ -1,37 +1,21 @@
 import * as React from 'react'
 import { Layout } from '../../../../../components/layout'
-import { Typography } from '@material-ui/core'
 import { WerewolfLobby } from '../../../interfaces/game'
-import { Profile } from '../../../../../components/profile'
-import { makeStyles } from '@material-ui/styles'
 import sortBy from 'ramda/es/sortBy'
 import { count } from '../../../../../helpers/count'
 import { RoomContext } from '../../../../../helpers/contexts'
 import { Button } from '../../../../../components/button'
 import { Cards, Roles, getCard } from '../../../interfaces/card/cards'
-import { groupBy, toPairs } from 'ramda'
+import { Grid } from '../../../../../components/grid'
+import { Card } from '../../../../../components/card'
 
 interface Props {
   lobby: WerewolfLobby
 }
 
-const useStyles = makeStyles({
-  profiles: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    '& > *': {
-      width: '50%',
-    },
-  },
-  dim: {
-    opacity: 0.25,
-  },
-})
-
-const cards = toPairs(groupBy(card => card.team, Cards))
+const cards = sortBy(card => -1 * card.weight, Cards)
 
 export const WerewolfModeratorLobbyRoles: React.SFC<Props> = ({ lobby }) => {
-  const classes = useStyles()
   const { updateRoom } = React.useContext(RoomContext)
 
   function addOrRemoveRole(role: Roles): void {
@@ -57,37 +41,20 @@ export const WerewolfModeratorLobbyRoles: React.SFC<Props> = ({ lobby }) => {
 
   return (
     <Layout padded>
-      <Button onClick={reset}>Reset!</Button>
+      <Button onClick={reset}>Reset</Button>
 
-      <div>
-        {cards.map(([team, cardsInTeam]) => (
-          <div key={team}>
-            <Typography variant="h2" gutterBottom>
-              {team}
-            </Typography>
-            <div className={classes.profiles}>
-              {sortBy(card => -1 * card.weight, cardsInTeam).map(card => (
-                <Profile
-                  key={card.role}
-                  className={
-                    count(lobby.werewolfRoles, r => r === card.role)
-                      ? ''
-                      : classes.dim
-                  }
-                  text={card.role}
-                  image={card.profile}
-                  alignItems="flex-start"
-                  subtext={`Weight: ${card.weight}, Count: ${count(
-                    lobby.werewolfRoles,
-                    r => r === card.role
-                  )}`}
-                  onClick={() => addOrRemoveRole(card.role)}
-                />
-              ))}
-            </div>
-          </div>
+      <Grid>
+        {cards.map(card => (
+          <Card
+            key={card.role}
+            selected={count(lobby.werewolfRoles, r => r === card.role)}
+            dim={!count(lobby.werewolfRoles, r => r === card.role)}
+            badge={card.weight}
+            text={card.role}
+            onClick={() => addOrRemoveRole(card.role)}
+          />
         ))}
-      </div>
+      </Grid>
     </Layout>
   )
 }

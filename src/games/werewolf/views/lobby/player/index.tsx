@@ -2,7 +2,6 @@ import * as React from 'react'
 import { Button } from '../../../../../components/button'
 import { Layout } from '../../../../../components/layout'
 import { ActionRow } from '../../../../../components/actionRow'
-import { Profile } from '../../../../../components/profile'
 import { RoomContext } from '../../../../../helpers/contexts'
 import { ChooseGame } from '../../../../../components/chooseGame'
 import { Typography } from '@material-ui/core'
@@ -12,6 +11,8 @@ import '../../../helpers/gameEngine'
 import { isModerator } from '../../../helpers/isModerator'
 import { playerName } from '../../../../../components/playerName'
 import { isSpectator } from '../../../../../helpers/isSpectator'
+import { Grid } from '../../../../../components/grid'
+import { PlayerCard } from '../../../../../components/card/player'
 
 interface Props {
   lobby: WerewolfLobby
@@ -57,23 +58,24 @@ export const WerewolfPlayerLobby: React.SFC<Props> = ({
 
       <ChooseGame />
 
-      {lobby.lobbyPlayers.map(p => (
-        <Profile
-          key={p.id}
-          text={p.name || p.id}
-          subtext={
-            isModerator(p, lobby)
-              ? 'moderator'
-              : isSpectator(p, lobby)
-              ? 'spectating'
-              : ''
-          }
-          image={p.profileImg}
-          onClick={() =>
-            confirm(`Do you want to kick ${playerName(p)}`) && kickPlayer(p)
-          }
-        />
-      ))}
+      <Grid>
+        {lobby.lobbyPlayers.map(p => (
+          <PlayerCard
+            key={p.id}
+            player={p}
+            badge={
+              isModerator(p, lobby)
+                ? 'school'
+                : isSpectator(p, lobby)
+                ? 'search'
+                : false
+            }
+            onClick={() =>
+              confirm(`Do you want to kick ${playerName(p)}`) && kickPlayer(p)
+            }
+          />
+        ))}
+      </Grid>
 
       <ActionRow fixed>
         {!isModerator(player, lobby) && (

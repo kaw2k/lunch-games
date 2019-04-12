@@ -72,3 +72,8 @@ npm start
 
 - I think there is a bug with leprechaun and alpha wolf where multiple conversions happen
 - Add chat feature
+
+- Make a better grid interface for selecting people
+- Unify all of the ways players are selected in werewolf
+
+Change revealer to target any bad roles

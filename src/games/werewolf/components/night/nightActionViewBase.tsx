@@ -94,6 +94,14 @@ export const NightViewBase: React.SFC<Props> = ({
     )
   }
 
+  let names = ''
+  if (prompt.type === 'by role' && prompt.player) {
+    names = playerName(prompt.player, game)
+  }
+  if (prompt.type === 'by team' && prompt.players.length) {
+    names = prompt.players.map(id => playerName(id, game)).join(', ')
+  }
+
   return (
     <>
       <Typography gutterBottom variant="h2">
@@ -102,6 +110,13 @@ export const NightViewBase: React.SFC<Props> = ({
 
         {(prompt.type === 'by role' || prompt.type === 'by team') && title}
       </Typography>
+
+      {isModerator(player, game) && names && (
+        <Typography gutterBottom component="em">
+          SECRET: {names}
+        </Typography>
+      )}
+
       {!!game.options.nightTimeLimit && (
         <Typography gutterBottom variant="h2">
           {time.message}

@@ -1,6 +1,5 @@
 import * as React from 'react'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
-import { WerewolfProfile } from '../../components/werewolfProfile'
+import { WerewolfPlayerCard } from '../../components/werewolfPlayerCard'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { Typography } from '@material-ui/core'
 import { updatePlayer, werewolfKill, leprechaunDiversion } from '../actions'
@@ -16,6 +15,7 @@ import { getNeighbor } from '../../helpers/neighbors'
 import { PlayerId } from '../../../../interfaces/player'
 import contains from 'ramda/es/contains'
 import { CardRole } from '../../../../helpers/id'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 type WerewolfKill = ReturnType<typeof werewolfKill>
 
@@ -63,32 +63,29 @@ const NightView: PromptView = ({ done, prompt }) => {
             Here are the players the werewolves' attacked. You may only select
             other players besides yourself who you have not defended before.
           </Typography>
-          <ChoosePlayers
-            players={werewolfAttacks.map(
-              action => game.players[action.target]
-            )}
+          <ChooseWerewolfPlayer
+            players={werewolfAttacks.map(action => game.players[action.target])}
             cancelText="no one i guess"
             onCancel={() => done([])}
             doneText="choose player"
-            onDone={([target]) => setDivertTarget(target)}>
-            {props => (
-              <WerewolfProfile
-                key={props.player.id}
+            onDone={([target]) => setDivertTarget(target.id)}
+            renderPlayer={({ item, ...props }) => (
+              <WerewolfPlayerCard
                 {...props}
+                key={item.id}
+                player={item}
                 disabled={
-                  (!game.options.luckyLeprechaun &&
-                    props.player.id === playerId) ||
-                  contains(props.player.id, previouslyDivertedPlayers)
+                  (!game.options.luckyLeprechaun && item.id === playerId) ||
+                  contains(item.id, previouslyDivertedPlayers)
                 }
               />
             )}
-          </ChoosePlayers>
+          />
         </>
       )}
 
       {divertTarget && (
-        <ChoosePlayers
-          columns={2}
+        <ChooseWerewolfPlayer
           players={alternateTargets.map(pid => game.players[pid])}
           cancelText="cancel"
           onCancel={() => setDivertTarget(null)}
@@ -120,18 +117,19 @@ const NightView: PromptView = ({ done, prompt }) => {
               }),
               leprechaunDiversion({
                 actionId: action.id,
-                target: target,
+                target: target.id,
               }),
             ])
-          }}>
-          {props => (
-            <WerewolfProfile
-              key={props.player.id}
+          }}
+          renderPlayer={({ item, ...props }) => (
+            <WerewolfPlayerCard
               {...props}
-              disabled={props.player.id === playerId}
+              key={item.id}
+              player={item}
+              disabled={item.id === playerId}
             />
           )}
-        </ChoosePlayers>
+        />
       )}
     </NightViewBase>
   )

@@ -5,14 +5,13 @@ import { getArtifact } from './artifacts'
 import { PromptView, ByArtifact } from '../prompt'
 import { Typography } from '@material-ui/core'
 import { values } from 'ramda'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
-import { WerewolfProfile } from '../../components/werewolfProfile'
 import { PlayerId } from '../../../../interfaces/player'
 import { playerName } from '../../../../components/playerName'
 import { ArtifactView } from '../../components/artifact/artifactView'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
 import { ArtifactType } from '../../../../helpers/id'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 const ActivateView: PromptView<ByArtifact> = ({
   done,
@@ -23,7 +22,9 @@ const ActivateView: PromptView<ByArtifact> = ({
   const artifact = getArtifact(artifactState.type)
 
   const playersWithUnusedArtifacts = values(game.players).filter(p => {
-    return !!p.artifacts.find(a => a.activated === 'unplayed')
+    return (
+      !!p.artifacts.find(a => a.activated === 'unplayed') && p.id !== playerId
+    )
   })
 
   if (selectedPlayers.length) {
@@ -60,18 +61,15 @@ const ActivateView: PromptView<ByArtifact> = ({
   }
 
   return (
-    <ChoosePlayers
+    <ChooseWerewolfPlayer
       title={artifact.title}
       description={artifact.description}
-      removePlayer={game.players[playerId]}
       players={playersWithUnusedArtifacts}
-      columns={2}
       numToSelect={2}
       notExact
       doneText="choose players"
-      onDone={targets => setSelectedPlayers(targets)}>
-      {props => <WerewolfProfile key={props.player.id} {...props} />}
-    </ChoosePlayers>
+      onDone={targets => setSelectedPlayers(targets.map(p => p.id))}
+    />
   )
 }
 

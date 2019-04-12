@@ -8,12 +8,11 @@ import { isWerewolf } from '../../helpers/isWerewolf'
 import { NightMessageOrder } from '../nightMessage'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { NightViewBase } from '../../components/night/nightActionViewBase'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
-import { WerewolfProfile } from '../../components/werewolfProfile'
 import { chewksKill } from '../actions'
 import { NoNightActionView } from '../../components/night/noNightActionView'
 import { PromptView } from '../prompt'
 import { CardRole } from '../../../../helpers/id'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 const title = 'Chewks, wake up and kill someone.'
 const description =
@@ -31,17 +30,13 @@ const NightModerator: PromptView = ({ done, prompt }) => {
 
   return (
     <NightViewBase done={done} prompt={prompt} title={title}>
-      <ChoosePlayers
+      <ChooseWerewolfPlayer
         doneText="kill"
-        columns={2}
         onDone={targets => {
-          done(targets.map(target => chewksKill({ target })))
+          done(targets.map(target => chewksKill({ target: target.id })))
         }}
-        players={values(game.players).filter(p => p.alive)}>
-        {profileProps => (
-          <WerewolfProfile {...profileProps} key={profileProps.player.id} />
-        )}
-      </ChoosePlayers>
+        players={values(game.players).filter(p => p.alive)}
+      />
     </NightViewBase>
   )
 }

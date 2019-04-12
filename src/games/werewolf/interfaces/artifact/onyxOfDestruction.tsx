@@ -2,7 +2,6 @@ import { Artifact } from '.'
 import React, { useState } from 'react'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { getArtifact } from './artifacts'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { values } from 'ramda'
 import { PlayerId } from '../../../../interfaces/player'
 import { Typography } from '@material-ui/core'
@@ -10,7 +9,8 @@ import { destroyArtifact } from '../actions'
 import { PromptView, ByArtifact } from '../prompt'
 import { ArtifactType } from '../../../../helpers/id'
 import { ArtifactView } from '../../components/artifact/artifactView'
-import { playerName } from '../../../../components/playerName';
+import { playerName } from '../../../../components/playerName'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 const ActivateView: PromptView<ByArtifact> = ({ done }) => {
   const { game } = React.useContext(WerewolfGameContext)
@@ -46,7 +46,7 @@ const ActivateView: PromptView<ByArtifact> = ({ done }) => {
   }
 
   return (
-    <ChoosePlayers
+    <ChooseWerewolfPlayer
       title={artifact.title}
       description={artifact.description}
       players={values(game.players).filter(
@@ -55,9 +55,8 @@ const ActivateView: PromptView<ByArtifact> = ({ done }) => {
             a => a.activated !== 'played' && a.activated !== 'playing'
           ).length
       )}
-      columns={2}
       doneText="select player"
-      onDone={([target]) => setPid(target)}
+      onDone={([target]) => setPid(target.id)}
     />
   )
 }

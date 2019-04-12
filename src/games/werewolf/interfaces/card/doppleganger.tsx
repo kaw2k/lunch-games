@@ -1,14 +1,14 @@
-import { always } from 'ramda'
+import { always, values } from 'ramda'
 import { Card } from '.'
 import { Emoji } from '../emoji'
 import * as React from 'react'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { Typography } from '@material-ui/core'
 import { ViewRole } from '../../components/viewRole/role'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { copyPlayer } from '../actions'
 import { SetupViewProps } from '../setupViewInterfaces'
 import { CardRole } from '../../../../helpers/id'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 export const SetupView: React.SFC<SetupViewProps> = ({ ready }) => {
   const { player, game } = React.useContext(WerewolfGameContext)
@@ -21,13 +21,11 @@ export const SetupView: React.SFC<SetupViewProps> = ({ ready }) => {
         Choose a person, when they die you get their role. It will be visible to
         you in your role tab.
       </Typography>
-      <ChoosePlayers
-        players={game.players}
-        removePlayer
+      <ChooseWerewolfPlayer
+        players={values(game.players).filter(p => p.id !== player.id)}
         doneText="ready"
-        columns={2}
         onDone={([target]) =>
-          ready([copyPlayer({ target, source: player.id })])
+          ready([copyPlayer({ target: target.id, source: player.id })])
         }
         doneProps={disabled => ({
           color: disabled ? 'red' : 'green',

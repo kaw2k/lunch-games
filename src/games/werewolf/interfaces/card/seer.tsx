@@ -1,6 +1,4 @@
 import * as React from 'react'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
-import { WerewolfProfile } from '../../components/werewolfProfile'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values } from 'ramda'
 import { NightViewBase } from '../../components/night/nightActionViewBase'
@@ -13,6 +11,7 @@ import { NoNightActionView } from '../../components/night/noNightActionView'
 import { getCard } from './cards'
 import { PromptView } from '../prompt'
 import { CardRole } from '../../../../helpers/id'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 const title = 'Seer, wake up! Inspect someone!'
 
@@ -28,11 +27,9 @@ const NightView: PromptView = ({ done, prompt }) => {
 
   return (
     <NightViewBase prompt={prompt} title={title} done={done}>
-      <ChoosePlayers
-        columns={2}
+      <ChooseWerewolfPlayer
         doneText="inspect"
-        onDone={([targetId]) => {
-          const target = game.players[targetId]
+        onDone={([target]) => {
           const isPrimaryBad = getCard(target.role).appearsBad(target, game)
           const isSecondaryBad = !target.secondaryRole
             ? false
@@ -42,9 +39,8 @@ const NightView: PromptView = ({ done, prompt }) => {
           alert(`${target.name || target.id} is ${isBad ? 'bad' : 'good'}`)
           done([])
         }}
-        players={values(game.players).filter(p => p.alive)}>
-        {props => <WerewolfProfile key={props.player.id} {...props} />}
-      </ChoosePlayers>
+        players={values(game.players).filter(p => p.alive)}
+      />
     </NightViewBase>
   )
 }

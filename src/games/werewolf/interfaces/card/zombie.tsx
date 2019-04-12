@@ -1,6 +1,4 @@
 import * as React from 'react'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
-import { WerewolfProfile } from '../../components/werewolfProfile'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values } from 'ramda'
 import { eatBrains, showPrompts } from '../actions'
@@ -14,6 +12,7 @@ import { NoNightActionView } from '../../components/night/noNightActionView'
 import { PromptView, ByMessage } from '../prompt'
 import { playerName } from '../../../../components/playerName'
 import { CardRole } from '../../../../helpers/id'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 const nightTitle = `Zombie, wake up!`
 const description = `You may eat someones brains, they will no longer be able to vote.`
@@ -31,28 +30,27 @@ const NightView: PromptView = ({ done, prompt }) => {
   return (
     <>
       <NightViewBase done={done} title={nightTitle} prompt={prompt}>
-        <ChoosePlayers
-          removePlayer={player}
+        <ChooseWerewolfPlayer
           description={description}
           doneText="eat their brains"
+          players={values(game.players).filter(
+            p => !p.areBrainsEaten && p.id !== player.id
+          )}
           onDone={([target]) => {
             done([
-              eatBrains({ target }),
+              eatBrains({ target: target.id }),
               showPrompts({
                 prompts: [
                   ByMessage({
                     message: `${playerName(
-                      target,
-                      game
+                      target
                     )} has had their brains eaten. They may no longer vote.`,
                   }),
                 ],
               }),
             ])
           }}
-          players={values(game.players).filter(p => !p.areBrainsEaten)}>
-          {props => <WerewolfProfile key={props.player.id} {...props} />}
-        </ChoosePlayers>
+        />
       </NightViewBase>
     </>
   )

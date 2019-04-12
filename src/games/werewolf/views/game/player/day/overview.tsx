@@ -1,33 +1,31 @@
 import * as React from 'react'
 import { WerewolfGameContext } from '../../../../../../helpers/contexts'
 import values from 'ramda/es/values'
-import { WerewolfProfile } from '../../../../components/werewolfProfile'
+import { WerewolfPlayerCard } from '../../../../components/werewolfPlayerCard'
 import { sortBy } from 'ramda'
-import { useCommonStyles } from '../../../../../../helpers/commonStyles'
 import { Typography } from '@material-ui/core'
 import { getCard } from '../../../../interfaces/card/cards'
 import { count } from '../../../../../../helpers/count'
 import { Profile } from '../../../../../../components/profile'
 import { getArtifact } from '../../../../interfaces/artifact/artifacts'
 import uniq from 'ramda/es/uniq'
+import { Grid } from '../../../../../../components/grid'
 
 export const WerewolfPlayerDayOverview: React.SFC = ({}) => {
   const { game } = React.useContext(WerewolfGameContext)
-  const classes = useCommonStyles()
 
   return (
     <>
-      <div className={classes.twoColumns}>
+      <Grid>
         {sortBy(p => !p.alive, values(game.players)).map(player => (
-          <WerewolfProfile
-            alignItems="flex-start"
+          <WerewolfPlayerCard
             showRole={!game.options.noFlip && !player.alive}
             showLiving
             key={player.id}
             player={player}
           />
         ))}
-      </div>
+      </Grid>
 
       <Typography variant="h2">Possible Roles</Typography>
       <Typography gutterBottom component="em">

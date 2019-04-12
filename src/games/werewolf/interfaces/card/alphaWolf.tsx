@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values } from 'ramda'
 import { werewolfKill, updatePlayer } from '../actions'
@@ -16,6 +15,7 @@ import { Button } from '../../../../components/button'
 import { Typography } from '@material-ui/core'
 import { NoNightActionView } from '../../components/night/noNightActionView'
 import { CardRole } from '../../../../helpers/id'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 type WerewolfKill = ReturnType<typeof werewolfKill>
 
@@ -65,7 +65,7 @@ const NightView: PromptView = ({ done, prompt }) => {
       )}
 
       {canConvertSomeone && (
-        <ChoosePlayers
+        <ChooseWerewolfPlayer
           description="These are the players the werewolves are trying to kill. If the player you choose would get killed, they are instead converted to a werewolf. Otherwise you can try again tomorrow night. "
           players={convertiblePlayers.map(a => game.players[a.target])}
           cancelText="continue"
@@ -74,7 +74,7 @@ const NightView: PromptView = ({ done, prompt }) => {
           onDone={([target]) => {
             done([
               updatePlayer({
-                target,
+                target: target.id,
                 updates: {
                   markedByAlphaWolf: true,
                 },

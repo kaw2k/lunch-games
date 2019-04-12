@@ -1,6 +1,4 @@
 import * as React from 'react'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
-import { WerewolfProfile } from '../../components/werewolfProfile'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values } from 'ramda'
 import { Typography } from '@material-ui/core'
@@ -16,6 +14,7 @@ import { GenericSetupRoleView } from '../../components/setupRole/genericSetupRol
 import { NoNightActionView } from '../../components/night/noNightActionView'
 import { PromptView } from '../prompt'
 import { CardRole } from '../../../../helpers/id'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 const title =
   'Huntress, wake up! Once per game you may point at someone to kill them.'
@@ -49,31 +48,28 @@ const NightView: PromptView = ({ done, prompt }) => {
       )}
 
       {!hasUsedPower && (
-        <>
-          <ChoosePlayers
-            columns={2}
-            doneText="kill"
-            removePlayer={player}
-            players={values(game.players).filter(p => p.alive)}
-            cancelText="no thx"
-            onCancel={() => done([])}
-            onDone={([target]) => {
-              done([
-                linkKill({ target }),
-                updatePlayer({
-                  target: player.id,
-                  updates: {
-                    state: {
-                      ...player.state,
-                      huntress: true,
-                    },
+        <ChooseWerewolfPlayer
+          doneText="kill"
+          players={values(game.players).filter(
+            p => p.alive && p.id !== player.id
+          )}
+          cancelText="no thx"
+          onCancel={() => done([])}
+          onDone={([target]) => {
+            done([
+              linkKill({ target: target.id }),
+              updatePlayer({
+                target: player.id,
+                updates: {
+                  state: {
+                    ...player.state,
+                    huntress: true,
                   },
-                }),
-              ])
-            }}>
-            {props => <WerewolfProfile key={props.player.id} {...props} />}
-          </ChoosePlayers>
-        </>
+                },
+              }),
+            ])
+          }}
+        />
       )}
     </NightViewBase>
   )

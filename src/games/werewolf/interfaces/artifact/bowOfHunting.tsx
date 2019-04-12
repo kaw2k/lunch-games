@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { Artifact } from '.'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values } from 'ramda'
 import {
@@ -12,6 +11,7 @@ import {
 import { getArtifact } from './artifacts'
 import { PromptView, ByArtifact } from '../prompt'
 import { ArtifactType } from '../../../../helpers/id'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 const ActivateView: PromptView<ByArtifact> = ({
   done,
@@ -23,26 +23,23 @@ const ActivateView: PromptView<ByArtifact> = ({
 
   if (hasBeenPassed) {
     return (
-      <ChoosePlayers
+      <ChooseWerewolfPlayer
         title={artifact.title}
         description="You get to kill someone"
         players={values(game.players).filter(p => p.alive)}
-        columns={2}
         doneText="kill with bow"
         onDone={([target]) => {
-          done([artifactKill({ target }), showPrompts({})])
+          done([artifactKill({ target: target.id }), showPrompts({})])
         }}
       />
     )
   }
 
   return (
-    <ChoosePlayers
+    <ChooseWerewolfPlayer
       title={artifact.title}
       description={artifact.description}
-      removePlayer={game.players[playerId]}
-      players={values(game.players).filter(p => p.alive)}
-      columns={2}
+      players={values(game.players).filter(p => p.alive && p.id !== playerId)}
       doneText="Give Bow"
       onDone={([target]) => {
         done([
@@ -57,7 +54,7 @@ const ActivateView: PromptView<ByArtifact> = ({
           passArtifact({
             artifact: artifactState.type,
             source: playerId,
-            target,
+            target: target.id,
           }),
         ])
       }}

@@ -3,10 +3,10 @@ import { Artifact } from '.'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { getArtifact } from './artifacts'
 import { artifactKill, addDelayedAction } from '../actions'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { values } from 'ramda'
 import { PromptView, ByArtifact } from '../prompt'
 import { ArtifactType } from '../../../../helpers/id'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 const ActivateView: PromptView<ByArtifact> = ({
   done,
@@ -16,18 +16,17 @@ const ActivateView: PromptView<ByArtifact> = ({
   const artifact = getArtifact(artifactState.type)
 
   return (
-    <ChoosePlayers
+    <ChooseWerewolfPlayer
       title={artifact.title}
       description={artifact.description}
       players={values(game.players).filter(p => p.alive)}
-      columns={2}
       doneText="kill eventually"
       onDone={([target]) => {
         done([
           addDelayedAction({
             delayedAction: {
               action: artifactKill({
-                target,
+                target: target.id,
               }),
               day: game.day + 1,
               time: 'night',

@@ -1,12 +1,12 @@
 import * as React from 'react'
 import { Artifact } from '.'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values } from 'ramda'
 import { getArtifact } from './artifacts'
 import { PromptView, ByArtifact } from '../prompt'
 import { playerName } from '../../../../components/playerName'
 import { ArtifactType } from '../../../../helpers/id'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 const ActivateView: PromptView<ByArtifact> = ({
   done,
@@ -16,15 +16,13 @@ const ActivateView: PromptView<ByArtifact> = ({
   const artifact = getArtifact(artifactState.type)
 
   return (
-    <ChoosePlayers
+    <ChooseWerewolfPlayer
       title={artifact.title}
       description={artifact.description}
-      removePlayer={game.players[playerId]}
-      players={values(game.players).filter(p => p.alive)}
-      columns={2}
+      players={values(game.players).filter(p => p.alive && p.id !== playerId)}
       doneText="view role"
       onDone={([target]) => {
-        const targetPlayer = game.players[target]
+        const targetPlayer = game.players[target.id]
         alert(`${playerName(targetPlayer)} is the ${targetPlayer.role}`)
         done([])
       }}

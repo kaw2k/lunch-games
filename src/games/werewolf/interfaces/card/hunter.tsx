@@ -4,13 +4,13 @@ import { Card } from '.'
 import { Emoji } from '../emoji'
 import { GenericSetupRoleView } from '../../components/setupRole/genericSetupRole'
 import { PromptView } from '../prompt'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import values from 'ramda/es/values'
 import { NoNightActionView } from '../../components/night/noNightActionView'
 import { linkKill } from '../actions'
 import { Typography } from '@material-ui/core'
 import { CardRole } from '../../../../helpers/id'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 const OnDeathView: PromptView = ({ prompt, done }) => {
   const { game } = React.useContext(WerewolfGameContext)
@@ -29,13 +29,12 @@ const OnDeathView: PromptView = ({ prompt, done }) => {
   }
 
   return (
-    <ChoosePlayers
+    <ChooseWerewolfPlayer
       title="Who would you like to kill?"
       doneText="kill"
-      removePlayer={game.players[player]}
-      players={values(game.players).filter(p => p.alive)}
+      players={values(game.players).filter(p => p.alive && p.id !== player)}
       onDone={([target]) => {
-        done([linkKill({ target })])
+        done([linkKill({ target: target.id })])
       }}
     />
   )

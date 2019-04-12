@@ -1,6 +1,4 @@
 import * as React from 'react'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
-import { WerewolfProfile } from '../../components/werewolfProfile'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values } from 'ramda'
 import { NightViewBase } from '../../components/night/nightActionViewBase'
@@ -16,6 +14,7 @@ import { playerName } from '../../../../components/playerName'
 import { CardRole } from '../../../../helpers/id'
 import { Werewolf } from './werewolf'
 import { Villager } from './villager'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 const title = 'Aura Seer, wake up!'
 const description =
@@ -33,12 +32,11 @@ const NightView: PromptView = ({ done, prompt }) => {
 
   return (
     <NightViewBase prompt={prompt} title={title} done={done}>
-      <ChoosePlayers
+      <ChooseWerewolfPlayer
         description={description}
-        columns={2}
         doneText="inspect"
-        onDone={([targetId]) => {
-          const target = game.players[targetId]
+        players={values(game.players).filter(p => p.alive)}
+        onDone={([target]) => {
           const isWerewolf = isRole(target, Werewolf.role)
           const isVillager = isRole(target, Villager.role)
 
@@ -49,9 +47,7 @@ const NightView: PromptView = ({ done, prompt }) => {
           )
           done([])
         }}
-        players={values(game.players).filter(p => p.alive)}>
-        {props => <WerewolfProfile key={props.player.id} {...props} />}
-      </ChoosePlayers>
+      />
     </NightViewBase>
   )
 }

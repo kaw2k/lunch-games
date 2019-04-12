@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { WerewolfGameContext } from '../../../../../helpers/contexts'
 import values from 'ramda/es/values'
-import { WerewolfProfile } from '../../../components/werewolfProfile'
+import { WerewolfPlayerCard } from '../../../components/werewolfPlayerCard'
 import { useCommonStyles } from '../../../../../helpers/commonStyles'
 import { sortBy } from 'ramda'
 
@@ -15,8 +15,7 @@ export const WerewolfSpectateGame: React.SFC<Props> = ({}) => {
     <>
       <div className={classes.twoColumns}>
         {sortBy(p => !p.alive, values(game.players)).map(player => (
-          <WerewolfProfile
-            alignItems="flex-start"
+          <WerewolfPlayerCard
             showRole
             showLiving
             key={player.id}

@@ -1,14 +1,14 @@
-import { always } from 'ramda'
+import { always, values } from 'ramda'
 import { Card } from '.'
 import { Emoji } from '../emoji'
 import * as React from 'react'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { Typography } from '@material-ui/core'
 import { ViewRole } from '../../components/viewRole/role'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { linkPlayer } from '../actions'
 import { SetupViewProps } from '../setupViewInterfaces'
 import { CardRole } from '../../../../helpers/id'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 const SetupRoleView: React.SFC<SetupViewProps> = ({ ready }) => {
   const { player, game } = React.useContext(WerewolfGameContext)
@@ -21,16 +21,14 @@ const SetupRoleView: React.SFC<SetupViewProps> = ({ ready }) => {
         Cupid links two people together. When one of them dies, the other dies
         as well.
       </Typography>
-      <ChoosePlayers
-        players={game.players}
-        removePlayer
+      <ChooseWerewolfPlayer
+        players={values(game.players).filter(p => p.id !== player.id)}
         doneText="match make"
-        columns={2}
         numToSelect={2}
         onDone={([one, two]) =>
           ready([
-            linkPlayer({ target: one, source: two }),
-            linkPlayer({ target: two, source: one }),
+            linkPlayer({ target: one.id, source: two.id }),
+            linkPlayer({ target: two.id, source: one.id }),
           ])
         }
         doneProps={disabled => ({

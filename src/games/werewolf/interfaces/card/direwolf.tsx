@@ -7,8 +7,8 @@ import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { ViewRole } from '../../components/viewRole/role'
 import { ViewAllies } from '../../components/viewRole/allies'
 import { isWerewolf } from '../../helpers/isWerewolf'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { CardRole } from '../../../../helpers/id'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 const SetupRoleView: React.SFC<{
   ready: (actions: Actions[]) => void
@@ -25,15 +25,13 @@ const SetupRoleView: React.SFC<{
         )}
       />
 
-      <ChoosePlayers
+      <ChooseWerewolfPlayer
         title="Choose your link"
         description="When this person dies, so do you. You probably don't wan to choose another werewolf."
-        players={game.players}
-        removePlayer={player}
+        players={values(game.players).filter(p => p.id !== player.id)}
         doneText="ready"
-        columns={2}
         onDone={([target]) =>
-          ready([linkPlayer({ target: player.id, source: target })])
+          ready([linkPlayer({ target: player.id, source: target.id })])
         }
         doneProps={disabled => ({
           color: disabled ? 'red' : 'green',

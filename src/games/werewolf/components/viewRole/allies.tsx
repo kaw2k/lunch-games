@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Typography } from '@material-ui/core'
 import { PlayerWerewolf } from '../../interfaces/player'
-import { WerewolfProfile } from '../werewolfProfile'
+import { WerewolfPlayerCard } from '../werewolfPlayerCard'
 
 interface Props {
   allies: PlayerWerewolf[]
@@ -15,7 +15,7 @@ export const ViewAllies: React.SFC<Props> = ({ allies, showRole }) => {
     <>
       <Typography variant="h1">Allies</Typography>
       {allies.map(player => (
-        <WerewolfProfile
+        <WerewolfPlayerCard
           showLiving
           showRole={showRole}
           player={player}

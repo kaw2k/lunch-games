@@ -1,9 +1,7 @@
 import * as React from 'react'
-import cx from 'classnames'
 import { Layout } from '../../../../../components/layout'
 import { Typography } from '@material-ui/core'
 import { WerewolfLobby } from '../../../interfaces/game'
-import { Profile } from '../../../../../components/profile'
 import sortBy from 'ramda/es/sortBy'
 import { count } from '../../../../../helpers/count'
 import { getWeight } from '../../../helpers/getWeight'
@@ -11,9 +9,10 @@ import { Button } from '../../../../../components/button'
 import { ActionRow } from '../../../../../components/actionRow'
 import { uniq } from 'ramda'
 import { Roles, getCard } from '../../../interfaces/card/cards'
-import { useCommonStyles } from '../../../../../helpers/commonStyles'
 import { isModerator } from '../../../helpers/isModerator'
 import { isSpectator } from '../../../../../helpers/isSpectator'
+import { Grid } from '../../../../../components/grid'
+import { Card } from '../../../../../components/card'
 
 interface Props {
   lobby: WerewolfLobby
@@ -24,7 +23,6 @@ export const WerewolfModeratorLobbyStart: React.SFC<Props> = ({
   lobby,
   startGame,
 }) => {
-  const classes = useCommonStyles()
   const [roles, setRoles] = React.useState(lobby.werewolfRoles)
 
   function addOrRemoveRole(role: Roles): void {
@@ -59,22 +57,20 @@ export const WerewolfModeratorLobbyStart: React.SFC<Props> = ({
         </Typography>
       </div>
 
-      <div className={classes.twoColumns}>
+      <Grid>
         {cards.map(card => {
           const numCard = count(roles, r => r === card.role)
           return (
-            <Profile
+            <Card
               key={card.role}
               text={card.role}
-              image={card.profile}
-              className={cx({ [classes.dim]: !numCard })}
-              alignItems="flex-start"
-              subtext={`Weight: ${card.weight}, Count: ${numCard}`}
+              dim={!numCard}
+              selected={numCard}
               onClick={() => addOrRemoveRole(card.role)}
             />
           )
         })}
-      </div>
+      </Grid>
 
       <ActionRow>
         <Button

@@ -1,6 +1,5 @@
 import * as React from 'react'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
-import { WerewolfProfile } from '../../components/werewolfProfile'
+import { WerewolfPlayerCard } from '../../components/werewolfPlayerCard'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values, all } from 'ramda'
 import { werewolfKill } from '../actions'
@@ -22,6 +21,7 @@ import { Button } from '../../../../components/button'
 import { Typography } from '@material-ui/core'
 import { CardRole } from '../../../../helpers/id'
 import { FruitBrute } from './fruitBrute'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 const title = 'Werewolves, wake up and kill people'
 
@@ -66,28 +66,24 @@ const NightModerator: PromptView = ({ done, prompt }) => {
 
   return (
     <NightViewBase done={done} prompt={prompt} title={title}>
-      <ChoosePlayers
+      <ChooseWerewolfPlayer
         doneText="kill"
         description={`You get to kill ${game.numberOfPeopleToKill} people`}
-        columns={2}
         notExact
         numToSelect={game.numberOfPeopleToKill}
         onDone={targets => {
-          done(targets.map(target => werewolfKill({ target })))
+          done(targets.map(target => werewolfKill({ target: target.id })))
         }}
-        players={values(game.players).filter(p => p.alive)}>
-        {profileProps => (
-          <WerewolfProfile
-            {...profileProps}
-            key={profileProps.player.id}
-            profileText={getVotesForPlayer(
-              profileProps.player,
-              prompt.players,
-              game
-            )}
+        players={values(game.players).filter(p => p.alive)}
+        renderPlayer={({ item, ...props }) => (
+          <WerewolfPlayerCard
+            {...props}
+            player={item}
+            key={item.id}
+            badge={getVotesForPlayer(item, prompt.players, game)}
           />
         )}
-      </ChoosePlayers>
+      />
     </NightViewBase>
   )
 }
@@ -140,9 +136,8 @@ const NightPlayer: PromptView = ({ done, prompt }) => {
 
   return (
     <NightViewBase done={done} prompt={prompt} title={title}>
-      <ChoosePlayers
+      <ChooseWerewolfPlayer
         doneText="kill"
-        columns={2}
         disabled={disabled}
         notExact
         numToSelect={game.numberOfPeopleToKill}
@@ -152,26 +147,23 @@ const NightPlayer: PromptView = ({ done, prompt }) => {
             ...player,
             state: {
               ...player.state,
-              werewolf: players,
+              werewolf: players.map(p => p.id),
             },
           })
         }}
         onDone={targets => {
-          done(targets.map(target => werewolfKill({ target })))
+          done(targets.map(target => werewolfKill({ target: target.id })))
         }}
-        players={values(game.players).filter(p => p.alive)}>
-        {profileProps => (
-          <WerewolfProfile
-            {...profileProps}
-            key={profileProps.player.id}
-            profileText={getVotesForPlayer(
-              profileProps.player,
-              prompt.players,
-              game
-            )}
+        players={values(game.players).filter(p => p.alive)}
+        renderPlayer={({ item, ...props }) => (
+          <WerewolfPlayerCard
+            {...props}
+            key={item.id}
+            player={item}
+            badge={getVotesForPlayer(item, prompt.players, game)}
           />
         )}
-      </ChoosePlayers>
+      />
     </NightViewBase>
   )
 }

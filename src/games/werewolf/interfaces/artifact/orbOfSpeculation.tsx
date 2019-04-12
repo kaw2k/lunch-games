@@ -3,12 +3,12 @@ import { Artifact } from '.'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { getArtifact } from './artifacts'
 import { artifactKill, endGame } from '../actions'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { values } from 'ramda'
 import { isWerewolf } from '../../helpers/isWerewolf'
 import { getCard } from '../card/cards'
 import { PromptView, ByArtifact } from '../prompt'
 import { ArtifactType } from '../../../../helpers/id'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 const ActivateView: PromptView<ByArtifact> = ({
   done,
@@ -19,17 +19,16 @@ const ActivateView: PromptView<ByArtifact> = ({
   const player = game.players[playerId]
 
   return (
-    <ChoosePlayers
+    <ChooseWerewolfPlayer
       title={artifact.title}
       description={artifact.description}
       players={values(game.players).filter(p => p.alive)}
-      columns={2}
       doneText="select player"
       numToSelect={2}
       onDone={([one, two]) => {
         if (
-          isWerewolf(game.players[one], game) &&
-          isWerewolf(game.players[two], game)
+          isWerewolf(game.players[one.id], game) &&
+          isWerewolf(game.players[two.id], game)
         ) {
           const team = getCard(player.role).team
           done([

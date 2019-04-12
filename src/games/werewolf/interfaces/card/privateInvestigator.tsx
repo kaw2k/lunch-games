@@ -1,6 +1,4 @@
 import * as React from 'react'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
-import { WerewolfProfile } from '../../components/werewolfProfile'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values } from 'ramda'
 import { Typography } from '@material-ui/core'
@@ -19,6 +17,7 @@ import { getNeighbor } from '../../helpers/neighbors'
 import { getCard } from './cards'
 import { playerName } from '../../../../components/playerName'
 import { CardRole } from '../../../../helpers/id'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 type State = boolean
 const defaultState: State = false
@@ -57,8 +56,7 @@ const NightView: PromptView = ({ done, prompt }) => {
       )}
 
       {!state && (
-        <ChoosePlayers
-          columns={2}
+        <ChooseWerewolfPlayer
           players={values(game.players).filter(p => p.alive)}
           cancelText="no thanks"
           onCancel={() => done([])}
@@ -66,10 +64,10 @@ const NightView: PromptView = ({ done, prompt }) => {
           onDone={([target]) => {
             const state = true
 
-            let players = [player]
-            const left = getNeighbor(player.id, 'left', 'skip-gaps', game)
+            let players = [target]
+            const left = getNeighbor(target.id, 'left', 'skip-gaps', game)
             if (left) players = players.concat(game.players[left])
-            const right = getNeighbor(player.id, 'right', 'skip-gaps', game)
+            const right = getNeighbor(target.id, 'right', 'skip-gaps', game)
             if (right) players = players.concat(game.players[right])
 
             const isOneBad = !!players.find(p => {
@@ -98,9 +96,8 @@ const NightView: PromptView = ({ done, prompt }) => {
                 },
               }),
             ])
-          }}>
-          {props => <WerewolfProfile key={props.player.id} {...props} />}
-        </ChoosePlayers>
+          }}
+        />
       )}
     </NightViewBase>
   )

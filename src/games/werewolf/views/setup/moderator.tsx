@@ -1,21 +1,20 @@
 import * as React from 'react'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values, equals } from 'ramda'
-import { WerewolfProfile } from '../../components/werewolfProfile'
+import { WerewolfPlayerCard } from '../../components/werewolfPlayerCard'
 import { ActionRow } from '../../../../components/actionRow'
 import { Button } from '../../../../components/button'
 import { runActions } from '../../helpers/gameEngine'
-import { useCommonStyles } from '../../../../helpers/commonStyles'
 import { PlayerId } from '../../../../interfaces/player'
 import contains from 'ramda/es/contains'
 import uniq from 'ramda/es/uniq'
 import { Typography } from '@material-ui/core'
+import { Grid } from '../../../../components/grid'
 
 interface Props {}
 
 export const WerewolfModeratorSetup: React.SFC<Props> = ({}) => {
   const { game, updateGame } = React.useContext(WerewolfGameContext)
-  const classes = useCommonStyles()
 
   const allReady = values(game.players).reduce<boolean>(
     (memo, player) => memo && player.ready,
@@ -36,16 +35,16 @@ export const WerewolfModeratorSetup: React.SFC<Props> = ({}) => {
 
   return (
     <>
-      <div className={classes.twoColumns}>
+      <Grid>
         {values(game.players).map(player => (
-          <WerewolfProfile
+          <WerewolfPlayerCard
             selected={player.ready}
             showRole
             key={player.id}
             player={player}
           />
         ))}
-      </div>
+      </Grid>
 
       <ActionRow fixed>
         <Button
@@ -62,7 +61,6 @@ export const WerewolfModeratorSetup: React.SFC<Props> = ({}) => {
 const MakeSeatingChart: React.SFC<{}> = () => {
   const { game, updateGame } = React.useContext(WerewolfGameContext)
   const [seats, setSeat] = React.useState<PlayerId[]>([])
-  const classes = useCommonStyles()
 
   const hasAllPlayers = seats.length === values(game.players).length
   const hasNoDuplicates = equals(uniq(seats), seats)
@@ -78,32 +76,34 @@ const MakeSeatingChart: React.SFC<{}> = () => {
         adding players.
       </Typography>
 
-      <div className={classes.twoColumns}>
-        <div>
-          <Typography align="center" variant="h3" gutterBottom>
-            Un-seated
-          </Typography>
+      <div>
+        <Typography align="center" variant="h3" gutterBottom>
+          Un-seated
+        </Typography>
+        <Grid>
           {values(game.players)
             .filter(p => !contains(p.id, seats))
             .map(p => (
-              <WerewolfProfile
+              <WerewolfPlayerCard
                 player={game.players[p.id]}
                 onClick={() => setSeat(seats.concat(p.id))}
               />
             ))}
-        </div>
+        </Grid>
+      </div>
 
-        <div>
-          <Typography align="center" variant="h3" gutterBottom>
-            Seated
-          </Typography>
+      <div>
+        <Typography align="center" variant="h3" gutterBottom>
+          Seated
+        </Typography>
+        <Grid>
           {seats.map(p => (
-            <WerewolfProfile
+            <WerewolfPlayerCard
               player={game.players[p]}
               onClick={() => setSeat(seats.filter(id => id !== p))}
             />
           ))}
-        </div>
+        </Grid>
       </div>
 
       <ActionRow fixed>

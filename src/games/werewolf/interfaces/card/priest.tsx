@@ -1,6 +1,4 @@
 import * as React from 'react'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
-import { WerewolfProfile } from '../../components/werewolfProfile'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values } from 'ramda'
 import { Typography } from '@material-ui/core'
@@ -16,6 +14,7 @@ import { GenericSetupRoleView } from '../../components/setupRole/genericSetupRol
 import { NoNightActionView } from '../../components/night/noNightActionView'
 import { PromptView } from '../prompt'
 import { CardRole } from '../../../../helpers/id'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 const title = 'Priest, wake up! Bless someone.'
 const description = `They will be protected until they are attacked the first time. You can't bless another person until your first blessing goes away.`
@@ -52,16 +51,14 @@ const NightView: PromptView = ({ done, prompt }) => {
 
       {canBlessAgain && (
         <>
-          <ChoosePlayers
+          <ChooseWerewolfPlayer
             description={description}
-            columns={2}
             doneText="protect"
             onDone={([target]) => {
-              done([bless({ target, source: player })])
+              done([bless({ target: target.id, source: player })])
             }}
-            players={values(game.players).filter(p => p.alive)}>
-            {props => <WerewolfProfile key={props.player.id} {...props} />}
-          </ChoosePlayers>
+            players={values(game.players).filter(p => p.alive)}
+          />
         </>
       )}
     </NightViewBase>

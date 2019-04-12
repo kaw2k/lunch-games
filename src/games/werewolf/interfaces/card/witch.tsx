@@ -1,6 +1,4 @@
 import * as React from 'react'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
-import { WerewolfProfile } from '../../components/werewolfProfile'
 import { WerewolfGameContext } from '../../../../helpers/contexts'
 import { values } from 'ramda'
 import { Typography } from '@material-ui/core'
@@ -16,6 +14,7 @@ import { GenericSetupRoleView } from '../../components/setupRole/genericSetupRol
 import { NoNightActionView } from '../../components/night/noNightActionView'
 import { PromptView } from '../prompt'
 import { CardRole } from '../../../../helpers/id'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 interface State {
   hasAttacked: boolean
@@ -84,6 +83,9 @@ const NightView: PromptView = ({ done, prompt }) => {
           )}
 
           <ActionRow fixed>
+            <Button confirm onClick={() => done([])}>
+              No Thanx
+            </Button>
             <Button
               color="green"
               confirm
@@ -107,31 +109,27 @@ const NightView: PromptView = ({ done, prompt }) => {
       )}
 
       {view === View.kill && (
-        <>
-          <ChoosePlayers
-            columns={2}
-            doneText="kill"
-            players={values(game.players).filter(p => p.alive)}
-            cancelText="cancel"
-            onCancel={() => setView(View.select)}
-            onDone={([target]) => {
-              state.hasAttacked = true
-              done([
-                linkKill({ target }),
-                updatePlayer({
-                  target: playerId,
-                  updates: {
-                    state: {
-                      ...player.state,
-                      witch: state,
-                    },
+        <ChooseWerewolfPlayer
+          doneText="kill"
+          players={values(game.players).filter(p => p.alive)}
+          cancelText="cancel"
+          onCancel={() => setView(View.select)}
+          onDone={([target]) => {
+            state.hasAttacked = true
+            done([
+              linkKill({ target: target.id }),
+              updatePlayer({
+                target: playerId,
+                updates: {
+                  state: {
+                    ...player.state,
+                    witch: state,
                   },
-                }),
-              ])
-            }}>
-            {props => <WerewolfProfile key={props.player.id} {...props} />}
-          </ChoosePlayers>
-        </>
+                },
+              }),
+            ])
+          }}
+        />
       )}
     </NightViewBase>
   )

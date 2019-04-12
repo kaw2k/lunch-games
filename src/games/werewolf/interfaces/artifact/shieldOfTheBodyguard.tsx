@@ -5,12 +5,11 @@ import { Typography } from '@material-ui/core'
 import { getArtifact } from './artifacts'
 import { updateArtifact, guard, addDelayedAction } from '../actions'
 import { PlayerId } from '../../../../interfaces/player'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
-import { WerewolfProfile } from '../../components/werewolfProfile'
 import { values } from 'ramda'
 import contains from 'ramda/es/contains'
 import { PromptView, ByArtifact } from '../prompt'
 import { ArtifactType } from '../../../../helpers/id'
+import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
 
 export const ArtifactMorningView: PromptView<ByArtifact> = ({
   done,
@@ -31,9 +30,9 @@ export const ArtifactMorningView: PromptView<ByArtifact> = ({
       </Typography>
       <Typography gutterBottom>{artifact.description}</Typography>
 
-      <ChoosePlayers
-        columns={2}
+      <ChooseWerewolfPlayer
         doneText="protect"
+        players={choices}
         onDone={([target]) => {
           done([
             updateArtifact({
@@ -41,13 +40,13 @@ export const ArtifactMorningView: PromptView<ByArtifact> = ({
               target: player,
               updates: {
                 state: remaining.length
-                  ? previousPlayers.concat(target)
+                  ? previousPlayers.concat(target.id)
                   : [target],
               },
             }),
             addDelayedAction({
               delayedAction: {
-                action: guard({ target }),
+                action: guard({ target: target.id }),
                 day: game.day,
                 occurrence: 'once',
                 time: 'night',
@@ -55,9 +54,7 @@ export const ArtifactMorningView: PromptView<ByArtifact> = ({
             }),
           ])
         }}
-        players={choices}>
-        {props => <WerewolfProfile key={props.player.id} {...props} />}
-      </ChoosePlayers>
+      />
     </>
   )
 }
