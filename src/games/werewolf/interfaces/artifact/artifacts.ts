@@ -21,6 +21,22 @@ import { StoneOfAlteration } from './stoneOfAlteration'
 import { RodOfReincarnation } from './rodOfReincarnation'
 import { AmethystOfKnowledge } from './amethystOfKnowledge'
 import { RubyOfKismet } from './rubyOfKismet'
+import { TalismanOfTrouble } from './talismanOfTrouble'
+import { RingOfTruth } from './ringOfTruth'
+import { MistOfAura } from './mistOfAura'
+import { MakeOfTheMayor } from './makeOfTheMayor'
+import { MaskOfSpellcasting } from './maskOfSpellcasting'
+import { CauldronOfSorcery } from './cauldronOfSorcery'
+import { CoinOfYouth } from './coinOfYouth'
+import { HeartOfIndifference } from './heartOfIndifference'
+import { CudgelOfTheOldHag } from './cudgelOfTheOldHag'
+import { CloakOfThePrince } from './cloakOfThePrince'
+import { EmeraldOfJealousy } from './emeraldOfJealousy'
+import { SheetOfTheGhost } from './sheetOfTheGhost'
+import { EyeOfTheBeholder } from './eyeOfTheBeholder'
+import { SpearOfFury } from './spearOfFury'
+import { DiamondOfDenial } from './diamondOfDenial'
+import { AmberOfDawn } from './amberOfDawn'
 
 export const Artifacts = [
   BloodOfTheDiseased,
@@ -45,6 +61,22 @@ export const Artifacts = [
   RodOfReincarnation,
   AmethystOfKnowledge,
   RubyOfKismet,
+  TalismanOfTrouble,
+  RingOfTruth,
+  MistOfAura,
+  MakeOfTheMayor,
+  MaskOfSpellcasting,
+  CauldronOfSorcery,
+  CoinOfYouth,
+  HeartOfIndifference,
+  CudgelOfTheOldHag,
+  CloakOfThePrince,
+  EmeraldOfJealousy,
+  SheetOfTheGhost,
+  EyeOfTheBeholder,
+  SpearOfFury,
+  DiamondOfDenial,
+  AmberOfDawn,
 ]
 export type Artifacts = (typeof Artifacts)[0]['type']
 

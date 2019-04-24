@@ -1,6 +1,7 @@
 import * as React from 'react'
-import { ChoosePlayers } from '../../../../components/choosePlayers'
 import { AvalonGameContext } from '../../../../helpers/contexts'
+import { Choose } from '../../../../components/choose'
+import { PlayerCard } from '../../../../components/card/player'
 
 export const ChooseMission: React.SFC<{ endTurn: () => void }> = ({
   endTurn,
@@ -15,12 +16,14 @@ export const ChooseMission: React.SFC<{ endTurn: () => void }> = ({
   } = React.useContext(AvalonGameContext)
 
   return (
-    <ChoosePlayers
+    <Choose
       onCancel={endTurn}
-      columns={2}
       title={`Choose your mission with ${playersNeeded} people, it needs ${failsNeeded} fail. You may choose to not put yourself on the mission if you wish.`}
       numToSelect={playersNeeded}
-      players={game.players}
+      renderItem={({ item, ...props }) => (
+        <PlayerCard player={item} key={item.id} {...props} />
+      )}
+      items={game.players}
       altText="doesn't go"
       onAlt={async () => {
         const nextChaos = game.chaos + 1
@@ -46,7 +49,7 @@ export const ChooseMission: React.SFC<{ endTurn: () => void }> = ({
       onDone={async players => {
         await updateGame({
           chaos: 0,
-          currentMission: { owner: player.id, players },
+          currentMission: { owner: player.id, players: players.map(p => p.id) },
         })
         endTurn()
       }}

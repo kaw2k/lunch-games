@@ -16,7 +16,7 @@ import { startNight } from '../../../helpers/gameEngine'
 import { PlayerId } from '../../../../../interfaces/player'
 import { useTimer } from '../../../../../hooks/useTimer'
 import { Typography } from '@material-ui/core'
-import { hasRole } from '../../../interfaces/card/cards'
+import { hasRole, isRole } from '../../../interfaces/card/cards'
 import { Mason } from '../../../interfaces/card/mason'
 import { ArtifactView } from '../../../components/artifact/artifactView'
 import { isAnotherArtifactActive } from '../../../helpers/artifact'
@@ -24,6 +24,7 @@ import { getArtifact } from '../../../interfaces/artifact/artifacts'
 import { Id } from '../../../../../helpers/id'
 import { Grid } from '../../../../../components/grid'
 import { makeStyles } from '@material-ui/styles'
+import { Sasquatch } from '../../../interfaces/card/sasquatch'
 
 interface Props {}
 
@@ -82,6 +83,13 @@ export const DayModerator: React.SFC<Props> = () => {
           showLiving
           showRole
         />
+
+        <Typography>
+          {player.role}
+          {player.secondaryRole && ` / ${player.secondaryRole}`}
+          {isRole(player, Sasquatch.role) &&
+            (player.sasquatchWakesUp ? ` (werewolf)` : ` (villager)`)}
+        </Typography>
 
         {player.artifacts.map(artifactState => (
           <ArtifactView

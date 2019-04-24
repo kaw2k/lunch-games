@@ -13,6 +13,9 @@ import { isWerewolf } from '../../helpers/isWerewolf'
 import { linkKill } from '../actions'
 import { CardRole } from '../../../../helpers/id'
 import { ChooseWerewolfPlayer } from '../../components/chooseWerewolfPlayer'
+import { isRole } from './cards'
+import { Zombie } from './zombie'
+import { Chewks } from './chewks'
 
 const title = 'Revealer, wake up! Inspect someone!'
 const description = `You may point at someone, if they are a wolf they die, otherwise you die.`
@@ -35,8 +38,18 @@ const NightView: PromptView = ({ done, prompt }) => {
         onCancel={() => done([])}
         doneText="kill"
         onDone={([target]) => {
+          const wolvesRemain = values(game.players).find(
+            p => p.alive && isWerewolf(p, game)
+          )
+
+          const isWolf = isWerewolf(target, game)
+          const isZombie = isRole(target, Zombie.role)
+          const isChewks = isRole(target, Chewks.role)
+
+          const canKill = isWolf || (isChewks && !wolvesRemain) || isZombie
+
           done([
-            isWerewolf(target, game)
+            canKill
               ? linkKill({ target: target.id })
               : linkKill({ target: playerId }),
           ])
@@ -54,7 +67,11 @@ export const Revealer = Card({
   emoji: Emoji('✨️'),
   cardCount: 1,
   description: `Each night you may point to a player. If that player is a werewolf, they die, if not, you die.`,
-  hints: [`Wait until you are pretty sure someone is suspicious.`],
+  hints: [
+    `Wait until you are pretty sure someone is suspicious.`,
+    `You may only kill chewks if all werewolves are dead`,
+    `You can also kill vampires, the boogyman, and the zombie at any time`,
+  ],
   image: require('../../static/unknown.png'),
   profile: require('../../static/unknown-profile.png'),
   SetupRoleView: GenericSetupRoleView,

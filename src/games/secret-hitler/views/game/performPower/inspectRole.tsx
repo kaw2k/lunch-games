@@ -8,12 +8,10 @@ export const InspectRole: React.SFC<{}> = () => {
   return (
     <ChoosePlayers
       title="Who would you like to inspect?"
-      columns={2}
       doneText="inspect"
       players={game.players}
-      removePlayer
-      onDone={([pid]) => {
-        alert(game.players[pid].role.party)
+      onDone={([player]) => {
+        alert(game.players[player.id].role.party)
         updateGame({ performPower: null })
       }}
     />

@@ -1,14 +1,12 @@
 import * as React from 'react'
 import { PreviousGovernment } from '../../interfaces/game'
 import { PlayerSecretHitler } from '../../interfaces/player'
-import { Button } from '../../../../components/button'
-import { ActionRow } from '../../../../components/actionRow'
-import { Profile } from '../../../../components/profile'
 import values from 'ramda/es/values'
 import { SecretHitlerGameContext } from '../../../../helpers/contexts'
 import { isGameOver } from '../../helpers/isGameOver'
-import { Typography } from '@material-ui/core'
 import { sanitizeCards } from '../../helpers/sanitizeCards'
+import { ChoosePlayers } from '../../../../components/choosePlayers'
+import { PlayerCard } from '../../../../components/card/player'
 
 interface Props {
   cancel: () => void
@@ -17,9 +15,6 @@ interface Props {
 export const MyTurn: React.SFC<Props> = ({ cancel }) => {
   const { player, game, endGame, updateGame } = React.useContext(
     SecretHitlerGameContext
-  )
-  const [chancellor, setChancellor] = React.useState<PlayerSecretHitler | null>(
-    null
   )
 
   function proceed(government: PreviousGovernment | null) {
@@ -77,47 +72,32 @@ export const MyTurn: React.SFC<Props> = ({ cancel }) => {
   }
 
   return (
-    <>
-      <Typography variant="h2">Choose your chancellor</Typography>
-      <Typography gutterBottom>
-        It is your turn, choose who you want to be your chancellor. Call for a
-        vote, if it passes, select "goes" otherwise select "rejected".
-      </Typography>
-
-      {values(game.players)
-        .filter(p => p.living && p.id !== player.id)
-        .map(p => (
-          <Profile
-            key={p.id}
-            text={p.name || p.id}
-            image={p.profileImg}
-            onClick={() => setChancellor(p)}
-            selected={!!(chancellor && p.id === chancellor.id)}
-            disabled={
-              !!game.previousGovernment &&
-              (game.previousGovernment.president.id === p.id ||
-                game.previousGovernment.chancellor.id === p.id)
-            }
-          />
-        ))}
-
-      <ActionRow fixed>
-        <Button color="red" onClick={() => proceed(null)}>
-          rejected
-        </Button>
-        <Button onClick={cancel}>cancel</Button>
-        <Button
-          disabled={!chancellor}
-          color="green"
-          onClick={() =>
-            proceed({
-              president: player,
-              chancellor: chancellor as PlayerSecretHitler,
-            })
-          }>
-          goes
-        </Button>
-      </ActionRow>
-    </>
+    <ChoosePlayers
+      title="Choose your chancellor"
+      description={`It is your turn, choose who you want to be your chancellor. Call for a vote, if it passes, select "goes" otherwise select "rejected". `}
+      players={values(game.players).filter(p => p.living && p.id !== player.id)}
+      renderPlayer={({ item, ...props }) => (
+        <PlayerCard
+          player={item}
+          key={item.id}
+          disabled={
+            !!game.previousGovernment &&
+            (game.previousGovernment.president.id === item.id ||
+              game.previousGovernment.chancellor.id === item.id)
+          }
+          {...props}
+        />
+      )}
+      onCancel={cancel}
+      altText="rejected"
+      onAlt={() => proceed(null)}
+      doneText="goes"
+      onDone={([chancellor]) => {
+        proceed({
+          president: player,
+          chancellor: chancellor as PlayerSecretHitler,
+        })
+      }}
+    />
   )
 }

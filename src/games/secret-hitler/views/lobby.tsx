@@ -10,6 +10,8 @@ import { ChooseGame } from '../../../components/chooseGame'
 import { Typography } from '@material-ui/core'
 import { Rules } from '../components/rules'
 import { playerName } from '../../../components/playerName'
+import { Grid } from '../../../components/grid'
+import { PlayerCard } from '../../../components/card/player'
 
 interface Props {
   lobby: SecretHitlerLobby
@@ -51,16 +53,17 @@ export const LobbySecretHitler: React.SFC<Props> = ({ startGame, lobby }) => {
 
       <ChooseGame />
 
-      {lobby.lobbyPlayers.map(p => (
-        <Profile
-          key={p.id}
-          text={p.name || p.id}
-          image={p.profileImg}
-          onClick={() =>
-            confirm(`Do you want to kick ${playerName(p)}`) && kickPlayer(p)
-          }
-        />
-      ))}
+      <Grid>
+        {lobby.lobbyPlayers.map(p => (
+          <PlayerCard
+            key={p.id}
+            player={p}
+            onClick={() =>
+              confirm(`Do you want to kick ${playerName(p)}`) && kickPlayer(p)
+            }
+          />
+        ))}
+      </Grid>
 
       <ActionRow fixed>
         <Button onClick={() => setView(View.rules)}>Rules</Button>

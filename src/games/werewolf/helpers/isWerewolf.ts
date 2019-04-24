@@ -45,8 +45,9 @@ export function getWerewolves(game: WerewolfGame) {
   return values(game.players)
     .filter(p => {
       return (
-        (isRole(p, FangFace.role) && doesFangFaceWakeUp(p, game)) ||
-        (!isRole(p, FangFace.role) && isWerewolf(p, game))
+        p.alive &&
+        ((isRole(p, FangFace.role) && doesFangFaceWakeUp(p, game)) ||
+          (!isRole(p, FangFace.role) && isWerewolf(p, game)))
       )
     })
     .map(p => p.id)

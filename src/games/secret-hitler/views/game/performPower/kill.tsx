@@ -11,12 +11,10 @@ export const Kill: React.SFC<{}> = () => {
   return (
     <ChoosePlayers
       title="Who do you want to kill?"
-      columns={2}
       doneText="kill"
       players={values(game.players).filter(p => p.living)}
-      removePlayer
-      onDone={async ([pid]) => {
-        const p = game.players[pid]
+      onDone={async ([player]) => {
+        const p = game.players[player.id]
         if (p.role.isHitler) {
           endGame(
             'liberal',

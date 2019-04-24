@@ -38,6 +38,9 @@ import { Cursed } from '../interfaces/card/cursed'
 import { Diseased } from '../interfaces/card/diseased'
 import { MadBomber } from '../interfaces/card/madBomber'
 import { ArtifactState } from '../interfaces/artifact'
+import { CloakOfThePrince } from '../interfaces/artifact/cloakOfThePrince'
+import { SkimmerOfTheCursed } from '../interfaces/artifact/skimmerOfTheCursed'
+import { Prince } from '../interfaces/card/prince'
 
 // ===========================================================
 // THE GAME ENGINE
@@ -119,7 +122,7 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
       )
     }
 
-    if (player.role === 'prince') {
+    if (isPrince(player)) {
       return addPrompt(
         {
           id: Id(),
@@ -495,7 +498,7 @@ function processQueuedActions(initialGame: WerewolfGame): WerewolfGame {
 // ===========================================================
 function isCursed(player: PlayerWerewolf, game: WerewolfGame): boolean {
   const cursedArtifact = player.artifacts.find(
-    a => a.type === 'skimmer of the cursed'
+    a => a.type === SkimmerOfTheCursed.type
   )
 
   return (
@@ -506,6 +509,14 @@ function isCursed(player: PlayerWerewolf, game: WerewolfGame): boolean {
         game.options.cursedArtifactAlwaysActive)
     )
   )
+}
+
+function isPrince(player: PlayerWerewolf): boolean {
+  const princeArtifact = player.artifacts.find(
+    a => a.type === CloakOfThePrince.type && a.activated === 'played'
+  )
+
+  return isRole(player, Prince.role) || !!princeArtifact
 }
 
 function isDiseased(player: PlayerWerewolf, game: WerewolfGame): boolean {
