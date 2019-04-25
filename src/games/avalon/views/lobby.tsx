@@ -13,28 +13,167 @@ import {
   firebaseArrayRemove,
   firebaseArrayAdd,
 } from '../../../helpers/firebase'
-import { Checkbox, Typography } from '@material-ui/core'
+import {
+  Checkbox,
+  Typography,
+  BottomNavigationAction,
+  Badge,
+  Icon,
+  BottomNavigation,
+} from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { playerName } from '../../../components/playerName'
+import { PlayerCard } from '../../../components/card/player'
+import { Grid } from '../../../components/grid'
 
 interface Props {
   lobby: AvalonLobby
   startGame: (players: Player[]) => void
 }
 
+enum View {
+  lobby,
+  roles,
+  start,
+}
+
 const useStyles = makeStyles({
-  columns: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    '& > *': {
-      flex: '1 1 50%',
-    },
+  nav: {
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    width: '100%',
+    zIndex: 100,
+  },
+  root: {
+    marginBottom: '56px',
   },
 })
 
 export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
   const classes = useStyles()
-  const { kickPlayer, leaveRoom, updateRoom } = React.useContext(RoomContext)
+  const [view, setView] = React.useState(View.lobby)
+
+  return (
+    <Layout padded className={classes.root}>
+      {lobby.victoryMessage && (
+        <Typography variant="h2">{lobby.victoryMessage}</Typography>
+      )}
+
+      <div>
+        <Typography variant="h2">Lobby: {lobby.id}</Typography>
+        <Typography component="em">
+          You need between 5 and 10 players to play. Click on someone to remove
+          them from the game.
+        </Typography>
+      </div>
+
+      <ChooseGame />
+
+      {view === View.lobby && <Players lobby={lobby} />}
+      {view === View.roles && <Roles lobby={lobby} />}
+      {view === View.start && <StartGame lobby={lobby} startGame={startGame} />}
+
+      <BottomNavigation
+        className={classes.nav}
+        value={view}
+        onChange={(e, val) => setView(val)}>
+        <BottomNavigationAction
+          label="Lobby"
+          value={View.lobby}
+          icon={
+            <Badge badgeContent={lobby.lobbyPlayers.length}>
+              <Icon>group</Icon>
+            </Badge>
+          }
+        />
+
+        <BottomNavigationAction
+          label="Roles"
+          value={View.roles}
+          icon={
+            <Badge showZero badgeContent={lobby.avalonRoles.length}>
+              <Icon>face</Icon>
+            </Badge>
+          }
+        />
+        <BottomNavigationAction
+          label="Start"
+          value={View.start}
+          icon={<Icon>play_arrow</Icon>}
+        />
+      </BottomNavigation>
+    </Layout>
+  )
+}
+
+const StartGame: React.SFC<{
+  lobby: AvalonLobby
+  startGame: (players: Player[]) => void
+}> = ({ lobby, startGame }) => {
+  const isValid = isGameValid(lobby.lobbyPlayers.length, lobby.avalonRoles)
+
+  return (
+    <>
+      {!isValid && (
+        <Typography component="em">
+          You have an imbalanced team, make sure you have:
+          <ul>
+            <li>5-6 players: 2 bad</li>
+            <li>7-9 players: 3 bad</li>
+            <li>10 players: 4 bad</li>
+          </ul>
+        </Typography>
+      )}
+
+      <ActionRow>
+        <Button
+          color="green"
+          onClick={() => startGame(lobby.lobbyPlayers)}
+          disabled={
+            !isValid ||
+            lobby.lobbyPlayers.length < 5 ||
+            lobby.lobbyPlayers.length > 10
+          }>
+          start game
+        </Button>
+      </ActionRow>
+    </>
+  )
+}
+
+const Players: React.SFC<{
+  lobby: AvalonLobby
+}> = ({ lobby }) => {
+  const { kickPlayer, leaveRoom } = React.useContext(RoomContext)
+
+  return (
+    <>
+      <Typography variant="h3">Players:</Typography>
+
+      <Grid>
+        {lobby.lobbyPlayers.map(p => (
+          <PlayerCard
+            key={p.id}
+            player={p}
+            onClick={() =>
+              confirm(`Do you want to kick ${playerName(p)}`) && kickPlayer(p)
+            }
+          />
+        ))}
+      </Grid>
+
+      <ActionRow>
+        <Button onClick={leaveRoom}>leave</Button>
+      </ActionRow>
+    </>
+  )
+}
+
+const Roles: React.SFC<{
+  lobby: AvalonLobby
+}> = ({ lobby }) => {
+  const { updateRoom } = React.useContext(RoomContext)
 
   function rolesInGame(role: Role): number {
     return lobby.avalonRoles.filter(r => r === role).length
@@ -75,102 +214,43 @@ export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
     { role: 'bad', message: 'try to pass bad missions' },
   ]
 
-  const isValid = isGameValid(lobby.lobbyPlayers.length, lobby.avalonRoles)
-
   return (
-    <Layout padded>
-      {lobby.victoryMessage && (
-        <Typography variant="h2">{lobby.victoryMessage}</Typography>
-      )}
+    <>
+      <Button
+        onClick={() =>
+          updateRoom({ avalonLadyOfTheLake: false, avalonRoles: [] })
+        }>
+        reset
+      </Button>
 
-      <div>
-        <Typography variant="h2">Lobby: {lobby.id}</Typography>
-        <Typography component="em">
-          You need between 5 and 10 players to play. Click on someone to remove
-          them from the game.
+      <Typography variant="h3">Roles:</Typography>
+
+      {roles.map(({ role, message }) => (
+        <Profile
+          key={role}
+          text={role}
+          subtext={message}
+          profileText={rolesInGame(role)}
+          onClick={() => updateRoles(role)}
+          color={getParty(role) === 'bad' ? 'red' : 'blue'}
+        />
+      ))}
+      <label htmlFor="lol">
+        <Typography component="span" inline>
+          Lady of the lake:
         </Typography>
-      </div>
-
-      <ChooseGame />
-
-      <div className={classes.columns}>
-        <div>
-          <Typography variant="h3">Players:</Typography>
-          {lobby.lobbyPlayers.map(p => (
-            <Profile
-              key={p.id}
-              text={p.name || p.id}
-              image={p.profileImg}
-              onClick={() =>
-                confirm(`Do you want to kick ${playerName(p)}`) && kickPlayer(p)
-              }
-            />
-          ))}
-        </div>
-
-        <div>
-          <Typography variant="h3">Roles:</Typography>
-          {roles.map(({ role, message }) => (
-            <Profile
-              key={role}
-              text={role}
-              subtext={message}
-              profileText={rolesInGame(role)}
-              onClick={() => updateRoles(role)}
-              color={getParty(role) === 'bad' ? 'red' : 'blue'}
-            />
-          ))}
-          <label htmlFor="lol">
-            <Typography component="span" inline>
-              Lady of the lake:
-            </Typography>
-            <Checkbox
-              id="lol"
-              type="checkbox"
-              checked={lobby.avalonLadyOfTheLake}
-              onChange={e => {
-                updateRoom({
-                  avalonLadyOfTheLake: e.target.checked,
-                  avalonRoles: lobby.avalonRoles,
-                })
-              }}
-            />
-          </label>
-          <Button
-            onClick={() =>
-              updateRoom({ avalonLadyOfTheLake: false, avalonRoles: [] })
-            }>
-            reset
-          </Button>
-        </div>
-      </div>
-
-      {!isValid && (
-        <div>
-          <Typography component="em">
-            You have an imbalanced team, make sure you have:
-            <ul>
-              <li>5-6 players: 2 bad</li>
-              <li>7-9 players: 3 bad</li>
-              <li>10 players: 4 bad</li>
-            </ul>
-          </Typography>
-        </div>
-      )}
-
-      <ActionRow fixed>
-        <Button onClick={leaveRoom}>leave</Button>
-        <Button
-          color="green"
-          onClick={() => startGame(lobby.lobbyPlayers)}
-          disabled={
-            !isValid ||
-            lobby.lobbyPlayers.length < 5 ||
-            lobby.lobbyPlayers.length > 10
-          }>
-          start game
-        </Button>
-      </ActionRow>
-    </Layout>
+        <Checkbox
+          id="lol"
+          type="checkbox"
+          checked={lobby.avalonLadyOfTheLake}
+          onChange={e => {
+            updateRoom({
+              avalonLadyOfTheLake: e.target.checked,
+              avalonRoles: lobby.avalonRoles,
+            })
+          }}
+        />
+      </label>
+    </>
   )
 }
