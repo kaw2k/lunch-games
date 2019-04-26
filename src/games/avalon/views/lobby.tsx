@@ -7,7 +7,7 @@ import { Profile } from '../../../components/profile'
 import { RoomContext } from '../../../helpers/contexts'
 import { AvalonLobby, Role } from '../interfaces/game'
 import { ChooseGame } from '../../../components/chooseGame'
-import { isGameValid } from '../helpers/isGameValid'
+import { isGameValid, helpText } from '../helpers/isGameValid'
 import { getParty } from '../helpers/getParty'
 import {
   firebaseArrayRemove,
@@ -25,6 +25,9 @@ import { makeStyles } from '@material-ui/styles'
 import { playerName } from '../../../components/playerName'
 import { PlayerCard } from '../../../components/card/player'
 import { Grid } from '../../../components/grid'
+import { useCommonStyles } from '../../../helpers/commonStyles'
+import { count } from '../../../helpers/count'
+import values from 'ramda/es/values'
 
 interface Props {
   lobby: AvalonLobby
@@ -54,30 +57,40 @@ export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
   const classes = useStyles()
   const [view, setView] = React.useState(View.lobby)
 
+  const isValid = isGameValid(lobby.lobbyPlayers.length, lobby.avalonRoles)
+
   return (
     <Layout padded className={classes.root}>
       {lobby.victoryMessage && (
         <Typography variant="h2">{lobby.victoryMessage}</Typography>
       )}
 
-      <div>
-        <Typography variant="h2">Lobby: {lobby.id}</Typography>
-        <Typography component="em">
-          You need between 5 and 10 players to play. Click on someone to remove
-          them from the game.
-        </Typography>
-      </div>
-
-      <ChooseGame />
+      <Typography variant="h2">Lobby: {lobby.id}</Typography>
 
       {view === View.lobby && <Players lobby={lobby} />}
       {view === View.roles && <Roles lobby={lobby} />}
-      {view === View.start && <StartGame lobby={lobby} startGame={startGame} />}
 
       <BottomNavigation
         className={classes.nav}
         value={view}
-        onChange={(e, val) => setView(val)}>
+        onChange={(e, val) => {
+          if (val === View.start) {
+            if (isValid) {
+              startGame(lobby.lobbyPlayers)
+            } else {
+              const count = lobby.lobbyPlayers.length
+              if (count === 5 || count === 6)
+                return alert(`You need 2 bad players`)
+              if (count === 7 || count === 8 || count === 9)
+                return alert(`You need 3 bad players`)
+              if (count === 10) return alert(`You need 4 bad players`)
+
+              return alert(`The game is not balanced`)
+            }
+          } else {
+            setView(val)
+          }
+        }}>
         <BottomNavigationAction
           label="Lobby"
           value={View.lobby}
@@ -100,45 +113,10 @@ export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
         <BottomNavigationAction
           label="Start"
           value={View.start}
-          icon={<Icon>play_arrow</Icon>}
+          icon={<Icon color={isValid ? 'default' : 'error'}>play_arrow</Icon>}
         />
       </BottomNavigation>
     </Layout>
-  )
-}
-
-const StartGame: React.SFC<{
-  lobby: AvalonLobby
-  startGame: (players: Player[]) => void
-}> = ({ lobby, startGame }) => {
-  const isValid = isGameValid(lobby.lobbyPlayers.length, lobby.avalonRoles)
-
-  return (
-    <>
-      {!isValid && (
-        <Typography component="em">
-          You have an imbalanced team, make sure you have:
-          <ul>
-            <li>5-6 players: 2 bad</li>
-            <li>7-9 players: 3 bad</li>
-            <li>10 players: 4 bad</li>
-          </ul>
-        </Typography>
-      )}
-
-      <ActionRow>
-        <Button
-          color="green"
-          onClick={() => startGame(lobby.lobbyPlayers)}
-          disabled={
-            !isValid ||
-            lobby.lobbyPlayers.length < 5 ||
-            lobby.lobbyPlayers.length > 10
-          }>
-          start game
-        </Button>
-      </ActionRow>
-    </>
   )
 }
 
@@ -149,7 +127,12 @@ const Players: React.SFC<{
 
   return (
     <>
-      <Typography variant="h3">Players:</Typography>
+      <Typography component="em">
+        You need between 5 and 10 players to play. Click on someone to remove
+        them from the game.
+      </Typography>
+
+      <ChooseGame />
 
       <Grid>
         {lobby.lobbyPlayers.map(p => (
@@ -174,6 +157,7 @@ const Roles: React.SFC<{
   lobby: AvalonLobby
 }> = ({ lobby }) => {
   const { updateRoom } = React.useContext(RoomContext)
+  const classes = useCommonStyles()
 
   function rolesInGame(role: Role): number {
     return lobby.avalonRoles.filter(r => r === role).length
@@ -204,10 +188,14 @@ const Roles: React.SFC<{
     }
   }
 
-  const roles: { role: Role; message: string }[] = [
+  type R = { role: Role; message: string }
+  const good: R[] = [
     { role: 'merlin', message: 'knows all bad guys' },
     { role: 'percival', message: 'tries to protect merlin' },
     { role: 'good', message: 'try to pass good missions' },
+  ]
+
+  const bad: R[] = [
     { role: 'morgana', message: 'pretends to be merlin' },
     { role: 'assassin', message: 'tries to kill merlin' },
     { role: 'mordred', message: 'unknown to merlin' },
@@ -223,18 +211,9 @@ const Roles: React.SFC<{
         reset
       </Button>
 
-      <Typography variant="h3">Roles:</Typography>
+      <Typography variant="h3">Advice:</Typography>
+      {helpText(values(lobby.lobbyPlayers).length)}
 
-      {roles.map(({ role, message }) => (
-        <Profile
-          key={role}
-          text={role}
-          subtext={message}
-          profileText={rolesInGame(role)}
-          onClick={() => updateRoles(role)}
-          color={getParty(role) === 'bad' ? 'red' : 'blue'}
-        />
-      ))}
       <label htmlFor="lol">
         <Typography component="span" inline>
           Lady of the lake:
@@ -251,6 +230,40 @@ const Roles: React.SFC<{
           }}
         />
       </label>
+
+      <div className={classes.twoColumns}>
+        <div>
+          <Typography variant="h3">
+            Good: {count(lobby.avalonRoles, r => getParty(r) === 'good')}
+          </Typography>
+          {good.map(({ role, message }) => (
+            <Profile
+              key={role}
+              text={role}
+              subtext={message}
+              profileText={rolesInGame(role)}
+              onClick={() => updateRoles(role)}
+              color={getParty(role) === 'bad' ? 'red' : 'blue'}
+            />
+          ))}
+        </div>
+
+        <div>
+          <Typography variant="h3">
+            Bad: {count(lobby.avalonRoles, r => getParty(r) === 'bad')}
+          </Typography>
+          {bad.map(({ role, message }) => (
+            <Profile
+              key={role}
+              text={role}
+              subtext={message}
+              profileText={rolesInGame(role)}
+              onClick={() => updateRoles(role)}
+              color={getParty(role) === 'bad' ? 'red' : 'blue'}
+            />
+          ))}
+        </div>
+      </div>
     </>
   )
 }

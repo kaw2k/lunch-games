@@ -87,7 +87,9 @@ export const GameContainer: React.SFC<Props> = ({ children }) => {
         </div>
 
         <div className={classes.pullRight}>
-          <IconButton onClick={() => setView(View.menu)}>
+          <IconButton
+            className={classes.raise}
+            onClick={() => setView(View.menu)}>
             <Icon>more_vert</Icon>
           </IconButton>
         </div>

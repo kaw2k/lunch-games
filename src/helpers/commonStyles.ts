@@ -29,4 +29,9 @@ export const useCommonStyles = makeStyles({
   dim: {
     opacity: 0.25,
   },
+
+  raise: {
+    position: 'relative',
+    zIndex: 20,
+  },
 })

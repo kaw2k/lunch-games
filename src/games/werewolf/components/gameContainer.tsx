@@ -17,7 +17,8 @@ enum View {
 
 const useStyles = makeStyles({
   icon: {
-    zIndex: 10,
+    position: 'relative',
+    zIndex: 20,
   },
 })
 

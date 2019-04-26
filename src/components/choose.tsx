@@ -32,6 +32,7 @@ export interface Props<Item> {
   cancelProps?: Partial<ButtonProps>
 
   items: Item[] | Hash<Item>
+  defaultItems?: Item[] | Hash<Item>
   renderItem: (props: {
     selected: boolean
     onClick: () => void
@@ -50,6 +51,7 @@ export function Choose<Item>({
   cancelText,
   cancelProps = {},
   items,
+  defaultItems = [],
   renderItem,
   title,
   description,
@@ -58,7 +60,10 @@ export function Choose<Item>({
   notExact,
   onChange,
 }: Props<Item>): React.ReactElement {
-  const [selected, updateSelected] = useSelectState<Item>([], numToSelect)
+  const [selected, updateSelected] = useSelectState<Item>(
+    isArray(defaultItems) ? defaultItems : values(defaultItems),
+    numToSelect
+  )
 
   React.useEffect(() => {
     if (onChange) onChange(selected)

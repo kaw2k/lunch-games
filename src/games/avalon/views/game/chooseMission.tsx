@@ -24,6 +24,7 @@ export const ChooseMission: React.SFC<{ endTurn: () => void }> = ({
         <PlayerCard player={item} key={item.id} {...props} />
       )}
       items={game.players}
+      defaultItems={[player]}
       altText="doesn't go"
       onAlt={async () => {
         const nextChaos = game.chaos + 1
