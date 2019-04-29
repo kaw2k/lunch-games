@@ -18,7 +18,7 @@ export const MyTurn: React.SFC<Props> = ({ cancel }) => {
   )
 
   function proceed(government: PreviousGovernment | null) {
-    const fascists = game.playedCards.filter(c => c === 'fascist')
+    const fascists = game.playedCards.filter(c => c.card === 'fascist')
 
     if (!government) {
       cancel()
@@ -26,7 +26,10 @@ export const MyTurn: React.SFC<Props> = ({ cancel }) => {
       if (game.chaos + 1 === 3) {
         const nextGame = sanitizeCards({
           ...game,
-          playedCards: game.playedCards.concat(game.remainingCards[0]),
+          playedCards: game.playedCards.concat({
+            card: game.remainingCards[0],
+            government: null,
+          }),
           remainingCards: game.remainingCards.slice(1),
           previousGovernment: null,
           message: `A random card was played and it was a ${

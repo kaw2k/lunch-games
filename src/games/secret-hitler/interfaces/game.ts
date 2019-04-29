@@ -41,7 +41,7 @@ export interface SecretHitlerGame {
   players: PlayerHash
   discardedCards: Party[]
   remainingCards: Party[]
-  playedCards: Party[]
+  playedCards: { card: Party; government: PreviousGovernment | null }[]
   chaos: number
   message: string | null
 }

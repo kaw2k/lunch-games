@@ -74,3 +74,5 @@ npm start
 - Add chat feature
 
 - Fix randoming new roles. If a werewolf dies, they are the last of their kind, and there is a different bad faction still alive, random the werewolf into a good person.
+
+TODO: I started the previous governments for SH but it doesn't work

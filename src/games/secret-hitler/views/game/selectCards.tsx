@@ -41,7 +41,7 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
   )
   const [cardIndices, setCardIndices] = React.useState<number[]>([])
   const [chancellorViewCards, setViewCards] = React.useState<boolean>(false)
-  const fascists = game.playedCards.filter(c => c === 'fascist').length
+  const fascists = game.playedCards.filter(c => c.card === 'fascist').length
 
   const [selected, discarded] = government.cards.reduce<[Party[], Party[]]>(
     ([s, d], party, i) => {
@@ -83,8 +83,14 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
       })
     } else if (cards.length === 1) {
       const discardedCards = game.discardedCards.concat(discarded)
-      const playedCards = game.playedCards.concat(cards[0])
-      const hasEffect = !!getBoardEffect(game.players, playedCards)
+      const playedCards = game.playedCards.concat({
+        card: cards[0],
+        government: game.government,
+      })
+      const hasEffect = !!getBoardEffect(
+        game.players,
+        playedCards.map(c => c.card)
+      )
 
       if (game.government.veto && veto) {
         updateGame(

@@ -15,7 +15,7 @@ export const GameView: React.SFC<Props> = () => {
   const { game, player } = React.useContext(SecretHitlerGameContext)
   const [isMyTurn, setIsMyTurn] = React.useState(false)
 
-  const fascists = game.playedCards.filter(c => c === 'fascist')
+  const fascists = game.playedCards.filter(c => c.card === 'fascist')
   const power = getBoardEffect(game.players, fascists.length)
 
   // Check if a president needs to perform some action

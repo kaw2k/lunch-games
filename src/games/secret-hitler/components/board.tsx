@@ -1,6 +1,6 @@
 import * as React from 'react'
 import cx from 'classnames'
-import { SecretHitlerGame } from '../interfaces/game'
+import { SecretHitlerGame, Party } from '../interfaces/game'
 import { Card } from './card'
 import { getBoardEffect } from '../helpers/getBoardEffect'
 import { Button } from '../../../components/button'
@@ -15,6 +15,8 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { ResponsiveDialog } from '../../../components/responsiveDialog'
+import { playerName } from '../../../components/playerName'
+import { SecretHitlerGameContext } from '../../../helpers/contexts'
 
 const useRowStyles = makeStyles({
   row: {
@@ -57,10 +59,13 @@ export const Board: React.SFC<{ game: SecretHitlerGame }> = ({ game }) => {
   const classes = { ...useCommonStyles(), ...useStyles() }
 
   const [isDialogVisible, toggleDialog] = React.useState(false)
-  const [selectedEffect, showEffect] = React.useState<number | null>(null)
+  const [selected, setSelected] = React.useState<{
+    type: Party
+    index: number
+  } | null>(null)
 
-  const numFascistCards = count(game.playedCards, x => x === 'fascist')
-  const numLiberalCards = count(game.playedCards, x => x === 'liberal')
+  const numFascistCards = count(game.playedCards, x => x.card === 'fascist')
+  const numLiberalCards = count(game.playedCards, x => x.card === 'liberal')
 
   const numFascists = count(game.players, x => x.role.party === 'fascist') - 1
   const numLiberals = count(game.players, x => x.role.party === 'liberal')
@@ -82,6 +87,7 @@ export const Board: React.SFC<{ game: SecretHitlerGame }> = ({ game }) => {
             </Typography>
           )}
         </div>
+
         <div className={classes.row}>
           {[1, 2, 3, 4, 5, 6].map(i => (
             <button
@@ -90,7 +96,7 @@ export const Board: React.SFC<{ game: SecretHitlerGame }> = ({ game }) => {
                 i <= numFascistCards ? 'card' : 'placeholder'
               }-${i}`}
               onClick={() => {
-                showEffect(i)
+                setSelected({ index: i, type: 'fascist' })
                 toggleDialog(true)
               }}>
               <Card
@@ -112,14 +118,23 @@ export const Board: React.SFC<{ game: SecretHitlerGame }> = ({ game }) => {
         </Typography>
         <div className={classes.row}>
           {[1, 2, 3, 4, 5].map(i => (
-            <Card
-              key={`liberal-${
-                i <= numLiberalCards ? 'card' : 'placeholder'
+            <button
+              className={cx(classes.cardButton, classes.card)}
+              key={`fascist-${
+                i <= numFascistCards ? 'card' : 'placeholder'
               }-${i}`}
-              className={classes.card}
-              played={i <= numLiberalCards}
-              party="liberal"
-            />
+              onClick={() => {
+                setSelected({ index: i, type: 'liberal' })
+                toggleDialog(true)
+              }}>
+              <Card
+                key={`liberal-${
+                  i <= numLiberalCards ? 'card' : 'placeholder'
+                }-${i}`}
+                played={i <= numLiberalCards}
+                party="liberal"
+              />
+            </button>
           ))}
         </div>
       </div>
@@ -136,72 +151,139 @@ export const Board: React.SFC<{ game: SecretHitlerGame }> = ({ game }) => {
       </Row>
 
       {/* Turn Explanation Dialog */}
-      <ResponsiveDialog
+      <TurnDialog
+        index={selected && selected.index}
+        party={selected && selected.type}
         open={isDialogVisible}
-        onClose={() => toggleDialog(false)}>
+        onClose={() => setSelected(null)}
+      />
+    </>
+  )
+}
+
+const TurnDialog: React.SFC<{
+  open: boolean
+  onClose: () => void
+  party: Party | null
+  index: number | null
+}> = ({ open, onClose, party, index }) => {
+  const { game } = React.useContext(SecretHitlerGameContext)
+
+  if (index === null || party === null) return null
+
+  const cards =
+    party === 'liberal'
+      ? game.playedCards.filter(c => c.card === 'liberal')
+      : game.playedCards.filter(c => c.card === 'fascist')
+
+  const turn = cards[index - 1]
+
+  if (turn) {
+    return (
+      <ResponsiveDialog open={open} onClose={onClose}>
         <DialogTitle>
           <Typography variant="h2">On this turn...</Typography>
         </DialogTitle>
 
-        {selectedEffect !== null && (
-          <DialogContent>
-            {selectedEffect !== 6 &&
-              !getBoardEffect(game.players, selectedEffect) && (
-                <Typography>
-                  If a fascist is played on this turn, no special effect
-                  happens.
-                </Typography>
-              )}
-            {selectedEffect === 6 &&
-              !getBoardEffect(game.players, selectedEffect) && (
-                <Typography>
-                  The government proceeds as normal, however if after the
-                  president passes the cards to the chancellor, and they both
-                  agree to veto, then no card is played and it is as if the
-                  government didn't happen.
-                </Typography>
-              )}
-            {getBoardEffect(game.players, selectedEffect) === 'kill' && (
-              <Typography>
-                If a fascist is played, the president for that government gets
-                to kill someone. If hitler is killed the liberals win.
-              </Typography>
-            )}
-            {getBoardEffect(game.players, selectedEffect) ===
-              'choose president' && (
-              <Typography>
-                If a fascist is played, the president for that government gets
-                to choose the next president. After that next government, play
-                resumes as normal with original play order.
-              </Typography>
-            )}
-            {getBoardEffect(game.players, selectedEffect) ===
-              'inspect cards' && (
-              <Typography>
-                If a fascist is played, the president for that government gets
-                to inspect the next three cards in order. They may choose to
-                disclose what they see if they wish (or even lie about it).
-              </Typography>
-            )}
-            {getBoardEffect(game.players, selectedEffect) ===
-              'inspect role' && (
-              <Typography>
-                If a fascist is played, the president for that government gets
-                to inspect another players party membership. They will not know
-                if someone is hitler or not, only if they are liberal or
-                fascist. They may choose to disclose what they see if they wish
-                (or even lie about it).
-              </Typography>
-            )}
-          </DialogContent>
-        )}
+        <DialogContent>
+          <Typography gutterBottom>A {turn.card} was played</Typography>
 
+          {!turn.government && (
+            <Typography>This card was played by chaos.</Typography>
+          )}
+
+          {turn.government && (
+            <Typography>
+              <div>
+                The president was {playerName(turn.government!.president)}
+              </div>
+              <div>
+                The chancellor was {playerName(turn.government!.chancellor)}
+              </div>
+            </Typography>
+          )}
+        </DialogContent>
         <DialogActions>
-          <Button color="green" onClick={() => toggleDialog(false)}>
+          <Button color="green" onClick={onClose}>
             close
           </Button>
         </DialogActions>
       </ResponsiveDialog>
-    </>
+    )
+  }
+
+  if (party === 'liberal') {
+    return (
+      <ResponsiveDialog open={open} onClose={onClose}>
+        <DialogTitle>
+          <Typography variant="h2">
+            Nothing special happens for liberals...
+          </Typography>
+        </DialogTitle>
+        <DialogActions>
+          <Button color="green" onClick={onClose}>
+            close
+          </Button>
+        </DialogActions>
+      </ResponsiveDialog>
+    )
+  }
+
+  return (
+    <ResponsiveDialog open={open} onClose={onClose}>
+      <DialogTitle>
+        <Typography variant="h2">On this turn...</Typography>
+      </DialogTitle>
+
+      <DialogContent>
+        {index !== 6 && !getBoardEffect(game.players, index) && (
+          <Typography>
+            If a fascist is played on this turn, no special effect happens.
+          </Typography>
+        )}
+        {index === 6 && !getBoardEffect(game.players, index) && (
+          <Typography>
+            The government proceeds as normal, however if after the president
+            passes the cards to the chancellor, and they both agree to veto,
+            then no card is played and it is as if the government didn't happen.
+          </Typography>
+        )}
+        {getBoardEffect(game.players, index) === 'kill' && (
+          <Typography>
+            If a fascist is played, the president for that government gets to
+            kill someone. If hitler is killed the liberals win.
+          </Typography>
+        )}
+        {getBoardEffect(game.players, index) === 'choose president' && (
+          <Typography>
+            If a fascist is played, the president for that government gets to
+            choose the next president. After that next government, play resumes
+            as normal with original play order.
+          </Typography>
+        )}
+        {getBoardEffect(game.players, index) === 'inspect cards' && (
+          <Typography>
+            If a fascist is played, the president for that government gets to
+            inspect the next three cards in order. They may choose to disclose
+            what they see if they wish (or even lie about it).
+          </Typography>
+        )}
+        {getBoardEffect(game.players, index) === 'inspect role' && (
+          <Typography>
+            If a fascist is played, the president for that government gets to
+            inspect another players party membership. They will not know if
+            someone is hitler or not, only if they are liberal or fascist. They
+            may choose to disclose what they see if they wish (or even lie about
+            it).
+          </Typography>
+        )}
+      </DialogContent>
+
+      <DialogActions>
+        <Button color="green" onClick={onClose}>
+          close
+        </Button>
+      </DialogActions>
+    </ResponsiveDialog>
   )
 }
