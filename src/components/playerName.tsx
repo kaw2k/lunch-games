@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Player, PlayerId } from '../interfaces/player'
 import { Typography } from '@material-ui/core'
 import { WerewolfGame } from '../games/werewolf/interfaces/game'
+import { Hash } from '../interfaces/hash'
 
 interface Props {
   player: Player
@@ -17,10 +18,13 @@ export const PlayerName: React.SFC<Props> = ({ player, bold }) => {
 }
 
 export function playerName(player: Player): string
-export function playerName(player: PlayerId, game: WerewolfGame): string
+export function playerName(
+  player: PlayerId,
+  game: { players: Hash<Player> }
+): string
 export function playerName(
   player: Player | PlayerId,
-  game?: WerewolfGame
+  game?: { players: Hash<Player> }
 ): string {
   if (game) {
     const p = player as PlayerId

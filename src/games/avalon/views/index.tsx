@@ -78,7 +78,10 @@ export const AvalonView: React.SFC<{ room: Avalon }> = ({ room }) => {
     )
   }
 
-  const { fail, people } = getBoardEffect(room.players, room.missionResults)
+  const { fail, people } = getBoardEffect(
+    room.players,
+    room.missionResults.map(r => r.card)
+  )
   return (
     <AvalonGameContext.Provider
       value={{

@@ -3,7 +3,7 @@ import { isArray } from 'util'
 import { count } from '../../../helpers/count'
 
 export function isGameOver(game: AvalonGame | Party[]): Party | null {
-  const cards = isArray(game) ? game : game.missionResults
+  const cards = isArray(game) ? game : game.missionResults.map(r => r.card)
 
   const bad = count(cards, c => c === 'bad')
   const good = count(cards, c => c === 'good')

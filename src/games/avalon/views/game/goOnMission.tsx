@@ -50,7 +50,15 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
 
     // Check if game is over
     const isAssassinInGame = !!game.roles.find(r => r === 'assassin')
-    const gameOver = isGameOver(game.missionResults.concat(result))
+    const gameOver = isGameOver(
+      game.missionResults
+        .concat({
+          card: result,
+          mission,
+          votes: { good: numGood, bad: numBad },
+        })
+        .map(r => r.card)
+    )
     // We only end the game if bad guys win. If good guys win
     // then the bad people (if assassin is in the game) get a
     // chance to kill merlin
@@ -62,7 +70,14 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
       // Clear the mission
       currentMission: null,
       // Update the board
-      missionResults: game.missionResults.concat(result),
+      missionResults: game.missionResults.concat({
+        card: result,
+        mission,
+        votes: {
+          good: numGood,
+          bad: numBad,
+        },
+      }),
       // Alert the game with a message
       message: gameOver
         ? `mission succeeded and the good team wins. good team stay quite while the bad team tries to kill merlin`

@@ -28,6 +28,12 @@ export interface Mission {
   players: PlayerId[]
 }
 
+export interface MissionResult {
+  card: Party
+  votes: { good: number; bad: number }
+  mission: Mission
+}
+
 export interface AvalonGame {
   type: 'avalon-game'
   id: RoomId
@@ -38,7 +44,7 @@ export interface AvalonGame {
   players: Hash<PlayerAvalon>
 
   currentMission: null | Mission
-  missionResults: Party[]
+  missionResults: MissionResult[]
 
   chaos: number
 
