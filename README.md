@@ -39,6 +39,7 @@ npm start
   - Artifacts, anything that kills, modifies other artifacts, or changes roles
   - Leprechaun and how it interacts with other roles like alpha wolf, body guard, etc
   - Frankenstein and how it interacts with roles
+- Figure out why colors are showing incorrectly for Avalon
 
 ### TODO / NB
 
@@ -57,7 +58,7 @@ npm start
 * Add ability for people to return to lobby
   - Anyone can do it
   - There are two collections, games and lobbies
-  - Lobbies dont call set, they call update, when switching lobbies you see what exists first and use that
+  - Lobbies don't call set, they call update, when switching lobbies you see what exists first and use that
   - Add spectate mode for all games
 
 - Add option for moderator to turn off player actions
