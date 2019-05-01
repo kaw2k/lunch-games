@@ -4,6 +4,7 @@ import { Overview } from './overview'
 import { GoOnMission } from './goOnMission'
 import { LadyOfTheLake } from './ladyOfTheLake'
 import { ChooseMission } from './chooseMission'
+import { ChooseExcalibur } from './chooseExcalibur'
 import { isGameOver } from '../../helpers/isGameOver'
 import { KillMerlin } from './killMerlin'
 
@@ -18,6 +19,15 @@ export const GameView: React.SFC<{}> = () => {
 
   if (player.ladyOfTheLake) {
     return <LadyOfTheLake />
+  }
+
+  if (
+    game.excalibur &&
+    game.currentMission &&
+    game.currentMission.owner === player.id &&
+    !game.currentMission.excaliburWielder
+  ) {
+    return <ChooseExcalibur />
   }
 
   // If we are on the current mission, show the card screen

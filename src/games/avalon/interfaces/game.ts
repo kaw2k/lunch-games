@@ -20,12 +20,15 @@ export type Role =
 export interface AvalonLobby extends Omit<Lobby, 'type'> {
   type: 'avalon-lobby'
   avalonLadyOfTheLake: boolean
+  avalonExcalibur: boolean
   avalonRoles: Role[]
 }
 
 export interface Mission {
   owner: PlayerId
   players: PlayerId[]
+  excaliburWielder: PlayerId | null
+  hasSwitched: boolean
 }
 
 export interface MissionResult {
@@ -51,6 +54,7 @@ export interface AvalonGame {
   roles: Role[]
 
   ladyOfTheLake: boolean
+  excalibur: boolean
   nextLadyOfTheLake: PlayerId | null
 }
 

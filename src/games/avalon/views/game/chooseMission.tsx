@@ -50,7 +50,12 @@ export const ChooseMission: React.SFC<{ endTurn: () => void }> = ({
       onDone={async players => {
         await updateGame({
           chaos: 0,
-          currentMission: { owner: player.id, players: players.map(p => p.id) },
+          currentMission: {
+            owner: player.id,
+            hasSwitched: false,
+            excaliburWielder: null,
+            players: players.map(p => p.id),
+          },
         })
         endTurn()
       }}

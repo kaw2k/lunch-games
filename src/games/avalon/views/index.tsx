@@ -40,6 +40,7 @@ export const AvalonView: React.SFC<{ room: Avalon }> = ({ room }) => {
             id: room.id,
             chaos: 0,
             ladyOfTheLake: room.avalonLadyOfTheLake,
+            excalibur: room.avalonExcalibur,
             nextLadyOfTheLake: null,
             lobbyPlayers: room.lobbyPlayers,
             currentMission: null,
@@ -71,6 +72,7 @@ export const AvalonView: React.SFC<{ room: Avalon }> = ({ room }) => {
             lobbyPlayers: room.lobbyPlayers,
             victoryMessage: null,
             avalonLadyOfTheLake: room.ladyOfTheLake,
+            avalonExcalibur: room.excalibur,
             avalonRoles: room.roles,
           })
         }}
@@ -99,6 +101,7 @@ export const AvalonView: React.SFC<{ room: Avalon }> = ({ room }) => {
             spectators: [],
             victoryMessage: message || null,
             avalonLadyOfTheLake: room.ladyOfTheLake,
+            avalonExcalibur: room.excalibur,
             avalonRoles: room.roles,
           })
 

@@ -44,6 +44,7 @@ export const ChooseGame: React.SFC<{}> = () => {
           } else if (game === avalon) {
             updateRoom('avalon-lobby', {
               avalonLadyOfTheLake: false,
+              avalonExcalibur: false,
               avalonRoles: [],
             })
           } else if (game === werewolf) {

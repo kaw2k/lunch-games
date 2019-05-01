@@ -3,6 +3,7 @@ import values from 'ramda/es/values'
 import { Party, Mission } from '../../interfaces/game'
 import { Button } from '../../../../components/button'
 import { ActionRow } from '../../../../components/actionRow'
+import { ChooseTarget } from './chooseTarget'
 import { Profile } from '../../../../components/profile'
 import { AvalonGameContext } from '../../../../helpers/contexts'
 import { count } from '../../../../helpers/count'
@@ -106,24 +107,71 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
   // VIEWS
   // ======================
   const isOwner = mission.owner === player.id
+  const isWielder = mission.excaliburWielder === player.id
   const isInMission = !!mission.players.find(id => player.id === id)
   const hasPlayedCard = !!player.missionVote
   const allCardsPlayed = mission.players.reduce(
     (memo, id) => memo && !!game.players[id].missionVote,
     true
   )
+  
+  if (isWielder && hasPlayedCard) {
+    return (
+      <>
+        {!allCardsPlayed && (
+          <Typography gutterBottom variant="h2">
+            Waiting for the others to play their cards
+          </Typography>
+        )}
 
-  if (isOwner && (hasPlayedCard || !isInMission)) {
+        {allCardsPlayed && !mission.hasSwitched && (
+          <ChooseTarget
+            onDone={async (playerId: string) => {
+              const target = game.players[playerId]
+              const vote = game.players[playerId].missionVote
+
+              alert(`The vote was ${vote}`)
+
+              await updateGame({
+                ...game,
+                currentMission: { ...mission, hasSwitched: true },
+              })
+
+              await updateGamePlayer({
+                ...target,
+                missionVote:
+                  vote === 'good' ? 'bad' : vote === 'bad' ? 'good' : null,
+              })
+            }}
+          />
+        )}
+
+        {allCardsPlayed && game.excalibur && mission.hasSwitched && (
+          <Typography gutterBottom variant="h2">
+            Waiting on owner to flip cards
+          </Typography>
+        )}
+      </>
+    )
+  }
+
+  if (
+    isOwner &&
+    (hasPlayedCard || !isInMission) &&
+    (!game.excalibur || mission.hasSwitched)
+  ) {
     return (
       <>
         <Typography gutterBottom variant="h2">
-          Waiting for the others to play their cards
-        </Typography>
+          {!allCardsPlayed && 'Waiting for the others to play their cards'}
+          {game.excalibur && !mission.hasSwitched && 'Waiting on excalibur to decide'}
+          {allCardsPlayed && (!game.excalibur || mission.hasSwitched) && 'Waiting on you to flip votes'}
+        </Typography>{' '}
         <ActionRow fixed>
           <Button confirm onClick={cancel}>
             cancel
           </Button>
-          <Button color="green" disabled={!allCardsPlayed} onClick={flipCards}>
+          <Button disabled={!allCardsPlayed} onClick={flipCards}>
             flip cards
           </Button>
         </ActionRow>
@@ -133,11 +181,15 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
 
   if (hasPlayedCard) {
     return (
-      <>
-        <Typography gutterBottom variant="h2">
-          Waiting for the others to play their cards
-        </Typography>
-      </>
+      <Typography gutterBottom variant="h2">
+        {!allCardsPlayed && 'Waiting for the others to play their cards'}
+        {game.excalibur &&
+          !mission.hasSwitched &&
+          'Waiting on excalibur to decide to flip a vote'}
+        {allCardsPlayed &&
+          (!game.excalibur || mission.hasSwitched) &&
+          'Waiting on owner to flip cards'}
+      </Typography>
     )
   }
 

@@ -225,6 +225,25 @@ const Roles: React.SFC<{
           onChange={e => {
             updateRoom({
               avalonLadyOfTheLake: e.target.checked,
+              avalonExcalibur: lobby.avalonExcalibur,
+              avalonRoles: lobby.avalonRoles,
+            })
+          }}
+        />
+      </label>
+
+      <label htmlFor="lol">
+        <Typography component="span" inline>
+          Excalibur:
+        </Typography>
+        <Checkbox
+          id="excalibur"
+          type="checkbox"
+          checked={lobby.avalonExcalibur}
+          onChange={e => {
+            updateRoom({
+              avalonExcalibur: e.target.checked,
+              avalonLadyOfTheLake: lobby.avalonLadyOfTheLake,
               avalonRoles: lobby.avalonRoles,
             })
           }}
