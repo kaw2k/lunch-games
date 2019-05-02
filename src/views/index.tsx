@@ -10,6 +10,7 @@ import { RoomContext } from '../helpers/contexts'
 import { LobbyGeneral } from './lobby'
 import { isAvalon, AvalonView } from '../games/avalon/views'
 import { isWerewolf, WerewolfView } from '../games/werewolf/views'
+import { isMurder, MurderView } from '../games/murder/views'
 
 export const App: React.SFC<{}> = () => {
   const playerResult = useAuthState()
@@ -81,6 +82,14 @@ export const App: React.SFC<{}> = () => {
     return (
       <RoomContext.Provider value={roomContextValues}>
         <WerewolfView room={room} />
+      </RoomContext.Provider>
+    )
+  }
+
+  if (isMurder(room)) {
+    return (
+      <RoomContext.Provider value={roomContextValues}>
+        <MurderView room={room} />
       </RoomContext.Provider>
     )
   }

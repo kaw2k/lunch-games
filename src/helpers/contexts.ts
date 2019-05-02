@@ -3,7 +3,7 @@ import { Room, RoomId } from '../interfaces/room'
 import { Player } from '../interfaces/player'
 import { PlayerSecretHitler } from '../games/secret-hitler/interfaces/player'
 import * as SH from '../games/secret-hitler/interfaces/game'
-
+import * as M from '../games/murder/interfaces/game'
 import * as WW from '../games/werewolf/interfaces/game'
 
 import { PartialFirebase } from '../interfaces/partialFirebase'
@@ -15,6 +15,7 @@ import { PlayerAvalon } from '../games/avalon/interfaces/player'
 import { PlayerWerewolf } from '../games/werewolf/interfaces/player'
 import { Unpack } from './unpack'
 import { Teams } from '../games/werewolf/interfaces/card'
+import { PlayerMurder } from '../games/murder/interfaces/player'
 
 export interface RoomContext {
   room: Room
@@ -99,5 +100,21 @@ export const WerewolfGameContext = createContext<WerewolfGameContext>({
   updateGame() {},
   addAction() {},
   addDelayedAction() {},
+  endGame() {},
+})
+
+export interface MurderGameContext {
+  game: M.MurderGame
+  player: PlayerMurder
+  updateGamePlayer: (player: PlayerMurder) => void
+  updateGame: (game: PartialFirebase<M.MurderGame>) => void
+  endGame: (winners?: M.Party, message?: string) => void
+}
+
+export const MurderGameContext = createContext<MurderGameContext>({
+  game: {} as M.MurderGame,
+  player: {} as PlayerMurder,
+  updateGamePlayer() {},
+  updateGame() {},
   endGame() {},
 })
