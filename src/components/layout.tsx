@@ -5,11 +5,16 @@ import { makeStyles } from '@material-ui/styles'
 interface Props {
   className?: string
   padded?: boolean
+  hasTabs?: boolean
 }
 
 const useStyles = makeStyles({
   padded: {
     padding: '1em',
+  },
+
+  hasTabs: {
+    marginBottom: '56px',
   },
 
   root: {
@@ -27,10 +32,19 @@ const useStyles = makeStyles({
   },
 })
 
-export const Layout: React.SFC<Props> = ({ children, padded, className }) => {
+export const Layout: React.SFC<Props> = ({
+  children,
+  padded,
+  className,
+  hasTabs,
+}) => {
   const classes = useStyles()
   return (
-    <div className={cx(classes.root, className, { [classes.padded]: padded })}>
+    <div
+      className={cx(classes.root, className, {
+        [classes.padded]: padded,
+        [classes.hasTabs]: hasTabs,
+      })}>
       {children}
     </div>
   )

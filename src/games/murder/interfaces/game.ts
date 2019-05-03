@@ -10,7 +10,7 @@ export type Role =
   | 'investigator'
   | 'witness'
   | 'accomplice'
-  | 'moderator'
+  | 'forensic scientist'
 
 export interface MurderLobby extends Omit<Lobby, 'type'> {
   type: 'murder-lobby'
