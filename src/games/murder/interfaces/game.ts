@@ -5,7 +5,7 @@ import { PlayerMurder } from './player'
 import { Omit } from '@material-ui/core'
 import { WeaponId, EvidenceId, SceneId } from '../../../helpers/id'
 import _evidences from '../static/evidence/*.png'
-import _weapons from '../static/evidence/*.png'
+import _weapons from '../static/weapon/*.png'
 import { values } from 'ramda'
 
 export type Party = 'good' | 'bad'

@@ -68,6 +68,7 @@ export const ViewRole: React.SFC<Props> = ({
         <Typography>
           One of {names} is the murderer, the other is the accomplice.
         </Typography>
+        <ViewCards player={player} />
       </>
     )
   }
@@ -81,6 +82,7 @@ export const ViewRole: React.SFC<Props> = ({
         {accomplice && (
           <Typography>{playerName(accomplice)} is your accomplice</Typography>
         )}
+        <ViewCards player={player} />
       </>
     )
   }
@@ -97,6 +99,7 @@ export const ViewRole: React.SFC<Props> = ({
             <Typography>TODO: SHOW THEIR ITEMS</Typography>
           </>
         )}
+        <ViewCards player={player} />
       </>
     )
   }
