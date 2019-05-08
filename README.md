@@ -77,3 +77,65 @@ npm start
 - Fix randoming new roles. If a werewolf dies, they are the last of their kind, and there is a different bad faction still alive, random the werewolf into a good person.
 
 TODO: I started the previous governments for SH but it doesn't work
+
+===========================
+
+# MURDER RULES
+
+## SETUP
+
+Players:
+Everyone gets some cards
+Everyone can see other players cards
+Witness sees who the murderer and accomplice are but doesn't know who is who
+Accomplice sees who the murderer is and what their options were
+Murder sees who the accomplice is and selects one of each type
+
+Moderator:
+Can see other players cards
+Can see what the murderer's final options are
+Can start the game when all players are ready
+Is dealt "cause of Death" and choose one of the "Location of Crime" tiles
+They are dealt 4 random cards (beside event cards)
+
+## GAMEPLAY DAY
+
+Everyone:
+Can see peoples cards and who has flagged which items
+Can see the moderators cards, what items have items selected and what haven't
+Can see other players flags on items
+Can see a timer with how long is left in the round
+Can see what round it is
+Can see who has put in their badge and guessed the murderer
+Can see which combinations have been guessed
+
+All Players:
+Can tap on a players card to select it or deselect it
+Can come forward and choose who the murderer is (only once)
+
+Witness:
+Can optionally see who the two players were
+
+Murderer / Accomplice:
+Can optionally see what items they selected
+Can optionally see their team mates
+
+Moderator:
+Can select an item from one of their cards (it notifies the players of the selection)
+
+## GAMEPLAY NIGHT
+
+Moderator:
+Has text for what to say
+Can select a person to "go". This starts a timer everyone can see
+Can start the day cycle at any moment
+
+All Players:
+Sees relevant timers
+All normal day views
+
+NOTE:
+Once a marker has been placed by the moderator, that is the permanent order it displays in. Later in the game the moderator can "discard" one (should remain visible, but greyed out). Any item can be replaced besides location or cause of crime.
+Events can optionally happen for the second or third round
+Moderator should still put people to sleep so the murderer isn't given away
+Would be nice for the accomplice to see in real time what the murderer is selecting

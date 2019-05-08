@@ -76,6 +76,14 @@ export const ChooseGame: React.SFC<{}> = () => {
           } else if (game === murder) {
             updateRoom('murder-lobby', {
               murderRoles: [],
+              murderOptions: {
+                cardCounts: 4,
+                roundOneTime: 5 * 60 * 1000,
+                roundTwoTime: 4 * 60 * 1000,
+                roundThreeTime: 3 * 60 * 1000,
+                speakingTime: 30 * 1000,
+                useEvents: false,
+              },
             })
           }
         }}>
