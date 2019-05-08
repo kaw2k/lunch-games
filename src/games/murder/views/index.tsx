@@ -39,7 +39,12 @@ export const MurderView: React.SFC<{ room: Murder }> = ({ room }) => {
         game: room,
         player: currentPlayer,
         updateGamePlayer: updatePlayer,
-        endGame: (party, message) => {},
+        endGame: (party, message) => {
+          updateRoom({
+            ...room,
+            type: 'murder-lobby',
+          })
+        },
       }}>
       <GameContainer>
         {allReady && <GameView />}

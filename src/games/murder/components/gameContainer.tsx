@@ -6,7 +6,7 @@ import { Button } from '../../../components/button'
 import { ViewRole } from '../views/game/viewRole'
 import { useCommonStyles } from '../../../helpers/commonStyles'
 import { ActionRow } from '../../../components/actionRow'
-import { AvalonGameContext } from '../../../helpers/contexts'
+import { MurderGameContext } from '../../../helpers/contexts'
 
 interface Props {}
 
@@ -18,7 +18,7 @@ enum View {
 
 export const GameContainer: React.SFC<Props> = ({ children }) => {
   const classes = useCommonStyles()
-  const { endGame } = React.useContext(AvalonGameContext)
+  const { endGame } = React.useContext(MurderGameContext)
   const [view, setView] = React.useState(View.game)
 
   if (view === View.menu) {
@@ -80,7 +80,7 @@ export const GameContainer: React.SFC<Props> = ({ children }) => {
     <Layout padded>
       <div className={cx(classes.row)}>
         <div>
-          <Typography variant="h1">Avalon</Typography>
+          <Typography variant="h1">Murder</Typography>
           <Typography color="textSecondary" variant="h4">
             A LunchGames App
           </Typography>

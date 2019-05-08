@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { Player } from '../../../interfaces/player'
 import { Button } from '../../../components/button'
 import { Layout } from '../../../components/layout'
 import { ActionRow } from '../../../components/actionRow'
@@ -19,7 +18,7 @@ import { Tabs } from '../../../components/tabs'
 
 interface Props {
   lobby: MurderLobby
-  startGame: (players: Player[]) => void
+  startGame: () => void
 }
 
 enum View {
