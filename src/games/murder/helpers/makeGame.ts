@@ -23,7 +23,9 @@ export function makeGame(lobby: MurderLobby): MurderGame {
   let roles: Role[] = ['forensic scientist', 'murderer']
   if (numPeople >= 5) roles = roles.concat('accomplice')
   if (numPeople >= 6) roles = roles.concat('witness')
-  roles = shuffle(roles.concat(repeat(INVESTIGATOR, 10)).slice(0, numPeople))
+  roles = shuffle(
+    roles.concat(repeat(INVESTIGATOR, 10)).slice(0, numPeople + 1)
+  )
 
   return {
     id: lobby.id,

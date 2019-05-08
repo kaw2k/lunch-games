@@ -6,6 +6,8 @@ import { RoomContext, MurderGameContext } from '../../../helpers/contexts'
 import { GameView } from './game'
 import { GameContainer } from '../components/gameContainer'
 import { Murder } from '../interfaces/game'
+import { makeGame } from '../helpers/makeGame'
+import { GameSetup } from './gameSetup'
 
 export const isMurder = (room: Room): room is Murder =>
   room.type === 'murder-game' || room.type === 'murder-lobby'
@@ -16,12 +18,7 @@ export const MurderView: React.SFC<{ room: Murder }> = ({ room }) => {
   // Game screens
   if (room.type === 'murder-lobby') {
     return (
-      <LobbyMurder
-        lobby={room}
-        startGame={players => {
-          alert('starting game')
-        }}
-      />
+      <LobbyMurder lobby={room} startGame={() => updateRoom(makeGame(room))} />
     )
   }
 
@@ -46,7 +43,7 @@ export const MurderView: React.SFC<{ room: Murder }> = ({ room }) => {
       }}>
       <GameContainer>
         {allReady && <GameView />}
-        {!allReady && <div>sup</div>}
+        {!allReady && <GameSetup />}
       </GameContainer>
     </MurderGameContext.Provider>
   )

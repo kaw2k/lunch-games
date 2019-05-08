@@ -6,11 +6,9 @@ import { AvalonGameContext } from '../../../helpers/contexts'
 import { ViewRole } from './game/viewRole'
 import { FullScreenNotice } from '../../../components/fullScreenNotice'
 
-interface Props {
-  ready: () => void
-}
+interface Props {}
 
-export const GameSetup: React.SFC<Props> = ({ ready }) => {
+export const GameSetup: React.SFC<Props> = ({}) => {
   const { player } = React.useContext(AvalonGameContext)
   const [showRole, setShowRole] = React.useState(false)
 
@@ -34,5 +32,7 @@ export const GameSetup: React.SFC<Props> = ({ ready }) => {
     )
   }
 
-  return <ViewRole button="ready" onDone={ready} disableButton={player.ready} />
+  return (
+    <ViewRole button="ready" onDone={() => {}} disableButton={player.ready} />
+  )
 }

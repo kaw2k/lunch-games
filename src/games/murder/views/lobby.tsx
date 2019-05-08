@@ -48,7 +48,7 @@ export const LobbyMurder: React.SFC<Props> = ({ startGame, lobby }) => {
         showLabels
         onChange={(e, val) => {
           if (val === View.start) {
-            return alert(`The game is not supported yet`)
+            return startGame()
           } else {
             setView(val)
           }
