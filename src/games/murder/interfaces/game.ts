@@ -8,6 +8,14 @@ import _evidences from '../static/evidence/*.png'
 import _weapons from '../static/weapon/*.png'
 import { values } from 'ramda'
 
+import murderer from '../static/roles/murderer.png'
+import investigator from '../static/roles/investigator.png'
+import witness from '../static/roles/witness.png'
+import accomplice from '../static/roles/accomplice.png'
+import forensic from '../static/roles/forensic.png'
+
+import { assertNever } from '../../../helpers/assertNever'
+
 export type Party = 'good' | 'bad'
 export type Role =
   | 'murderer'
@@ -16,27 +24,41 @@ export type Role =
   | 'accomplice'
   | 'forensic scientist'
 
+export const getRoleImage = (role: Role): string => {
+  if (role === 'accomplice') return accomplice
+  if (role === 'murderer') return murderer
+  if (role === 'witness') return witness
+  if (role === 'investigator') return investigator
+  if (role === 'forensic scientist') return forensic
+
+  return assertNever(role)
+}
+
 export interface Weapon {
   id: WeaponId
   img: string
+  type: 'weapon'
   marked: PlayerId[]
 }
 
 export interface Evidence {
   id: EvidenceId
   marked: PlayerId[]
+  type: 'evidence'
   img: string
 }
 
 export const EVIDENCES = values(_evidences).map<Evidence>((img: string, i) => ({
   img,
   id: EvidenceId(i),
+  type: 'evidence',
   marked: [],
 }))
 
 export const WEAPONS = values(_weapons).map<Weapon>((img: string, i) => ({
   img,
   id: WeaponId(i),
+  type: 'weapon',
   marked: [],
 }))
 

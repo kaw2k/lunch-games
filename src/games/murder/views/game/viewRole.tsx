@@ -8,6 +8,8 @@ import { PlayerMurder } from '../../interfaces/player'
 import { assertNever } from '../../../../helpers/assertNever'
 import { useCommonStyles } from '../../../../helpers/commonStyles'
 import { Card } from '../../components/card'
+import { Evidence, Weapon } from '../../interfaces/game'
+import { WeaponId, EvidenceId } from '../../../../helpers/id'
 
 interface Props {
   disableButton?: boolean
@@ -107,7 +109,10 @@ export const ViewRole: React.SFC<Props> = ({
   return assertNever(player.role)
 }
 
-const ViewCards: React.SFC<{ player: PlayerMurder }> = ({ player }) => {
+const ViewCards: React.SFC<{
+  player: PlayerMurder
+  onClick?: (item: Weapon | Evidence) => void
+}> = ({ player, onClick }) => {
   const classes = useCommonStyles()
 
   if (player.role === 'forensic scientist') return null
@@ -117,15 +122,40 @@ const ViewCards: React.SFC<{ player: PlayerMurder }> = ({ player }) => {
       <Typography variant="h3">{playerName(player)}'s cards</Typography>
       <div className={classes.row}>
         {player.evidence.map(e => (
-          <Card item={e} />
+          <Card onClick={onClick} item={e} />
         ))}
       </div>
 
       <div className={classes.row}>
         {player.weapons.map(w => (
-          <Card item={w} />
+          <Card onClick={onClick} item={w} />
         ))}
       </div>
+    </>
+  )
+}
+
+// TODO: It may be nice to make a layer above our base cardd (selectable) which doesn't do any of the styling besides rendering
+// that green checkmark. OR make the styles for cards more generic
+
+export const SelectCards: React.SFC<{
+  onReady: (murderItems: { weapon: WeaponId; evidence: EvidenceId }) => void
+}> = ({ onReady }) => {
+  const { player } = React.useContext(MurderGameContext)
+
+  if (player.role === 'forensic scientist') return null
+
+  return (
+    <>
+      <Typography variant="h2">To see your role...</Typography>
+      <Typography>
+        In order to see your role you must select what items you would use for
+        murder. You may not be the murderer, but you will get bonus points if
+        you are not and still some of your items get selected.
+      </Typography>
+
+      <Typography variant="h3">Your Cards</Typography>
+      <ViewCards player={player} />
     </>
   )
 }
