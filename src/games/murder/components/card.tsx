@@ -5,25 +5,23 @@ import { Selectable } from '../../../components/card/selectable'
 
 const useStyles = makeStyles({
   root: {},
-  image: {
-    height: '100%',
-  },
+  image: { width: '100%' },
 })
 
 export const Card: React.SFC<{
+  className?: string
   onClick?: (item: Evidence | Weapon) => void
   item: Evidence | Weapon
-}> = ({ item, onClick }) => {
+  selected?: boolean
+}> = ({ item, className, onClick, selected }) => {
   const classes = useStyles()
 
   return (
     <Selectable
-      onClick={() => onClick && onClick(item)}
-      image={item.img}
-      classes={{
-        root: classes.root,
-        image: classes.image,
-      }}
-    />
+      onClick={onClick && (() => onClick && onClick(item))}
+      selected={selected}
+      selectedBackgroundColor="white">
+      <img src={item.img} className={classes.image} />
+    </Selectable>
   )
 }

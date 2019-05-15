@@ -9,11 +9,14 @@ export interface PlayerMurder extends Player {
   hasGuessed?: { player: PlayerId; weapon: WeaponId; evidence: EvidenceId }
 
   weapons: Weapon[]
+  markedWeapons: WeaponId[]
+
   evidence: Evidence[]
+  markedEvidences: EvidenceId[]
 
   murderItems?: {
-    evidence: EvidenceId
-    weapon: WeaponId
+    evidence: Evidence
+    weapon: Weapon
   }
 }
 
@@ -24,7 +27,7 @@ export function isGuessCorrect(
 ): boolean {
   return (
     !!player.murderItems &&
-    player.murderItems.evidence === evidence &&
-    player.murderItems.weapon === weapon
+    player.murderItems.evidence.id === evidence &&
+    player.murderItems.weapon.id === weapon
   )
 }

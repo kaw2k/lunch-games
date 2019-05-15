@@ -1,4 +1,4 @@
-import { Player, PlayerId } from '../../../interfaces/player'
+import { Player } from '../../../interfaces/player'
 import { RoomId, Lobby } from '../../../interfaces/room'
 import { Hash } from '../../../interfaces/hash'
 import { PlayerMurder } from './player'
@@ -12,7 +12,7 @@ import murderer from '../static/roles/murderer.png'
 import investigator from '../static/roles/investigator.png'
 import witness from '../static/roles/witness.png'
 import accomplice from '../static/roles/accomplice.png'
-import forensic from '../static/roles/forensic.png'
+import forensic from '../static/roles/forensic-scientist.png'
 
 import { assertNever } from '../../../helpers/assertNever'
 
@@ -38,12 +38,10 @@ export interface Weapon {
   id: WeaponId
   img: string
   type: 'weapon'
-  marked: PlayerId[]
 }
 
 export interface Evidence {
   id: EvidenceId
-  marked: PlayerId[]
   type: 'evidence'
   img: string
 }

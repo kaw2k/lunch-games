@@ -16,8 +16,8 @@ export function makeGame(lobby: MurderLobby): MurderGame {
   const numPeople = lobby.lobbyPlayers.length - 1
   const numCardsNeeded = lobby.murderOptions.cardCounts
 
-  const weapons = shuffle(WEAPONS).slice(0, numCardsNeeded * numPeople)
-  const evidences = shuffle(EVIDENCES).slice(0, numCardsNeeded * numPeople)
+  const weapons = shuffle(WEAPONS)
+  const evidences = shuffle(EVIDENCES)
 
   const INVESTIGATOR: Role = 'investigator'
   let roles: Role[] = ['forensic scientist', 'murderer']
@@ -42,8 +42,16 @@ export function makeGame(lobby: MurderLobby): MurderGame {
           ...p,
           ready: false,
           role: roles[i],
-          weapons: weapons.slice(i * 4, i * 4 + 4),
-          evidence: evidences.slice(i * 4, i * 4 + 4),
+          weapons: weapons.slice(
+            i * numCardsNeeded,
+            i * numCardsNeeded + numCardsNeeded
+          ),
+          markedWeapons: [],
+          evidence: evidences.slice(
+            i * numCardsNeeded,
+            i * numCardsNeeded + numCardsNeeded
+          ),
+          markedEvidences: [],
         },
       }),
       {}

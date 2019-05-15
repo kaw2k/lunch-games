@@ -1,15 +1,18 @@
 import * as React from 'react'
 import { MurderGameContext } from '../../../../helpers/contexts'
 import { Typography } from '@material-ui/core'
-import { values } from 'ramda'
+import { values, includes } from 'ramda'
 import { shuffle } from '../../../../helpers/shuffle'
 import { playerName } from '../../../../components/playerName'
 import { PlayerMurder } from '../../interfaces/player'
 import { assertNever } from '../../../../helpers/assertNever'
 import { useCommonStyles } from '../../../../helpers/commonStyles'
 import { Card } from '../../components/card'
-import { Evidence, Weapon } from '../../interfaces/game'
 import { WeaponId, EvidenceId } from '../../../../helpers/id'
+import { useSelectState } from '../../../../hooks/useSelectState'
+import { Button } from '../../../../components/button'
+import without from 'ramda/es/without'
+import { Evidence, Weapon } from '../../interfaces/game'
 
 interface Props {
   disableButton?: boolean
@@ -23,6 +26,7 @@ export const ViewRole: React.SFC<Props> = ({
   disableButton,
 }) => {
   const { player, game } = React.useContext(MurderGameContext)
+  const classes = useCommonStyles()
   const murderer = values(game.players).find(p => p.role === 'murderer')
   const accomplice = values(game.players).find(p => p.role === 'accomplice')
   const witness = values(game.players).find(p => p.role === 'witness')
@@ -45,11 +49,15 @@ export const ViewRole: React.SFC<Props> = ({
     )
   }
 
+  if (!player.murderItems) {
+    return <SelectCards onReady={() => alert('done')} />
+  }
+
   if (player.role === 'investigator') {
     return (
       <>
         <Typography variant="h3">You are an investigator</Typography>
-        <ViewCards player={player} />
+        <SetupSelectCards player={player} />
       </>
     )
   }
@@ -70,7 +78,7 @@ export const ViewRole: React.SFC<Props> = ({
         <Typography>
           One of {names} is the murderer, the other is the accomplice.
         </Typography>
-        <ViewCards player={player} />
+        <SetupSelectCards player={player} />
       </>
     )
   }
@@ -84,7 +92,6 @@ export const ViewRole: React.SFC<Props> = ({
         {accomplice && (
           <Typography>{playerName(accomplice)} is your accomplice</Typography>
         )}
-        <ViewCards player={player} />
       </>
     )
   }
@@ -98,10 +105,22 @@ export const ViewRole: React.SFC<Props> = ({
         {murderer && (
           <>
             <Typography>{playerName(murderer)} is the murderer</Typography>
-            <Typography>TODO: SHOW THEIR ITEMS</Typography>
+            {murderer.murderItems ? (
+              <>
+                <Typography>Their weapon and evidence are:</Typography>
+                <div className={classes.row}>
+                  <Card item={murderer.murderItems.evidence} />
+                  <Card item={murderer.murderItems.weapon} />
+                </div>
+              </>
+            ) : (
+              <Typography>
+                They have not selected their items yet. You can view them later
+                in the game.
+              </Typography>
+            )}
           </>
         )}
-        <ViewCards player={player} />
       </>
     )
   }
@@ -111,51 +130,162 @@ export const ViewRole: React.SFC<Props> = ({
 
 const ViewCards: React.SFC<{
   player: PlayerMurder
-  onClick?: (item: Weapon | Evidence) => void
-}> = ({ player, onClick }) => {
+}> = ({ player }) => {
+  const { player: activePlayer, updateGamePlayer } = React.useContext(
+    MurderGameContext
+  )
   const classes = useCommonStyles()
-
-  if (player.role === 'forensic scientist') return null
 
   return (
     <>
-      <Typography variant="h3">{playerName(player)}'s cards</Typography>
+      <Typography variant="h2" align="center" gutterBottom>
+        {playerName(player)}'s cards
+      </Typography>
+
       <div className={classes.row}>
-        {player.evidence.map(e => (
-          <Card onClick={onClick} item={e} />
-        ))}
+        {player.evidence.map(e => {
+          const selected = includes(e.id, activePlayer.markedEvidences)
+
+          return (
+            <Card
+              item={e}
+              key={e.id}
+              onClick={() => {
+                updateGamePlayer({
+                  ...activePlayer,
+                  markedEvidences: selected
+                    ? without([e.id], activePlayer.markedEvidences)
+                    : activePlayer.markedEvidences.concat(e.id),
+                })
+              }}
+              selected={selected}
+            />
+          )
+        })}
       </div>
 
       <div className={classes.row}>
-        {player.weapons.map(w => (
-          <Card onClick={onClick} item={w} />
-        ))}
+        {player.weapons.map(w => {
+          const selected = includes(w.id, activePlayer.markedWeapons)
+
+          return (
+            <Card
+              item={w}
+              key={w.id}
+              onClick={() =>
+                updateGamePlayer({
+                  ...activePlayer,
+                  markedWeapons: selected
+                    ? without([w.id], activePlayer.markedWeapons)
+                    : activePlayer.markedWeapons.concat(w.id),
+                })
+              }
+              selected={selected}
+            />
+          )
+        })}
       </div>
     </>
   )
 }
 
-// TODO: It may be nice to make a layer above our base cardd (selectable) which doesn't do any of the styling besides rendering
-// that green checkmark. OR make the styles for cards more generic
+const SetupSelectCards: React.SFC<{
+  player: PlayerMurder
+  onSelected?: (items: { evidence: Evidence; weapon: Weapon }) => void
+}> = ({ player, onSelected }) => {
+  const classes = useCommonStyles()
+
+  const [selectedEvidence, setSelectedEvidence] = useSelectState<Evidence>([])
+  const [selectedWeapon, setSelectedWeapon] = useSelectState<Weapon>([])
+
+  if (player.role === 'forensic scientist') return null
+
+  const ready = selectedEvidence[0] && selectedWeapon[0]
+
+  return (
+    <>
+      <Typography variant="h2" align="center" gutterBottom>
+        {playerName(player)}'s cards
+      </Typography>
+
+      <div className={classes.row}>
+        {player.evidence.map(evidence => (
+          <Card
+            item={evidence}
+            key={evidence.id}
+            onClick={onSelected && (() => setSelectedEvidence(evidence))}
+            selected={includes(evidence, selectedEvidence)}
+          />
+        ))}
+      </div>
+
+      <div className={classes.row}>
+        {player.weapons.map(weapon => (
+          <Card
+            key={weapon.id}
+            item={weapon}
+            onClick={onSelected && (() => setSelectedWeapon(weapon))}
+            selected={includes(weapon, selectedWeapon)}
+          />
+        ))}
+      </div>
+
+      {onSelected && (
+        <Button
+          onClick={() => {
+            onSelected({
+              evidence: selectedEvidence[0],
+              weapon: selectedWeapon[0],
+            })
+          }}
+          color={ready ? 'green' : 'red'}
+          fullWidth
+          disabled={!ready}>
+          {ready ? 'done... view role' : 'select items'}
+        </Button>
+      )}
+    </>
+  )
+}
 
 export const SelectCards: React.SFC<{
   onReady: (murderItems: { weapon: WeaponId; evidence: EvidenceId }) => void
 }> = ({ onReady }) => {
-  const { player } = React.useContext(MurderGameContext)
+  const { game, player, updateGamePlayer } = React.useContext(MurderGameContext)
 
   if (player.role === 'forensic scientist') return null
+
+  const otherPlayers = values(game.players).filter(
+    p => p.id !== player.id && p.role !== 'forensic scientist'
+  )
 
   return (
     <>
       <Typography variant="h2">To see your role...</Typography>
       <Typography>
         In order to see your role you must select what items you would use for
-        murder. You may not be the murderer, but you will get bonus points if
-        you are not and still some of your items get selected.
+        murder. You may or may not be the murderer. Regardless you will want to{' '}
+        <strong>see what other players have</strong> to blend in with them.
       </Typography>
 
-      <Typography variant="h3">Your Cards</Typography>
-      <ViewCards player={player} />
+      <SetupSelectCards
+        player={player}
+        onSelected={murderItems =>
+          updateGamePlayer({
+            ...player,
+            murderItems,
+          })
+        }
+      />
+
+      <Typography gutterBottom>
+        If you want you may mark other players items for your own reference.
+        This can help you keep track of relevant items people have.
+      </Typography>
+
+      {otherPlayers.map(p => (
+        <ViewCards player={p} key={p.id} />
+      ))}
     </>
   )
 }
