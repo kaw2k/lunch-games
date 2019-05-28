@@ -13,6 +13,7 @@ interface Props {
   player: Player
   joinLobby: (lobbyId: RoomId) => void
   logOut: () => void
+  roomIds: RoomId[]
   setProfileImg: (file: any) => void
   setPlayer: (player: Player) => void
 }
@@ -24,7 +25,8 @@ const useStyles = makeStyles({
 })
 
 enum View {
-  lobby,
+  create,
+  join,
   player,
 }
 
@@ -32,12 +34,13 @@ export const SelectLobby: React.SFC<Props> = ({
   player,
   joinLobby,
   logOut,
+  roomIds,
   setProfileImg,
   setPlayer,
 }) => {
   const classes = useStyles()
   const [rid, setRid] = React.useState<RoomId>('' as RoomId)
-  const [view, setView] = React.useState<View>(View.lobby)
+  const [view, setView] = React.useState<View>(View.join)
 
   function join() {
     if (rid.trim() && rid.trim() !== 'null') {
@@ -53,11 +56,22 @@ export const SelectLobby: React.SFC<Props> = ({
         indicatorColor="primary"
         textColor="primary"
         onChange={(e, val) => setView(val)}>
-        <Tab label="Join Lobby" value={View.lobby} />
+        <Tab label="Join Lobby" value={View.join} />
+        <Tab label="Create Lobby" value={View.create} />
         <Tab label="Profile Setup" value={View.player} />
       </Tabs>
 
-      {view === View.lobby && (
+      {view === View.join && (
+        <>
+          {roomIds.map(id => (
+            <ActionRow>
+              <Button onClick={() => joinLobby(id)}>{id}</Button>
+            </ActionRow>
+          ))}
+        </>
+      )}
+
+      {view === View.create && (
         <>
           <Input
             label="lobby"
@@ -66,12 +80,11 @@ export const SelectLobby: React.SFC<Props> = ({
           />
           <ActionRow fixed>
             <Button color="green" onClick={join}>
-              join lobby
+              create lobby
             </Button>
           </ActionRow>
         </>
       )}
-
       {view === View.player && (
         <>
           <Profile
