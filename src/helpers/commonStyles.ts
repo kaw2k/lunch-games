@@ -9,6 +9,14 @@ export const useCommonStyles = makeStyles({
     padding: '1em',
   },
 
+  spacingTop: {
+    marginTop: '1em',
+  },
+
+  spacingBottom: {
+    marginBottom: '1em',
+  },
+
   pullRight: {
     marginLeft: 'auto',
   },

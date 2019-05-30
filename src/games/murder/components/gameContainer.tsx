@@ -3,10 +3,10 @@ import cx from 'classnames'
 import { IconButton, Icon, Typography } from '@material-ui/core'
 import { Layout } from '../../../components/layout'
 import { Button } from '../../../components/button'
-import { ViewRole } from '../views/game/viewRole'
 import { useCommonStyles } from '../../../helpers/commonStyles'
 import { ActionRow } from '../../../components/actionRow'
 import { MurderGameContext } from '../../../helpers/contexts'
+import { ViewRole } from './viewRole'
 
 interface Props {}
 

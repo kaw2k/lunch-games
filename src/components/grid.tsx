@@ -1,7 +1,10 @@
 import * as React from 'react'
+import cx from 'classnames'
 import { makeStyles } from '@material-ui/styles'
 
-interface Props {}
+interface Props {
+  className?: string
+}
 
 const useStyles = makeStyles({
   root: {
@@ -11,7 +14,7 @@ const useStyles = makeStyles({
   },
 })
 
-export const Grid: React.SFC<Props> = ({ children }) => {
+export const Grid: React.SFC<Props> = ({ children, className = '' }) => {
   const classes = useStyles()
-  return <div className={classes.root}>{children}</div>
+  return <div className={cx(classes.root, className)}>{children}</div>
 }

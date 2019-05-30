@@ -139,3 +139,36 @@ Once a marker has been placed by the moderator, that is the permanent order it d
 Events can optionally happen for the second or third round
 Moderator should still put people to sleep so the murderer isn't given away
 Would be nice for the accomplice to see in real time what the murderer is selecting
+
+Hey Fam, we have a number of things that we can work on for innovation day! We need help across all the different professions and across all the games we currently have running.
+General:
+
+- Devs: The app is currently a PWA. We need to figure out how to let the users know if there are updates to the app and force them to refresh the page (similar to how gmail does it)
+- Devs: We can hook up the PWA to get push notifications with firebase. This could be an awesome feature to let players know it is their turn for the various games.
+- Devs: Portraits sometimes show up sideways.
+- Choose your own new game or task!
+
+Avalon:
+
+- Design: The UI for avalon is rough around the edges, how would you want to see it cleaned up?
+- Design: We don't have any assets yet, we can either scan or make our own artwork!
+- Devs: There are a few new roles we can implement!
+- TE: Sometimes we get very strange behaviour with no idea how to reproduce :sweat_smile:
+
+Secret Hitler:
+
+- Devs: There is a bug where old data gets set if a user doesn't have the current game and sends a mission. This one will require quite a bit of tinkering.
+
+Werewolf:
+
+- Devs: We still have artifacts and roles left to implement, and lots of other work to be done!
+- TE: We need to verify the intricacies of some of the roles and how they interact with each other. For example, there are issues with the leprechaun and alpha wolf and I have no idea how they behave. Lots of testing needs to be done!
+- Design: We have a bunch of new roles and cards that need assets, either by scanning them or drawing them yourself.
+- Product: We can potentially think of new roles and artifacts to implement.
+
+Murder in Hong Kong:
+
+- This is a brand new game with very little work done to it. If you wanted to get in on the ground floor with a lunch game, this one is it! We need heavy design and development work. They should happen hand in hand.
+- Design: We have hundreds of cards to scan and adjust in photoshop.
+- Design: We have the entire UI to think through. How do we let people view others cards? How do we set up the game? How do we let the forensic scientist perform actions?
+- Devs: The general plumbing is in place to let you start a game, but nothing beyond that. Take some time to see how avalon and secret hitler are set up and try to re-use those components. If we have any exciting innovation here, the other three games will benefit as well.
