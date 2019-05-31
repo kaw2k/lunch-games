@@ -137,7 +137,7 @@ const Info: React.SFC<{}> = ({}) => {
   return (
     <>
       <Typography>
-        <strong>Round:</strong> {game.round}
+        <strong>Round:</strong> {game.round} of 3
       </Typography>
       <Typography>
         <strong>Roles:</strong> {uniqRoles}

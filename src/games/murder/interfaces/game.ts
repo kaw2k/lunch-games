@@ -68,13 +68,12 @@ export interface Scene {
   selected?: number
 }
 
-interface MurderOptions {
+export interface MurderOptions {
   cardCounts: 3 | 4 | 5 // 4
   roundOneTime: number // 5 min
   roundTwoTime: number // 4 min
   roundThreeTime: number // 3 min
   speakingTime: number // 30000
-  useEvents: boolean // false
 }
 
 export interface MurderLobby extends Omit<Lobby, 'type'> {
@@ -93,6 +92,7 @@ export interface MurderGame {
   players: Hash<PlayerMurder>
 
   round: 'setup' | 1 | 2 | 3 | 'end'
+  roundStart?: number // Used for timers
 
   scenes: Scene[]
 

@@ -3,7 +3,7 @@ import { Button } from '../../../components/button'
 import { Layout } from '../../../components/layout'
 import { ActionRow } from '../../../components/actionRow'
 import { RoomContext } from '../../../helpers/contexts'
-import { MurderLobby } from '../interfaces/game'
+import { MurderLobby, MurderOptions } from '../interfaces/game'
 import { ChooseGame } from '../../../components/chooseGame'
 import {
   Typography,
@@ -15,6 +15,8 @@ import { playerName } from '../../../components/playerName'
 import { PlayerCard } from '../../../components/card/player'
 import { Grid } from '../../../components/grid'
 import { Tabs } from '../../../components/tabs'
+import { Value } from '../../../components/inputs/value'
+import { Radio } from '../../../components/inputs/radio'
 
 interface Props {
   lobby: MurderLobby
@@ -23,7 +25,7 @@ interface Props {
 
 enum View {
   lobby,
-  roles,
+  options,
   rules,
   start,
 }
@@ -40,6 +42,7 @@ export const LobbyMurder: React.SFC<Props> = ({ startGame, lobby }) => {
       <Typography variant="h2">Lobby: {lobby.id}</Typography>
 
       {view === View.lobby && <Players lobby={lobby} />}
+      {view === View.options && <Options lobby={lobby} />}
       {view === View.rules && <Rules lobby={lobby} />}
 
       <Tabs
@@ -66,6 +69,12 @@ export const LobbyMurder: React.SFC<Props> = ({ startGame, lobby }) => {
           label="Rules"
           value={View.rules}
           icon={<Icon>book</Icon>}
+        />
+
+        <BottomNavigationAction
+          label="Options"
+          value={View.options}
+          icon={<Icon>build</Icon>}
         />
 
         <BottomNavigationAction
@@ -159,6 +168,73 @@ const Rules: React.SFC<{
         murderer. If the investigators catch the murderer, but the murderer
         identifies the witness, the murderer wins.{' '}
       </Typography>
+    </>
+  )
+}
+
+const Options: React.SFC<{
+  lobby: MurderLobby
+}> = ({ lobby }) => {
+  const { updateRoom } = React.useContext(RoomContext)
+
+  function update<T extends keyof MurderOptions>(
+    key: T,
+    val: MurderOptions[T]
+  ) {
+    updateRoom({
+      murderOptions: {
+        ...lobby.murderOptions,
+        [key]: val,
+      },
+    })
+  }
+
+  return (
+    <>
+      <Value
+        title="Round One Time"
+        description="How long the duration is for the first round (in seconds)"
+        value={lobby.murderOptions.roundOneTime}
+        id="round one"
+        onChange={val => update('roundOneTime', val)}
+      />
+
+      <Value
+        title="Round Two Time"
+        description="How long the duration is for the second round (in seconds)"
+        value={lobby.murderOptions.roundTwoTime}
+        id="round two"
+        onChange={val => update('roundTwoTime', val)}
+      />
+
+      <Value
+        title="Round Three Time"
+        description="How long the duration is for the second round (in seconds)"
+        value={lobby.murderOptions.roundThreeTime}
+        id="round three"
+        onChange={val => update('roundThreeTime', val)}
+      />
+
+      <Value
+        title="Speaking Time"
+        description="How long each player has to speak between rounds (in seconds)"
+        value={lobby.murderOptions.roundThreeTime}
+        id="speaking"
+        onChange={val => update('speakingTime', val)}
+      />
+
+      <Radio
+        title="Number of cards"
+        description="Each player will get this number of key evidences and murder weapons. The more cards, the harder the game is for the investigators."
+        value={lobby.murderOptions.cardCounts}
+        id="card counts"
+        onChange={val => update('cardCounts', parseInt(val, 10) as any)}
+        options={[
+          { label: '3', value: 3 },
+          { label: '4', value: 4 },
+          { label: '5', value: 5 },
+        ]}
+      />
     </>
   )
 }

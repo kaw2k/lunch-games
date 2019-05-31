@@ -82,7 +82,6 @@ export const ChooseGame: React.SFC<{}> = () => {
                 roundTwoTime: 4 * 60 * 1000,
                 roundThreeTime: 3 * 60 * 1000,
                 speakingTime: 30 * 1000,
-                useEvents: false,
               },
             })
           }

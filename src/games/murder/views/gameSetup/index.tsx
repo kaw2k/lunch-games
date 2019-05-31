@@ -49,7 +49,7 @@ const SetupForensic: React.SFC<{}> = ({}) => {
   const [location, setLocation] = useSelectState<Scene>([])
 
   async function done() {
-    await updateGame({ scenes: [...location, ...game.scenes] })
+    await updateGame({ scenes: [...location, ...game.scenes], round: 1 })
     await updateGamePlayer({ ...player, ready: true })
   }
 
