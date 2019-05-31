@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Typography } from '@material-ui/core'
 import { includes, values } from 'ramda'
-import { playerName } from '../../../../components/playerName'
 import { useCommonStyles } from '../../../../helpers/commonStyles'
 import { Card } from '../../components/card'
 import { useSelectState } from '../../../../hooks/useSelectState'

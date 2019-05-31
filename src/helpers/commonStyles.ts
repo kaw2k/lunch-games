@@ -42,4 +42,14 @@ export const useCommonStyles = makeStyles({
     position: 'relative',
     zIndex: 20,
   },
+
+  shelf: {
+    display: 'flex',
+    overflowX: 'scroll',
+    '-webkit-overflow-scrolling': 'touch',
+    '& > * + *': {
+      marginLeft: '1em',
+      flex: '0 0 auto',
+    },
+  },
 })

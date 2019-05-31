@@ -132,9 +132,9 @@ export const ViewScientist: React.SFC<{}> = ({}) => {
 
 export const ViewRole: React.SFC<{
   disableButton?: boolean
-  button: string
-  onDone: () => void
-}> = ({ button, onDone, disableButton }) => {
+  button?: string
+  onDone?: () => void
+}> = ({ button = 'done', onDone, disableButton }) => {
   const { player } = React.useContext(MurderGameContext)
 
   return (
@@ -145,9 +145,11 @@ export const ViewRole: React.SFC<{
       {player.role === 'accomplice' && <ViewAccomplice />}
       {player.role === 'investigator' && <ViewInvestigator />}
 
-      <Button disabled={disableButton} onClick={onDone} color="blue">
-        {button}
-      </Button>
+      {onDone && (
+        <Button disabled={disableButton} onClick={onDone} color="blue">
+          {button}
+        </Button>
+      )}
     </>
   )
 }
