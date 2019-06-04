@@ -235,7 +235,7 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
       </div>
 
       <ActionRow fixed>
-        {fascists === 5 && (
+        {fascists === 5 && player.role.party !== 'liberal' && (
           <Button
             disabled={disabled}
             onClick={() => {
@@ -245,20 +245,33 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
             veto
           </Button>
         )}
+
         {government.cards.length === 3 && (
           <Button confirm onClick={cancel}>
             cancel
           </Button>
         )}
-        <Button
-          disabled={disabled}
-          color="green"
-          onClick={() => {
-            if (disabled) return
-            discard(selected, discarded)
-          }}>
-          {government.cards.length === 3 ? 'pass' : 'play'}
-        </Button>
+
+        {fascists === 5 && player.role.party === 'liberal' ? (
+          <Button
+            disabled={disabled}
+            onClick={() => {
+              if (disabled) return
+              discard(selected, discarded, true)
+            }}>
+            veto
+          </Button>
+        ) : (
+          <Button
+            disabled={disabled}
+            color="green"
+            onClick={() => {
+              if (disabled) return
+              discard(selected, discarded)
+            }}>
+            {government.cards.length === 3 ? 'pass' : 'play'}
+          </Button>
+        )}
       </ActionRow>
     </>
   )
