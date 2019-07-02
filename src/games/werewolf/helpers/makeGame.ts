@@ -50,8 +50,6 @@ export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
     {}
   )
 
-  console.log(gamePlayers)
-
   return {
     type: 'werewolf-game',
     ready: false,

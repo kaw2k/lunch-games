@@ -1,0 +1,13 @@
+
+# Rename all files
+ls -v | cat -n | while read n f; do mv -n "$f" "$n.png"; done
+
+# Split out files
+multicrop image0.jpg out.png -u 4 -i yes -f 20
+
+
+autotrim
+convert
+multicrop
+trimcorners
+unrotate

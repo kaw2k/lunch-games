@@ -4,6 +4,7 @@ import { Player } from '../interfaces/player'
 import { PlayerSecretHitler } from '../games/secret-hitler/interfaces/player'
 import * as SH from '../games/secret-hitler/interfaces/game'
 import * as M from '../games/murder/interfaces/game'
+import * as S from '../games/skull/interfaces/game'
 import * as WW from '../games/werewolf/interfaces/game'
 
 import { PartialFirebase } from '../interfaces/partialFirebase'
@@ -114,6 +115,22 @@ export interface MurderGameContext {
 export const MurderGameContext = createContext<MurderGameContext>({
   game: {} as M.MurderGame,
   player: {} as PlayerMurder,
+  updateGamePlayer() {},
+  updateGame() {},
+  endGame() {},
+})
+
+export interface SkullGameContext {
+  game: S.SkullGame
+  player: S.PlayerSkull
+  updateGamePlayer: (player: S.PlayerSkull) => void
+  updateGame: (game: PartialFirebase<S.SkullGame>) => void
+  endGame: () => void
+}
+
+export const SkullGameContext = createContext<SkullGameContext>({
+  game: {} as S.SkullGame,
+  player: {} as S.PlayerSkull,
   updateGamePlayer() {},
   updateGame() {},
   endGame() {},

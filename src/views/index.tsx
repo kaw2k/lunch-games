@@ -12,6 +12,7 @@ import { isAvalon, AvalonView } from '../games/avalon/views'
 import { isWerewolf, WerewolfView } from '../games/werewolf/views'
 import { isMurder, MurderView } from '../games/murder/views'
 import { useRoomList } from '../hooks/useRoomList'
+import { isSkull, SkullView } from '../games/skull/views'
 
 export const App: React.SFC<{}> = () => {
   const playerResult = useAuthState()
@@ -96,6 +97,14 @@ export const App: React.SFC<{}> = () => {
     return (
       <RoomContext.Provider value={roomContextValues}>
         <MurderView room={room} />
+      </RoomContext.Provider>
+    )
+  }
+
+  if (isSkull(room)) {
+    return (
+      <RoomContext.Provider value={roomContextValues}>
+        <SkullView room={room} />
       </RoomContext.Provider>
     )
   }

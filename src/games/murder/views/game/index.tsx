@@ -10,6 +10,12 @@ import { Layout } from '../../../../components/layout'
 import uniq from 'ramda/es/uniq'
 import { ViewScientist } from '../../components/viewRole'
 import { count } from '../../../../helpers/count'
+import { assertNever } from '../../../../helpers/assertNever'
+import { PlayerMurder } from '../../interfaces/player'
+import { Button } from '../../../../components/button'
+import { playerName } from '../../../../components/playerName'
+import { PlayerCard } from '../../../../components/card/player'
+import { Grid } from '../../../../components/grid'
 
 enum View {
   players,
@@ -29,19 +35,17 @@ export const GameView: React.SFC<{}> = ({}) => {
       {view === View.hints && <Hints />}
       {view === View.options && <Info />}
       {view === View.roles && <Roles />}
+      {view === View.guess && <Guess />}
 
       <Tabs
         value={view}
         showLabels
         onChange={(e, val) => {
-          if (val === View.guess) {
-          } else {
-            if (val === View.roles) {
-              alert('Make sure no one is looking')
-            }
-
-            setView(val)
+          if (val === View.roles) {
+            alert('Make sure no one is looking')
           }
+
+          setView(val)
         }}>
         <BottomNavigationAction
           label="Players"
@@ -148,4 +152,70 @@ const Info: React.SFC<{}> = ({}) => {
 
 const Roles: React.SFC<{}> = ({}) => {
   return <ViewScientist />
+}
+
+type GuessState = { type: 'players' } | { type: 'cards'; player: PlayerMurder }
+
+const Guess: React.SFC<{}> = ({}) => {
+  const { player, game } = React.useContext(MurderGameContext)
+  const [state, setState] = React.useState<GuessState>({ type: 'players' })
+
+  if (player.hasGuessed) {
+    return (
+      <>
+        <Typography variant="h2">Nope</Typography>
+        <Typography>You have already made your guess.</Typography>
+      </>
+    )
+  }
+
+  if (state.type === 'players') {
+    const otherPlayers = values(game.players).filter(
+      p => p.role !== 'forensic scientist' && p.id !== player.id
+    )
+
+    return (
+      <>
+        <Typography variant="h2">Who Done It?</Typography>
+        <Typography gutterBottom>
+          Which player is the murderer? Once you make a guess there is no going
+          back.
+        </Typography>
+
+        <Grid>
+          {otherPlayers.map(p => (
+            <PlayerCard
+              player={p}
+              onClick={() => setState({ type: 'cards', player: p })}
+            />
+          ))}
+        </Grid>
+      </>
+    )
+  }
+
+  if (state.type === 'cards') {
+    return (
+      <>
+        <Button fullWidth onClick={() => setState({ type: 'players' })}>
+          back
+        </Button>
+        <Typography variant="h2">{playerName(state.player)}'s cards</Typography>
+        <Typography gutterBottom>
+          You must select the correct weapon and evidence. If either are wrong
+          the game continues.
+        </Typography>
+
+        <Button
+          fullWidth
+          disabled
+          color="green"
+          onClick={() => setState({ type: 'players' })}>
+          guess
+        </Button>
+      </>
+    )
+  }
+
+  return assertNever(state)
 }

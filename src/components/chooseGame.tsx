@@ -7,6 +7,7 @@ import { WerewolfLobby } from '../games/werewolf/interfaces/game'
 import { Omit } from '@material-ui/core'
 import mergeDeepLeft from 'ramda/es/mergeDeepLeft'
 import { MurderLobby } from '../games/murder/interfaces/game'
+import { SkullLobby } from '../games/skull/interfaces/game'
 
 type LobbyType<T extends Room['type']> = T extends 'lobby'
   ? Lobby
@@ -18,6 +19,8 @@ type LobbyType<T extends Room['type']> = T extends 'lobby'
   ? WerewolfLobby
   : T extends 'murder-lobby'
   ? MurderLobby
+  : T extends 'skull-lobby'
+  ? SkullLobby
   : never
 
 export const ChooseGame: React.SFC<{}> = () => {
@@ -35,6 +38,7 @@ export const ChooseGame: React.SFC<{}> = () => {
   const avalon: AvalonLobby['type'] = 'avalon-lobby'
   const werewolf: WerewolfLobby['type'] = 'werewolf-lobby'
   const murder: MurderLobby['type'] = 'murder-lobby'
+  const skull: SkullLobby['type'] = 'skull-lobby'
 
   return (
     <div>
@@ -84,6 +88,8 @@ export const ChooseGame: React.SFC<{}> = () => {
                 speakingTime: 30 * 1000,
               },
             })
+          } else if (game === skull) {
+            updateRoom('skull-lobby', { seatingChart: [] })
           }
         }}>
         <option value={lobby}>Select a game</option>
@@ -91,6 +97,7 @@ export const ChooseGame: React.SFC<{}> = () => {
         <option value={secretHitler}>Secret Hitler</option>
         <option value={werewolf}>Werewolf</option>
         <option value={murder}>Murder</option>
+        <option value={skull}>Skull</option>
       </select>
     </div>
   )
