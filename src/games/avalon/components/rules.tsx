@@ -23,52 +23,66 @@ export const Rules: React.SFC<Props> = ({ done }) => {
         Rules
       </Typography>
 
-      <Typography className={classes.padded}>
-        Two teams: Liberals and Fascists. Hitler is on the Fascist team but does
-        not know the identity of the Fascists (unless you’re playing in a
-        smaller game with 5 or 6 peeople). One player is randomly selected to be
-        the first President.
+      <Typography className={classes.padded} variant="h2">
+        Overview
       </Typography>
 
       <Typography className={classes.padded}>
-        Liberals win if they play 5 Liberal cards OR kill Hitler.
+        Two teams: Loyal Servants of Arther (Good) and Evil ways of Mordred (Evil). Merlin knows who are all bad people except Morder.
+        One player is randomly selected to be a Quest leader to select a team for the Quest.
       </Typography>
 
       <Typography className={classes.padded}>
-        Fascists win if they play 6 Fascist cards OR elect Hitler as Chancellor
-        after 3 Fascists cards.
+        Good wins the game by successfully completing three Quests.
+      </Typography>
+
+      <Typography className={classes.padded}>
+        Evil wins if three Quests end in failure.
+        If Good successfully completing three Quests, Evil can also win by assassinating Merlin at game's end
+        Lastly, if a Quest cannot be undertaken (Chaos couter hits 5) then Evil wins.
       </Typography>
 
       <Typography className={classes.padded} variant="h2">
         Turns
       </Typography>
       <Typography>
-        At the start of your turn as President, you nominate a Chancellor. This
-        person must not have been the previous President or Chancellor. Everyone
-        votes on whether you and your Chancellor should enact policies. If the
-        vote passes, proceed to Policy Enactment. If the vote fails, the Chaos
-        Counter increases and the Presidency passes to the person on your left
+        At the start of your turn as Quest leader, you choose a Quest team. This 
+        team will go on the Quest. Everyone votes on whether your chosen 
+        Quest team should go on the Quest. If the vote passes, 
+        proceed with the Quest. If the vote fails, the Chaos Counter 
+        increases and the Quest leader honor passes to the person on your left
         (see: Chaos Counter).
       </Typography>
 
       <Typography className={classes.padded} variant="h2">
-        Policy Enactment
+        Quest
       </Typography>
+
       <Typography>
-        The President gets 3 cards, and chooses 2 to pass to the Chancellor. The
-        Chancellor then plays 1 of the 2 cards. No reactions (emotions or words)
-        can be made until after the card is played.
+        Each member of the Quest gets 2 cards, Fail and Pass. If anyone on 
+        the Quest chooses to the Fail card then the Quest fails. 
+        Any 3 fails or passes lead to the end of the game.
       </Typography>
 
       <Typography className={classes.padded} variant="h2">
         Chaos Counter
       </Typography>
+
       <Typography>
-        Every time a vote for President/Chancellor fails, the chaos counter
-        increases. If the chaos counter hits 3, the top policy is immediately
-        played (no powers associated with the policy are activated). The chaos
-        counter then resets, and all plays are eligible for office again. tried
-        to make it concise
+        Every time a Quest team is voted down and does not go, the chaos counter is
+        increases. If the chaos counter hits 5 then the Evil wins.
+      </Typography>
+
+      <Typography className={classes.padded} variant="h2">
+        Lady of The Lake
+      </Typography>
+      
+      <Typography>
+        If Lady of The Lake is in play then player to the right of the 1st Quest leader 
+        is to claim it. After 2nd Quest, player that claimed Lady of The Lake can inspect 
+        other players to see if they are Good or Evil. The player that was inspected now 
+        is possesion of the Lady of The Lake and can inspected someone after next Quest.
+        Lady of The Lake is destroyed after person that already claimed her is inspected.
       </Typography>
 
       <ActionRow className={classes.padded} fixed>
