@@ -72,9 +72,7 @@ export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
       {view === View.lobby && <Players lobby={lobby} />}
       {view === View.roles && <Roles lobby={lobby} />}
       {view === View.rules && 
-        <Layout padded>
-         <Rules done={() => setView(View.lobby)} />
-        </Layout>
+         <Rules/>
       }
 
       <BottomNavigation
@@ -122,9 +120,7 @@ export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
           label="Rules"
           value={View.rules}
           icon={
-            <Badge badgeContent={lobby.avalonRoles.length}>
-              <Icon>description</Icon>
-            </Badge>
+            <Icon>description</Icon>
           }
         />
 

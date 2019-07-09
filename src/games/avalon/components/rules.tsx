@@ -1,12 +1,6 @@
 import * as React from 'react'
 import { Typography } from '@material-ui/core'
-import { ActionRow } from '../../../components/actionRow'
-import { Button } from '../../../components/button'
 import { makeStyles } from '@material-ui/styles'
-
-interface Props {
-  done: () => void
-}
 
 const useStyles = makeStyles({
   padded: {
@@ -14,7 +8,7 @@ const useStyles = makeStyles({
   },
 })
 
-export const Rules: React.SFC<Props> = ({ done }) => {
+export const Rules: React.SFC = () => {
   const classes = useStyles()
 
   return (
@@ -84,12 +78,6 @@ export const Rules: React.SFC<Props> = ({ done }) => {
         is possesion of the Lady of The Lake and can inspected someone after next Quest.
         Lady of The Lake is destroyed after person that already claimed her is inspected.
       </Typography>
-
-      <ActionRow className={classes.padded} fixed>
-        <Button color="green" onClick={done}>
-          done
-        </Button>
-      </ActionRow>
     </>
   )
 }
