@@ -1,13 +1,14 @@
 import * as React from 'react'
 import { Lobby } from '../interfaces/room'
 import { Layout } from '../components/layout'
-import { Profile } from '../components/profile'
 import { ActionRow } from '../components/actionRow'
 import { Button } from '../components/button'
 import { RoomContext } from '../helpers/contexts'
 import { ChooseGame } from '../components/chooseGame'
-import { Typography } from '@material-ui/core'
+import { Typography} from '@material-ui/core'
 import { playerName } from '../components/playerName'
+import {Grid} from '../components/grid'
+import {PlayerCard} from '../components/card/player'
 
 interface Props {
   lobby: Lobby
@@ -27,16 +28,17 @@ export const LobbyGeneral: React.SFC<Props> = ({ lobby }) => {
 
       <ChooseGame />
 
-      {lobby.lobbyPlayers.map(p => (
-        <Profile
-          key={p.id}
-          text={p.name || p.id}
-          image={p.profileImg}
-          onClick={() =>
-            confirm(`Do you want to kick ${playerName(p)}`) && kickPlayer(p)
-          }
-        />
-      ))}
+      <Grid>
+        {lobby.lobbyPlayers.map(p => (
+          <PlayerCard
+            key={p.id}
+            player={p}
+            onClick={() =>
+              confirm(`Do you want to kick ${playerName(p)}`) && kickPlayer(p)
+            }
+          />
+        ))}
+      </Grid>
 
       <ActionRow fixed>
         <Button onClick={leaveRoom}>leave</Button>
