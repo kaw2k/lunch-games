@@ -2,9 +2,11 @@ import * as React from 'react'
 import { makeStyles } from '@material-ui/styles'
 import { colors, Typography } from '@material-ui/core'
 import { Button } from './button'
+import { Props as ButtonProps } from '../components/button'
 
 interface Props {
-  clickHandler?: () => void
+  onClick?: () => void,  
+  color?: ButtonProps['color']
 }
 
 const useStyles = makeStyles({
@@ -29,13 +31,13 @@ const useStyles = makeStyles({
   },
 })
 
-export const FullScreenNotice: React.SFC<Props> = ({ children, clickHandler}) => {
+export const FullScreenNotice: React.SFC<Props> = ({ children, onClick}) => {
   const classes = useStyles()
 
   return (
     <div className={classes.done}>
-      {clickHandler ? (
-        <Button onClick={clickHandler} className={classes.button} color="green">
+      {onClick ? (
+        <Button onClick={onClick} className={classes.button} color="teal">
           {children}
         </Button>
       ) : (

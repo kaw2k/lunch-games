@@ -170,9 +170,8 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
             </FullScreenNotice>
           }
           {game.excalibur && !mission.hasSwitched && 'Waiting on excalibur to decide'}
-          {allCardsPlayed && (!game.excalibur || mission.hasSwitched) 
-          && 
-            <FullScreenNotice clickHandler={flipCards}>
+          {allCardsPlayed && (!game.excalibur || mission.hasSwitched) && 
+            <FullScreenNotice onClick={flipCards}>
               Flip Votes
             </FullScreenNotice>
           }
@@ -194,8 +193,6 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
           'Waiting on excalibur to decide to flip a vote'}
         {allCardsPlayed &&
           (!game.excalibur || mission.hasSwitched) &&
-          'Waiting on owner to flip cards'
-          &&
           <FullScreenNotice>
             Waiting on Quest Leader to flip the cards
           </FullScreenNotice>
