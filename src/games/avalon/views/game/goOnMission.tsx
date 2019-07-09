@@ -41,10 +41,8 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
   }
 
   async function flipCards() {
-
     // Collect all the cards
     const cards = mission.players.reduce<Party[]>((memo, pid) => {
-      debugger
       const card = game.players[pid].missionVote
       return card ? memo.concat(card) : memo
     }, [])
@@ -117,7 +115,7 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
     (memo, id) => memo && !!game.players[id].missionVote,
     true
   )
-  
+
   if (isWielder && hasPlayedCard) {
     return (
       <>
@@ -174,9 +172,9 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
           {game.excalibur && !mission.hasSwitched && 'Waiting on excalibur to decide'}
           {allCardsPlayed && (!game.excalibur || mission.hasSwitched) 
           && 
-          <Button onClick={flipCards}>
-            <FullScreenNotice>Flip Votes</FullScreenNotice>
-          </Button>
+            <FullScreenNotice clickHandler={flipCards}>
+              Flip Votes
+            </FullScreenNotice>
           }
         </Typography>{' '}
       </>
