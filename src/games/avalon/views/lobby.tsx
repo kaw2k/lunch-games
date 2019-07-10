@@ -28,6 +28,7 @@ import { Grid } from '../../../components/grid'
 import { useCommonStyles } from '../../../helpers/commonStyles'
 import { count } from '../../../helpers/count'
 import values from 'ramda/es/values'
+import {Rules} from '../components/rules'
 
 interface Props {
   lobby: AvalonLobby
@@ -37,6 +38,7 @@ interface Props {
 enum View {
   lobby,
   roles,
+  rules,
   start,
 }
 
@@ -69,6 +71,9 @@ export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
 
       {view === View.lobby && <Players lobby={lobby} />}
       {view === View.roles && <Roles lobby={lobby} />}
+      {view === View.rules && 
+         <Rules/>
+      }
 
       <BottomNavigation
         className={classes.nav}
@@ -110,6 +115,15 @@ export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
             </Badge>
           }
         />
+                
+        <BottomNavigationAction
+          label="Rules"
+          value={View.rules}
+          icon={
+            <Icon>description</Icon>
+          }
+        />
+
         <BottomNavigationAction
           label="Start"
           value={View.start}
