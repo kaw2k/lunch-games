@@ -165,7 +165,7 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
       <>
         <Typography gutterBottom variant="h2">
           {!allCardsPlayed &&
-            <FullScreenNotice>
+            <FullScreenNotice color='red'>
               Waiting for the others to play their cards
             </FullScreenNotice>
           }
@@ -175,7 +175,7 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
               Flip Votes
             </FullScreenNotice>
           }
-        </Typography>{' '}
+        </Typography>
       </>
     )
   }

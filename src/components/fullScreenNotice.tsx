@@ -31,13 +31,13 @@ const useStyles = makeStyles({
   },
 })
 
-export const FullScreenNotice: React.SFC<Props> = ({ children, onClick}) => {
+export const FullScreenNotice: React.SFC<Props> = ({ children, onClick, color="green"}) => {
   const classes = useStyles()
 
   return (
     <div className={classes.done}>
       {onClick ? (
-        <Button onClick={onClick} className={classes.button} color="teal">
+        <Button onClick={onClick} className={classes.button} color={color}>
           {children}
         </Button>
       ) : (
@@ -47,4 +47,5 @@ export const FullScreenNotice: React.SFC<Props> = ({ children, onClick}) => {
       )}
     </div>
   )
+
 }
