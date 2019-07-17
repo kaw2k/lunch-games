@@ -1,8 +1,10 @@
 import * as React from 'react'
 import { makeStyles } from '@material-ui/styles'
-import { colors, Typography } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import { Button } from './button'
 import { Props as ButtonProps } from '../components/button'
+import { useColor } from '../hooks/useColor';
+import cx from 'classnames';
 
 interface Props {
   onClick?: () => void,  
@@ -20,8 +22,6 @@ const useStyles = makeStyles({
     bottom: '1em',
     right: '1em',
     left: '1em',
-    background: colors.green[400],
-    color: 'white',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -33,15 +33,15 @@ const useStyles = makeStyles({
 
 export const FullScreenNotice: React.SFC<Props> = ({ children, onClick, color="green"}) => {
   const classes = useStyles()
-
+  const backgroundColor = useColor(color)
   return (
-    <div className={classes.done}>
+    <div className={cx(classes.done, backgroundColor)}>
       {onClick ? (
         <Button onClick={onClick} className={classes.button} color={color}>
           {children}
         </Button>
       ) : (
-        <Typography align="center" variant="h2" color="inherit">
+        <Typography className={backgroundColor} align="center" variant="h2" color="inherit">
           {children}
         </Typography>
       )}
