@@ -9,6 +9,7 @@ import { AvalonGameContext } from '../../../../helpers/contexts'
 import { count } from '../../../../helpers/count'
 import { isGameOver } from '../../helpers/isGameOver'
 import { Typography } from '@material-ui/core'
+import { FullScreenNotice } from '../../../../components/fullScreenNotice';
 
 export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
   // ======================
@@ -114,14 +115,14 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
     (memo, id) => memo && !!game.players[id].missionVote,
     true
   )
-  
+
   if (isWielder && hasPlayedCard) {
     return (
       <>
         {!allCardsPlayed && (
-          <Typography gutterBottom variant="h2">
+          <FullScreenNotice>
             Waiting for the others to play their cards
-          </Typography>
+          </FullScreenNotice>
         )}
 
         {allCardsPlayed && !mission.hasSwitched && (
@@ -147,9 +148,9 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
         )}
 
         {allCardsPlayed && game.excalibur && mission.hasSwitched && (
-          <Typography gutterBottom variant="h2">
-            Waiting on owner to flip cards
-          </Typography>
+          <FullScreenNotice>
+            Waiting on Quest Leader to flip the cards
+          </FullScreenNotice>
         )}
       </>
     )
@@ -163,18 +164,18 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
     return (
       <>
         <Typography gutterBottom variant="h2">
-          {!allCardsPlayed && 'Waiting for the others to play their cards'}
+          {!allCardsPlayed &&
+            <FullScreenNotice color='red'>
+              Waiting for the others to play their cards
+            </FullScreenNotice>
+          }
           {game.excalibur && !mission.hasSwitched && 'Waiting on excalibur to decide'}
-          {allCardsPlayed && (!game.excalibur || mission.hasSwitched) && 'Waiting on you to flip votes'}
-        </Typography>{' '}
-        <ActionRow fixed>
-          <Button confirm onClick={cancel}>
-            cancel
-          </Button>
-          <Button disabled={!allCardsPlayed} onClick={flipCards}>
-            flip cards
-          </Button>
-        </ActionRow>
+          {allCardsPlayed && (!game.excalibur || mission.hasSwitched) && 
+            <FullScreenNotice onClick={flipCards}>
+              Flip Votes
+            </FullScreenNotice>
+          }
+        </Typography>
       </>
     )
   }
@@ -182,13 +183,20 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
   if (hasPlayedCard) {
     return (
       <Typography gutterBottom variant="h2">
-        {!allCardsPlayed && 'Waiting for the others to play their cards'}
+        {!allCardsPlayed && 
+          <FullScreenNotice>
+            Waiting for the others to play their cards
+          </FullScreenNotice>
+        }
         {game.excalibur &&
           !mission.hasSwitched &&
           'Waiting on excalibur to decide to flip a vote'}
         {allCardsPlayed &&
           (!game.excalibur || mission.hasSwitched) &&
-          'Waiting on owner to flip cards'}
+          <FullScreenNotice>
+            Waiting on Quest Leader to flip the cards
+          </FullScreenNotice>
+          }
       </Typography>
     )
   }
