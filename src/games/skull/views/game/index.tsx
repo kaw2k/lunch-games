@@ -27,14 +27,8 @@ import { clone } from '../../../../helpers/clone'
 import { count } from '../../../../helpers/count'
 import { PlayerId } from '../../../../interfaces/player'
 import { shuffle } from '../../../../helpers/shuffle'
-
-// We probably should add a seating chart...
-// View Modes
-// - Select your initial, round starting
-// - Take turns bidding, adding cards, passing, your turn
-// - Flip your cards and flip other players cards
-// - Choose someone elses card to discard
-// - Choose your card to discard
+import { makeStyles } from '@material-ui/styles'
+import { PlayerCard } from '../../../../components/card/player'
 
 const ChooseSkullCard: React.SFC<Partial<ChooseProps<SkullCard>>> = props => {
   return (
@@ -55,17 +49,67 @@ const ChooseSkullCard: React.SFC<Partial<ChooseProps<SkullCard>>> = props => {
   )
 }
 
+const usePlayerStyles = makeStyles({
+  row: {
+    display: 'flex',
+    // alignItems: 'center',
+    marginBottom: '1em',
+
+    '& > * + * ': {
+      marginLeft: '1em',
+    },
+  },
+  data: {
+    textAlign: 'center',
+  },
+  profile: {
+    width: '20%',
+  },
+  title: {
+    fontWeight: 'bold',
+  },
+})
+
 const Player: React.SFC<{ player: PlayerSkull }> = ({ player }) => {
+  const classes = usePlayerStyles()
   const numCards = player.cards.length + player.playedCards.length
 
   return (
+    <div className={classes.row}>
+      <PlayerCard player={player} className={classes.profile} />
+
+      <div className={classes.data}>
+        <Typography className={classes.title}>Cards Played</Typography>
+        <Typography>{player.playedCards.length}</Typography>
+      </div>
+
+      <div className={classes.data}>
+        <Typography className={classes.title}>Cards Remaining</Typography>
+        <Typography>{numCards} of 4</Typography>
+      </div>
+
+      <div className={classes.data}>
+        <Typography className={classes.title}>Points</Typography>
+        <Typography>{player.correctGuess ? 1 : 0} of 2</Typography>
+      </div>
+    </div>
+  )
+}
+
+// const useBoardStyles = makeStyles({})
+
+const Board: React.SFC = ({}) => {
+  // const classes = useBoardStyles()
+  const { player, game } = React.useContext(SkullGameContext)
+  const otherPlayers = values(game.players).filter(p => p.id !== player.id)
+
+  return (
     <>
-      <Typography variant="h3">{playerName(player)}</Typography>
-      <Typography>
-        {numCards ? `Has ${numCards} of 4 cards` : 'Is out'}
-      </Typography>
-      <Typography>Has {player.correctGuess ? 1 : 0} out of 2 points</Typography>
-      <Typography>Has played {player.playedCards.length} cards</Typography>
+      <Player player={player} />
+
+      {otherPlayers.map(p => (
+        <Player player={p} />
+      ))}
     </>
   )
 }
@@ -86,21 +130,6 @@ export const GameView: React.SFC<{}> = ({}) => {
   }
 
   return assertNever(game.state)
-}
-
-const Board: React.SFC = ({}) => {
-  const { player, game } = React.useContext(SkullGameContext)
-  const otherPlayers = values(game.players).filter(p => p.id !== player.id)
-
-  return (
-    <>
-      <Player player={player} />
-
-      {otherPlayers.map(p => (
-        <Player player={p} />
-      ))}
-    </>
-  )
 }
 
 enum BidChoice {

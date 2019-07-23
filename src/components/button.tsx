@@ -2,11 +2,11 @@ import * as React from 'react'
 import cx from 'classnames'
 import MButton, { ButtonProps } from '@material-ui/core/Button'
 import { Omit } from '@material-ui/core'
-import { useColor } from '../hooks/useColor';
+import { useColor, BackgroundColor } from '../hooks/useColor'
 
 export interface Props extends Omit<ButtonProps, 'color' | 'variant'> {
   confirm?: string | boolean
-  color?: 'blue' | 'green' | 'red' | 'teal' | 'black' | 'inherit' | null | false
+  color?: BackgroundColor
 }
 
 export const Button: React.SFC<Props> = ({
