@@ -2,7 +2,7 @@ import cx from 'classnames'
 import { colors, Color } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
-type BackgroundColor =  'blue' | 'green' | 'red' | 'teal' | 'black' | 'inherit' | null | false | undefined
+export type BackgroundColor =  'blue' | 'green' | 'red' | 'teal' | 'black' | 'inherit' | 'yellow' | null | false | undefined
 
 function makeColor(color: Color) {
   return {
@@ -30,6 +30,7 @@ const useStyles = makeStyles(theme => ({
   green: { ...makeColor(colors.green) },
   red: { ...makeColor(colors.red) },
   teal: { ...makeColor(colors.teal) },
+  yellow: { ...makeColor(colors.yellow) },
   black: {
     color: 'black',
     border: '1px solid black',
@@ -51,6 +52,7 @@ export function useColor(color: BackgroundColor ){
             [classes.teal]: color === 'teal',
             [classes.black]: color === 'black',
             [classes.inherit]: color === 'inherit',
+            [classes.yellow]: color === 'yellow',
         })
     )
 
