@@ -2,13 +2,12 @@ import * as React from 'react'
 import { makeStyles } from '@material-ui/styles'
 import { Typography } from '@material-ui/core'
 import { Button } from './button'
-import { Props as ButtonProps } from '../components/button'
-import { useColor } from '../hooks/useColor';
+import { useColor, BackgroundColor } from '../hooks/useColor';
 import cx from 'classnames';
 
 interface Props {
   onClick?: () => void,  
-  color?: ButtonProps['color']
+  color?: BackgroundColor
 }
 
 const useStyles = makeStyles({

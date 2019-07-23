@@ -165,7 +165,7 @@ export const GoOnMission: React.SFC<{ mission: Mission }> = ({ mission }) => {
       <>
         <Typography gutterBottom variant="h2">
           {!allCardsPlayed &&
-            <FullScreenNotice color='red'>
+            <FullScreenNotice color='yellow'>
               Waiting for the others to play their cards
             </FullScreenNotice>
           }
