@@ -17,6 +17,7 @@ import { Typography, Icon } from '@material-ui/core'
 import { useCommonStyles } from '../../../../helpers/commonStyles'
 import { makeStyles } from '@material-ui/styles'
 import { shuffle } from '../../../../helpers/shuffle'
+import { debug } from 'util';
 
 interface Props {
   government: Government
@@ -39,10 +40,19 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
   const { player, game, updateGame, endGame } = React.useContext(
     SecretHitlerGameContext
   )
+
+  //on selecting a cards to pass 
+
+  // console.log(player)
+  // console.log(player.role.party)
+  // console.log(government.cards)
+
   const [cardIndices, setCardIndices] = React.useState<number[]>([])
   const [chancellorViewCards, setViewCards] = React.useState<boolean>(false)
   const fascists = game.playedCards.filter(c => c.card === 'fascist').length
-
+    // player - active player (player that has its phone / in the game)
+    // player.role.party - afifliate parrty good/bad
+  
   const [selected, discarded] = government.cards.reduce<[Party[], Party[]]>(
     ([s, d], party, i) => {
       if (contains(i, cardIndices)) {
@@ -66,12 +76,29 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
     })
   }
 
+
+  // TAKE a look at this and do console log to understand more about the logic of the code base 
+  // game.players = all players -> object
   function discard(
     cards: Party[],
     discard: Party[],
     veto: boolean | null = null
   ) {
+    debugger
+    //this obj gets initial cards array  
+    console.log(game.government)
     if (!game.government) return
+    console.log(cards)
+    console.log(cards.values)
+
+
+    // if(player.role.party === 'liberal' && cards.values)
+    //
+    console.log(cards.length)
+    console.log(cards)
+    
+    
+    debugger
     if (cards.length === 2) {
       updateGame({
         discardedCards: game.discardedCards.concat(discarded),
@@ -143,6 +170,9 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
     (government.cards.length === 3 && selected.length !== 2) ||
     (government.cards.length === 2 && selected.length !== 1)
 
+
+
+  //full screen notice future...
   if (player.id === government.president.id && government.cards.length !== 3) {
     return (
       <>
@@ -158,6 +188,7 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
     )
   }
 
+  //full screen notice future... detect government.chancellor and waits for pres
   if (player.id === government.chancellor.id && government.cards.length !== 2) {
     return (
       <>
@@ -173,6 +204,7 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
     )
   }
 
+// has card but not selected what to play
   if (player.id === government.chancellor.id && !chancellorViewCards) {
     return (
       <>
@@ -191,6 +223,7 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
 
   return (
     <>
+  
       {government.cards.length === 3 && (
         <React.Fragment>
           <Typography variant="h2">
@@ -262,6 +295,7 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
             veto
           </Button>
         ) : (
+          //here we get a button for passing cards from president to chanclor
           <Button
             disabled={disabled}
             color="green"
@@ -269,7 +303,7 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
               if (disabled) return
               discard(selected, discarded)
             }}>
-            {government.cards.length === 3 ? 'pass' : 'play'}
+            {government.cards.length === 3 ? 'Test' : 'play'}
           </Button>
         )}
       </ActionRow>
