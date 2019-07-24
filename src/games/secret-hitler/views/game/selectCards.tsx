@@ -79,63 +79,19 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
     })
   }
 
-
-  // TAKE a look at this and do console log to understand more about the logic of the code base 
-  // game.players = all players -> object
   function discard(
     cards: Party[],
     discard: Party[],
     veto: boolean | null = null
   ) {
 
-
-    // debugger
-    //this obj gets initial cards array  
-    // console.log(game.government)
-
     if (!game.government) return
-    
-
-
-    // const fascistCards = cards.filter(function(fascistCards) {
-    //   return fascistCards === 'fascist';
-    // });
-
-    // if (player.role.party === 'liberal' && fascistCards.length > 1) {
-    //   setError('Good players can only pass missions')
-
-    //   //  console.log('Testing Liberal Options');  
-    // }
-
-    // AVALON CODE TO LOOK AT...
-    // if (player.party === 'good' && card === 'bad') {
-    //   setError('Good players can only pass missions')
-    // } else {
-    //   playCard(card)
-    // }
-
-
-    debugger
-    console.log(government.cards)
-    console.log(fascistCards)
-    console.log(fascistCards.length)    
-    console.log(cards)
-    console.log(cards.length)
-
-    console.log(player.role.party)
-    
-    console.log(government.president.id)
-    console.log(player.id)
-    // && fascistCards == cards
 
     if (player.role.party === 'liberal' &&
     JSON.stringify(fascistCards)==JSON.stringify(cards) &&
     player.id === government.president.id) {
       setError('Good players can only pass missions')
-    }  
-
-
-
+    }
     else if (cards.length === 2) {
       updateGame({
         discardedCards: game.discardedCards.concat(discarded),
@@ -145,7 +101,13 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
           veto,
         },
       })
-    } else if (cards.length === 1) {
+    } 
+    else if (player.role.party === 'liberal' &&
+    JSON.stringify(fascistCards)==JSON.stringify(cards) &&
+    player.id === government.chancellor.id){
+      setError('Good players can only pass missions')
+    }
+    else if (cards.length === 1) {
       const discardedCards = game.discardedCards.concat(discarded)
       const playedCards = game.playedCards.concat({
         card: cards[0],
@@ -195,20 +157,6 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
     }
   }
 
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
   function updateCards(i: number) {
     setFascistCards(government.cards.filter(
       function(fascistCards){return fascistCards === 'fascist'})
@@ -226,9 +174,7 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
     (government.cards.length === 3 && selected.length !== 2) ||
     (government.cards.length === 2 && selected.length !== 1)
 
-
-
-  //full screen notice future...
+  //TODO: Full Screen Notice
   if (player.id === government.president.id && government.cards.length !== 3) {
     return (
       <>
@@ -244,7 +190,7 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
     )
   }
 
-  //full screen notice future... detect government.chancellor and waits for pres
+  //TODO: Full Screen Notice
   if (player.id === government.chancellor.id && government.cards.length !== 2) {
     return (
       <>
@@ -356,18 +302,7 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
             color="green"
             onClick={() => {
               if (disabled) return
-
-              // debugger
-              // console.log(fascistCards)
-              // console.log(government.cards)
-
-              // if (player.role.party === 'liberal' && fascistCards ==       government.cards && government.president) {
-              //   setError('Good players can only pass missions')
-              // }  
-              // else {
                 discard(selected, discarded)
-              // }
-
             }}>
             {government.cards.length === 3 ? 'pass' : 'play'}
           </Button>
