@@ -17,7 +17,7 @@ import { Typography, Icon } from '@material-ui/core'
 import { useCommonStyles } from '../../../../helpers/commonStyles'
 import { makeStyles } from '@material-ui/styles'
 import { shuffle } from '../../../../helpers/shuffle'
-import { debug } from 'util';
+
 
 interface Props {
   government: Government
@@ -50,6 +50,9 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
   const [cardIndices, setCardIndices] = React.useState<number[]>([])
   const [chancellorViewCards, setViewCards] = React.useState<boolean>(false)
   const fascists = game.playedCards.filter(c => c.card === 'fascist').length
+  const [error, setError] = React.useState<string>('')
+  const [fascistCards, setFascistCards] = React.useState<String[]>([])
+
     // player - active player (player that has its phone / in the game)
     // player.role.party - afifliate parrty good/bad
   
@@ -84,22 +87,56 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
     discard: Party[],
     veto: boolean | null = null
   ) {
-    debugger
+
+
+    // debugger
     //this obj gets initial cards array  
-    console.log(game.government)
+    // console.log(game.government)
+
     if (!game.government) return
-    console.log(cards)
-    console.log(cards.values)
+    
 
 
-    // if(player.role.party === 'liberal' && cards.values)
-    //
-    console.log(cards.length)
-    console.log(cards)
-    
-    
+    // const fascistCards = cards.filter(function(fascistCards) {
+    //   return fascistCards === 'fascist';
+    // });
+
+    // if (player.role.party === 'liberal' && fascistCards.length > 1) {
+    //   setError('Good players can only pass missions')
+
+    //   //  console.log('Testing Liberal Options');  
+    // }
+
+    // AVALON CODE TO LOOK AT...
+    // if (player.party === 'good' && card === 'bad') {
+    //   setError('Good players can only pass missions')
+    // } else {
+    //   playCard(card)
+    // }
+
+
     debugger
-    if (cards.length === 2) {
+    console.log(government.cards)
+    console.log(fascistCards)
+    console.log(fascistCards.length)    
+    console.log(cards)
+    console.log(cards.length)
+
+    console.log(player.role.party)
+    
+    console.log(government.president.id)
+    console.log(player.id)
+    // && fascistCards == cards
+
+    if (player.role.party === 'liberal' &&
+    JSON.stringify(fascistCards)==JSON.stringify(cards) &&
+    player.id === government.president.id) {
+      setError('Good players can only pass missions')
+    }  
+
+
+
+    else if (cards.length === 2) {
       updateGame({
         discardedCards: game.discardedCards.concat(discarded),
         government: {
@@ -158,7 +195,26 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
     }
   }
 
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
   function updateCards(i: number) {
+    setFascistCards(government.cards.filter(
+      function(fascistCards){return fascistCards === 'fascist'})
+    ) 
+
+
     if (includes(i, cardIndices)) {
       setCardIndices(remove(indexOf(i, cardIndices), 1, cardIndices))
     } else {
@@ -267,6 +323,16 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
         ))}
       </div>
 
+      {error && (
+        <Typography
+          align="center"
+          component="em"
+          color="error"
+          className="error">
+          {error}
+        </Typography>
+      )}
+
       <ActionRow fixed>
         {fascists === 5 && player.role.party !== 'liberal' && (
           <Button
@@ -285,27 +351,27 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
           </Button>
         )}
 
-        {fascists === 5 && player.role.party === 'liberal' ? (
-          <Button
-            disabled={disabled}
-            onClick={() => {
-              if (disabled) return
-              discard(selected, discarded, true)
-            }}>
-            veto
-          </Button>
-        ) : (
-          //here we get a button for passing cards from president to chanclor
           <Button
             disabled={disabled}
             color="green"
             onClick={() => {
               if (disabled) return
-              discard(selected, discarded)
+
+              // debugger
+              // console.log(fascistCards)
+              // console.log(government.cards)
+
+              // if (player.role.party === 'liberal' && fascistCards ==       government.cards && government.president) {
+              //   setError('Good players can only pass missions')
+              // }  
+              // else {
+                discard(selected, discarded)
+              // }
+
             }}>
-            {government.cards.length === 3 ? 'Test' : 'play'}
+            {government.cards.length === 3 ? 'pass' : 'play'}
           </Button>
-        )}
+
       </ActionRow>
     </>
   )
