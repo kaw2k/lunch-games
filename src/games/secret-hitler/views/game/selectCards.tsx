@@ -18,7 +18,6 @@ import { useCommonStyles } from '../../../../helpers/commonStyles'
 import { makeStyles } from '@material-ui/styles'
 import { shuffle } from '../../../../helpers/shuffle'
 
-
 interface Props {
   government: Government
 }
@@ -41,21 +40,12 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
     SecretHitlerGameContext
   )
 
-  //on selecting a cards to pass 
-
-  // console.log(player)
-  // console.log(player.role.party)
-  // console.log(government.cards)
-
   const [cardIndices, setCardIndices] = React.useState<number[]>([])
   const [chancellorViewCards, setViewCards] = React.useState<boolean>(false)
   const fascists = game.playedCards.filter(c => c.card === 'fascist').length
   const [error, setError] = React.useState<string>('')
   const [fascistCards, setFascistCards] = React.useState<String[]>([])
 
-    // player - active player (player that has its phone / in the game)
-    // player.role.party - afifliate parrty good/bad
-  
   const [selected, discarded] = government.cards.reduce<[Party[], Party[]]>(
     ([s, d], party, i) => {
       if (contains(i, cardIndices)) {
@@ -161,8 +151,7 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
     setFascistCards(government.cards.filter(
       function(fascistCards){return fascistCards === 'fascist'})
     ) 
-
-
+    
     if (includes(i, cardIndices)) {
       setCardIndices(remove(indexOf(i, cardIndices), 1, cardIndices))
     } else {
