@@ -17,6 +17,7 @@ import { Typography, Icon } from '@material-ui/core'
 import { useCommonStyles } from '../../../../helpers/commonStyles'
 import { makeStyles } from '@material-ui/styles'
 import { shuffle } from '../../../../helpers/shuffle'
+import { FullScreenNotice } from '../../../../components/fullScreenNotice';
 
 interface Props {
   government: Government
@@ -145,7 +146,7 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
 
   if (player.id === government.president.id && government.cards.length !== 3) {
     return (
-      <>
+      <FullScreenNotice>
         <Typography variant="h2">
           Waiting for {government.chancellor.name || government.chancellor.id}{' '}
           to play
@@ -154,13 +155,13 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
           Your done with your part, you are not allowed to speak until the cards
           are fully played
         </Typography>
-      </>
+      </FullScreenNotice>
     )
   }
 
   if (player.id === government.chancellor.id && government.cards.length !== 2) {
     return (
-      <>
+      <FullScreenNotice>
         <Typography variant="h2">
           Waiting for {government.president.name || government.president.id} to
           play
@@ -169,23 +170,18 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
           When the president is done selecting which cards they want to play you
           will get a button to view them, and then play one.
         </Typography>
-      </>
+      </FullScreenNotice>
     )
   }
 
   if (player.id === government.chancellor.id && !chancellorViewCards) {
     return (
-      <>
+      <FullScreenNotice onClick={() => setViewCards(true)}>
         <Typography variant="h2">
           {government.president.name || government.president.id} has passed you
-          cards, are you ready?
+          cards, click when you are ready
         </Typography>
-        <ActionRow fixed>
-          <Button color="green" onClick={() => setViewCards(true)}>
-            yes
-          </Button>
-        </ActionRow>
-      </>
+      </FullScreenNotice>
     )
   }
 
