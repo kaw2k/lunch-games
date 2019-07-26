@@ -42,6 +42,7 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
   const [cardIndices, setCardIndices] = React.useState<number[]>([])
   const [chancellorViewCards, setViewCards] = React.useState<boolean>(false)
   const fascists = game.playedCards.filter(c => c.card === 'fascist').length
+  const [error, setError] = React.useState<string>('')
 
   const [selected, discarded] = government.cards.reduce<[Party[], Party[]]>(
     ([s, d], party, i) => {
@@ -72,6 +73,14 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
     veto: boolean | null = null
   ) {
     if (!game.government) return
+
+    const isPartyLiberal = player.role.party === 'liberal'
+    const isDiscardLiberal = discard.includes('liberal')
+    const isLiberalLeft = cards.includes('liberal')
+    if (isPartyLiberal && isDiscardLiberal && !isLiberalLeft) {
+      return setError('Liberal players can only pass missions')
+    }
+
     if (cards.length === 2) {
       updateGame({
         discardedCards: game.discardedCards.concat(discarded),
@@ -234,6 +243,16 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
         ))}
       </div>
 
+      {error && (
+        <Typography
+          align="center"
+          component="em"
+          color="error"
+          className="error">
+          {error}
+        </Typography>
+      )}
+
       <ActionRow fixed>
         {fascists === 5 && (
           <Button
@@ -252,17 +271,15 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
           </Button>
         )}
 
-          
-          <Button
-            disabled={disabled}
-            color="green"
-            onClick={() => {
-              if (disabled) return
-              discard(selected, discarded)
-            }}>
-            {government.cards.length === 3 ? 'pass' : 'play'}
-          </Button>
-
+        <Button
+          disabled={disabled}
+          color="green"
+          onClick={() => {
+            if (disabled) return
+            discard(selected, discarded)
+          }}>
+          {government.cards.length === 3 ? 'pass' : 'play'}
+        </Button>
       </ActionRow>
     </>
   )
