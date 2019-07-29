@@ -17,7 +17,7 @@ import { Typography, Icon } from '@material-ui/core'
 import { useCommonStyles } from '../../../../helpers/commonStyles'
 import { makeStyles } from '@material-ui/styles'
 import { shuffle } from '../../../../helpers/shuffle'
-import { FullScreenNotice } from '../../../../components/fullScreenNotice';
+import { FullScreenNotice } from '../../../../components/fullScreenNotice'
 
 interface Props {
   government: Government
@@ -146,7 +146,7 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
 
   if (player.id === government.president.id && government.cards.length !== 3) {
     return (
-      <FullScreenNotice>
+      <FullScreenNotice color="yellow">
         <Typography variant="h2">
           Waiting for {government.chancellor.name || government.chancellor.id}{' '}
           to play
@@ -161,7 +161,7 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
 
   if (player.id === government.chancellor.id && government.cards.length !== 2) {
     return (
-      <FullScreenNotice>
+      <FullScreenNotice color="yellow">
         <Typography variant="h2">
           Waiting for {government.president.name || government.president.id} to
           play
@@ -248,17 +248,15 @@ export const SelectCards: React.SFC<Props> = ({ government }) => {
           </Button>
         )}
 
-          
-          <Button
-            disabled={disabled}
-            color="green"
-            onClick={() => {
-              if (disabled) return
-              discard(selected, discarded)
-            }}>
-            {government.cards.length === 3 ? 'pass' : 'play'}
-          </Button>
-
+        <Button
+          disabled={disabled}
+          color="green"
+          onClick={() => {
+            if (disabled) return
+            discard(selected, discarded)
+          }}>
+          {government.cards.length === 3 ? 'pass' : 'play'}
+        </Button>
       </ActionRow>
     </>
   )
