@@ -14,11 +14,6 @@ export const Overview: React.SFC<Props> = ({ myTurn }) => {
 
   return (
     <>
-      {!player.living && (
-        <Typography align="center" gutterBottom variant="h2" color="error">
-          you are dead
-        </Typography>
-      )}
       {game.message && (
         <Typography align="center" gutterBottom variant="h1">
           {game.message}

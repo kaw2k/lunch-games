@@ -56,7 +56,7 @@ export const SecretHitlerView: React.SFC<{ room: SecretHitler }> = ({
     true
   )
 
-  if (!currentPlayer) {
+  if (!currentPlayer || !currentPlayer.living) {
     return (
       <Spectate
         game={room}
