@@ -24,6 +24,11 @@ export interface AvalonLobby extends Omit<Lobby, 'type'> {
   avalonRoles: Role[]
 }
 
+export interface AvalonResults extends Omit<AvalonLobby, 'type'> {
+  type: 'avalon-results'
+  players: Hash<PlayerAvalon>
+}
+
 export interface Mission {
   owner: PlayerId
   players: PlayerId[]
@@ -58,4 +63,4 @@ export interface AvalonGame {
   nextLadyOfTheLake: PlayerId | null
 }
 
-export type Avalon = AvalonGame | AvalonLobby
+export type Avalon = AvalonGame | AvalonLobby | AvalonResults

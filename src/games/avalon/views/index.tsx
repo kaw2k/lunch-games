@@ -15,7 +15,9 @@ import { Spectate } from './game/spectate'
 import { GameContainer } from '../components/gameContainer'
 
 export const isAvalon = (room: Room): room is Avalon =>
-  room.type === 'avalon-game' || room.type === 'avalon-lobby'
+  room.type === 'avalon-game' ||
+  room.type === 'avalon-lobby' ||
+  room.type === 'avalon-results'
 
 export const AvalonView: React.SFC<{ room: Avalon }> = ({ room }) => {
   const { player, setRoom, updatePlayer, updateRoom } = React.useContext(
@@ -23,7 +25,7 @@ export const AvalonView: React.SFC<{ room: Avalon }> = ({ room }) => {
   )
 
   // Game screens
-  if (room.type === 'avalon-lobby') {
+  if (room.type === 'avalon-lobby' || room.type === 'avalon-results') {
     return (
       <LobbyAvalon
         lobby={room}
@@ -96,13 +98,14 @@ export const AvalonView: React.SFC<{ room: Avalon }> = ({ room }) => {
         endGame: (party, message) => {
           setRoom({
             id: room.id,
-            type: 'avalon-lobby',
+            type: 'avalon-results',
             lobbyPlayers: room.lobbyPlayers || [],
             spectators: [],
             victoryMessage: message || null,
             avalonLadyOfTheLake: room.ladyOfTheLake,
             avalonExcalibur: room.excalibur,
             avalonRoles: room.roles,
+            players: room.players,
           })
 
           if (party && room.type === 'avalon-game') {

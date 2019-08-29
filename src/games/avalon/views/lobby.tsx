@@ -5,7 +5,7 @@ import { Layout } from '../../../components/layout'
 import { ActionRow } from '../../../components/actionRow'
 import { Profile } from '../../../components/profile'
 import { RoomContext } from '../../../helpers/contexts'
-import { AvalonLobby, Role } from '../interfaces/game'
+import { AvalonLobby, Role, AvalonResults } from '../interfaces/game'
 import { ChooseGame } from '../../../components/chooseGame'
 import { isGameValid, helpText } from '../helpers/isGameValid'
 import { getParty } from '../helpers/getParty'
@@ -31,7 +31,7 @@ import values from 'ramda/es/values'
 import { Rules } from '../components/rules'
 
 interface Props {
-  lobby: AvalonLobby
+  lobby: AvalonLobby | AvalonResults
   startGame: (players: Player[]) => void
 }
 
@@ -40,6 +40,7 @@ enum View {
   roles,
   rules,
   start,
+  results,
 }
 
 const useStyles = makeStyles({
@@ -57,24 +58,26 @@ const useStyles = makeStyles({
 
 export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
   const classes = useStyles()
-  const [view, setView] = React.useState(View.lobby)
+  const [view, setView] = React.useState(
+    lobby.type === 'avalon-results' ? View.results : View.lobby
+  )
 
   const isValid = isGameValid(lobby.lobbyPlayers.length, lobby.avalonRoles)
 
   return (
     <Layout padded className={classes.root}>
-      {lobby.victoryMessage && (
-        <Typography variant="h2">{lobby.victoryMessage}</Typography>
-      )}
-
       <Typography variant="h2">Lobby: {lobby.id}</Typography>
 
+      {lobby.type === 'avalon-results' && view === View.results && (
+        <Results lobby={lobby} />
+      )}
       {view === View.lobby && <Players lobby={lobby} />}
       {view === View.roles && <Roles lobby={lobby} />}
       {view === View.rules && <Rules />}
 
       <BottomNavigation
         className={classes.nav}
+        showLabels
         value={view}
         onChange={(e, val) => {
           if (val === View.start) {
@@ -94,6 +97,14 @@ export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
             setView(val)
           }
         }}>
+        {lobby.type === 'avalon-results' && (
+          <BottomNavigationAction
+            label="Results"
+            value={View.results}
+            icon={<Icon>star</Icon>}
+          />
+        )}
+
         <BottomNavigationAction
           label="Lobby"
           value={View.lobby}
@@ -131,7 +142,7 @@ export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
 }
 
 const Players: React.SFC<{
-  lobby: AvalonLobby
+  lobby: AvalonLobby | AvalonResults
 }> = ({ lobby }) => {
   const { kickPlayer, leaveRoom } = React.useContext(RoomContext)
 
@@ -164,7 +175,7 @@ const Players: React.SFC<{
 }
 
 const Roles: React.SFC<{
-  lobby: AvalonLobby
+  lobby: AvalonLobby | AvalonResults
 }> = ({ lobby }) => {
   const { updateRoom } = React.useContext(RoomContext)
   const classes = useCommonStyles()
@@ -287,6 +298,53 @@ const Roles: React.SFC<{
               profileText={rolesInGame(role)}
               onClick={() => updateRoles(role)}
               color={getParty(role) === 'bad' ? 'red' : 'blue'}
+            />
+          ))}
+        </div>
+      </div>
+    </>
+  )
+}
+
+const Results: React.SFC<{
+  lobby: AvalonResults
+}> = ({ lobby }) => {
+  const classes = useCommonStyles()
+
+  const players = values(lobby.players)
+
+  const good = players.filter(p => p.party === 'good')
+  const bad = players.filter(p => p.party === 'bad')
+
+  return (
+    <>
+      <Typography gutterBottom align="center" variant="h2">
+        {lobby.victoryMessage}
+      </Typography>
+
+      <div className={classes.twoColumns}>
+        <div>
+          <Typography gutterBottom align="center" variant="h3">
+            Good Team
+          </Typography>
+          {good.map(p => (
+            <Profile
+              image={p.profileImg}
+              text={playerName(p)}
+              subtext={p.role !== 'good' ? p.role : ''}
+            />
+          ))}
+        </div>
+
+        <div>
+          <Typography gutterBottom align="center" variant="h3">
+            Bad Team
+          </Typography>
+          {bad.map(p => (
+            <Profile
+              image={p.profileImg}
+              text={playerName(p)}
+              subtext={p.role !== 'bad' ? p.role : ''}
             />
           ))}
         </div>
