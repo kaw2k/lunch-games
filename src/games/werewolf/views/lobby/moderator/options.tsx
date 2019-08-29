@@ -147,7 +147,6 @@ const Option: React.SFC<{
     <label className={classes.label} htmlFor={option}>
       <Checkbox
         id={option}
-        type="checkbox"
         checked={!!lobby.werewolfOptions[option]}
         onChange={e => {
           updateRoom({
@@ -162,7 +161,7 @@ const Option: React.SFC<{
         <Typography gutterBottom className={classes.title} variant="h4">
           {title}
         </Typography>
-        <Typography component="span" inline>
+        <Typography component="span" display="inline">
           {description}
         </Typography>
       </div>
@@ -199,7 +198,7 @@ const Value: React.SFC<{
         <Typography gutterBottom className={classes.title} variant="h4">
           {title}
         </Typography>
-        <Typography component="span" inline>
+        <Typography component="span" display="inline">
           {description}
         </Typography>
       </div>

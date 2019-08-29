@@ -46,7 +46,7 @@ export const Profile: React.SFC<Props> = ({
     <ListItem
       key={value}
       alignItems={alignItems}
-      button={!!onClick}
+      button={!onClick ? false : undefined}
       onClick={onClick}
       className={className}
       disabled={disabled}>

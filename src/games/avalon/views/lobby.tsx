@@ -28,7 +28,7 @@ import { Grid } from '../../../components/grid'
 import { useCommonStyles } from '../../../helpers/commonStyles'
 import { count } from '../../../helpers/count'
 import values from 'ramda/es/values'
-import {Rules} from '../components/rules'
+import { Rules } from '../components/rules'
 
 interface Props {
   lobby: AvalonLobby
@@ -71,9 +71,7 @@ export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
 
       {view === View.lobby && <Players lobby={lobby} />}
       {view === View.roles && <Roles lobby={lobby} />}
-      {view === View.rules && 
-         <Rules/>
-      }
+      {view === View.rules && <Rules />}
 
       <BottomNavigation
         className={classes.nav}
@@ -115,13 +113,11 @@ export const LobbyAvalon: React.SFC<Props> = ({ startGame, lobby }) => {
             </Badge>
           }
         />
-                
+
         <BottomNavigationAction
           label="Rules"
           value={View.rules}
-          icon={
-            <Icon>description</Icon>
-          }
+          icon={<Icon>description</Icon>}
         />
 
         <BottomNavigationAction
@@ -229,12 +225,11 @@ const Roles: React.SFC<{
       {helpText(values(lobby.lobbyPlayers).length)}
 
       <label htmlFor="lol">
-        <Typography component="span" inline>
+        <Typography component="span" display="inline">
           Lady of the lake:
         </Typography>
         <Checkbox
           id="lol"
-          type="checkbox"
           checked={lobby.avalonLadyOfTheLake}
           onChange={e => {
             updateRoom({
@@ -247,12 +242,11 @@ const Roles: React.SFC<{
       </label>
 
       <label htmlFor="lol">
-        <Typography component="span" inline>
+        <Typography component="span" display="inline">
           Excalibur:
         </Typography>
         <Checkbox
           id="excalibur"
-          type="checkbox"
           checked={lobby.avalonExcalibur}
           onChange={e => {
             updateRoom({

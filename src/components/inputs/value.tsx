@@ -49,7 +49,7 @@ export const Value: React.SFC<{
         <Typography gutterBottom className={classes.title} variant="h4">
           {title}
         </Typography>
-        <Typography component="span" inline>
+        <Typography component="span" display="inline">
           {description}
         </Typography>
       </div>

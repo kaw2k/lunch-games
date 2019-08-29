@@ -29,7 +29,7 @@ export const ViewRole: React.SFC<Props> = ({ role }) => {
   const card = getCard(role)
 
   return (
-    <Grid className={classes.root} container spacing={16}>
+    <Grid className={classes.root} container spacing={10}>
       <Grid item xs={3}>
         <img src={card.image} className={classes.img} />
       </Grid>

@@ -1,6 +1,3 @@
-import { install } from '@material-ui/styles'
-install()
-
 import CssBaseline from '@material-ui/core/CssBaseline'
 
 import * as React from 'react'
@@ -53,7 +50,6 @@ render(
         // Reset our font sizes to be smaller
         typography: {
           fontSize: 14,
-          useNextVariants: true,
 
           h1: {
             fontSize: 20,

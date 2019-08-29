@@ -114,9 +114,7 @@ function performAction(action: Actions, game: WerewolfGame): WerewolfGame {
       return setVictory(
         {
           team: 'tanner',
-          message: `${player.name} was the tanner and was lynched. ${
-            player.name
-          } wins!`,
+          message: `${player.name} was the tanner and was lynched. ${player.name} wins!`,
         },
         game
       )

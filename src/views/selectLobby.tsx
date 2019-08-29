@@ -124,7 +124,7 @@ export const SelectLobby: React.SFC<Props> = ({
             </Button>
 
             <label htmlFor="upload" style={{ width: '100%' }}>
-              <Button color="green" component="span">
+              <Button color="green">
                 picture
               </Button>
             </label>

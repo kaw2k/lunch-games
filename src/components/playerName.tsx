@@ -11,7 +11,7 @@ interface Props {
 
 export const PlayerName: React.SFC<Props> = ({ player, bold }) => {
   return (
-    <Typography variant={bold ? 'h5' : undefined} inline>
+    <Typography variant={bold ? 'h5' : undefined} display="inline">
       {playerName(player)}
     </Typography>
   )

@@ -1,11 +1,10 @@
 import * as React from 'react'
-import { Dialog, withMobileDialog } from '@material-ui/core'
+import { Dialog, useTheme, useMediaQuery } from '@material-ui/core'
 import { DialogProps } from '@material-ui/core/Dialog'
 
-interface Props extends DialogProps {}
+export const ResponsiveDialog: React.SFC<DialogProps> = props => {
+  const theme = useTheme()
+  const fullScreen = useMediaQuery(theme.breakpoints.down('xs'))
 
-export const ResponsiveDialog = withMobileDialog<Props>({ breakpoint: 'xs' })(
-  props => {
-    return <Dialog {...props} />
-  }
-)
+  return <Dialog {...props} fullScreen={fullScreen} />
+}

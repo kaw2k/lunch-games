@@ -37,7 +37,6 @@ export const Checkbox: React.SFC<{
     <label className={classes.label} htmlFor={id}>
       <MUICheckbox
         id={id}
-        type="checkbox"
         checked={value}
         onChange={e => {
           onChange(e.target.checked)
@@ -47,7 +46,7 @@ export const Checkbox: React.SFC<{
         <Typography gutterBottom className={classes.title} variant="h4">
           {title}
         </Typography>
-        <Typography component="span" inline>
+        <Typography component="span" display="inline">
           {description}
         </Typography>
       </div>
