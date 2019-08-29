@@ -1,13 +1,12 @@
 import * as React from 'react'
-import { WerewolfLobby } from '../../../interfaces/game'
+import { WerewolfLobby, WerewolfResults } from '../../../interfaces/game'
 import {
   BottomNavigationAction,
   BottomNavigation,
   Icon,
   Badge,
 } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
-import { WerewolfPlayerLobby } from '../player'
+import { PlayerView } from '../player'
 import { WerewolfModeratorLobbyRoles } from './roles'
 import { WerewolfModeratorLobbyArtifacts } from './artifacts'
 import { WerewolfModeratorLobbyStart } from './start'
@@ -16,9 +15,12 @@ import { Roles } from '../../../interfaces/card/cards'
 import { getWeight } from '../../../helpers/getWeight'
 import { isModerator } from '../../../helpers/isModerator'
 import { isSpectator } from '../../../../../helpers/isSpectator'
+import { Button } from '../../../../../components/button'
+import { useCommonStyles } from '../../../../../helpers/commonStyles'
+import { Layout } from '../../../../../components/layout'
 
 interface Props {
-  lobby: WerewolfLobby
+  lobby: WerewolfLobby | WerewolfResults
   startGame: (roles: Roles[]) => void
   toggleModerator: () => void
   toggleSpectator: () => void
@@ -32,36 +34,21 @@ enum View {
   start,
 }
 
-const useStyles = makeStyles({
-  nav: {
-    position: 'fixed',
-    bottom: 0,
-    left: 0,
-    width: '100%',
-    zIndex: 100,
-  },
-  root: {
-    marginBottom: '56px',
-  },
-})
-
 export const WerewolfModeratorLobby: React.SFC<Props> = ({
   startGame,
   lobby,
   toggleModerator,
-  toggleSpectator,
 }) => {
   const [view, setView] = React.useState(View.lobby)
-  const classes = useStyles()
+  const classes = useCommonStyles()
 
   return (
-    <div className={classes.root}>
+    <Layout hasTabs padded>
       {view === View.lobby && (
-        <WerewolfPlayerLobby
-          lobby={lobby}
-          toggleSpectator={toggleSpectator}
-          toggleModerator={toggleModerator}
-        />
+        <>
+          <PlayerView lobby={lobby} />
+          <Button onClick={toggleModerator}>Stop Moderating</Button>
+        </>
       )}
 
       {view === View.roles && <WerewolfModeratorLobbyRoles lobby={lobby} />}
@@ -75,6 +62,7 @@ export const WerewolfModeratorLobby: React.SFC<Props> = ({
 
       <BottomNavigation
         className={classes.nav}
+        showLabels
         value={view}
         onChange={(e, val) => setView(val)}>
         <BottomNavigationAction
@@ -127,6 +115,6 @@ export const WerewolfModeratorLobby: React.SFC<Props> = ({
           icon={<Icon>play_arrow</Icon>}
         />
       </BottomNavigation>
-    </div>
+    </Layout>
   )
 }

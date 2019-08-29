@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Layout } from '../../../../../components/layout'
-import { WerewolfLobby } from '../../../interfaces/game'
+import { WerewolfLobby, WerewolfResults } from '../../../interfaces/game'
 import sortBy from 'ramda/es/sortBy'
 import { count } from '../../../../../helpers/count'
 import { RoomContext } from '../../../../../helpers/contexts'
@@ -10,7 +10,7 @@ import { Grid } from '../../../../../components/grid'
 import { Card } from '../../../../../components/card'
 
 interface Props {
-  lobby: WerewolfLobby
+  lobby: WerewolfLobby | WerewolfResults
 }
 
 const cards = sortBy(card => -1 * card.weight, Cards)

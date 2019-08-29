@@ -5,7 +5,7 @@ import { Button } from '../../../components/button'
 import { makeStyles } from '@material-ui/styles'
 
 interface Props {
-  done: () => void
+  done?: () => void
 }
 
 const useStyles = makeStyles({
@@ -23,11 +23,17 @@ export const WerewolfRules: React.SFC<Props> = ({ done }) => {
         Rules
       </Typography>
 
-      <ActionRow className={classes.padded} fixed>
-        <Button color="green" onClick={done}>
-          done
-        </Button>
-      </ActionRow>
+      <Typography gutterBottom>
+        Lol, way to lazy to write up all these rules
+      </Typography>
+
+      {done && (
+        <ActionRow className={classes.padded} fixed>
+          <Button color="green" onClick={done}>
+            done
+          </Button>
+        </ActionRow>
+      )}
     </>
   )
 }

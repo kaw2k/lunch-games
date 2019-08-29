@@ -113,4 +113,9 @@ export interface WerewolfLobby extends Omit<Lobby, 'type'> {
   werewolfModerators: PlayerId[]
 }
 
-export type Werewolf = WerewolfGame | WerewolfLobby
+export interface WerewolfResults extends Omit<WerewolfLobby, 'type'> {
+  type: 'werewolf-results'
+  players: Hash<PlayerWerewolf>
+}
+
+export type Werewolf = WerewolfGame | WerewolfLobby | WerewolfResults

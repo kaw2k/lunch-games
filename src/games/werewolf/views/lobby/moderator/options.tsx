@@ -1,13 +1,13 @@
 import * as React from 'react'
 import { Layout } from '../../../../../components/layout'
 import { Typography, Checkbox } from '@material-ui/core'
-import { WerewolfLobby } from '../../../interfaces/game'
+import { WerewolfLobby, WerewolfResults } from '../../../interfaces/game'
 import { RoomContext } from '../../../../../helpers/contexts'
 import { Input } from '../../../../../components/input'
 import { makeStyles } from '@material-ui/styles'
 
 interface Props {
-  lobby: WerewolfLobby
+  lobby: WerewolfLobby | WerewolfResults
 }
 
 const useStyles = makeStyles({
@@ -138,7 +138,7 @@ const Option: React.SFC<{
   option: keyof WerewolfLobby['werewolfOptions']
   title: string
   description: string
-  lobby: WerewolfLobby
+  lobby: WerewolfLobby | WerewolfResults
 }> = ({ option, title, lobby, description }) => {
   const { updateRoom } = React.useContext(RoomContext)
   const classes = useStyles()
@@ -173,7 +173,7 @@ const Value: React.SFC<{
   option: keyof WerewolfLobby['werewolfOptions']
   title: string
   description: string
-  lobby: WerewolfLobby
+  lobby: WerewolfLobby | WerewolfResults
 }> = ({ option, title, lobby, description }) => {
   const { updateRoom } = React.useContext(RoomContext)
   const classes = useStyles()

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Layout } from '../../../../../components/layout'
 import { Typography } from '@material-ui/core'
-import { WerewolfLobby } from '../../../interfaces/game'
+import { WerewolfLobby, WerewolfResults } from '../../../interfaces/game'
 import { Profile } from '../../../../../components/profile'
 import { count } from '../../../../../helpers/count'
 import { RoomContext } from '../../../../../helpers/contexts'
@@ -12,7 +12,7 @@ import groupBy from 'ramda/es/groupBy'
 import { toPairs, sortBy } from 'ramda'
 
 interface Props {
-  lobby: WerewolfLobby
+  lobby: WerewolfLobby | WerewolfResults
 }
 
 const useStyles = makeStyles({

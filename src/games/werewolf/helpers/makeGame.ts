@@ -1,4 +1,8 @@
-import { WerewolfGame, WerewolfLobby } from '../interfaces/game'
+import {
+  WerewolfGame,
+  WerewolfLobby,
+  WerewolfResults,
+} from '../interfaces/game'
 import { isModerator } from './isModerator'
 import { shuffle } from '../../../helpers/shuffle'
 import { PlayerWerewolf } from '../interfaces/player'
@@ -7,7 +11,10 @@ import { Artifacts } from '../interfaces/artifact/artifacts'
 import { ArtifactState } from '../interfaces/artifact'
 import { isSpectator } from '../../../helpers/isSpectator'
 
-export function makeGame(roles: Roles[], lobby: WerewolfLobby): WerewolfGame {
+export function makeGame(
+  roles: Roles[],
+  lobby: WerewolfLobby | WerewolfResults
+): WerewolfGame {
   const players = shuffle(
     lobby.lobbyPlayers.filter(
       p => !(isModerator(p, lobby) || isSpectator(p, lobby))

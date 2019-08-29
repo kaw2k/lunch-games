@@ -52,4 +52,12 @@ export const useCommonStyles = makeStyles({
       flex: '0 0 auto',
     },
   },
+
+  nav: {
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    width: '100%',
+    zIndex: 100,
+  },
 })

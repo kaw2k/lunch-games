@@ -17,7 +17,9 @@ import { runActions } from '../helpers/gameEngine'
 import { PlayerWerewolf } from '../interfaces/player'
 
 export const isWerewolf = (room: Room): room is Werewolf =>
-  room.type === 'werewolf-game' || room.type === 'werewolf-lobby'
+  room.type === 'werewolf-game' ||
+  room.type === 'werewolf-lobby' ||
+  room.type === 'werewolf-results'
 
 export const WerewolfView: React.SFC<{ room: Werewolf }> = ({ room }) => {
   const { player, setRoom, updateRoom } = React.useContext(RoomContext)
@@ -42,7 +44,7 @@ export const WerewolfView: React.SFC<{ room: Werewolf }> = ({ room }) => {
   }
 
   // Game screens
-  if (room.type === 'werewolf-lobby') {
+  if (room.type === 'werewolf-lobby' || room.type === 'werewolf-results') {
     if (isModerator(player, room)) {
       return (
         <WerewolfModeratorLobby
@@ -108,7 +110,7 @@ export const WerewolfView: React.SFC<{ room: Werewolf }> = ({ room }) => {
         endGame: (party, message) => {
           setRoom({
             id: room.id,
-            type: 'werewolf-lobby',
+            type: 'werewolf-results',
             lobbyPlayers: room.lobbyPlayers || [],
             victoryMessage: message || null,
             spectators: [],
@@ -116,6 +118,7 @@ export const WerewolfView: React.SFC<{ room: Werewolf }> = ({ room }) => {
             werewolfModerators: room.moderators,
             werewolfOptions: room.options,
             werewolfRoles: room.initialRoles,
+            players: room.players,
           })
         },
       }}>
