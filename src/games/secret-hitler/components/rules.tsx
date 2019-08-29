@@ -5,7 +5,7 @@ import { Button } from '../../../components/button'
 import { makeStyles } from '@material-ui/styles'
 
 interface Props {
-  done: () => void
+  done?: () => void
 }
 
 const useStyles = makeStyles({
@@ -71,11 +71,13 @@ export const Rules: React.SFC<Props> = ({ done }) => {
         to make it concise
       </Typography>
 
-      <ActionRow className={classes.padded} fixed>
-        <Button color="green" onClick={done}>
-          done
-        </Button>
-      </ActionRow>
+      {done && (
+        <ActionRow className={classes.padded} fixed>
+          <Button color="green" onClick={done}>
+            done
+          </Button>
+        </ActionRow>
+      )}
     </>
   )
 }

@@ -15,7 +15,9 @@ import { Spectate } from './game/spectate'
 import { GameContainer } from '../components/gameContainer'
 
 export const isSecretHitler = (room: Room): room is SecretHitler =>
-  room.type === 'secret-hitler-game' || room.type === 'secret-hitler-lobby'
+  room.type === 'secret-hitler-game' ||
+  room.type === 'secret-hitler-lobby' ||
+  room.type === 'secret-hitler-results'
 
 export const SecretHitlerView: React.SFC<{ room: SecretHitler }> = ({
   room,
@@ -24,7 +26,10 @@ export const SecretHitlerView: React.SFC<{ room: SecretHitler }> = ({
   const { updatePlayer } = React.useContext(RoomContext)
 
   // Game screens
-  if (room.type === 'secret-hitler-lobby') {
+  if (
+    room.type === 'secret-hitler-lobby' ||
+    room.type === 'secret-hitler-results'
+  ) {
     return (
       <LobbySecretHitler
         lobby={room}
@@ -83,8 +88,9 @@ export const SecretHitlerView: React.SFC<{ room: SecretHitler }> = ({
         endGame: (party, message) => {
           setRoom({
             id: room.id,
-            type: 'secret-hitler-lobby',
+            type: 'secret-hitler-results',
             spectators: [],
+            players: room.players,
             lobbyPlayers: room.lobbyPlayers || [],
             victoryMessage: message || null,
           })

@@ -50,4 +50,12 @@ export interface SecretHitlerLobby extends Omit<Lobby, 'type'> {
   type: 'secret-hitler-lobby'
 }
 
-export type SecretHitler = SecretHitlerGame | SecretHitlerLobby
+export interface SecretHitlerResults extends Omit<Lobby, 'type'> {
+  type: 'secret-hitler-results'
+  players: PlayerHash
+}
+
+export type SecretHitler =
+  | SecretHitlerGame
+  | SecretHitlerLobby
+  | SecretHitlerResults
